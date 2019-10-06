@@ -20,7 +20,7 @@
         
         <activity android:name=".activity.ActivityMain"/>
         
-        <activity android:name=""
+        <activity android:name=".activity.ActivityPermission"/>
         
     </application>
 
