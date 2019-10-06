@@ -57,7 +57,7 @@ class ActivityPermission : BaseActivity() {
                 builder.setMessage("권한을 허용해주셔야 정상적으로 앱 이용이 가능합니다.")
                 builder.setPositiveButton(
                     "확인"
-                ) { dialog, which -> dialog.dismiss() }
+                ) { dialog, _ -> dialog.dismiss() }
                 builder.show()
             }
 

@@ -8,6 +8,6 @@ class BaseApplication :Application(){
     override fun onCreate() {
         super.onCreate()
         val prefs = Comm_Prefs
-        prefs.mContext = applicationContext
+        prefs.init(applicationContext)
     }
 }
