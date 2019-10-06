@@ -1,4 +1,17 @@
 package com.truevalue.dreamappeal.utils
 
-class Comm_Prefs{
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+
+object Comm_Prefs {
+    var mContext: Context? = null
+    private var prefs: SharedPreferences
+    var isLogin : Boolean
+
+    init {
+        prefs = mContext!!.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE)
+        isLogin = false
+    }
+
 }
