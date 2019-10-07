@@ -11,7 +11,7 @@ open class BaseActivity : AppCompatActivity(){
      */
     fun replaceFragment(container : Int, fragment : Fragment, addToBack : Boolean){
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(container, fragment!!)
+        ft.replace(container, fragment)
         if(addToBack){
             ft.addToBackStack("")
         }

@@ -14,6 +14,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@string/todo"/>
+            android:contentDescription="@string/content_description"/>
 
 </android.support.constraint.ConstraintLayout>
