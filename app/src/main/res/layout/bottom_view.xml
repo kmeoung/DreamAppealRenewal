@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/underline_gray"
-            android:contentDescription="@string/content_description"/>
+            android:contentDescription="@string/str_content_description"/>
 
 
     <LinearLayout
@@ -27,7 +27,7 @@
                 android:scaleX="0.6"
                 android:scaleY="0.6"
                 android:src="@drawable/house_black_silhouette_without_door"
-                android:contentDescription="@string/content_description"/>
+                android:contentDescription="@string/str_content_description"/>
 
         <ImageView
                 android:id="@+id/iv_timeline"
@@ -38,7 +38,7 @@
                 android:scaleX="0.6"
                 android:scaleY="0.6"
                 android:src="@drawable/check_list"
-                android:contentDescription="@string/content_description"/>
+                android:contentDescription="@string/str_content_description"/>
 
         <ImageView
                 android:id="@+id/iv_add_board"
@@ -49,7 +49,7 @@
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:src="@drawable/edit"
-                android:contentDescription="@string/content_description"/>
+                android:contentDescription="@string/str_content_description"/>
 
         <ImageView
                 android:id="@+id/iv_notification"
@@ -60,7 +60,7 @@
                 android:scaleX="0.6"
                 android:scaleY="0.6"
                 android:src="@drawable/bell"
-                android:contentDescription="@string/content_description"/>
+                android:contentDescription="@string/str_content_description"/>
 
         <ImageView
                 android:id="@+id/iv_profile"
@@ -71,7 +71,7 @@
                 android:scaleX="0.6"
                 android:scaleY="0.63"
                 android:src="@drawable/user"
-                android:contentDescription="@string/content_description"/>
+                android:contentDescription="@string/str_content_description"/>
     </LinearLayout>
 
 </LinearLayout>

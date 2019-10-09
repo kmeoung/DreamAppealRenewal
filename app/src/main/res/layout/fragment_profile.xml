@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/background">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp">
+
+        <ImageView android:layout_width="match_parent"
+                   android:layout_height="1dp"
+                   android:background="@color/underline_gray"
+                   android:layout_alignParentBottom="true"/>
+
+        <android.support.design.widget.TabLayout
+                android:id="@+id/tl_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/vp_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+</LinearLayout>

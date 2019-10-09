@@ -25,7 +25,7 @@
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/bmjua"
                 android:gravity="center"
-                android:text="권한 설정"
+                android:text="@string/str_setting_permissions"
                 android:textColor="@color/black"
                 android:textSize="40sp" />
 
@@ -37,7 +37,7 @@
                 android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="2017년 3월 23일부터 시행되는 정보통신망법령에 맞추어 서비스이용에 꼭 필요한 항목만 필수 접근하고 있습니다."
+                android:text="@string/str_permission_info"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
 
@@ -49,7 +49,7 @@
                 android:gravity="left"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="필수적 접근 권한"
+                android:text="@string/str_essential_access"
                 android:textColor="@color/black"
                 android:textSize="25sp" />
 
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/nanum_square_round_r"
-                        android:text="게시물 생성시 파일첨부를 위해\n저장소 권한이 필요합니다."
+                        android:text="@string/str_storage_permission_info"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/nanum_square_round_r"
-                        android:text="게시물 생성시 촬영사진을 첨부할 수 있도록\n 카메라 권한이 필요합니다."
+                        android:text="@string/str_camera_permission_info"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:gravity="center"
-                    android:text="경고 : 권한을 설정하지 않으면 이용에 어려움이 있을 수 있습니다."
+                    android:text="@string/str_warning_access_method"
                     android:textColor="@color/permission_red"
                     android:textSize="13sp" />
 
@@ -148,7 +148,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:gravity="left"
-                    android:text="접근권한 변경 방법\n\n휴대폰 설정 > 애플리케이션 관리 > 드림어필"
+                    android:text="@string/str_access_method"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -166,7 +166,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/colorAccent"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:text="동의 및 시작"
+                android:text="@string/str_agree_and_start"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 

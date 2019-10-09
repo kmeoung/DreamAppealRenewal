@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_b"
-                    android:text="@string/menu_normal_profile"
+                    android:text="@string/str_menu_normal_profile"
                     android:textColor="@color/black"
                     android:textSize="19sp" />
 
@@ -58,7 +58,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/menu_following"
+                        android:text="@string/str_menu_following"
                         android:textColor="@color/text_gray"
                         android:textSize="16sp" />
 
@@ -87,7 +87,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/menu_dreampoint"
+                        android:text="@string/str_menu_dreampoint"
                         android:textColor="@color/text_gray"
                         android:textSize="16sp" />
 
