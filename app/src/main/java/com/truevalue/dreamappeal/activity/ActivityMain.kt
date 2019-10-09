@@ -41,6 +41,8 @@ class ActivityMain : BaseActivity() {
         initActionBar(mActionBarType)
         // Bottom View Click Listener
         onClickBottomView()
+        // bottom 이미지 초기화
+        setBottomView()
     }
 
     /**
@@ -78,15 +80,40 @@ class ActivityMain : BaseActivity() {
 
     /**
      * 하단 View 클릭 이미지 설정
-     * todo : 추후
      */
     fun setBottomView() {
         var fragment = when (mMainViewType) {
-            MAIN_TYPE_HOME -> FragmentProfile()
-            MAIN_TYPE_TIMELINE -> FragmentProfile()
-            MAIN_TYPE_ADD_BOARD -> FragmentProfile()
-            MAIN_TYPE_NOTIFICATION -> FragmentProfile()
-            MAIN_TYPE_PROFILE -> FragmentProfile()
+            MAIN_TYPE_HOME -> {
+                iv_home.isSelected = true
+                iv_timeline.isSelected = false
+                iv_notification.isSelected = false
+                iv_profile.isSelected = false
+                FragmentProfile()
+            }
+            MAIN_TYPE_TIMELINE -> {
+                iv_home.isSelected = false
+                iv_timeline.isSelected = true
+                iv_notification.isSelected = false
+                iv_profile.isSelected = false
+                FragmentProfile()
+            }
+            MAIN_TYPE_ADD_BOARD -> {
+                FragmentProfile()
+            }
+            MAIN_TYPE_NOTIFICATION -> {
+                iv_home.isSelected = false
+                iv_timeline.isSelected = false
+                iv_notification.isSelected = true
+                iv_profile.isSelected = false
+                FragmentProfile()
+            }
+            MAIN_TYPE_PROFILE -> {
+                iv_home.isSelected = false
+                iv_timeline.isSelected = false
+                iv_notification.isSelected = false
+                iv_profile.isSelected = true
+                FragmentProfile()
+            }
             else -> FragmentProfile()
         }
     }

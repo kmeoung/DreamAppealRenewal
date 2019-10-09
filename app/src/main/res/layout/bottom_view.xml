@@ -7,15 +7,15 @@
     <!--하단 Nav-->
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/underline_gray"
+            android:layout_height="1px"
+            android:background="@color/bottom_nav_underline"
             android:contentDescription="@string/str_content_description"/>
 
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/bottom_nav_color"
+            android:layout_height="40dp"
+            android:background="@color/white"
             android:orientation="horizontal">
 
         <ImageView
@@ -24,9 +24,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
-                android:src="@drawable/house_black_silhouette_without_door"
+                android:src="@drawable/ic_home"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
                 android:contentDescription="@string/str_content_description"/>
 
         <ImageView
@@ -35,9 +35,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
-                android:src="@drawable/check_list"
+                android:src="@drawable/ic_dashboard"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
                 android:contentDescription="@string/str_content_description"/>
 
         <ImageView
@@ -46,9 +46,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                android:src="@drawable/edit"
+                android:src="@drawable/ic_add_photos"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
                 android:contentDescription="@string/str_content_description"/>
 
         <ImageView
@@ -57,9 +57,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
-                android:src="@drawable/bell"
+                android:src="@drawable/ic_notifications"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
                 android:contentDescription="@string/str_content_description"/>
 
         <ImageView
@@ -68,9 +68,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerInside"
-                android:scaleX="0.6"
-                android:scaleY="0.63"
-                android:src="@drawable/user"
+                android:src="@drawable/ic_person"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
                 android:contentDescription="@string/str_content_description"/>
     </LinearLayout>
 
