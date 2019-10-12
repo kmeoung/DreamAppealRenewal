@@ -6,6 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
+
+    <!--TabLayout 폰트 설정-->
+    <style name="profile_main_tab_font" parent="android:TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/nanum_pen</item>
+        <item name="android:textSize">20.64sp</item>
+    </style>
 </resources>

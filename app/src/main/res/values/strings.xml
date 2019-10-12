@@ -26,5 +26,52 @@
     <string name="str_access_method">접근권한 변경 방법\n\n휴대폰 설정 > 애플리케이션 관리 > 드림어필</string>
     <string name="str_agree_and_start">동의 및 시작</string>
 
+    <string name="str_follower">팔로워</string>
+    <string name="str_achivement_post">성과</string>
+    <string name="str_action_post">실천</string>
+    <string name="str_add_follow">+팔로우</string>
+
+    <string name="str_default_dream_title">내 꿈에 특색있는 명칭 달기</string>
+    <string name="str_default_dream_description">핵심문장으로 꿈 설명하기</string>
+    <string name="str_default_merit_and_motive">꿈의 매력과 계기 표현하기</string>
+    <string name="str_default_merit">꿈의 매력과</string>
+    <string name="str_default_motive">계기 표현하기</string>
+    <string name="str_default_ability_and_opportunity">꿈에 필요한 능력과 기회 정리하기</string>
+    <string name="str_default_ability">꿈에 필요한 능력과</string>
+    <string name="str_default_oppotunity">기회 정리하기</string>
+
+    <string name="str_designation">명칭</string>
+    <string name="str_explanation">설명</string>
+    <string name="str_merit">매력</string>
+    <string name="str_motive">계기</string>
+
+    <string name="str_merit_and_motive">매력 / 계기</string>
+
+    <string name="str_more_view">더보기</string>
+    <string name="str_cheering">응원합니다</string>
+    <string name="str_add_comment">댓글 달기</string>
+    <string name="str_sharing">퍼가기</string>
+
+    <string name="str_first_dream">첫번째 꿈</string>
+    <string name="str_second_dream">두번째 꿈</string>
+    <string name="str_third_dream">세번째 꿈</string>
+    <string name="str_forth_dream">네번째 꿈</string>
+    <string name="str_fifth_dream">다섯번째 꿈</string>
+    <string name="str_sixth_dream">여섯번째 꿈</string>
+    <string name="str_seventh_dream">일곱번째 꿈</string>
+    <string name="str_eighth_dream">여덟번째 꿈</string>
+    <string name="str_ninth_dream">아홉번째 꿈</string>
+    <string name="str_tenth_dream">열번째 꿈</string>
+
     <string name="str_error">Error</string>
+    <string name="lv_00">LV.00</string>
+    <string name="str_recent_performance">최근 성과</string>
+    <string name="str_best_performance">대표 성과</string>
+    <string name="str_default_best_performance">대표로 지정한 성과가\n여기에 표시됩니다</string>
+    <string name="str_comment_hint">댓글 남기기</string>
+    <string name="str_commit">등록</string>
+    <string name="str_ability">갖출 능력</string>
+    <string name="str_opportunity">만들어갈 기회</string>
+
+    <string name="str_object">실천목표</string>
 </resources>

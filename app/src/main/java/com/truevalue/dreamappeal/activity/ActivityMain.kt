@@ -9,7 +9,7 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import kotlinx.android.synthetic.main.action_bar.*
-import kotlinx.android.synthetic.main.bottom_view.*
+import kotlinx.android.synthetic.main.bottom_main_view.*
 
 class ActivityMain : BaseActivity() {
 
@@ -42,7 +42,7 @@ class ActivityMain : BaseActivity() {
         // Bottom View Click Listener
         onClickBottomView()
         // bottom 이미지 초기화
-        setBottomView()
+        initBottomView()
     }
 
     /**
@@ -68,7 +68,7 @@ class ActivityMain : BaseActivity() {
 
             }
             initFragment()
-            setBottomView()
+            initBottomView()
         }
 
         iv_home.setOnClickListener(onClickListener)
@@ -81,8 +81,8 @@ class ActivityMain : BaseActivity() {
     /**
      * 하단 View 클릭 이미지 설정
      */
-    fun setBottomView() {
-        var fragment = when (mMainViewType) {
+    fun initBottomView() {
+        when (mMainViewType) {
             MAIN_TYPE_HOME -> {
                 iv_home.isSelected = true
                 iv_timeline.isSelected = false
@@ -136,7 +136,7 @@ class ActivityMain : BaseActivity() {
 
     fun initActionBar(action_bar_type: String?) {
         if (!action_bar_type.isNullOrEmpty()) {
-            mActionBarType = action_bar_type!!
+            mActionBarType = action_bar_type
             when (action_bar_type) {
                 ACTION_BAR_TYPE_PROFILE_MAIN -> {
                     profile_main.visibility = VISIBLE

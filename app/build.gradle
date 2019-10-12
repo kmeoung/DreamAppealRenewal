@@ -21,8 +21,8 @@ android {
             manifestPlaceholders = [appName: "@string/app_name"]
 
             debug{
-                applicationIdSuffix ".dev"
-                manifestPlaceholders = [appName: "DevAppeal"]
+                applicationIdSuffix ".renewaldev"
+                manifestPlaceholders = [appName: "RenewalDevAppeal"]
             }
         }
     }

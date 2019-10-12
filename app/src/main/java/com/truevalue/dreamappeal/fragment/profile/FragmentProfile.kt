@@ -12,15 +12,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
+import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentProfile : BaseFragment() {
-
-    var mFragments: Array<Fragment>? = null
+    var mFragments: Array<BaseFragment>? = null
     var mTabs: Array<String>? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -36,9 +41,9 @@ class FragmentProfile : BaseFragment() {
     }
 
     fun initAdapter() {
-        var PagerAdapter = ViewPagerAdapter(childFragmentManager)
+        var pagerAdapter = ViewPagerAdapter(childFragmentManager)
         var viewpager: ViewPager = vp_profile
-        viewpager.adapter = PagerAdapter
+        viewpager.adapter = pagerAdapter
         var tabs: TabLayout = tl_profile
         tabs.setupWithViewPager(viewpager)
     }
@@ -52,10 +57,11 @@ class FragmentProfile : BaseFragment() {
     }
 
     fun initFragments() {
+        // todo : 조금 더 좋은 방법이 있는지 확인 필요
         mFragments = arrayOf(
             FragmentDreamPresent(),
-            FragmentDreamPresent(),
-            FragmentDreamPresent()
+            FragmentPerformance(),
+            FragmentBlueprint()
         )
     }
 
@@ -69,4 +75,7 @@ class FragmentProfile : BaseFragment() {
         @Nullable
         override fun getPageTitle(position: Int): CharSequence = mTabs!![position]
     }
+
+
 }
+

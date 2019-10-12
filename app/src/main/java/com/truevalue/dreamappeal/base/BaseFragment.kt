@@ -18,6 +18,4 @@ open class BaseFragment : Fragment(){
         ft.add(container, fragment)
         ft.commit()
     }
-
-
 }

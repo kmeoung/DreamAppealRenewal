@@ -6,6 +6,7 @@
 
     <color name="main_blue">#00b0f0</color>
     <color name="bottom_no_select">#b2b2b2</color>
+    <color name="object_line">#eaeaea</color>
 
     <color name="background">#fefefe</color>
     <color name="black">#000000</color>
@@ -20,6 +21,8 @@
 
     <color name="permission_gray">#a0a0a0</color>
     <color name="permission_red">#FF3C22</color>
+
+    <color name="tab_none_select_gray">#818181</color>
 
 
 </resources>
