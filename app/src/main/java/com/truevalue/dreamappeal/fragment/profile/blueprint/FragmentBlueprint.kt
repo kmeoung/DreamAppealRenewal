@@ -1,8 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +61,8 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         rv_ability_and_opportunity.adapter = mAnOAdapter
         rv_object.adapter = mObjectAdapter
 
-        rv_ability_and_opportunity.layoutManager = LinearLayoutManager(context)
+        rv_ability_and_opportunity.layoutManager =
+            LinearLayoutManager(context)
         rv_object.layoutManager = LinearLayoutManager(context)
     }
 

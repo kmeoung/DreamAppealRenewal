@@ -74,4 +74,22 @@
     <string name="str_opportunity">만들어갈 기회</string>
 
     <string name="str_object">실천목표</string>
+    <string name="str_login">로그인</string>
+    <string name="str_register">회원가입</string>
+    <string name="str_name">이름</string>
+    <string name="str_name_hint">이름입력</string>
+    <string name="str_gender">성별</string>
+    <string name="str_birthday">생년월일</string>
+    <string name="str_year">년도</string>
+    <string name="str_month">월</string>
+    <string name="str_date">일</string>
+    <string name="str_id">아이디</string>
+    <string name="str_password">비밀번호</string>
+    <string name="str_agree_privacy_policy_register">개인정보처리방침 동의하고 회원가입하기</string>
+
+    <string name="str_male">남</string>
+    <string name="str_female">여</string>
+    <string name="str_id_hint">아이디(이메일)입력</string>
+    <string name="str_password_hint">비밀번호 입력</string>
+    <string name="str_check_password">비밀번호 확인</string>
 </resources>

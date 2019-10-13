@@ -4,11 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.annotation.NonNull
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
+import androidx.annotation.NonNull
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,17 +42,27 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         initView()
         // RecyclerView Adapter 초기화
         initAdapter()
-        // 자동 스크롤 시작
-        startPageRolling()
         // Bind Temp Data
         bindTempData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 자동 스크롤 시작
+        startPageRolling()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // 자동 스크롤 종료
+        stopPageRolling()
     }
 
     /**
      * Bind Temp Data
      */
-    fun bindTempData(){
-        for (i in 0.. 10){
+    fun bindTempData() {
+        for (i in 0..10) {
             mAdapter!!.add("")
         }
     }
@@ -64,14 +74,15 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         if (context != null) {
             mAdapter = BaseRecyclerViewAdapter(this)
             rv_dream_description.adapter = mAdapter
-            rv_dream_description.layoutManager = LinearLayoutManager(context)
+            rv_dream_description.layoutManager =
+                LinearLayoutManager(context)
 
             mPagerAdapter = ViewPagerAdapter(context!!)
             vp_pager.adapter = mPagerAdapter
 
             // ViewPager 사용자가 스크롤 시 잠시 Hander를 끄고
             // 일정 시간이 지나면 다시 자동 스크롤 진행
-            vp_pager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener(){
+            vp_pager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
                     if (vp_pager.adapter != null) {
@@ -131,6 +142,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
     /**
      * View Page 자동 스크롤 Handler
+     * todo : 현재 getCurrentItem null 오류가 있습니다.
      */
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -150,7 +162,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * 자동 스크롤 시작
      */
     private fun startPageRolling() {
-        if (!handler.hasMessages(0)) {
+        if ((handler != null) && !handler.hasMessages(0)) {
             handler.sendEmptyMessageDelayed(0, TOP_BANNER_DELAY.toLong())
         }
     }
@@ -159,8 +171,9 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * 자동 스크롤 정지
      */
     private fun stopPageRolling() {
-        handler.removeMessages(0)
+        if (handler != null) handler.removeMessages(0)
     }
+
 
     /**
      * ViewPager Adapter

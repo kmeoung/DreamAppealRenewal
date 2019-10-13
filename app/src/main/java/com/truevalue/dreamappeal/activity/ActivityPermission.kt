@@ -6,7 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -45,7 +45,7 @@ class ActivityPermission : BaseActivity() {
                     intent = Intent(this@ActivityPermission, ActivityMain::class.java)
                 } else { // 로그인 페이지
                     // todo : 로그인 지정이 필요합니다
-                    intent = Intent(this@ActivityPermission, ActivityMain::class.java)
+                    intent = Intent(this@ActivityPermission, ActivityLoginContainer::class.java)
                 }
                 startActivity(intent)
                 finish()

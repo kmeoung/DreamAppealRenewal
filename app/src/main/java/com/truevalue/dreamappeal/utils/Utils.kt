@@ -1,8 +1,8 @@
 package com.truevalue.dreamappeal.utils
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan

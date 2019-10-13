@@ -1,9 +1,12 @@
 package com.truevalue.dreamappeal.activity
 
+import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
@@ -43,6 +46,13 @@ class ActivityMain : BaseActivity() {
         onClickBottomView()
         // bottom 이미지 초기화
         initBottomView()
+
+        val ivMenu : ImageView = findViewById(R.id.iv_menu)
+        ivMenu.setOnClickListener(View.OnClickListener {
+            var intent = Intent(this,ActivityLoginContainer::class.java)
+            startActivity(intent)
+            finish()
+        })
     }
 
     /**

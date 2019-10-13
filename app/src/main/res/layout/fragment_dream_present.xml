@@ -5,7 +5,7 @@
         android:background="@color/background"
         android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srl_refresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -271,7 +271,7 @@
                                     android:paddingBottom="10dp">
 
                                 <!--내 꿈 설명-->
-                                <android.support.v7.widget.RecyclerView
+                                <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/rv_dream_description"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
@@ -604,6 +604,6 @@
 
         </ScrollView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

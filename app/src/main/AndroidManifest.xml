@@ -3,6 +3,11 @@
         package="com.truevalue.dreamappeal">
     <!--인터넷-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--저장소-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--카메라-->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
             android:name=".base.BaseApplication"
@@ -39,7 +44,7 @@
 
         <!-- 로그인 -->
         <activity
-                android:name=".activity.ActivityLogin"
+                android:name=".activity.ActivityLoginContainer"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 

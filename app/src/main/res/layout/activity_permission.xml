@@ -1,121 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:orientation="vertical">
 
     <View
-        android:id="@+id/v_status"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
+            android:id="@+id/v_status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/bmjua"
-                android:gravity="center"
-                android:text="@string/str_setting_permissions"
-                android:textColor="@color/black"
-                android:textSize="40sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="@string/str_permission_info"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/bmjua"
-                android:gravity="left"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="@string/str_essential_access"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/bg_permission_box_gray"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+            <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/bmjua"
+                    android:gravity="center"
+                    android:text="@string/str_setting_permissions"
+                    android:textColor="@color/black"
+                    android:textSize="40sp" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:gravity="center"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:text="@string/str_permission_info"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/bmjua"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/str_essential_access"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_permission_box_gray"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_storage" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/ic_storage" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/nanum_square_round_r"
-                        android:text="@string/str_storage_permission_info"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="@string/str_storage_permission_info"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/permission_gray" />
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/permission_gray" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_camera" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/ic_camera" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/nanum_square_round_r"
-                        android:text="@string/str_camera_permission_info"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="@string/str_camera_permission_info"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -123,52 +124,52 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/bg_permission_box_gray"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:gravity="center"
-                    android:text="@string/str_warning_access_method"
-                    android:textColor="@color/permission_red"
-                    android:textSize="13sp" />
-
-                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:gravity="left"
-                    android:text="@string/str_access_method"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_permission_box_gray"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:text="@string/str_warning_access_method"
+                        android:textColor="@color/permission_red"
+                        android:textSize="13sp" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="left"
+                        android:text="@string/str_access_method"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
 
 
             </LinearLayout>
 
 
             <Button
-                android:id="@+id/btn_permission"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorAccent"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:text="@string/str_agree_and_start"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                    android:id="@+id/btn_permission"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorAccent"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_agree_and_start"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
         </LinearLayout>
 

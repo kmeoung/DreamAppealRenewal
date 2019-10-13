@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:orientation="vertical">
+
+    <!--툴바-->
+    <include
+            layout="@layout/action_bar_profile_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    <!--툴바-->
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="130dp"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginTop="54dp"
+                    android:layout_marginRight="48dp"
+                    android:src="@drawable/login_logo" />
+
+
+            <EditText
+                    android:id="@+id/et_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/bg_round_box_gray"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:hint="@string/str_id_hint"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColorHint="@color/text_gray"
+                    android:textSize="13sp"
+                    android:autofillHints="" />
+
+            <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/bg_round_box_gray"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:hint="@string/str_password_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColorHint="@color/text_gray"
+                    android:textSize="13sp" />
+
+            <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="110dp"
+                    android:background="@drawable/bg_btn_blue"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_login"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
