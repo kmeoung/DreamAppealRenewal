@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_permission.*
 
 class ActivityPermission : BaseActivity() {
 
-    val REQUEST_PERMISSION_GRANT = 3000;
+    private val REQUEST_PERMISSION_GRANT = 3000;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

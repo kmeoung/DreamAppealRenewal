@@ -61,7 +61,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * Bind Temp Data
      */
-    fun bindTempData() {
+    private fun bindTempData() {
         for (i in 0..10) {
             mAdapter!!.add("")
         }
@@ -70,7 +70,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * RecyclerView Adapter 초기화
      */
-    fun initAdapter() {
+    private fun initAdapter() {
         if (context != null) {
             mAdapter = BaseRecyclerViewAdapter(this)
             rv_dream_description.adapter = mAdapter
@@ -101,7 +101,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * Init View
      */
-    fun initView() {
+    private fun initView() {
         Utils.setSwipeRefreshLayout(srl_refresh, this)
     }
 
@@ -144,7 +144,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * View Page 자동 스크롤 Handler
      * todo : 현재 getCurrentItem null 오류가 있습니다.
      */
-    var handler: Handler = object : Handler() {
+    private val handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             val position = vp_pager.getCurrentItem()
@@ -162,7 +162,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * 자동 스크롤 시작
      */
     private fun startPageRolling() {
-        if ((handler != null) && !handler.hasMessages(0)) {
+        if (!handler.hasMessages(0)) {
             handler.sendEmptyMessageDelayed(0, TOP_BANNER_DELAY.toLong())
         }
     }
@@ -171,14 +171,14 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * 자동 스크롤 정지
      */
     private fun stopPageRolling() {
-        if (handler != null) handler.removeMessages(0)
+        handler.removeMessages(0)
     }
 
 
     /**
      * ViewPager Adapter
      */
-    inner class ViewPagerAdapter(context: Context) : PagerAdapter() {
+    private inner class ViewPagerAdapter(context: Context) : PagerAdapter() {
         private val mInflater: LayoutInflater
 
         override fun getCount(): Int = 3
@@ -204,7 +204,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         override fun instantiateItem(@NonNull container: ViewGroup, position: Int): Any {
             val view = mInflater.inflate(R.layout.layout_achivement, container, false)
             val tvTitle = view.findViewById<TextView>(R.id.tv_title)
-            tvTitle.setText(getString(R.string.str_best_performance) + " " + (position + 1))
+            tvTitle.text = getString(R.string.str_best_performance) + " " + (position + 1)
 //            if (mBestPostList.size > position && mBestPostList.get(position) != null) {
 //                val bean = mBestPostList.get(position)
 //                val tvBestPostAchivement = view.findViewById(R.id.tv_best_achivement)

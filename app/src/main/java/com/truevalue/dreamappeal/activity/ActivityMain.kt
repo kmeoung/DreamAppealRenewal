@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
@@ -37,7 +38,10 @@ class ActivityMain : BaseActivity() {
         onAction()
     }
 
-    fun onAction() {
+    /**
+     * ActivityMain Action
+     */
+    private fun onAction() {
         // Fragment 초기화
         initFragment()
         // Action Bar 초기화
@@ -47,18 +51,25 @@ class ActivityMain : BaseActivity() {
         // bottom 이미지 초기화
         initBottomView()
 
-        val ivMenu : ImageView = findViewById(R.id.iv_menu)
+        val ivMenu: ImageView = findViewById(R.id.iv_menu)
         ivMenu.setOnClickListener(View.OnClickListener {
-            var intent = Intent(this,ActivityLoginContainer::class.java)
+            var intent = Intent(this, ActivityLoginContainer::class.java)
             startActivity(intent)
             finish()
         })
     }
 
     /**
+     * Fragment에서 접근하는 Fragment 변경
+     */
+    fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
+        replaceFragment(R.id.base_container, fragment, addToBack)
+    }
+
+    /**
      * Bottom View Click Listener
      */
-    fun onClickBottomView() {
+    private fun onClickBottomView() {
         var onClickListener = View.OnClickListener {
             mMainViewType = when (it) {
                 iv_home ->
@@ -91,7 +102,7 @@ class ActivityMain : BaseActivity() {
     /**
      * 하단 View 클릭 이미지 설정
      */
-    fun initBottomView() {
+    private fun initBottomView() {
         when (mMainViewType) {
             MAIN_TYPE_HOME -> {
                 iv_home.isSelected = true
@@ -144,6 +155,9 @@ class ActivityMain : BaseActivity() {
         replaceFragment(R.id.base_container, fragment, false)
     }
 
+    /**
+     * Action Bar 설정
+     */
     fun initActionBar(action_bar_type: String?) {
         if (!action_bar_type.isNullOrEmpty()) {
             mActionBarType = action_bar_type

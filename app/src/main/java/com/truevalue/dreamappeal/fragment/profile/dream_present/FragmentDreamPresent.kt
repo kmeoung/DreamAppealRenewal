@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -39,11 +40,11 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         bindTempData()
     }
 
-    fun bindTempData() {
+    private fun bindTempData() {
         for (i in 0..10) mAdapter!!.add("")
     }
 
-    fun initView() {
+    private fun initView() {
         // Default View 키워드 색상 변경
         var default_dream_title = getString(R.string.str_default_dream_title)
         var default_dream_description = getString(R.string.str_default_dream_description)
@@ -64,9 +65,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         var spMotive =
             Utils.replaceTextColor(context, default_morive, getString(R.string.str_motive))
 
-        tv_init_dream_title.setText(spDreamTitle)
-        tv_init_dream_description.setText(spDreamDescription)
-        tv_init_merit_and_motive.setText(TextUtils.concat(spMerit, " ", spMotive))
+        tv_init_dream_title.text = spDreamTitle
+        tv_init_dream_description.text = spDreamDescription
+        tv_init_merit_and_motive.text = TextUtils.concat(spMerit, " ", spMotive)
         // Swipe Refresh Layout 설정
         Utils.setSwipeRefreshLayout(srl_refresh, this)
     }
@@ -76,6 +77,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             when (it) {
                 ll_dreams -> {
                     // replace to Dream List
+                    (activity as ActivityMain).replaceFragment(FragmentDreamList(), true)
                 }
                 ll_follower -> {
                     // replace to Follower
@@ -86,6 +88,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_dream_title,
                 tv_init_dream_title -> {
                     // replace to Dream Title
+                    (activity as ActivityMain).replaceFragment(FragmentDreamTitle(), true)
                 }
                 tv_dream_description,
                 tv_init_dream_description -> {

@@ -7,6 +7,9 @@
     <string name="str_menu_following">팔로잉</string>
     <string name="str_menu_dreampoint">드림 포인트</string>
 
+    <string name="str_title_dream_title">꿈에 명칭 달아주기</string>
+    <string name="str_title_dream_list">꿈 보관함</string>
+
     <string name="str_dream_present">꿈 소개</string>
     <string name="str_performance">주요성과</string>
     <string name="str_blueprint">발전계획</string>
@@ -92,4 +95,16 @@
     <string name="str_id_hint">아이디(이메일)입력</string>
     <string name="str_password_hint">비밀번호 입력</string>
     <string name="str_check_password">비밀번호 확인</string>
+    <string name="str_level_info">[ 경험치 획득 ] 실천 등록 + 10 / 성과 등록 + 30실천 등록 + 10 / 성과 등록 + 30</string>
+    <string name="str_edit">편집</string>
+    <string name="str_add_dream">새 꿈 추가하기</string>
+
+    <string name="str_dream_title_info">내 꿈에 특색 있는 명칭을 달아주세요</string>
+    <string name="str_dream_title_info_highlight">특색 있는</string>
+
+    <string name="str_input_text_hint">입력해주세요</string>
+
+    <string name="str_value_style">수식어</string>
+    <string name="str_job">직업명</string>
+
 </resources>

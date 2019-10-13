@@ -15,7 +15,7 @@ class ActivityLoginContainer : BaseActivity() {
         onAction()
     }
 
-    fun onAction() {
+    private fun onAction() {
         // 처음 로그인 컨테이너로 이동
         replaceFragment(R.id.base_container, FragmentLoginContainer(), false)
     }

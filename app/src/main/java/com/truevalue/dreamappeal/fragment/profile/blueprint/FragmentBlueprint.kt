@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.fragment_blueprint.*
 
 class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    var mAnOAdapter: BaseRecyclerViewAdapter? = null // Ability & Opportunity Adapter
-    var mObjectAdapter: BaseRecyclerViewAdapter? = null // Object Adapter
+    private var mAnOAdapter: BaseRecyclerViewAdapter? = null // Ability & Opportunity Adapter
+    private var mObjectAdapter: BaseRecyclerViewAdapter? = null // Object Adapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +36,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         bindTempData()
     }
 
-    fun bindTempData() {
+    private fun bindTempData() {
         for (i in 0..10) {
             mAnOAdapter!!.add("")
             mObjectAdapter!!.add("")
@@ -46,14 +46,14 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     /**
      * Init View
      */
-    fun initView() {
+    private fun initView() {
         Utils.setSwipeRefreshLayout(srl_refresh, this)
     }
 
     /**
      * Init RecyclerView Adapter
      */
-    fun initAdapter() {
+    private fun initAdapter() {
 
         mAnOAdapter = BaseRecyclerViewAdapter(abilityAndOpportunityListener)
         mObjectAdapter = BaseRecyclerViewAdapter(objectListener)
@@ -70,7 +70,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * Ability And Opportunity
      * RecyclerView Listener
      */
-    val abilityAndOpportunityListener = object : IORecyclerViewListener {
+    private val abilityAndOpportunityListener = object : IORecyclerViewListener {
         override val itemCount: Int
             get() =
                 if (mAnOAdapter != null) mAnOAdapter!!.mArray.size else 0
@@ -88,7 +88,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * Object
      * RecyclerView Listener
      */
-    val objectListener = object : IORecyclerViewListener {
+    private val objectListener = object : IORecyclerViewListener {
         override val itemCount: Int
             get() =
                 if (mObjectAdapter != null) mObjectAdapter!!.mArray.size else 0

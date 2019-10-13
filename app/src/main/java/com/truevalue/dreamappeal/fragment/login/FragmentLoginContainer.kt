@@ -24,7 +24,7 @@ class FragmentLoginContainer : BaseFragment() {
         onClickView()
     }
 
-    fun onClickView() {
+    private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
                 btn_login -> (activity as ActivityLoginContainer).replaceFragment(

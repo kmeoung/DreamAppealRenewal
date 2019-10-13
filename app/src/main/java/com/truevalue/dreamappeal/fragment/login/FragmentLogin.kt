@@ -38,9 +38,9 @@ class FragmentLogin : BaseFragment() {
     /**
      * Init View
      */
-    fun initView() {
+    private fun initView() {
         // Action Bar 설정
-        tv_title.setText(getString(R.string.str_login))
+        tv_title.text = getString(R.string.str_login)
         iv_back.visibility = VISIBLE
         iv_menu.visibility = GONE
         iv_search.visibility = INVISIBLE
@@ -54,7 +54,7 @@ class FragmentLogin : BaseFragment() {
     /**
      * View Click Listener
      */
-    fun onClickView() {
+    private fun onClickView() {
         val listener = object : OnSingleClick() {
             override fun onSingleClick(v: View?) {
                 when (v) {

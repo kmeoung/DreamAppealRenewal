@@ -5,7 +5,6 @@ import com.truevalue.dreamappeal.base.BaseActivity
 
 class ActivitySearch : BaseActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

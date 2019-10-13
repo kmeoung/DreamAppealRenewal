@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+    <!--툴바-->
+    <include
+            layout="@layout/action_bar_profile_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    <!--툴바-->
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <!--수식어로 정의해보는 내꿈-->
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_pen"
+                        android:text="@string/str_dream_title_info"
+                        android:textColor="@color/black"
+                        android:textSize="29sp"
+                        android:id="@+id/tv_dream_title_info"/>
+
+
+            </LinearLayout>
+            <!--수식어로 정의해보는 내꿈-->
+
+            <!--페이지 내용 설명--><!--페이지 내용 설명-->
+
+            <!--수식어, 직업명 적는곳-->
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:orientation="vertical">
+                <!--수식어-->
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_pen"
+                            android:minWidth="70dp"
+                            android:text="@string/str_value_style"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="25sp" />
+
+                    <EditText
+                            android:id="@+id/et_value_style"
+                            style="@style/edit_text_under_bar_color"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:hint="@string/str_input_text_hint"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:paddingLeft="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:theme="@style/edit_text_under_bar_color" />
+
+
+                </LinearLayout>
+                <!--수식어-->
+
+                <!--직업명-->
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_pen"
+                            android:minWidth="70dp"
+                            android:text="@string/str_job"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="25sp" />
+
+                    <EditText
+                            android:id="@+id/et_job"
+                            style="@style/edit_text_under_bar_color"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:hint="@string/str_input_text_hint"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:paddingLeft="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:theme="@style/edit_text_under_bar_color" />
+
+                </LinearLayout>
+                <!--직업명-->
+            </LinearLayout>
+            <!--수식어, 직업명 적는곳-->
+
+            <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:minHeight="50dp" />
+            <!--Divider-->
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black" />
+            <!--Divider-->
+
+            <!--예시 화면-->
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                <LinearLayout
+                        android:id="@+id/ll_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_round_rectangle_black"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                    <TextView
+                            android:id="@+id/tv_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text="10 / 10"
+                            android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <!--예시 화면-->
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black" />
+
+            <RelativeLayout
+                    android:id="@+id/rl_ad"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+                <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorAccent" />
+
+                <LinearLayout
+                        android:id="@+id/ll_ad_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_round_rectangle_black"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                    <TextView
+                            android:id="@+id/tv_ad_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

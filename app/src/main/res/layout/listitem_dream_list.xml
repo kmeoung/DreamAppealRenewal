@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_dream_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dream_list"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <!--꿈 프로필 이미지-->
+                <ImageView
+                    android:id="@+id/iv_dream_profile"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/drawer_user" />
+                <!--꿈 프로필 이미지-->
+
+                <!--꿈 수식어 및 꿈 명-->
+                <LinearLayout
+                    android:id="@+id/ll_dream_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_value_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/nanum_pen"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/tv_job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/bmjua"
+                        android:lines="1"
+                        android:maxLength="30"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="27sp" />
+
+
+                </LinearLayout>
+                <!--꿈 수식어 및 꿈 명-->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_dream_level"
+                    android:layout_width="57dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:gravity="center"
+                    android:text="@string/lv_00"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_achivement_post"
+                        android:textColor="@color/text_gray"
+                        android:textSize="13sp" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text=" "
+                            android:textColor="@color/text_gray"
+                            android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_achivement_post_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="@string/str_action_post"
+                            android:textColor="@color/text_gray"
+                            android:textSize="13sp" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text=" "
+                            android:textColor="@color/text_gray"
+                            android:textSize="13sp" />
+
+                    <TextView
+                            android:id="@+id/tv_action_post_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="14sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/pb_exp"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:max="100"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:progress="0" />
+
+                <TextView
+                    android:id="@+id/tv_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--수정 시 삭제 버튼-->
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_close_black"
+            android:visibility="gone" />
+        <!--수정 시 삭제 버튼-->
+
+    </RelativeLayout>
+
+
+</LinearLayout>

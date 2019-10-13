@@ -12,9 +12,10 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 
 class ActivityIntro : BaseActivity() {
-    val DELAY: Long = 1000 * 1
 
-    val handler = Handler(Handler.Callback {
+    private val DELAY: Long = 1000 * 1
+
+    private val handler = Handler(Handler.Callback {
 
         val cameraCheck =
             ContextCompat.checkSelfPermission(this@ActivityIntro, Manifest.permission.CAMERA)

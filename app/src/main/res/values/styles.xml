@@ -18,4 +18,11 @@
         <item name="android:fontFamily">@font/nanum_pen</item>
         <item name="android:textSize">20.64sp</item>
     </style>
+
+    <!--EditText 하단 바 색상 설정-->
+    <style name="edit_text_under_bar_color" parent="Widget.AppCompat.EditText">
+        <item name="android:colorControlNormal">@color/main_blue</item>
+        <item name="android:colorControlActivated">@color/main_blue</item>
+        <item name="android:textCursorDrawable">@color/main_blue</item>
+    </style>
 </resources>

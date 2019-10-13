@@ -5,8 +5,8 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
 object Comm_Prefs {
-    var mContext: Context? = null
-    private var prefs: SharedPreferences?
+    private var mContext: Context? = null
+    var prefs: SharedPreferences?
     var isLogin : Boolean
 
     init {
@@ -14,10 +14,12 @@ object Comm_Prefs {
         isLogin = false
     }
 
+    /**
+     * App 실행 시 한번만 실행
+     */
     fun init(context: Context){
         mContext = context
         prefs = mContext!!.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE)
-        isLogin = false
     }
 
 }

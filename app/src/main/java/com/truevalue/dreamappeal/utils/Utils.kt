@@ -21,13 +21,13 @@ class Utils {
             tv: TextView,
             changeText: String
         ): SpannableStringBuilder {
-            if(context == null) return SpannableStringBuilder()
+            if (context == null) return SpannableStringBuilder()
             val str = tv.text.toString()
             val first = str.indexOf(changeText)
             val last = str.lastIndexOf(changeText) + changeText.length
             val ssb = SpannableStringBuilder(str)
             ssb.setSpan(
-                ForegroundColorSpan(ContextCompat.getColor(context,R.color.main_blue)),
+                ForegroundColorSpan(ContextCompat.getColor(context, R.color.main_blue)),
                 first,
                 last,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -43,12 +43,12 @@ class Utils {
             str: String,
             changeText: String
         ): SpannableStringBuilder {
-            if(context == null) return SpannableStringBuilder()
+            if (context == null) return SpannableStringBuilder()
             val first = str.indexOf(changeText)
             val last = str.lastIndexOf(changeText) + changeText.length
             val ssb = SpannableStringBuilder(str)
             ssb.setSpan(
-                ForegroundColorSpan(ContextCompat.getColor(context,R.color.main_blue)),
+                ForegroundColorSpan(ContextCompat.getColor(context, R.color.main_blue)),
                 first,
                 last,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -65,12 +65,12 @@ class Utils {
             color: Int,
             changeText: String
         ): SpannableStringBuilder {
-            if(context == null) return SpannableStringBuilder()
+            if (context == null) return SpannableStringBuilder()
             val first = str.indexOf(changeText)
             val last = str.lastIndexOf(changeText) + changeText.length
             val ssb = SpannableStringBuilder(str)
             ssb.setSpan(
-                ForegroundColorSpan(ContextCompat.getColor(context,R.color.main_blue)),
+                ForegroundColorSpan(ContextCompat.getColor(context, color)),
                 first,
                 last,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -91,7 +91,10 @@ class Utils {
         /**
          * RefreshView 설정
          */
-        fun setSwipeRefreshLayout(srl : SwipeRefreshLayout, listener : SwipeRefreshLayout.OnRefreshListener){
+        fun setSwipeRefreshLayout(
+            srl: SwipeRefreshLayout,
+            listener: SwipeRefreshLayout.OnRefreshListener
+        ) {
             srl.setOnRefreshListener(listener)
             srl.setColorSchemeResources(R.color.main_blue)
         }

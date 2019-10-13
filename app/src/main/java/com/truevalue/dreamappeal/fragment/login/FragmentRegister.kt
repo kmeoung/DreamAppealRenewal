@@ -16,8 +16,8 @@ import java.util.*
 
 class FragmentRegister : BaseFragment() {
     // true 여성 false 남성
-    var isGender: Boolean
-    val mCal : Calendar
+    private var isGender: Boolean
+    private val mCal : Calendar
 
     init {
         // 남성으로 초기화
@@ -44,7 +44,7 @@ class FragmentRegister : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
-        tv_title.setText(getString(R.string.str_register))
+        tv_title.text = getString(R.string.str_register)
         iv_menu.visibility = GONE
         iv_search.visibility = INVISIBLE
         iv_back.visibility = VISIBLE
@@ -53,9 +53,9 @@ class FragmentRegister : BaseFragment() {
         val year = mCal.get(Calendar.YEAR)
         val month = mCal.get(Calendar.MONTH) + 1
         val date = mCal.get(Calendar.DAY_OF_MONTH)
-        tv_year.setText(String.format("%04d", year))
-        tv_month.setText(String.format("%02d", month))
-        tv_date.setText(String.format("%02d", date))
+        tv_year.text = String.format("%04d", year)
+        tv_month.text = String.format("%02d", month)
+        tv_date.text = String.format("%02d", date)
 
         // TODO : 테스트용
         if (!Comm_Param.REAL) {
@@ -117,9 +117,9 @@ class FragmentRegister : BaseFragment() {
                 mCal.set(Calendar.MONTH, month)
                 mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                tv_year.setText(String.format("%04d", year))
-                tv_month.setText(String.format("%02d", month + 1))
-                tv_date.setText(String.format("%02d", dayOfMonth))
+                tv_year.text = String.format("%04d", year)
+                tv_month.text = String.format("%02d", month + 1)
+                tv_date.text = String.format("%02d", dayOfMonth)
             }, mCal.get(Calendar.YEAR), mCal.get(Calendar.MONTH), mCal.get(Calendar.DAY_OF_MONTH)
         )
         dialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
