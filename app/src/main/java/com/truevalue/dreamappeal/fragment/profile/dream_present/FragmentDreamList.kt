@@ -79,7 +79,7 @@ class FragmentDreamList : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         // 여기서 서버 호출
         // todo : 드림 리스트는 재 호출이 필요한가 고민이 필요함
-        srl_refresh.isRefreshing = false
+        srl_refresh.isRefreshing = true
     }
 
     private val recyclerViewListener = object : IORecyclerViewListener {

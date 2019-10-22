@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
 object Comm_Prefs {
+
     private var mContext: Context? = null
     var prefs: SharedPreferences?
     var isLogin : Boolean
