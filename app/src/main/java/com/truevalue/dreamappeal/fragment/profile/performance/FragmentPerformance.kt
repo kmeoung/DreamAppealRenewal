@@ -208,7 +208,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 //            if (mBestPostList.size > position && mBestPostList.get(position) != null) {
 //                val bean = mBestPostList.get(position)
 //                val tvBestPostAchivement = view.findViewById(R.id.tv_best_achivement)
-//                tvBestPostAchivement.setText(bean.getTitle())
+//                tvBestPostAchivement.setTextBtn(bean.getTitle())
 //                view.setOnClickListener(View.OnClickListener {
 //                    val intent = Intent(context, ActivityBestAchivementDetail::class.java)
 //                    intent.putExtra(

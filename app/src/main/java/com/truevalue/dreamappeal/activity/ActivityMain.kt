@@ -1,21 +1,31 @@
 package com.truevalue.dreamappeal.activity
 
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
+import com.truevalue.dreamappeal.base.IOActionBarListener
+import com.truevalue.dreamappeal.bean.BeanActionBarMain
+import com.truevalue.dreamappeal.bean.BeanActionBarOther
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import kotlinx.android.synthetic.main.action_bar.*
+import kotlinx.android.synthetic.main.action_bar_profile_main.view.*
+import kotlinx.android.synthetic.main.action_bar_profile_main.view.iv_back
+import kotlinx.android.synthetic.main.action_bar_profile_main.view.iv_menu
+import kotlinx.android.synthetic.main.action_bar_profile_main.view.iv_search
+import kotlinx.android.synthetic.main.action_bar_profile_main.view.tv_text_btn
+import kotlinx.android.synthetic.main.action_bar_profile_other.view.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 
 class ActivityMain : BaseActivity() {
+
+    var mActionListener : IOActionBarListener? = null
 
     companion object {
         val MAIN_TYPE_HOME = "MAIN_TYPE_HOME"
@@ -28,7 +38,7 @@ class ActivityMain : BaseActivity() {
         val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
     }
 
-    private var mMainViewType = MAIN_TYPE_HOME
+    var mMainViewType = MAIN_TYPE_HOME
     private var mActionBarType = ACTION_BAR_TYPE_PROFILE_MAIN
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,9 +166,9 @@ class ActivityMain : BaseActivity() {
     }
 
     /**
-     * Action Bar 설정
+     * Action Bar 초기화
      */
-    fun initActionBar(action_bar_type: String?) {
+    fun initActionBar(action_bar_type: String?){
         if (!action_bar_type.isNullOrEmpty()) {
             mActionBarType = action_bar_type
             when (action_bar_type) {
@@ -172,6 +182,40 @@ class ActivityMain : BaseActivity() {
                 }
             }
         }
+    }
+
+    /**
+     * Action Bar 설정
+     */
+    fun setActionBar(data_class : Any,listener : IOActionBarListener?){
+        this.mActionListener = listener
+        var action_bar_type = when(data_class){ // Action Bar Main
+            data_class as BeanActionBarMain->{
+
+                profile_main.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
+                profile_main.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
+                profile_main.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
+                profile_main.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
+                // 가운데 대칭 설정
+                if(!data_class.isSearch && !data_class.isTextBtn) profile_main.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
+
+                ACTION_BAR_TYPE_PROFILE_MAIN
+            }
+            data_class as BeanActionBarOther->{ // Action Bar 나머지
+
+                profile_other.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
+                profile_other.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
+                profile_other.findViewById<ImageView>(R.id.iv_close).visibility = if(data_class.isClose) VISIBLE else GONE
+                profile_other.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
+                profile_other.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
+                // 가운데 대칭 설정
+                if(!data_class.isSearch && !data_class.isTextBtn) profile_other.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
+
+                ACTION_BAR_TYPE_PROFILE_OTHER
+            }
+            else->ACTION_BAR_TYPE_PROFILE_MAIN
+        }
+        initActionBar(action_bar_type)
     }
 
     /**

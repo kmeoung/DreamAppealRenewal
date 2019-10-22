@@ -7,6 +7,7 @@ import android.view.View.*
 import android.view.ViewGroup
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -14,7 +15,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import kotlinx.android.synthetic.main.action_bar_profile_other.*
 import kotlinx.android.synthetic.main.fragment_dream_list.*
 
-class FragmentDreamList : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class FragmentDreamList : BaseFragment(){
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var isEdit = false
@@ -40,13 +41,14 @@ class FragmentDreamList : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * Init View
      */
     private fun initView() {
+        // activityMain 가져오기
+        val activityMain = (activity as ActivityMain)
         // action Bar 설정
-        iv_menu.visibility = GONE
-        iv_back.visibility = VISIBLE
-        iv_search.visibility = INVISIBLE
-        tv_title.text = getString(R.string.str_title_dream_list)
-        // Swipe Refresh Listener
-        srl_refresh.setOnRefreshListener(this)
+        activityMain.mMainViewType = ActivityMain.ACTION_BAR_TYPE_PROFILE_OTHER
+        activityMain.iv_menu.visibility = GONE
+        activityMain.iv_back.visibility = VISIBLE
+        activityMain.iv_search.visibility = INVISIBLE
+        activityMain.tv_title.text = getString(R.string.str_title_dream_list)
     }
 
     /**
@@ -60,26 +62,20 @@ class FragmentDreamList : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * View Click Listener
      */
     private fun onClickView() {
-        val listener = View.OnClickListener {
+        val listener = OnClickListener {
             when (it) {
                 btn_edit -> {
                     isEdit = !isEdit
                     // todo : 추가 작업 필요
                 }
-                iv_back->{
+                (activity as ActivityMain).iv_back->{
                     activity?.onBackPressed()
                 }
             }
         }
 
         btn_edit.setOnClickListener(listener)
-        iv_back.setOnClickListener(listener)
-    }
-
-    override fun onRefresh() {
-        // 여기서 서버 호출
-        // todo : 드림 리스트는 재 호출이 필요한가 고민이 필요함
-        srl_refresh.isRefreshing = true
+        (activity as ActivityMain).iv_back.setOnClickListener(listener)
     }
 
     private val recyclerViewListener = object : IORecyclerViewListener {
