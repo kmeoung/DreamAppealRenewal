@@ -8,12 +8,14 @@
     <color name="bottom_no_select">#b2b2b2</color>
     <color name="object_line">#eaeaea</color>
 
-    <color name="background">#fefefe</color>
+<!--    <color name="background">#fefefe</color>-->
+    <color name="background">#ffffff</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="transparent">#00ffffff</color>
 
-    <color name="text_gray">#a0a0a0</color>
+<!--    <color name="text_gray">#a0a0a0</color>-->
+    <color name="text_gray">#b1b4b3</color>
     <color name="logout_gray">#dfdfdf</color>
 
     <color name="underline_post_gray">#bdc1ca</color>
@@ -26,5 +28,15 @@
 
     <color name="tab_none_select_gray">#818181</color>
 
+    <!-- 제플린 사용-->
+    <color name="black_20">#33000000</color>
+    <color name="azure">#00b0f0</color>
+    <color name="light_peach">#b6b6b6</color>
+    <color name="greyish_brown">#474747</color>
+    <color name="brown_grey">#808080</color>
+    <color name="nice_blue">#1072bd</color>
+    <color name="white_two">#d6d6d6</color>
+    <color name="white_three">#fafafa</color>
+    <color name="silver">#b1b4b3</color>
 
 </resources>

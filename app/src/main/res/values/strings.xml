@@ -19,6 +19,7 @@
     <string name="str_content_description">이미지가 존재하지 않습니다.</string>
 
     <string name="str_confirm">확인</string>
+    <string name="str_next">다음</string>
 
     <string name="str_setting_permissions">권한 설정</string>
     <string name="str_permission_info">2017년 3월 23일부터 시행되는 정보통신망법령에 맞추어 서비스이용에 꼭 필요한 항목만 필수 접근하고 있습니다.</string>
@@ -106,5 +107,11 @@
 
     <string name="str_value_style">수식어</string>
     <string name="str_job">직업명</string>
+
+    <string name="str_all_agreement">모두 동의합니다</string>
+    <string name="str_terms_of_use">이용약관 동의</string>
+    <string name="str_privacy_policy">개인정보처리방침 동의</string>
+    <string name="str_receive_marketing">마케팅 정보 수신 동의</string>
+    <string name="str_agreement_dtail">상세보기 ></string>
 
 </resources>
