@@ -114,8 +114,8 @@
     <string name="str_receive_marketing">마케팅 정보 수신 동의</string>
     <string name="str_agreement_dtail">상세보기 ></string>
 
-    <string name="str_auth_email">인증메일</string>
-    <string name="str_sent_auth_email">인증메일이 발송되었습니다.</string>
+    <string name="str_auth_email">인증 메일</string>
+    <string name="str_sent_auth_email">인증 메일이 발송되었습니다.</string>
     <string name="str_resend_email">인증메일 재전송</string>
     <string name="str_success_register">가입완료</string>
     <string name="str_sent_auth_email_info">가입하신 메일 계정으로 인증코드가 전송되었습니다.\n메일 확인 후 인증코드를 하단에 입력하여 가입을 완료해 주세요.</string>
