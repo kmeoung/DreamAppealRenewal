@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <!-- 기본정보-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/bg_round_rectangle_stroke_white">
+
+                <TextView
+                        android:id="@+id/normal_profile_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/str_normal_prifile_info"
+                        android:textColor="@color/azure"
+                        android:textSize="15.3sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/iv_edit_normal_profile"
+                        android:layout_width="30dp"
+                        android:layout_height="21dp"
+                        android:layout_marginTop="19dp"
+                        android:layout_marginEnd="17dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="21dp"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_name"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toStartOf="@+id/normal_profile_info"
+                        app:layout_constraintTop_toBottomOf="@+id/normal_profile_info" />
+
+                <TextView
+                        android:id="@+id/age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_age"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toStartOf="@+id/name"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+                <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_email"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toStartOf="@+id/address"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+
+                <TextView
+                        android:id="@+id/gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_gender"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toStartOf="@+id/nickname"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
+
+                <TextView
+                        android:id="@+id/address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_address"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_age"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_age" />
+
+                <TextView
+                        android:id="@+id/nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="108dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_nickname"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toEndOf="@+id/name"
+                        app:layout_constraintTop_toTopOf="@+id/name" />
+
+                <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/name"
+                        app:layout_constraintTop_toBottomOf="@+id/name"
+                        tools:text="@string/str_name" />
+
+                <TextView
+                        android:id="@+id/tv_age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/age"
+                        app:layout_constraintTop_toBottomOf="@+id/age"
+                        tools:text="@string/str_age" />
+
+                <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="19dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/email"
+                        app:layout_constraintTop_toBottomOf="@+id/email"
+                        tools:text="@string/str_email" />
+
+                <TextView
+                        android:id="@+id/tv_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/gender"
+                        app:layout_constraintTop_toBottomOf="@+id/gender"
+                        tools:text="@string/str_gender" />
+
+                <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/address"
+                        app:layout_constraintTop_toBottomOf="@+id/address"
+                        tools:text="@string/str_address" />
+
+                <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="@+id/nickname"
+                        app:layout_constraintTop_toBottomOf="@+id/nickname"
+                        tools:text="@string/str_nickname" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- 기본정보 -->
+
+            <!-- 소속 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_round_rectangle_stroke_white">
+
+                <TextView
+                        android:id="@+id/group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/str_group"
+                        android:textColor="@color/azure"
+                        android:textSize="15.3sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/iv_add_group"
+                        android:layout_width="30dp"
+                        android:layout_height="21dp"
+                        android:layout_marginTop="19dp"
+                        android:layout_marginEnd="17dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_add_blue_btn" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_normal_profile_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="22.3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/group" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- 소속 -->
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

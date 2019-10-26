@@ -8,9 +8,9 @@
 
     <include
             android:id="@+id/profile_main"
-            layout="@layout/action_bar_profile_main"/>
+            layout="@layout/action_bar_main"/>
 
     <include
             android:id="@+id/profile_other"
-            layout="@layout/action_bar_profile_other"/>
+            layout="@layout/action_bar_other"/>
 </LinearLayout>

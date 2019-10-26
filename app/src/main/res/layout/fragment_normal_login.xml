@@ -9,7 +9,7 @@
 
     <!--툴바-->
     <include
-            layout="@layout/action_bar_profile_other"
+            layout="@layout/action_bar_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     <!--툴바-->
@@ -42,7 +42,7 @@
                     android:layout_marginRight="30dp"
                     android:background="@drawable/bg_round_box_gray"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:hint="@string/str_id_hint"
+                    android:hint="@string/str_email_hint"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:lines="1"

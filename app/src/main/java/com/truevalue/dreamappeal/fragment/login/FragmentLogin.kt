@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.OnSingleClick
 import com.truevalue.dreamappeal.utils.Comm_Param
-import kotlinx.android.synthetic.main.action_bar_profile_other.*
+import kotlinx.android.synthetic.main.action_bar_login.*
 import kotlinx.android.synthetic.main.fragment_normal_login.*
 import kotlinx.android.synthetic.main.fragment_register.et_id
 import kotlinx.android.synthetic.main.fragment_register.et_password
@@ -42,8 +42,6 @@ class FragmentLogin : BaseFragment() {
         // Action Bar 설정
         tv_title.text = getString(R.string.str_login)
         iv_back.visibility = VISIBLE
-        iv_menu.visibility = GONE
-        iv_search.visibility = INVISIBLE
 
         if (!Comm_Param.REAL) {
             et_id.setText("test@gmail.com")

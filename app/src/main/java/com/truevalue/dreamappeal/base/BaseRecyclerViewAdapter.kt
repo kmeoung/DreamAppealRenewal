@@ -6,7 +6,7 @@ import java.util.*
 
 class BaseRecyclerViewAdapter(listener: IORecyclerViewListener) :
     RecyclerView.Adapter<BaseViewHolder>() {
-    val mListener = listener
+    private val mListener = listener
     val mArray = ArrayList<Any>()
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): BaseViewHolder {
@@ -26,7 +26,7 @@ class BaseRecyclerViewAdapter(listener: IORecyclerViewListener) :
         notifyDataSetChanged()
     }
 
-    fun get(i: Int): Any = mArray.get(i)
+    fun get(i: Int): Any = mArray[i]
 
     fun clear(){
         mArray.clear()
@@ -37,6 +37,8 @@ class BaseRecyclerViewAdapter(listener: IORecyclerViewListener) :
         mArray.removeAt(i)
         notifyDataSetChanged()
     }
+
+    fun size() : Int = mArray.size
 }
 
 

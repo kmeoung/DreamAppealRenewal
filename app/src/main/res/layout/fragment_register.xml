@@ -6,7 +6,6 @@
         android:background="@null"
         android:orientation="vertical">
 
-
     <!--툴바-->
     <include
             layout="@layout/action_bar_login"
@@ -24,9 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="21.7dp"
-                android:paddingTop="21.7dp"
-                android:paddingRight="30dp">
+                android:paddingLeft="20.3dp"
+                android:paddingTop="27.7dp"
+                android:paddingRight="20.3dp">
 
             <!--이름-->
             <TextView
@@ -35,23 +34,23 @@
                     android:fontFamily="@font/nanum_square_round_r"
                     android:text="@string/str_name"
                     android:textColor="@color/colorAccent"
-                    android:textSize="13.3sp" />
+                    android:textSize="14.8sp" />
 
             <EditText
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
-                    android:layout_height="33.7dp"
-                    android:layout_marginTop="9dp"
-                    android:background="@drawable/bg_empty_round_rectangle_gray"
+                    android:layout_height="34.7dp"
+                    android:layout_marginTop="10.3dp"
+                    android:background="@drawable/bg_round_rectangle_gray"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:hint="@string/str_name_hint"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:lines="1"
-                    android:paddingLeft="13dp"
+                    android:paddingLeft="16.3dp"
                     android:paddingRight="10dp"
                     android:textColorHint="@color/text_gray"
-                    android:textSize="11.8sp" />
+                    android:textSize="13.3sp" />
             <!--이름-->
 
             <LinearLayout
@@ -63,22 +62,22 @@
                 <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="21.7dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="17.3dp"
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_birthday"
                             android:textColor="@color/colorAccent"
-                            android:textSize="13.3sp" />
+                            android:textSize="14.8sp" />
 
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="27.3dp"
-                            android:layout_marginTop="9dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
                         <TextView
@@ -86,39 +85,39 @@
                                 android:layout_width="81.3dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="7dp"
-                                android:background="@drawable/bg_empty_round_rectangle_gray"
+                                android:background="@drawable/bg_round_rectangle_gray"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:hint="@string/str_year"
                                 android:textColor="@color/black"
                                 android:textColorHint="@color/text_gray"
-                                android:textSize="11.8sp" />
+                                android:textSize="13.3sp" />
 
                         <TextView
                                 android:id="@+id/tv_month"
-                                android:layout_width="42.3dp"
+                                android:layout_width="51.7dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="7dp"
-                                android:background="@drawable/bg_empty_round_rectangle_gray"
+                                android:background="@drawable/bg_round_rectangle_gray"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:hint="@string/str_month"
                                 android:textColor="@color/black"
                                 android:textColorHint="@color/text_gray"
-                                android:textSize="11.8sp" />
+                                android:textSize="13.3sp" />
 
 
                         <TextView
                                 android:id="@+id/tv_date"
-                                android:layout_width="42.3dp"
+                                android:layout_width="51.7dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/bg_empty_round_rectangle_gray"
+                                android:background="@drawable/bg_round_rectangle_gray"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:hint="@string/str_date"
                                 android:textColor="@color/black"
                                 android:textColorHint="@color/text_gray"
-                                android:textSize="11.8sp" />
+                                android:textSize="13.3sp" />
 
                     </LinearLayout>
 
@@ -129,34 +128,34 @@
                 <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="21.7dp"
                         android:orientation="vertical">
 
                     <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="17.3dp"
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_gender"
                             android:textColor="@color/colorAccent"
-                            android:textSize="13.3sp" />
+                            android:textSize="14.8sp" />
 
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="27.3dp"
-                            android:layout_marginTop="9dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal">
 
                         <TextView
                                 android:id="@+id/tv_gender"
-                                android:layout_width="112dp"
+                                android:layout_width="96.3dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/bg_empty_round_rectangle_gray"
+                                android:background="@drawable/bg_round_rectangle_gray"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:hint="@string/str_gender"
                                 android:textColor="@color/black"
                                 android:textColorHint="@color/text_gray"
-                                android:textSize="11.8sp" />
+                                android:textSize="13.3sp" />
 
                     </LinearLayout>
 
@@ -169,70 +168,70 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="17.3dp"
+                    android:layout_marginTop="17dp"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:text="@string/str_id"
+                    android:text="@string/str_email"
                     android:textColor="@color/colorAccent"
-                    android:textSize="13.3sp" />
+                    android:textSize="14.8sp" />
 
             <EditText
                     android:id="@+id/et_id"
                     android:layout_width="match_parent"
-                    android:layout_height="33.7dp"
-                    android:layout_marginTop="9dp"
-                    android:background="@drawable/bg_empty_round_rectangle_gray"
+                    android:layout_height="34.7dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_round_rectangle_gray"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:hint="@string/str_id_hint"
+                    android:hint="@string/str_email_hint"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:lines="1"
-                    android:paddingLeft="13dp"
+                    android:paddingLeft="16.3dp"
                     android:paddingRight="10dp"
                     android:textColorHint="@color/text_gray"
-                    android:textSize="11.8sp" />
+                    android:textSize="13.3sp" />
             <!--아이디-->
 
             <!--비밀번호-->
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="17.3dp"
+                    android:layout_marginTop="17dp"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:text="@string/str_password"
                     android:textColor="@color/colorAccent"
-                    android:textSize="13.3sp" />
+                    android:textSize="14.8sp" />
 
             <EditText
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
-                    android:layout_height="33.7dp"
-                    android:layout_marginTop="9dp"
-                    android:background="@drawable/bg_empty_round_rectangle_gray"
+                    android:layout_height="34.7dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_round_rectangle_gray"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:hint="@string/str_password_hint"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:lines="1"
-                    android:paddingLeft="13dp"
+                    android:paddingLeft="16.3dp"
                     android:paddingRight="10dp"
                     android:textColorHint="@color/text_gray"
-                    android:textSize="11.8sp" />
+                    android:textSize="13.3sp" />
 
             <EditText
                     android:id="@+id/et_re_password"
                     android:layout_width="match_parent"
-                    android:layout_height="33.7dp"
-                    android:layout_marginTop="9dp"
-                    android:background="@drawable/bg_empty_round_rectangle_gray"
+                    android:layout_height="34.7dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_round_rectangle_gray"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:hint="@string/str_check_password"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:lines="1"
-                    android:paddingLeft="13dp"
+                    android:paddingLeft="16.3dp"
                     android:paddingRight="10dp"
                     android:textColorHint="@color/text_gray"
-                    android:textSize="11.8sp" />
+                    android:textSize="13.3sp" />
             <!--비밀번호-->
 
             <!--모두 동의-->
@@ -246,8 +245,8 @@
 
                 <ImageView
                         android:id="@+id/iv_all_agree"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_marginRight="6dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_check_circle" />
@@ -258,7 +257,7 @@
                         android:fontFamily="@font/nanum_square_round_b"
                         android:text="@string/str_all_agreement"
                         android:textColor="@color/black"
-                        android:textSize="13.3sp" />
+                        android:textSize="14.7sp" />
 
             </LinearLayout>
             <!--모두 동의-->
@@ -280,8 +279,8 @@
 
                     <ImageView
                             android:id="@+id/iv_terms_of_use"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:layout_marginRight="6dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_check_circle" />
@@ -292,7 +291,7 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_terms_of_use"
                             android:textColor="@color/black"
-                            android:textSize="11sp" />
+                            android:textSize="12.3sp" />
 
                 </LinearLayout>
 
@@ -308,7 +307,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="@string/str_agreement_dtail"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:textSize="12.3sp" />
 
 
             </LinearLayout>
@@ -331,8 +330,8 @@
 
                     <ImageView
                             android:id="@+id/iv_privacy_policy"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:layout_marginRight="6dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_check_circle" />
@@ -343,7 +342,7 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_privacy_policy"
                             android:textColor="@color/black"
-                            android:textSize="11sp" />
+                            android:textSize="12.3sp" />
 
                 </LinearLayout>
 
@@ -359,7 +358,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="@string/str_agreement_dtail"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:textSize="12.3sp" />
 
 
             </LinearLayout>
@@ -370,9 +369,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.3dp"
+                    android:layout_marginBottom="30dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="30dp">
+                    android:orientation="horizontal">
 
                 <LinearLayout
                         android:id="@+id/ll_receive_marketing"
@@ -383,8 +382,8 @@
 
                     <ImageView
                             android:id="@+id/iv_receive_marketing"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:layout_marginRight="6dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_check_circle" />
@@ -395,7 +394,7 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_receive_marketing"
                             android:textColor="@color/black"
-                            android:textSize="11sp" />
+                            android:textSize="12.3sp" />
 
                 </LinearLayout>
 
@@ -411,8 +410,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:text="@string/str_agreement_dtail"
                         android:textColor="@color/black"
-                        android:textSize="11sp" />
-
+                        android:textSize="12.3sp" />
 
             </LinearLayout>
             <!--마케팅 정보 수신 동의-->

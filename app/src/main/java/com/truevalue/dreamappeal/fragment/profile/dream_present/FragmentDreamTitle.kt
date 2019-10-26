@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_profile_other.*
+import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.fragment_dream_title.*
 
 class FragmentDreamTitle : BaseFragment() {

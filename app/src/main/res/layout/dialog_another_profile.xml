@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="315dp"
+        android:layout_height="521.7dp"
+        android:background="@drawable/bg_round_rectangle_white"
+        android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <!--header-->
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26.3dp"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:gravity="center"
+                    android:text="@string/str_normal_profile"
+                    android:textColor="@color/black"
+                    android:textSize="16.7sp" />
+
+            <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_close_black"
+                    android:layout_marginRight="23dp"/>
+
+
+        </RelativeLayout>
+        <!--header-->
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/rv_another_profile"
+                android:paddingBottom="15dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

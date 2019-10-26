@@ -12,7 +12,7 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import kotlinx.android.synthetic.main.action_bar_profile_other.*
+import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.fragment_dream_list.*
 
 class FragmentDreamList : BaseFragment(){
@@ -80,7 +80,7 @@ class FragmentDreamList : BaseFragment(){
 
     private val recyclerViewListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.mArray.size else 0
+            get() = if (mAdapter != null) mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
             BaseViewHolder.newInstance(R.layout.listitem_dream_list, parent, false)

@@ -87,13 +87,13 @@
     <string name="str_year">년도</string>
     <string name="str_month">월</string>
     <string name="str_date">일</string>
-    <string name="str_id">아이디</string>
+    <string name="str_email">이메일</string>
     <string name="str_password">비밀번호</string>
     <string name="str_agree_privacy_policy_register">개인정보처리방침 동의하고 회원가입하기</string>
 
     <string name="str_male">남</string>
     <string name="str_female">여</string>
-    <string name="str_id_hint">아이디(이메일)입력</string>
+    <string name="str_email_hint">이메일(아이디)입력</string>
     <string name="str_password_hint">비밀번호 입력</string>
     <string name="str_check_password">비밀번호 확인</string>
     <string name="str_level_info">[ 경험치 획득 ] 실천 등록 + 10 / 성과 등록 + 30실천 등록 + 10 / 성과 등록 + 30</string>
@@ -127,4 +127,12 @@
     <string name="str_change_password_info">변경할 비밀번호를 입력해 주세요.</string>
     <string name="str_change_password">비밀번호 변경하기</string>
     <string name="str_password_warning">최소 8자리 이상 : 영어 대문자, 소문자, 숫자, 특수문자 중 3종류 조합</string>
+
+    <string name="str_normal_profile">일반 프로필</string>
+    <string name="str_normal_prifile_info">기본정보</string>
+    <string name="str_nickname">별명</string>
+    <string name="str_age">나이</string>
+    <string name="str_address">거주지</string>
+    <string name="str_group">소속</string>
+    <string name="str_private">비공개</string>
 </resources>

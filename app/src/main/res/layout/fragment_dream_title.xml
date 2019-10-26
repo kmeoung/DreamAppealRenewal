@@ -8,7 +8,7 @@
 
     <!--툴바-->
     <include
-            layout="@layout/action_bar_profile_other"
+            layout="@layout/action_bar_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     <!--툴바-->

@@ -15,12 +15,6 @@ import com.truevalue.dreamappeal.bean.BeanActionBarMain
 import com.truevalue.dreamappeal.bean.BeanActionBarOther
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import kotlinx.android.synthetic.main.action_bar.*
-import kotlinx.android.synthetic.main.action_bar_profile_main.view.*
-import kotlinx.android.synthetic.main.action_bar_profile_main.view.iv_back
-import kotlinx.android.synthetic.main.action_bar_profile_main.view.iv_menu
-import kotlinx.android.synthetic.main.action_bar_profile_main.view.iv_search
-import kotlinx.android.synthetic.main.action_bar_profile_main.view.tv_text_btn
-import kotlinx.android.synthetic.main.action_bar_profile_other.view.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 
 class ActivityMain : BaseActivity() {
