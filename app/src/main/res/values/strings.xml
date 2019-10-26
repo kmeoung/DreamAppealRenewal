@@ -135,4 +135,8 @@
     <string name="str_address">거주지</string>
     <string name="str_group">소속</string>
     <string name="str_private">비공개</string>
+
+    <string name="str_nickname_hint">별명 입력 (중복불가)</string>
+    <string name="str_address_hint">주소 검색</string>
+
 </resources>
