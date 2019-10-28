@@ -15,10 +15,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/action_bar"/>
+<!--        <include-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                layout="@layout/action_bar"/>-->
 
         <FrameLayout
                 android:id="@+id/base_container"
@@ -40,7 +40,7 @@
             layout="@layout/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start"/>
+            android:layout_gravity="end"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

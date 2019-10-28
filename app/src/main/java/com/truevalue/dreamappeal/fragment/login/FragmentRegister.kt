@@ -115,7 +115,11 @@ class FragmentRegister : BaseFragment() {
                 }
                 tv_text_btn -> {
                     if (context != null) {
-                        (activity as ActivityLoginContainer).replaceFragment(FragmentNormalProfile(),true)
+                        (activity as ActivityLoginContainer).replaceFragment(
+                            FragmentSendEmail.newInstance(
+                                FragmentSendEmail.VIEW_TYPE_REGISTER
+                            ), true
+                        )
                     }
 
                 }

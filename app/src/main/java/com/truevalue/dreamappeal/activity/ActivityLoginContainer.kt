@@ -26,4 +26,15 @@ class ActivityLoginContainer : BaseActivity() {
     fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
         replaceFragment(R.id.base_container, fragment, addToBack)
     }
+
+    /**
+     * Fragment 초기화
+     */
+    fun initFragment(){
+        val fm = supportFragmentManager
+
+        for (i in 0 .. fm.fragments.size + 1){
+            fm.popBackStack()
+        }
+    }
 }

@@ -73,7 +73,7 @@
             android:scaleX="0.65"
             android:scaleY="0.65"
             android:src="@drawable/btn_more_black"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

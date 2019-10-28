@@ -3,24 +3,25 @@ package com.truevalue.dreamappeal.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.View.*
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
-import com.truevalue.dreamappeal.bean.BeanActionBarMain
-import com.truevalue.dreamappeal.bean.BeanActionBarOther
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
-import kotlinx.android.synthetic.main.action_bar.*
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamList
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
+import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 
 class ActivityMain : BaseActivity() {
 
     var mActionListener : IOActionBarListener? = null
-
     companion object {
         val MAIN_TYPE_HOME = "MAIN_TYPE_HOME"
         val MAIN_TYPE_TIMELINE = "MAIN_TYPE_TIMELINE"
@@ -61,6 +62,40 @@ class ActivityMain : BaseActivity() {
             startActivity(intent)
             finish()
         })
+    }
+
+    /**
+     * Drawer 설정
+     */
+    private fun setDrawer(){
+        dl_drawer.addDrawerListener(object : DrawerLayout.DrawerListener{
+            override fun onDrawerStateChanged(newState: Int) {
+
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+        })
+    }
+
+    /**
+     * Drawer 열기 여부 관리
+     */
+    private fun isOpenDrawer() : Boolean{
+        val fragment = supportFragmentManager.findFragmentById(R.id.base_container)
+        return (fragment is FragmentProfile)
+                || (fragment is FragmentBlueprint)
+                || (fragment is FragmentPerformance)
+                || (fragment is FragmentDreamPresent)
     }
 
     /**
@@ -163,53 +198,53 @@ class ActivityMain : BaseActivity() {
      * Action Bar 초기화
      */
     fun initActionBar(action_bar_type: String?){
-        if (!action_bar_type.isNullOrEmpty()) {
-            mActionBarType = action_bar_type
-            when (action_bar_type) {
-                ACTION_BAR_TYPE_PROFILE_MAIN -> {
-                    profile_main.visibility = VISIBLE
-                    profile_other.visibility = GONE
-                }
-                ACTION_BAR_TYPE_PROFILE_OTHER -> {
-                    profile_main.visibility = GONE
-                    profile_other.visibility = VISIBLE
-                }
-            }
-        }
+//        if (!action_bar_type.isNullOrEmpty()) {
+//            mActionBarType = action_bar_type
+//            when (action_bar_type) {
+//                ACTION_BAR_TYPE_PROFILE_MAIN -> {
+//                    profile_main.visibility = VISIBLE
+//                    profile_other.visibility = GONE
+//                }
+//                ACTION_BAR_TYPE_PROFILE_OTHER -> {
+//                    profile_main.visibility = GONE
+//                    profile_other.visibility = VISIBLE
+//                }
+//            }
+//        }
     }
 
     /**
      * Action Bar 설정
      */
     fun setActionBar(data_class : Any,listener : IOActionBarListener?){
-        this.mActionListener = listener
-        var action_bar_type = when(data_class){ // Action Bar Main
-            data_class as BeanActionBarMain->{
-
-                profile_main.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
-                profile_main.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
-                profile_main.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
-                profile_main.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
-                // 가운데 대칭 설정
-                if(!data_class.isSearch && !data_class.isTextBtn) profile_main.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
-
-                ACTION_BAR_TYPE_PROFILE_MAIN
-            }
-            data_class as BeanActionBarOther->{ // Action Bar 나머지
-
-                profile_other.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
-                profile_other.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
-                profile_other.findViewById<ImageView>(R.id.iv_close).visibility = if(data_class.isClose) VISIBLE else GONE
-                profile_other.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
-                profile_other.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
-                // 가운데 대칭 설정
-                if(!data_class.isSearch && !data_class.isTextBtn) profile_other.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
-
-                ACTION_BAR_TYPE_PROFILE_OTHER
-            }
-            else->ACTION_BAR_TYPE_PROFILE_MAIN
-        }
-        initActionBar(action_bar_type)
+//        this.mActionListener = listener
+//        var action_bar_type = when(data_class){ // Action Bar Main
+//            data_class as BeanActionBarMain->{
+//
+//                profile_main.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
+//                profile_main.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
+//                profile_main.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
+//                profile_main.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
+//                // 가운데 대칭 설정
+//                if(!data_class.isSearch && !data_class.isTextBtn) profile_main.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
+//
+//                ACTION_BAR_TYPE_PROFILE_MAIN
+//            }
+//            data_class as BeanActionBarOther->{ // Action Bar 나머지
+//
+//                profile_other.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
+//                profile_other.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
+//                profile_other.findViewById<ImageView>(R.id.iv_close).visibility = if(data_class.isClose) VISIBLE else GONE
+//                profile_other.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
+//                profile_other.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
+//                // 가운데 대칭 설정
+//                if(!data_class.isSearch && !data_class.isTextBtn) profile_other.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
+//
+//                ACTION_BAR_TYPE_PROFILE_OTHER
+//            }
+//            else->ACTION_BAR_TYPE_PROFILE_MAIN
+//        }
+//        initActionBar(action_bar_type)
     }
 
     /**

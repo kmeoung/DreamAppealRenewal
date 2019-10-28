@@ -122,7 +122,7 @@
     <string name="str_auth_code_hint">코드입력</string>
     <string name="str_send_auth_code">인증번호 보내기</string>
 
-    <string name="str_reset_password_info">회원가입 시 등록한 이메일 주소를 입력해 주세요.</string>
+    <string name="str_send_email_info">회원가입 시 등록한 이메일 주소를 입력해 주세요.</string>
     <string name="str_hint_input_email">이메일 주소 입력</string>
     <string name="str_change_password_info">변경할 비밀번호를 입력해 주세요.</string>
     <string name="str_change_password">비밀번호 변경하기</string>
@@ -138,5 +138,7 @@
 
     <string name="str_nickname_hint">별명 입력 (중복불가)</string>
     <string name="str_address_hint">주소 검색</string>
+
+    <string name="str_reset_password">비밀번호 재설정</string>
 
 </resources>

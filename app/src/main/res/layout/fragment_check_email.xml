@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+
+    <!-- Action Bar -->
+    <include
+            layout="@layout/action_bar_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    <!-- Action Bar -->
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="19dp"
+            android:paddingRight="19dp">
+
+        <!-- 인증메일 발송 -->
+        <TextView
+                android:id="@+id/tv_send_auth_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="@string/str_sent_auth_email"
+                android:textColor="@color/black"
+                android:textSize="17.7sp" />
+        <!-- 인증메일 발송 -->
+
+        <!-- 인증메일 발송정보 -->
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17.7dp"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:text="@string/str_sent_auth_email_info"
+                android:textColor="@color/black"
+                android:textSize="12.3sp"
+                android:lineSpacingExtra="9sp"/>
+        <!-- 인증메일 발송정보 -->
+
+        <!-- 인증메일 코드 -->
+        <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="34.7dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_empty_round_rectangle_gray_2"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:gravity="center_vertical"
+                android:hint="@string/str_auth_code_hint"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="17.7dp"
+                android:textColorHint="@color/warm_grey"
+                android:textSize="13.3sp" />
+        <!-- 인증메일 코드 -->
+
+        <!-- 인증메일 버튼 -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9.3dp"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/btn_resend_email"
+                    android:layout_width="0dp"
+                    android:layout_height="33dp"
+                    android:layout_marginRight="12.3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_round_rectangle_blue"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_resend_email"
+                    android:textColor="@color/white"
+                    android:textSize="14.7sp" />
+
+
+            <Button
+                    android:id="@+id/btn_success_register"
+                    android:layout_width="0dp"
+                    android:layout_height="33dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_round_rectangle_blue"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_success_register"
+                    android:textColor="@color/white"
+                    android:textSize="14.7sp" />
+
+        </LinearLayout>
+        <!-- 인증메일 버튼 -->
+
+    </LinearLayout>
+
+</LinearLayout>
