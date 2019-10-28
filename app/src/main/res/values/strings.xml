@@ -141,4 +141,14 @@
 
     <string name="str_reset_password">비밀번호 재설정</string>
 
+    <string name="str_success_mision">미션 달성</string>
+    <string name="str_success">완료</string>
+    <string name="str_get">획득</string>
+    <string name="str_dream_point_info">미션 달성하고 포인트 획득하자</string>
+    <string name="str_get_and_usage">획득 및 사용내역 ></string>
+    <string name="str_add_coupon">쿠폰 등록</string>
+    <string name="str_daily">일간</string>
+    <string name="str_weekly">주간</string>
+    <string name="str_yearly">년간</string>
+
 </resources>
