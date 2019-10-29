@@ -13,6 +13,17 @@ import kotlinx.android.synthetic.main.fragment_check_email.*
 
 class FragmentCheckEmail : BaseFragment() {
 
+    private var mViewType = -1
+
+    companion object {
+
+        fun newInstance(view_type: Int): FragmentCheckEmail {
+            val fragment = FragmentCheckEmail()
+            fragment.mViewType = view_type
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +43,13 @@ class FragmentCheckEmail : BaseFragment() {
      * View Init
      */
     private fun initView() {
+        // 상단 타이틀 설정
+        tv_title.text = when (mViewType) {
+            FragmentSendEmail.VIEW_TYPE_REGISTER -> getString(R.string.str_register)
+            FragmentSendEmail.VIEW_TYPE_FIND_PASSWORD -> getString(R.string.str_reset_password)
+            else -> ""
+        }
+
         // 인증 이메일 하이라이트 설정
         tv_send_auth_mail.text =
             Utils.replaceTextColor(context, tv_send_auth_mail, getString(R.string.str_auth_email))
@@ -47,15 +65,22 @@ class FragmentCheckEmail : BaseFragment() {
                     activity!!.onBackPressed()
                 }
                 btn_success_register -> {
-                    (activity as ActivityLoginContainer).initFragment()
+                    if (mViewType == FragmentSendEmail.VIEW_TYPE_REGISTER) // 회원가입
+                        (activity as ActivityLoginContainer).initFragment()
+                    // 비밀번호 재설정
+                    else if(mViewType == FragmentSendEmail.VIEW_TYPE_FIND_PASSWORD)
+                        (activity as ActivityLoginContainer).replaceFragment(
+                        FragmentChangePassword(),
+                        true
+                    )
                 }
-                iv_back->{
+                iv_back_blue -> {
                     activity!!.onBackPressed()
                 }
             }
         }
         btn_resend_email.setOnClickListener(listener)
         btn_success_register.setOnClickListener(listener)
-        iv_back.setOnClickListener(listener)
+        iv_back_blue.setOnClickListener(listener)
     }
 }

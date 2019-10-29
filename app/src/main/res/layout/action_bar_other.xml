@@ -10,8 +10,8 @@
 
     <ImageView
             android:id="@+id/iv_close"
-            android:layout_width="44.8dp"
-            android:layout_height="44.8dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:scaleType="fitCenter"
             android:scaleX="0.65"
             android:scaleY="0.65"
@@ -23,13 +23,26 @@
 
 
     <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="44.8dp"
-            android:layout_height="44.8dp"
+            android:id="@+id/iv_back_blue"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:scaleType="fitCenter"
             android:scaleX="0.65"
             android:scaleY="0.65"
             android:src="@drawable/ic_back_blue"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+            android:id="@+id/iv_back_black"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:scaleType="fitCenter"
+            android:scaleX="0.65"
+            android:scaleY="0.65"
+            android:src="@drawable/ic_back_black"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +66,8 @@
 
     <ImageView
             android:id="@+id/iv_more"
-            android:layout_width="44.8dp"
-            android:layout_height="44.8dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:scaleType="fitCenter"
             android:scaleX="0.5"
             android:scaleY="0.5"
@@ -67,14 +80,14 @@
 
     <TextView
             android:id="@+id/tv_text_btn"
-            android:layout_width="44.8dp"
-            android:layout_height="44.8dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
             android:text="@string/str_next"
             android:textColor="@color/azure"
             android:textSize="17.2sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

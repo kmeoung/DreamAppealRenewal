@@ -151,4 +151,15 @@
     <string name="str_weekly">주간</string>
     <string name="str_yearly">년간</string>
 
+    <string name="str_forgot_password">비밀번호를 잊으셨나요?</string>
+    <string name="str_group_name">소속명</string>
+    <string name="str_hint_group_name">소속을 입력해 주세요</string>
+    <string name="str_group_rank">직책</string>
+    <string name="str_hint_group_rank">직책을 입력해 주세요</string>
+    <string name="str_sort">분류</string>
+    <string name="str_start_date">시작일</string>
+    <string name="str_end_date">종료일</string>
+    <string name="str_defail_info">상세정보</string>
+    <string name="str_hint_detail_info">소속에 대해 설명해주세요(선택사항)</string>
+
 </resources>

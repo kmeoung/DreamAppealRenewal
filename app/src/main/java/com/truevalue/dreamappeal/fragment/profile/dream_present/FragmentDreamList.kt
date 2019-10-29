@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
@@ -46,7 +45,7 @@ class FragmentDreamList : BaseFragment(){
         // action Bar 설정
         activityMain.mMainViewType = ActivityMain.ACTION_BAR_TYPE_PROFILE_OTHER
         activityMain.iv_menu.visibility = GONE
-        activityMain.iv_back.visibility = VISIBLE
+        activityMain.iv_back_blue.visibility = VISIBLE
         activityMain.iv_search.visibility = INVISIBLE
         activityMain.tv_title.text = getString(R.string.str_title_dream_list)
     }
@@ -68,14 +67,14 @@ class FragmentDreamList : BaseFragment(){
                     isEdit = !isEdit
                     // todo : 추가 작업 필요
                 }
-                (activity as ActivityMain).iv_back->{
+                (activity as ActivityMain).iv_back_blue->{
                     activity?.onBackPressed()
                 }
             }
         }
 
         btn_edit.setOnClickListener(listener)
-        (activity as ActivityMain).iv_back.setOnClickListener(listener)
+        (activity as ActivityMain).iv_back_blue.setOnClickListener(listener)
     }
 
     private val recyclerViewListener = object : IORecyclerViewListener {

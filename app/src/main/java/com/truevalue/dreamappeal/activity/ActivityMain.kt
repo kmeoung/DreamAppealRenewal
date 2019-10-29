@@ -55,13 +55,13 @@ class ActivityMain : BaseActivity() {
         onClickBottomView()
         // bottom 이미지 초기화
         initBottomView()
-
-        val ivMenu: ImageView = findViewById(R.id.iv_menu)
-        ivMenu.setOnClickListener(View.OnClickListener {
-            var intent = Intent(this, ActivityLoginContainer::class.java)
-            startActivity(intent)
-            finish()
-        })
+//
+//        val ivMenu: ImageView = findViewById(R.id.iv_menu)
+//        ivMenu.setOnClickListener(View.OnClickListener {
+//            var intent = Intent(this, ActivityLoginContainer::class.java)
+//            startActivity(intent)
+//            finish()
+//        })
     }
 
     /**

@@ -11,8 +11,6 @@ import androidx.appcompat.widget.PopupMenu
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
-import com.truevalue.dreamappeal.fragment.profile.FragmentNormalProfile
 import com.truevalue.dreamappeal.utils.Comm_Param
 import kotlinx.android.synthetic.main.action_bar_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -61,7 +59,7 @@ class FragmentRegister : BaseFragment() {
      */
     private fun initView() {
         tv_title.text = getString(R.string.str_register)
-        iv_back.visibility = VISIBLE
+        iv_back_blue.visibility = VISIBLE
         tv_text_btn.visibility = VISIBLE
 
         val year = mCal.get(Calendar.YEAR)
@@ -94,7 +92,7 @@ class FragmentRegister : BaseFragment() {
                 tv_gender -> {
                     setGenderView()
                 }
-                iv_back -> if (activity != null) activity!!.onBackPressed()
+                iv_back_blue -> if (activity != null) activity!!.onBackPressed()
                 ll_all_agree -> {
                     for (key: String in mAuthMap.keys) {
                         mAuthMap[key] = !iv_all_agree.isSelected
@@ -129,7 +127,7 @@ class FragmentRegister : BaseFragment() {
         tv_month.setOnClickListener(listener)
         tv_date.setOnClickListener(listener)
         tv_gender.setOnClickListener(listener)
-        iv_back.setOnClickListener(listener)
+        iv_back_blue.setOnClickListener(listener)
         ll_all_agree.setOnClickListener(listener)
         ll_terms_of_use.setOnClickListener(listener)
         ll_privacy_policy.setOnClickListener(listener)

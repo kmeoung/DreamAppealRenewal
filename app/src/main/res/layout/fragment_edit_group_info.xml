@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include
+            android:id="@+id/include3"
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <TextView
+            android:id="@+id/group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_group_name"
+            android:textColor="@color/azure"
+            android:textSize="14.8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include3" />
+
+    <TextView
+            android:id="@+id/group_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_group_rank"
+            android:textColor="@color/azure"
+            android:textSize="14.8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_group_name" />
+
+    <TextView
+            android:id="@+id/start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_start_date"
+            android:textColor="@color/azure"
+            android:textSize="14.8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_group_rank" />
+
+    <TextView
+            android:id="@+id/start_date2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_defail_info"
+            android:textColor="@color/azure"
+            android:textSize="14.8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_start_year" />
+
+    <TextView
+            android:id="@+id/end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="140dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_end_date"
+            android:textColor="@color/azure"
+            android:textSize="14.8sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_group_rank" />
+
+    <TextView
+            android:id="@+id/sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="113dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_sort"
+            android:textColor="@color/azure"
+            android:textSize="14.8sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_group_name" />
+
+    <EditText
+            android:id="@+id/et_group_name"
+            android:layout_width="0dp"
+            android:layout_height="33.7dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:ems="10"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:hint="@string/str_hint_group_name"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName|text"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="11.3dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/silver"
+            android:textSize="13.7sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_name" />
+
+    <EditText
+            android:id="@+id/et_group_rank"
+            android:layout_width="0dp"
+            android:layout_height="33.7dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:ems="10"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:hint="@string/str_hint_group_rank"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName|text"
+            android:paddingLeft="11.3dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="@color/silver"
+            android:textSize="13.7sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sort"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_rank" />
+
+    <EditText
+            android:id="@+id/et_detail_info"
+            android:layout_width="0dp"
+            android:layout_height="86.7dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:ems="10"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:hint="@string/str_hint_detail_info"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName|text"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="11.3dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/silver"
+            android:gravity="left|top"
+            android:paddingTop="11.3dp"
+            android:textSize="13.7sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_date2" />
+
+    <TextView
+            android:id="@+id/tv_sort"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center"
+            android:hint="@string/str_sort"
+            android:textColor="@color/black"
+            android:textSize="13.7sp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_group_rank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/sort"
+            app:layout_constraintTop_toTopOf="@+id/et_group_rank" />
+
+    <TextView
+            android:id="@+id/tv_start_year"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintHorizontal_weight="20"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center"
+            android:hint="@string/str_year"
+            android:textColor="@color/black"
+            android:textSize="13.7sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_start_month"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/start_date" />
+
+    <TextView
+            android:id="@+id/tv_end_year"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:fontFamily="@font/nanum_square_round_r"
+            app:layout_constraintHorizontal_weight="20"
+            android:gravity="center"
+            android:hint="@string/str_year"
+            android:textColor="@color/black"
+            android:textSize="13.7sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_end_month"
+            app:layout_constraintStart_toStartOf="@+id/end_date"
+            app:layout_constraintTop_toBottomOf="@+id/end_date" />
+
+    <TextView
+            android:id="@+id/tv_end_month"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintHorizontal_weight="15"
+            android:layout_marginEnd="44dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center"
+            android:hint="@string/str_month"
+            android:textColor="@color/black"
+            android:textSize="13.7sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_end_year"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_end_year"
+            app:layout_constraintTop_toTopOf="@+id/tv_end_year" />
+
+    <TextView
+            android:id="@+id/tv_start_month"
+            android:layout_width="0dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="23dp"
+            android:background="@drawable/bg_round_rectangle_gray"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center"
+            android:hint="@string/str_month"
+            android:textColor="@color/black"
+            android:textSize="13.7sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_start_year"
+            app:layout_constraintEnd_toStartOf="@+id/tv_end_year"
+            app:layout_constraintHorizontal_weight="15"
+            app:layout_constraintStart_toEndOf="@+id/tv_start_year"
+            app:layout_constraintTop_toTopOf="@+id/tv_start_year" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

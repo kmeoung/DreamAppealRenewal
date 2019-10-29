@@ -33,7 +33,7 @@ class FragmentDreamTitle : BaseFragment() {
     private fun initView() {
         // action Bar 설정
         iv_menu.visibility = GONE
-        iv_back.visibility = VISIBLE
+        iv_back_blue.visibility = VISIBLE
         iv_search.visibility = GONE
         tv_text_btn.text = getString(R.string.str_commit)
         tv_title.text = getString(R.string.str_title_dream_list)
@@ -50,13 +50,13 @@ class FragmentDreamTitle : BaseFragment() {
     private fun onClickView() {
         val listener = OnClickListener {
             when (it) {
-                iv_back -> activity?.onBackPressed()
+                iv_back_blue -> activity?.onBackPressed()
                 tv_text_btn -> {
 
                 }
             }
         }
-        iv_back.setOnClickListener(listener)
+        iv_back_blue.setOnClickListener(listener)
         tv_text_btn.setOnClickListener(listener)
     }
 }

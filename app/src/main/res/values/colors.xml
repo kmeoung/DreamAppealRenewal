@@ -30,7 +30,7 @@
 
     <!-- 제플린 사용-->
     <color name="black_20">#33000000</color>
-    <color name="azure">#00b0f0</color>
+    <color name="azure">#00B0F0</color>
     <color name="light_peach">#b6b6b6</color>
     <color name="greyish_brown">#474747</color>
     <color name="brown_grey">#808080</color>

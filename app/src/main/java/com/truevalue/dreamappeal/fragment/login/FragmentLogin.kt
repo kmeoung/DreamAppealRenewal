@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.OnSingleClick
@@ -40,8 +41,8 @@ class FragmentLogin : BaseFragment() {
      */
     private fun initView() {
         // Action Bar 설정
-        tv_title.text = getString(R.string.str_login)
-        iv_back.visibility = VISIBLE
+        tv_title.text = ""
+        iv_back_blue.visibility = VISIBLE
 
         if (!Comm_Param.REAL) {
             et_id.setText("test@gmail.com")
@@ -56,17 +57,25 @@ class FragmentLogin : BaseFragment() {
         val listener = object : OnSingleClick() {
             override fun onSingleClick(v: View?) {
                 when (v) {
-                    iv_back -> activity?.onBackPressed()
+                    iv_back_blue -> activity?.onBackPressed()
                     btn_login -> {
                         val intent = Intent(context, ActivityMain::class.java)
                         activity?.startActivity(intent)
                         activity?.finish()
+                    }
+                    tv_forgot_password -> {
+                        (activity as ActivityLoginContainer).replaceFragment(
+                            FragmentSendEmail.newInstance(
+                                FragmentSendEmail.VIEW_TYPE_FIND_PASSWORD
+                            ), true
+                        )
                     }
                 }
             }
         }
 
         btn_login.setOnClickListener(listener)
-        iv_back.setOnClickListener(listener)
+        iv_back_blue.setOnClickListener(listener)
+        tv_forgot_password.setOnClickListener(listener)
     }
 }

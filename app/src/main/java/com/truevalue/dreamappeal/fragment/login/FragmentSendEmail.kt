@@ -57,11 +57,11 @@ class FragmentSendEmail : BaseFragment() {
     private fun onClickView(){
         val listener = View.OnClickListener{
             when(it){
-                btn_send_code->(activity as ActivityLoginContainer).replaceFragment(FragmentCheckEmail(),true)
-                iv_back->activity!!.onBackPressed()
+                btn_send_code->(activity as ActivityLoginContainer).replaceFragment(FragmentCheckEmail.newInstance(mViewType),true)
+                iv_back_blue->activity!!.onBackPressed()
             }
         }
         btn_send_code.setOnClickListener(listener)
-        iv_back.setOnClickListener(listener)
+        iv_back_blue.setOnClickListener(listener)
     }
 }
