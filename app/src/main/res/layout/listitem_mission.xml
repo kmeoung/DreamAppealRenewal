@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14.3dp"
+        android:orientation="horizontal">
+
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="17.7dp"
+            android:paddingRight="14.7dp"
+            android:gravity="center_vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+            <TextView
+                    android:id="@+id/tv_str_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="1/1"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <ProgressBar
+                android:id="@+id/pb_exp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="5.7dp"
+                android:max="100"
+                android:progress="10" />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_mission_btn_fill"
+            android:layout_marginRight="12.3dp"
+            android:id="@+id/ll_point">
+
+        <ImageView
+                android:id="@+id/iv_point"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginRight="5.7dp"
+                android:src="@drawable/ic_point_black" />
+
+        <TextView
+                android:id="@+id/tv_get_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/main_blue"
+                android:text="3"
+                android:fontFamily="@font/nanum_square_round_b"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

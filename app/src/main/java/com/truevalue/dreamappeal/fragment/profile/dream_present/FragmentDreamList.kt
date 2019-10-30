@@ -12,6 +12,8 @@ import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import kotlinx.android.synthetic.main.action_bar_main.*
+import kotlinx.android.synthetic.main.action_bar_main.tv_title
+import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_dream_list.*
 
 class FragmentDreamList : BaseFragment(){
@@ -45,8 +47,7 @@ class FragmentDreamList : BaseFragment(){
         // action Bar 설정
         activityMain.mMainViewType = ActivityMain.ACTION_BAR_TYPE_PROFILE_OTHER
         activityMain.iv_menu.visibility = GONE
-        activityMain.iv_back_blue.visibility = VISIBLE
-        activityMain.iv_search.visibility = INVISIBLE
+        activityMain.iv_back_black.visibility = VISIBLE
         activityMain.tv_title.text = getString(R.string.str_title_dream_list)
     }
 

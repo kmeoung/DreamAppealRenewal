@@ -60,6 +60,12 @@
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 
+        <!-- 드림포인트 -->
+        <activity
+                android:name=".activity.ActivityDreamPoint"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

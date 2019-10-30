@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/underline_gray" />
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tl_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/profile_main_tab_font"
+                app:tabTextColor="@color/tab_none_select_gray" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45.3dp"
+            android:background="@color/main_blue"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="@string/str_accumulate_use"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_point_white" />
+
+        <TextView
+                android:id="@+id/tv_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="7.7dp"
+            android:background="@color/white_five" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_usage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
 </LinearLayout>

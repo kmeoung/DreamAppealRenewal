@@ -24,12 +24,12 @@
                 <!--상단 버튼 및 정보들-->
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="11.33dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="15dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
+                        android:paddingLeft="15.3dp"
+                        android:paddingRight="15.3dp">
                     <!--나의 꿈-->
                     <LinearLayout
                             android:id="@+id/ll_dreams"
@@ -48,18 +48,22 @@
                                 android:gravity="center"
                                 android:text="@string/str_first_dream"
                                 android:textColor="@color/black"
-                                android:textSize="12.69sp" />
+                                android:textSize="13.3sp" />
+
+                        <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"/>
 
                         <TextView
                                 android:id="@+id/tv_dream_level"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="9dp"
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:gravity="center"
                                 android:text="@string/lv_00"
                                 android:textColor="@color/black"
-                                android:textSize="19.36sp" />
+                                android:textSize="17.7sp" />
 
                     </LinearLayout>
                     <!--나의 꿈-->
@@ -81,7 +85,7 @@
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/black"
-                                android:textSize="17sp" />
+                                android:textSize="15.7sp" />
 
                         <TextView
                                 android:layout_width="wrap_content"
@@ -90,8 +94,8 @@
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:text="@string/str_follower"
-                                android:textColor="@color/text_gray"
-                                android:textSize="16sp" />
+                                android:textColor="@color/brown_grey"
+                                android:textSize="14.3sp" />
 
 
                     </LinearLayout>
@@ -113,7 +117,7 @@
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/black"
-                                android:textSize="17sp" />
+                                android:textSize="15.7sp" />
 
                         <TextView
                                 android:layout_width="wrap_content"
@@ -122,8 +126,8 @@
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:text="@string/str_achivement_post"
-                                android:textColor="@color/text_gray"
-                                android:textSize="16sp" />
+                                android:textColor="@color/brown_grey"
+                                android:textSize="14.3sp" />
 
 
                     </LinearLayout>
@@ -145,7 +149,7 @@
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/black"
-                                android:textSize="17sp" />
+                                android:textSize="15.7sp" />
 
                         <TextView
                                 android:layout_width="wrap_content"
@@ -154,8 +158,8 @@
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:text="@string/str_action_post"
-                                android:textColor="@color/text_gray"
-                                android:textSize="16sp" />
+                                android:textColor="@color/brown_grey"
+                                android:textSize="14.3sp"/>
 
 
                     </LinearLayout>
@@ -167,17 +171,18 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="15.3dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginRight="15.3dp"
+                        android:elevation="10dp"
                         android:background="@drawable/bg_round_box_gray"
                         android:orientation="vertical">
 
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="28dp"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginTop="19dp"
                             android:layout_marginRight="20dp"
                             android:gravity="center"
                             android:orientation="horizontal">
@@ -277,7 +282,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="13dp"
                                         android:layout_weight="1"
-                                        android:paddingLeft="20dp"
+                                        android:paddingLeft="22dp"
                                         android:paddingRight="20dp" />
 
                                 <Button
@@ -325,20 +330,21 @@
                 <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="9dp">
+                        android:layout_marginTop="9dp"
+                        android:elevation="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp">
 
                     <LinearLayout
                             android:id="@+id/ll_merit_and_motive"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="12dp"
                             android:layout_marginTop="13dp"
-                            android:layout_marginRight="12dp"
                             android:background="@drawable/bg_round_box_gray"
                             android:orientation="vertical"
-                            android:paddingLeft="15dp"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp">
+                            android:paddingLeft="15.3dp"
+                            android:paddingTop="25.7dp"
+                            android:paddingBottom="15.3dp">
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
@@ -356,6 +362,7 @@
                                         android:layout_marginTop="10dp"
                                         android:layout_weight="1"
                                         android:fontFamily="@font/nanum_square_round_r"
+                                        android:lineSpacingExtra="7.3sp"
                                         android:maxLines="3"
                                         android:paddingRight="13dp"
                                         android:text=""
@@ -406,7 +413,7 @@
                             android:gravity="center"
                             android:text="@string/str_merit_and_motive"
                             android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"/>
 
                 </RelativeLayout>
                 <!--내 꿈 이유-->
@@ -449,7 +456,7 @@
                                     android:fontFamily="@font/bmjua"
                                     android:text="0"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
+                                    android:textSize="12.2sp" />
 
                         </LinearLayout>
                         <!--불꽃 (좋아요)-->
@@ -479,7 +486,7 @@
                                     android:fontFamily="@font/bmjua"
                                     android:text="0"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
+                                    android:textSize="12.2sp" />
 
                         </LinearLayout>
                         <!--댓글-->
@@ -531,10 +538,10 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/bmjua"
+                                    android:fontFamily="@font/nanum_square_round_b"
                                     android:text="@string/str_cheering"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
+                                    android:textSize="12.3sp" />
 
                         </LinearLayout>
                         <!--불꽃 (좋아요)-->
@@ -559,10 +566,10 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/bmjua"
+                                    android:fontFamily="@font/nanum_square_round_b"
                                     android:text="@string/str_add_comment"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
+                                    android:textSize="12.3sp" />
 
                         </LinearLayout>
                         <!--댓글-->
@@ -587,10 +594,10 @@
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/bmjua"
+                                    android:fontFamily="@font/nanum_square_round_b"
                                     android:text="@string/str_sharing"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
+                                    android:textSize="12.3sp" />
 
                         </LinearLayout>
                         <!--공유하기-->

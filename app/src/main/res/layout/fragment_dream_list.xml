@@ -7,6 +7,10 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+    <include android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            layout="@layout/action_bar_other"/>
+
     <LinearLayout
             android:id="@+id/ll_edit_list"
             android:layout_width="match_parent"

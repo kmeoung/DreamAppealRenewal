@@ -9,6 +9,8 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_main.*
+import kotlinx.android.synthetic.main.action_bar_main.tv_title
+import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_dream_title.*
 
 class FragmentDreamTitle : BaseFragment() {
@@ -32,9 +34,7 @@ class FragmentDreamTitle : BaseFragment() {
      */
     private fun initView() {
         // action Bar 설정
-        iv_menu.visibility = GONE
-        iv_back_blue.visibility = VISIBLE
-        iv_search.visibility = GONE
+        iv_back_black.visibility = VISIBLE
         tv_text_btn.text = getString(R.string.str_commit)
         tv_title.text = getString(R.string.str_title_dream_list)
 

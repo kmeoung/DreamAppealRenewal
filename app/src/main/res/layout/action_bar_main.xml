@@ -8,9 +8,6 @@
 
     <!--툴바-->
 
-
-
-
     <ImageView
             android:id="@+id/iv_dream_note"
             android:layout_width="45dp"
@@ -29,14 +26,12 @@
             android:id="@+id/iv_menu"
             android:layout_width="45dp"
             android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:scaleX="0.65"
-            android:scaleY="0.65"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_menu_white"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
             android:id="@+id/iv_back"
@@ -62,7 +57,7 @@
             android:textColor="@color/white"
             android:textSize="17.2sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/iv_menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
