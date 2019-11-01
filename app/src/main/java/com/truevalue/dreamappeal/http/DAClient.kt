@@ -1,5 +1,15 @@
 package com.truevalue.dreamappeal.http
 
 class DAClient{
-    
+
+    val SUCCESS = "SUCCESS"
+    val VALIDATE_EMAIL = "VALIDATE_EMAIL"
+    val API_NOT_FOUND = "API_NOT_FOUND"
+    val NOT_GRANTED = "NOT_GRANTED"
+    val USER_NOT_FOUND = "USER_NOT_FOUND"
+    val EMAIL_NOT_FOUND = "EMAIL_NOT_FOUND"
+    val PASSWORD_NOT_MATCHED = "PASSWORD_NOT_MATCHED"
+    val DUPLICATED_EMAIL = "DUPLICATED_EMAIL"
+
+
 }

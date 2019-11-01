@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="117dp">
+
+        <ImageView
+                android:id="@+id/iv_side"
+                android:layout_width="17.3dp"
+                android:layout_height="17.3dp"
+                android:src="@drawable/ic_side_green" />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="13dp">
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="9dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/nanum_square_round_l"
+                        android:lineSpacingExtra="6.7sp"
+                        android:lines="4"
+                        android:maxLines="4"
+                        android:textColor="@color/black"
+                        android:textSize="13.3sp" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                    android:layout_width="117dp"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:id="@+id/iv_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/black"
+                        android:src="@drawable/ic_image_black" />
+
+                <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="#80000000"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="6dp"
+                        android:textColor="@color/white"
+                        android:textSize="11.5sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/warm_grey" />
+
+</RelativeLayout>

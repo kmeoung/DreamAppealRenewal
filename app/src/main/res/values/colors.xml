@@ -43,5 +43,8 @@
     <color name="bright_blue">#006ef6</color>
     <color name="tomato">#e73131</color>
     <color name="white_five">#efefef</color>
+    <color name="brownish_orange">#d09421</color>
+    <color name="rust_orange">#be5108</color>
+    <color name="asparagus">#72ac4d</color>
 
 </resources>

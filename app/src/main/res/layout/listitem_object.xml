@@ -8,7 +8,7 @@
             android:id="@+id/iv_side"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_side_triangle_gray" />
+            android:src="@drawable/ic_side" />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="@font/nanum_square_round_b"
+                    android:lineSpacingExtra="6.7sp"
                     android:lines="2"
                     android:maxLines="2"
                     android:textColor="@color/black"
@@ -84,6 +85,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="10dp"
                 android:fontFamily="@font/bmjua"
+                android:lineSpacingExtra="6.7sp"
                 android:text="Complete"
                 android:textColor="@color/white"
                 android:textSize="25sp" />

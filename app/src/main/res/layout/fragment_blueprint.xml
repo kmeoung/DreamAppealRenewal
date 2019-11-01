@@ -34,50 +34,35 @@
                         android:orientation="horizontal">
 
                     <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="27dp"
-                            android:src="@drawable/ic_ability" />
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_puzzle_yellow" />
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginLeft="10.3dp"
                             android:fontFamily="@font/nanum_pen"
                             android:text="@string/str_ability"
                             android:textColor="@color/black"
-                            android:textSize="19sp" />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_pen"
-                            android:text=" / "
-                            android:textColor="@color/black"
-                            android:textSize="19sp" />
-
+                            android:textSize="20sp" />
 
                     <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="27dp"
-                            android:src="@drawable/ic_opportunity" />
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="16.7dp"
+                            android:rotation="90"
+                            android:src="@drawable/ic_puzzle_orange" />
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginLeft="10.3dp"
                             android:layout_marginRight="7dp"
                             android:fontFamily="@font/nanum_pen"
                             android:text="@string/str_opportunity"
                             android:textColor="@color/black"
-                            android:textSize="19sp" />
-
-                    <ImageView
-                            android:id="@+id/iv_setting"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_setting"
-                            android:visibility="gone" />
+                            android:textSize="20sp" />
 
                 </LinearLayout>
 
@@ -143,20 +128,19 @@
                         android:paddingLeft="12dp">
 
                     <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginRight="10.7dp"
                             android:src="@drawable/ic_object" />
 
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="8dp"
                             android:fontFamily="@font/nanum_pen"
                             android:text="@string/str_object"
                             android:textColor="@color/black"
-                            android:textSize="19sp" />
+                            android:textSize="20sp" />
 
                     <!--공백-->
                     <Space
@@ -179,7 +163,7 @@
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@color/underline_gray" />
+                        android:background="@color/warm_grey" />
                 <!--Divider-->
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_object"
