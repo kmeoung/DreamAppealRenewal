@@ -4,17 +4,24 @@ import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.http.DAClient
+import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_present.*
+import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -30,18 +37,20 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // View 초기화
-        initView()
-        // 클릭 Listener
-        onClickView()
-        // Init Adapter
-        initAdapter()
-        // bind Temp Data
-        bindTempData()
+        if(mAdapter == null) {
+            // View 초기화
+            initView()
+            // 클릭 Listener
+            onClickView()
+            // Init Adapter
+            initAdapter()
+            // bind Temp Data
+            bindTempData()
+        }
     }
 
     private fun bindTempData() {
-        for (i in 0..10) mAdapter!!.add("")
+        for (i in 0..2) mAdapter!!.add("")
     }
 
     private fun initView() {
@@ -70,8 +79,80 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         tv_init_merit_and_motive.text = TextUtils.concat(spMerit, " ", spMotive)
         // Swipe Refresh Layout 설정
         Utils.setSwipeRefreshLayout(srl_refresh, this)
+
+        if (Comm_Prefs.getUserProfileIndex() > -1) {
+            getProfile()
+        } else {
+            addDreamProfile()
+        }
     }
 
+    /**
+     * Http
+     * 내 꿈 소개 등록
+     */
+    fun addDreamProfile() {
+        DAClient.addProfiles("",
+            "",
+            "",
+            JSONObject(),
+            "",
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+
+                        if (code == DAClient.SUCCESS) {
+                            val json = JSONObject(body)
+                            val token = json.getString("token")
+                            val result = json.getJSONObject("result")
+                            val profile_idx = result.getInt("insertId")
+                            Comm_Prefs.setToken(token)
+                            Comm_Prefs.setUserProfileIndex(profile_idx)
+                            getProfile() // 내 꿈 소개 조회
+                        }
+                    }
+                }
+            })
+    }
+
+
+    /**
+     * Http
+     * 내 꿈 소개 조회
+     */
+    fun getProfile() {
+        DAClient.getProfiles(Comm_Prefs.getUserProfileIndex(),object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
+
+                    srl_refresh.isRefreshing = false
+                    if (code == DAClient.SUCCESS) {
+
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * VIew OnClick Listener
+     */
     fun onClickView() {
         var listener = View.OnClickListener {
             when (it) {
@@ -161,7 +242,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * 위에서 아래로 스와이프 시 Refresh
      */
     override fun onRefresh() {
-        srl_refresh.isRefreshing = false
+        getProfile()
     }
 }
 

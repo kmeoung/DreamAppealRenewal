@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.annotation.Nullable
 import com.google.android.material.tabs.TabLayout
 import androidx.fragment.app.Fragment
@@ -11,10 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
+import kotlinx.android.synthetic.main.action_bar_main.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentProfile : BaseFragment() {
@@ -38,6 +42,8 @@ class FragmentProfile : BaseFragment() {
         initFragments()
         // View Adapter 초기화
         initAdapter()
+        // View 클릭 리스너
+        onClickView()
     }
 
     private fun initAdapter() {
@@ -63,6 +69,18 @@ class FragmentProfile : BaseFragment() {
             FragmentPerformance(),
             FragmentBlueprint()
         )
+    }
+
+    /**
+     * View Click Listener
+     */
+    private fun onClickView(){
+        val listener = View.OnClickListener{
+            when(it){
+                iv_menu->(activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
+            }
+        }
+        iv_menu.setOnClickListener(listener)
     }
 
     /**

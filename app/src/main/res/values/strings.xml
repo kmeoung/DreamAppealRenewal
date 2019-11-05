@@ -96,7 +96,7 @@
     <string name="str_email_hint">이메일(아이디)입력</string>
     <string name="str_password_hint">비밀번호 입력</string>
     <string name="str_check_password">비밀번호 확인</string>
-    <string name="str_level_info">[ 경험치 획득 ] 실천 등록 + 10 / 성과 등록 + 30실천 등록 + 10 / 성과 등록 + 30</string>
+    <string name="str_level_info">&lt; 경험치 획득 &gt; 실천 등록 +10 / 성과 등록 +30</string>
     <string name="str_edit">편집</string>
     <string name="str_add_dream">새 꿈 추가하기</string>
 
@@ -163,4 +163,17 @@
     <string name="str_defail_info">상세정보</string>
     <string name="str_hint_detail_info">소속에 대해 설명해주세요(선택사항)</string>
     <string name="str_accumulate_use">사용 누적</string>
+    <string name="str_lifestyle">일상 / 경험</string>
+    <string name="str_idea">영감 갤러리</string>
+    <string name="str_abiity_long">내 꿈에 맞게 갖출 능력</string>
+    <string name="str_opportunity_long">내 꿈에 맞게 만들고픈 기회</string>
+
+    <string name="str_input_name">이름을 입력해주세요.</string>
+    <string name="str_input_email">이메일을 입력해주세요.</string>
+    <string name="str_input_email_type">이메일형식으로 입력해주세요.</string>
+    <string name="str_input_auth_code">인증번호를 입력해주세요.</string>
+    <string name="str_input_password">비밀번호를 입력해주세요.</string>
+    <string name="str_plz_match_password">비밀번호가 서로 일치하지 않습니다.</string>
+    <string name="str_check_agreement">모든 약관에 동의해주십시오.</string>
+    <string name="str_check_password_min_length">비밀번호를 최소 8자리로 입력해주세요.</string>
 </resources>

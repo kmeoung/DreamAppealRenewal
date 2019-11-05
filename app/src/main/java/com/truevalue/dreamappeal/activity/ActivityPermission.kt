@@ -41,7 +41,7 @@ class ActivityPermission : BaseActivity() {
                 // 해당 권한을 사용해서 작업을 진행할 수 있습니다
                 val intent: Intent
                 val prefs = Comm_Prefs
-                if (prefs.isLogin) { // 바로 메인
+                if (prefs.getUserProfileIndex() > -1) { // 바로 메인
                     intent = Intent(this@ActivityPermission, ActivityMain::class.java)
                 } else { // 로그인 페이지
                     // todo : 로그인 지정이 필요합니다

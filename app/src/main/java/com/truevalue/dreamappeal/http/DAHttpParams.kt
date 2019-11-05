@@ -7,7 +7,12 @@ import org.json.JSONObject
 
 class DAHttpParams {
 
-    val JSON = "application/json; charset=utf-8".toMediaType()
+    companion object {
+        private val JSON = "application/json; charset=utf-8".toMediaType()
+        fun toRequestType(json : JSONObject) : RequestBody{
+            return json.toString().toRequestBody(JSON)
+        }
+    }
 
     private val map: LinkedHashMap<String, Any>
 
@@ -43,7 +48,7 @@ class DAHttpParams {
                 json.put(key, map[key])
             }
         }
-        return json.toString().toRequestBody(JSON)
+        return toRequestType(json)
     }
 
 }

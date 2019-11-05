@@ -2,18 +2,27 @@ package com.truevalue.dreamappeal.fragment.login
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.bean.BeanRegister
+import com.truevalue.dreamappeal.http.DAClient
+import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_login.*
+import kotlinx.android.synthetic.main.fragment_normal_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_register.et_id
+import kotlinx.android.synthetic.main.fragment_register.et_password
+import okhttp3.Call
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -60,7 +69,7 @@ class FragmentRegister : BaseFragment() {
     private fun initView() {
         tv_title.text = getString(R.string.str_register)
         iv_back_blue.visibility = VISIBLE
-        tv_text_btn.visibility = VISIBLE
+        tv_text_btn.visibility = GONE
 
         val year = mCal.get(Calendar.YEAR)
         val month = mCal.get(Calendar.MONTH) + 1
@@ -73,10 +82,10 @@ class FragmentRegister : BaseFragment() {
 
         // TODO : 테스트용
         if (!Comm_Param.REAL) {
-            et_id.setText("test@gmail.com")
-            et_name.setText("test")
-            et_password.setText("test")
-            et_re_password.setText("test")
+            et_id.setText(Comm_Param.DEBUG_EMAIL)
+            et_name.setText(Comm_Param.DEBUG_NAME)
+            et_password.setText(Comm_Param.DEBUG_PASSWORD)
+            et_re_password.setText(Comm_Param.DEBUG_PASSWORD)
         }
     }
 
@@ -111,15 +120,8 @@ class FragmentRegister : BaseFragment() {
                     mAuthMap[AUTH_RECEIVE_MARKETING] = !iv_receive_marketing.isSelected
                     initAuthIcon()
                 }
-                tv_text_btn -> {
-                    if (context != null) {
-                        (activity as ActivityLoginContainer).replaceFragment(
-                            FragmentSendEmail.newInstance(
-                                FragmentSendEmail.VIEW_TYPE_REGISTER
-                            ), true
-                        )
-                    }
-
+                btn_next -> {
+                    checkRegister()
                 }
             }
         }
@@ -132,7 +134,7 @@ class FragmentRegister : BaseFragment() {
         ll_terms_of_use.setOnClickListener(listener)
         ll_privacy_policy.setOnClickListener(listener)
         ll_receive_marketing.setOnClickListener(listener)
-        tv_text_btn.setOnClickListener(listener)
+        btn_next.setOnClickListener(listener)
     }
 
     /**
@@ -191,5 +193,107 @@ class FragmentRegister : BaseFragment() {
         )
         dialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
         dialog.show()
+    }
+
+    /**
+     * 회원가입 양식을 제대로 썻는지 확인
+     * true 통과
+     */
+    fun checkRegister() {
+        val name = et_name.text.toString()
+        var email = et_id.text.toString().trim()
+        email = email.replace(" ","")
+        val password = et_password.text.toString()
+        val rePassword = et_re_password.text.toString()
+
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_input_name),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_input_email),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if (!Utils.isEmailValid(email)) {
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_input_email_type),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+            return
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_input_password),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if(password.length < 8){
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_check_password_min_length),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if (!TextUtils.equals(password, rePassword)) {
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_plz_match_password),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+            return
+        }
+
+        if (!iv_all_agree.isSelected) {
+            Toast.makeText(
+                context!!.applicationContext,
+                getString(R.string.str_check_agreement),
+                Toast.LENGTH_SHORT
+            )
+                .show()
+            return
+        }
+
+        val bean = BeanRegister(email, password, name, isGender, mCal.time)
+
+        DAClient.sendEmail(email, name, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        (activity as ActivityLoginContainer).replaceFragment(
+                            FragmentCheckEmail.newInstance(
+                                bean
+                            ), true
+                        )
+                    }
+                }
+            }
+        })
     }
 }

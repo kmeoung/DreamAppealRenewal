@@ -6,8 +6,8 @@
 
     <ImageView
             android:id="@+id/iv_side"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:src="@drawable/ic_side" />
 
     <LinearLayout

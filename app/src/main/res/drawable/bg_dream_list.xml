@@ -3,6 +3,6 @@
 
     <item android:drawable="@drawable/bg_empty_rectangle_gray" android:state_selected="false" />
 
-    <item android:drawable="@drawable/bg_empty_rectangle_black" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_empty_rectangle_blue_2" android:state_selected="true" />
 
 </selector>

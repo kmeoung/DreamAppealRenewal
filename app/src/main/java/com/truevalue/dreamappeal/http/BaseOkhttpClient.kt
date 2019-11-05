@@ -1,23 +1,29 @@
 package com.truevalue.dreamappeal.http
 
+import android.os.Handler
+import android.util.Log
+import com.truevalue.dreamappeal.utils.Comm_Param
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 
+
 object BaseOkhttpClient : OkHttpClient() {
 
     private var client: OkHttpClient
+    private val handler: Handler
 
     init {
         client = OkHttpClient()
+        handler = Handler()
     }
 
     fun request(
         http_type: Int,
         url: String,
-        header: DAHttpHeader,
-        params: DAHttpParams,
-        callback: DAHttpCallback
+        header: DAHttpHeader?,
+        params: DAHttpParams?,
+        callback: DAHttpCallback?
     ) {
         val clientRequest = when (http_type) {
             HttpType.POST -> post(url, header, params)
@@ -30,17 +36,23 @@ object BaseOkhttpClient : OkHttpClient() {
         val call = client.newCall(clientRequest)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback.onFailure(call, e)
+                if (callback != null) {
+                    callback?.onFailure(call, e)
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
 
-                val strBody = response.body.toString()
+                val strBody = response.body!!.string()
+                if (!Comm_Param.REAL) Log.d("SERVER BODY", strBody)
                 var json = JSONObject(strBody)
-                val code = json.getString("code")
-                val message = json.getString("message")
-
-                callback.onResponse(call, response.code, strBody, code, message)
+                val code: String? = json.getString("code")
+                val message: String? = json.getString("message")
+                if (callback != null) {
+                    if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
+                        handler.post(Runnable { callback?.onResponse(call, response.code, strBody, code, message) })
+                    }
+                }
 
             }
         })
@@ -49,13 +61,19 @@ object BaseOkhttpClient : OkHttpClient() {
     /**
      * Http GET
      */
-    fun get(
+    private fun get(
         url: String,
-        header: DAHttpHeader,
-        params: DAHttpParams
+        header: DAHttpHeader?,
+        params: DAHttpParams?
     ): Request {
-        var requestUrl = url + params.urlParams()
-        val builder = header.getBuilder()
+        var requestUrl = url
+        if (params != null) {
+            requestUrl += params.urlParams()
+        }
+        var builder: Request.Builder = Request.Builder()
+        if (header != null)
+            builder = header.getBuilder()
+
         return builder.url(requestUrl)
             .get()
             .build()
@@ -66,12 +84,20 @@ object BaseOkhttpClient : OkHttpClient() {
      */
     private fun post(
         url: String,
-        header: DAHttpHeader,
-        params: DAHttpParams
+        header: DAHttpHeader?,
+        params: DAHttpParams?
     ): Request {
-        val builder = header.getBuilder()
+        var requestBody: RequestBody = DAHttpParams.toRequestType(JSONObject())
+        if (params != null) {
+            requestBody = params.bodyParams()
+        }
+
+        var builder: Request.Builder = Request.Builder()
+        if (header != null)
+            builder = header.getBuilder()
+
         return builder.url(url)
-            .post(params.bodyParams())
+            .post(requestBody)
             .build()
     }
 
@@ -80,26 +106,42 @@ object BaseOkhttpClient : OkHttpClient() {
      */
     private fun patch(
         url: String,
-        header: DAHttpHeader,
-        params: DAHttpParams
+        header: DAHttpHeader?,
+        params: DAHttpParams?
     ): Request {
-        val builder = header.getBuilder()
+        var requestBody: RequestBody = DAHttpParams.toRequestType(JSONObject())
+        if (params != null) {
+            requestBody = params.bodyParams()
+        }
+
+        var builder: Request.Builder = Request.Builder()
+        if (header != null)
+            builder = header.getBuilder()
+
         return builder.url(url)
-            .patch(params.bodyParams())
+            .patch(requestBody)
             .build()
     }
 
     /**
      * Http DELETE
      */
-    fun delete(
+    private fun delete(
         url: String,
-        header: DAHttpHeader,
-        params: DAHttpParams
+        header: DAHttpHeader?,
+        params: DAHttpParams?
     ): Request {
-        val builder = header.getBuilder()
+        var requestBody: RequestBody = DAHttpParams.toRequestType(JSONObject())
+        if (params != null) {
+            requestBody = params.bodyParams()
+        }
+
+        var builder: Request.Builder = Request.Builder()
+        if (header != null)
+            builder = header.getBuilder()
+
         return builder.url(url)
-            .delete(params.bodyParams())
+            .delete(requestBody)
             .build()
     }
 

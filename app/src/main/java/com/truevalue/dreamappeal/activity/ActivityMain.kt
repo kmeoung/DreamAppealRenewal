@@ -3,21 +3,20 @@ package com.truevalue.dreamappeal.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
-import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamList
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
+import kotlinx.android.synthetic.main.nav_view.*
 
 class ActivityMain : BaseActivity() {
 
@@ -49,12 +48,12 @@ class ActivityMain : BaseActivity() {
     private fun onAction() {
         // Fragment 초기화
         initFragment()
-        // Action Bar 초기화
-        initActionBar(mActionBarType)
         // Bottom View Click Listener
         onClickBottomView()
         // bottom 이미지 초기화
         initBottomView()
+        // Drawer View Click Listener
+        onClickDrawerView()
 //
 //        val ivMenu: ImageView = findViewById(R.id.iv_menu)
 //        ivMenu.setOnClickListener(View.OnClickListener {
@@ -109,7 +108,7 @@ class ActivityMain : BaseActivity() {
      * Bottom View Click Listener
      */
     private fun onClickBottomView() {
-        var onClickListener = View.OnClickListener {
+        val onClickListener = View.OnClickListener {
             mMainViewType = when (it) {
                 iv_home ->
                     MAIN_TYPE_HOME
@@ -139,7 +138,27 @@ class ActivityMain : BaseActivity() {
     }
 
     /**
+     * Drawer View Click Listener
+     */
+    private fun onClickDrawerView(){
+        val listener = View.OnClickListener{
+            when(it){
+                ll_logout->{
+                    Comm_Prefs.setUserProfileIndex(-1)
+                    Comm_Prefs.setToken(null)
+
+                    val intent = Intent(this@ActivityMain,ActivityLoginContainer::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+        ll_logout.setOnClickListener(listener)
+    }
+
+    /**
      * 하단 View 클릭 이미지 설정
+     * TODO : 이동이 따로 설정이 필요합니다
      */
     private fun initBottomView() {
         when (mMainViewType) {
@@ -149,6 +168,7 @@ class ActivityMain : BaseActivity() {
                 iv_notification.isSelected = false
                 iv_profile.isSelected = false
                 FragmentProfile()
+                dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
             MAIN_TYPE_TIMELINE -> {
                 iv_home.isSelected = false
@@ -156,6 +176,7 @@ class ActivityMain : BaseActivity() {
                 iv_notification.isSelected = false
                 iv_profile.isSelected = false
                 FragmentProfile()
+                dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
             MAIN_TYPE_ADD_BOARD -> {
                 FragmentProfile()
@@ -166,6 +187,7 @@ class ActivityMain : BaseActivity() {
                 iv_notification.isSelected = true
                 iv_profile.isSelected = false
                 FragmentProfile()
+                dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
             MAIN_TYPE_PROFILE -> {
                 iv_home.isSelected = false
@@ -173,6 +195,7 @@ class ActivityMain : BaseActivity() {
                 iv_notification.isSelected = false
                 iv_profile.isSelected = true
                 FragmentProfile()
+                dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
             else -> FragmentProfile()
         }
@@ -192,59 +215,6 @@ class ActivityMain : BaseActivity() {
             else -> FragmentProfile()
         }
         replaceFragment(R.id.base_container, fragment, false)
-    }
-
-    /**
-     * Action Bar 초기화
-     */
-    fun initActionBar(action_bar_type: String?){
-//        if (!action_bar_type.isNullOrEmpty()) {
-//            mActionBarType = action_bar_type
-//            when (action_bar_type) {
-//                ACTION_BAR_TYPE_PROFILE_MAIN -> {
-//                    profile_main.visibility = VISIBLE
-//                    profile_other.visibility = GONE
-//                }
-//                ACTION_BAR_TYPE_PROFILE_OTHER -> {
-//                    profile_main.visibility = GONE
-//                    profile_other.visibility = VISIBLE
-//                }
-//            }
-//        }
-    }
-
-    /**
-     * Action Bar 설정
-     */
-    fun setActionBar(data_class : Any,listener : IOActionBarListener?){
-//        this.mActionListener = listener
-//        var action_bar_type = when(data_class){ // Action Bar Main
-//            data_class as BeanActionBarMain->{
-//
-//                profile_main.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
-//                profile_main.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
-//                profile_main.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
-//                profile_main.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
-//                // 가운데 대칭 설정
-//                if(!data_class.isSearch && !data_class.isTextBtn) profile_main.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
-//
-//                ACTION_BAR_TYPE_PROFILE_MAIN
-//            }
-//            data_class as BeanActionBarOther->{ // Action Bar 나머지
-//
-//                profile_other.findViewById<ImageView>(R.id.iv_menu).visibility = if(data_class.isMenu) VISIBLE else GONE
-//                profile_other.findViewById<ImageView>(R.id.iv_back).visibility = if(data_class.isBack) VISIBLE else GONE
-//                profile_other.findViewById<ImageView>(R.id.iv_close).visibility = if(data_class.isClose) VISIBLE else GONE
-//                profile_other.findViewById<ImageView>(R.id.iv_search).visibility = if(data_class.isSearch) VISIBLE else GONE
-//                profile_other.findViewById<TextView>(R.id.tv_text_btn).visibility = if(data_class.isTextBtn) VISIBLE else GONE
-//                // 가운데 대칭 설정
-//                if(!data_class.isSearch && !data_class.isTextBtn) profile_other.findViewById<ImageView>(R.id.iv_search).visibility = INVISIBLE
-//
-//                ACTION_BAR_TYPE_PROFILE_OTHER
-//            }
-//            else->ACTION_BAR_TYPE_PROFILE_MAIN
-//        }
-//        initActionBar(action_bar_type)
     }
 
     /**

@@ -415,6 +415,18 @@
             </LinearLayout>
             <!--마케팅 정보 수신 동의-->
 
+            <Button
+                    android:id="@+id/btn_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/bg_round_rectangle_blue"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_next"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
         </LinearLayout>
 
     </ScrollView>

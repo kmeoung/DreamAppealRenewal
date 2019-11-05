@@ -9,12 +9,14 @@
     <!--카메라-->
     <uses-permission android:name="android.permission.CAMERA" />
 
+<!--  todo : 임시    android:usesCleartextTraffic="true" 모든 cleartext 트래픽은 허용처리가 됩니다.-->
     <application
             android:name=".base.BaseApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="${appName}"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:usesCleartextTraffic="true"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 

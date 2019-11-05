@@ -47,7 +47,7 @@
 
         <!-- 인증메일 코드 -->
         <EditText
-                android:id="@+id/et_name"
+                android:id="@+id/et_auth_code"
                 android:layout_width="match_parent"
                 android:layout_height="34.7dp"
                 android:layout_marginTop="16dp"

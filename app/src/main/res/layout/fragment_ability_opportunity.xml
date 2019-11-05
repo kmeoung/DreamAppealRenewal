@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <!-- 능력 Header -->
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/brownish_orange" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="9.7dp"
+            android:background="@color/white"
+            android:elevation="10dp">
+
+        <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8.7dp"
+                android:src="@drawable/ic_puzzle_yellow" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_pen"
+                android:text="@string/str_abiity_long"
+                android:textColor="@color/brownish_orange"
+                android:textSize="22.3sp" />
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        <ImageView
+                android:id="@+id/iv_add_ability"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/ic_add_yellow" />
+
+    </LinearLayout>
+
+    <!-- 능력 Header -->
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ability"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+    <!-- 기회 Header -->
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/rust_orange" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="9.7dp"
+            android:background="@color/white"
+            android:elevation="10dp">
+
+        <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8.7dp"
+                android:src="@drawable/ic_puzzle_orange" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_pen"
+                android:text="@string/str_opportunity_long"
+                android:textColor="@color/rust_orange"
+                android:textSize="22.3sp" />
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        <ImageView
+                android:id="@+id/iv_add_opportunity"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/ic_add_red" />
+
+    </LinearLayout>
+
+    <!-- 기회 Header -->
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_opportunity"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+</LinearLayout>

@@ -19,8 +19,8 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
                 <!--상단 버튼 및 정보들-->
                 <LinearLayout
@@ -54,7 +54,7 @@
                         <Space
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1" />
 
                         <TextView
                                 android:id="@+id/tv_dream_level"
@@ -160,7 +160,7 @@
                                 android:gravity="center"
                                 android:text="@string/str_action_post"
                                 android:textColor="@color/brown_grey"
-                                android:textSize="14.3sp"/>
+                                android:textSize="14.3sp" />
 
 
                     </LinearLayout>
@@ -175,7 +175,6 @@
                         android:layout_marginLeft="15.3dp"
                         android:layout_marginTop="13dp"
                         android:layout_marginRight="15.3dp"
-                        android:elevation="10dp"
                         android:background="@drawable/bg_round_box_gray"
                         android:orientation="vertical">
 
@@ -327,25 +326,23 @@
                 <!--상단 꿈 설명-->
 
                 <!--내 꿈 이유-->
-
                 <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="9dp"
-                        android:layout_marginLeft="12dp"
-                        android:elevation="10dp"
-                        android:layout_marginRight="12dp">
+                        android:layout_marginTop="9dp">
 
                     <LinearLayout
                             android:id="@+id/ll_merit_and_motive"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
                             android:layout_marginTop="13dp"
+                            android:layout_marginRight="12dp"
                             android:background="@drawable/bg_round_box_gray"
                             android:orientation="vertical"
-                            android:paddingLeft="15.3dp"
-                            android:paddingTop="25.7dp"
-                            android:paddingBottom="15.3dp">
+                            android:paddingLeft="15dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp">
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
@@ -368,7 +365,7 @@
                                         android:paddingRight="13dp"
                                         android:text=""
                                         android:textColor="@color/black"
-                                        android:textSize="13sp" />
+                                        android:textSize="12.3sp" />
 
                                 <!--내 꿈 이유 더보기 버튼-->
                                 <Button
@@ -398,8 +395,7 @@
                                     android:gravity="center"
                                     android:text="@string/str_default_merit_and_motive"
                                     android:textColor="@color/black"
-                                    android:textSize="13sp" />
-
+                                    android:textSize="12.3sp" />
 
                         </RelativeLayout>
 
@@ -412,9 +408,9 @@
                             android:background="@color/background"
                             android:fontFamily="@font/nanum_pen"
                             android:gravity="center"
-                            android:text="@string/str_merit_and_motive"
+                            android:text="매력 / 계기"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp" />
 
                 </RelativeLayout>
                 <!--내 꿈 이유-->
@@ -442,11 +438,10 @@
                                 android:orientation="horizontal">
 
                             <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="12.7dp"
+                                    android:layout_height="17dp"
+                                    android:layout_marginRight="9.7dp"
                                     android:contentDescription="@string/str_content_description"
-                                    android:scaleX="0.5"
-                                    android:scaleY="0.5"
                                     android:src="@drawable/flame_clicked" />
 
                             <TextView
@@ -472,12 +467,12 @@
 
                             <ImageView
                                     android:id="@+id/iv_comment"
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="21dp"
+                                    android:layout_height="21dp"
+                                    android:layout_marginRight="9dp"
                                     android:contentDescription="@string/str_content_description"
-                                    android:scaleX="0.5"
-                                    android:scaleY="0.5"
-                                    android:src="@drawable/conversation" />
+                                    android:src="@drawable/ic_comment_gray" />
+
 
                             <TextView
                                     android:id="@+id/tv_comment"
@@ -497,19 +492,26 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1" />
 
-                        <Button
-                                android:id="@+id/btn_add_follow"
+                        <TextView
+                                android:id="@+id/tv_add_follow"
                                 android:layout_width="70dp"
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
-                                android:background="@drawable/bg_btn_blue"
+                                android:background="@drawable/bg_round_rectangle_blue_2"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:text="@string/str_add_follow"
                                 android:textColor="@color/white"
+                                android:gravity="center"
                                 android:textSize="13sp" />
 
                     </LinearLayout>
 
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_marginLeft="11dp"
+                            android:layout_marginRight="11dp"
+                            android:background="@color/white_six" />
 
                     <LinearLayout
                             android:layout_width="match_parent"
@@ -529,17 +531,16 @@
 
                             <ImageView
                                     android:id="@+id/iv_cheering"
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="14.3dp"
+                                    android:layout_height="19.7dp"
+                                    android:layout_marginRight="10.7dp"
                                     android:contentDescription="@string/str_content_description"
-                                    android:scaleX="0.6"
-                                    android:scaleY="0.6"
-                                    android:src="@drawable/flame" />
+                                    android:src="@drawable/ic_flame" />
 
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:fontFamily="@font/nanum_square_round_eb"
                                     android:text="@string/str_cheering"
                                     android:textColor="@color/black"
                                     android:textSize="12.3sp" />
@@ -557,17 +558,16 @@
                                 android:orientation="horizontal">
 
                             <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginRight="8.7dp"
                                     android:contentDescription="@string/str_content_description"
-                                    android:scaleX="0.6"
-                                    android:scaleY="0.6"
-                                    android:src="@drawable/conversation" />
+                                    android:src="@drawable/ic_comment_gray" />
 
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:fontFamily="@font/nanum_square_round_eb"
                                     android:text="@string/str_add_comment"
                                     android:textColor="@color/black"
                                     android:textSize="12.3sp" />
@@ -585,17 +585,16 @@
                                 android:orientation="horizontal">
 
                             <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_width="22.7dp"
+                                    android:layout_height="20.7dp"
+                                    android:layout_marginRight="8.7dp"
                                     android:contentDescription="@string/str_content_description"
-                                    android:scaleX="0.7"
-                                    android:scaleY="0.7"
                                     android:src="@drawable/ic_share" />
 
                             <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:fontFamily="@font/nanum_square_round_eb"
                                     android:text="@string/str_sharing"
                                     android:textColor="@color/black"
                                     android:textSize="12.3sp" />
@@ -611,7 +610,7 @@
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@color/silver"/>
+                        android:background="@color/silver" />
 
 
             </LinearLayout>

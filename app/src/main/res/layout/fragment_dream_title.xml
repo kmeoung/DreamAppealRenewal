@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
+        android:background="@color/white_seven"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -21,24 +21,31 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/white">
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp"
+                    android:background="@color/white_seven" />
 
             <!--수식어로 정의해보는 내꿈-->
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="40dp"
-                    android:orientation="horizontal">
+                    android:layout_gravity="left"
+                    android:layout_marginTop="30.3dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="26.7dp">
 
                 <TextView
+                        android:id="@+id/tv_dream_title_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_pen"
+                        android:fontFamily="@font/nanum_square_round_b"
                         android:text="@string/str_dream_title_info"
                         android:textColor="@color/black"
-                        android:textSize="29sp"
-                        android:id="@+id/tv_dream_title_info"/>
+                        android:textSize="17.7sp" />
 
 
             </LinearLayout>
@@ -48,14 +55,15 @@
 
             <!--수식어, 직업명 적는곳-->
             <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="50dp"
-                    android:orientation="vertical">
+                    android:layout_gravity="left"
+                    android:layout_marginTop="31dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="26.7dp">
                 <!--수식어-->
                 <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -63,19 +71,20 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_pen"
-                            android:minWidth="70dp"
+                            android:fontFamily="@font/nanum_square_round_b"
                             android:text="@string/str_value_style"
                             android:textColor="@color/colorAccent"
-                            android:textSize="25sp" />
+                            android:textSize="15.7sp" />
 
                     <EditText
                             android:id="@+id/et_value_style"
                             style="@style/edit_text_under_bar_color"
-                            android:layout_width="250dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="18dp"
-                            android:fontFamily="@font/nanum_square_round_b"
+                            android:layout_marginLeft="21.7dp"
+                            android:layout_marginRight="26.7dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/nanum_pen"
                             android:hint="@string/str_input_text_hint"
                             android:imeOptions="actionNext"
                             android:inputType="text"
@@ -83,7 +92,7 @@
                             android:maxLines="1"
                             android:paddingLeft="5dp"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="22.3sp"
                             android:theme="@style/edit_text_under_bar_color" />
 
 
@@ -92,7 +101,7 @@
 
                 <!--직업명-->
                 <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
@@ -101,19 +110,20 @@
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_pen"
-                            android:minWidth="70dp"
+                            android:fontFamily="@font/nanum_square_round_b"
                             android:text="@string/str_job"
                             android:textColor="@color/colorAccent"
-                            android:textSize="25sp" />
+                            android:textSize="15.7sp" />
 
                     <EditText
                             android:id="@+id/et_job"
                             style="@style/edit_text_under_bar_color"
-                            android:layout_width="250dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="18dp"
-                            android:fontFamily="@font/nanum_square_round_b"
+                            android:layout_marginLeft="21.7dp"
+                            android:layout_marginRight="26.7dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/bmjua"
                             android:hint="@string/str_input_text_hint"
                             android:imeOptions="actionDone"
                             android:inputType="text"
@@ -121,7 +131,7 @@
                             android:maxLines="1"
                             android:paddingLeft="5dp"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="22.3sp"
                             android:theme="@style/edit_text_under_bar_color" />
 
                 </LinearLayout>
@@ -131,20 +141,20 @@
 
             <Space
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:minHeight="50dp" />
+                    android:layout_height="44dp"
+                    android:layout_weight="1" />
+
             <!--Divider-->
             <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black" />
+                    android:layout_height="9dp"
+                    android:background="@color/white_seven" />
             <!--Divider-->
 
             <!--예시 화면-->
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp">
+                    android:layout_height="250dp">
 
                 <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager_image"
@@ -178,8 +188,8 @@
 
             <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black" />
+                    android:layout_height="9dp"
+                    android:background="@color/white_seven" />
 
             <RelativeLayout
                     android:id="@+id/rl_ad"

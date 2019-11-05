@@ -46,5 +46,8 @@
     <color name="brownish_orange">#d09421</color>
     <color name="rust_orange">#be5108</color>
     <color name="asparagus">#72ac4d</color>
-
+    <color name="white_six">#e6e6e6</color>
+    <color name="white_seven">#e9ebee</color>
+    <color name="off_white">#fcf5e3</color>
+    <color name="very_light_pink">#fceee3</color>
 </resources>

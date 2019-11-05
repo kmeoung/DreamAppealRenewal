@@ -6,7 +6,9 @@ import java.io.IOException
 
 interface DAHttpCallback {
 
-    fun onFailure(call: Call, e: IOException)
+    fun onFailure(call: Call, e: IOException){
+        e.printStackTrace()
+    }
 
     @Throws(IOException::class, JSONException::class)
     fun onResponse(

@@ -46,7 +46,6 @@ class FragmentDreamList : BaseFragment(){
         val activityMain = (activity as ActivityMain)
         // action Bar 설정
         activityMain.mMainViewType = ActivityMain.ACTION_BAR_TYPE_PROFILE_OTHER
-        activityMain.iv_menu.visibility = GONE
         activityMain.iv_back_black.visibility = VISIBLE
         activityMain.tv_title.text = getString(R.string.str_title_dream_list)
     }
@@ -64,7 +63,7 @@ class FragmentDreamList : BaseFragment(){
     private fun onClickView() {
         val listener = OnClickListener {
             when (it) {
-                btn_edit -> {
+                iv_edit -> {
                     isEdit = !isEdit
                     // todo : 추가 작업 필요
                 }
@@ -74,7 +73,7 @@ class FragmentDreamList : BaseFragment(){
             }
         }
 
-        btn_edit.setOnClickListener(listener)
+        iv_edit.setOnClickListener(listener)
         (activity as ActivityMain).iv_back_blue.setOnClickListener(listener)
     }
 

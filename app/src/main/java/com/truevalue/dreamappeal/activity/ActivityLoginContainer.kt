@@ -33,8 +33,20 @@ class ActivityLoginContainer : BaseActivity() {
     fun initFragment(){
         val fm = supportFragmentManager
 
-        for (i in 0 .. fm.fragments.size + 1){
+        for (i in 0 .. fm.backStackEntryCount){
             fm.popBackStack()
         }
+    }
+
+    /**
+     * Fragment 초기화 후 이동
+     */
+    fun initFragment(fragment: Fragment){
+        val fm = supportFragmentManager
+
+        for (i in 0 .. fm.backStackEntryCount){
+            fm.popBackStack()
+        }
+        replaceFragment(fragment,true)
     }
 }

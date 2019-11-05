@@ -1,206 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_dream_list_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_dream_list"
-    android:orientation="vertical">
-
-    <RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ll_dream_list_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15.3dp"
+        android:layout_marginRight="15.3dp"
+        android:background="@drawable/bg_dream_list"
+        android:orientation="vertical"
+        android:layout_marginBottom="4.3dp">
 
-        <LinearLayout
+    <ProgressBar
+            android:id="@+id/pb_exp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:orientation="vertical">
+            android:layout_height="9.3dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:max="100"
+            android:progress="10"
+            android:progressDrawable="@drawable/custom_progressbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/action" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <!--꿈 프로필 이미지-->
-                <ImageView
-                    android:id="@+id/iv_dream_profile"
-                    android:layout_width="57dp"
-                    android:layout_height="57dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/drawer_user" />
-                <!--꿈 프로필 이미지-->
-
-                <!--꿈 수식어 및 꿈 명-->
-                <LinearLayout
-                    android:id="@+id/ll_dream_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|left"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_value_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/nanum_pen"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="22sp" />
-
-                    <TextView
-                        android:id="@+id/tv_job"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="9dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/bmjua"
-                        android:lines="1"
-                        android:maxLength="30"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="27sp" />
-
-
-                </LinearLayout>
-                <!--꿈 수식어 및 꿈 명-->
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_dream_level"
-                    android:layout_width="57dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:gravity="center"
-                    android:text="@string/lv_00"
-                    android:textColor="@color/black"
-                    android:textSize="17sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_round_r"
-                        android:text="@string/str_achivement_post"
-                        android:textColor="@color/text_gray"
-                        android:textSize="13sp" />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_round_r"
-                            android:text=" "
-                            android:textColor="@color/text_gray"
-                            android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/tv_achivement_post_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_round_r"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:orientation="horizontal">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_round_r"
-                            android:text="@string/str_action_post"
-                            android:textColor="@color/text_gray"
-                            android:textSize="13sp" />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_round_r"
-                            android:text=" "
-                            android:textColor="@color/text_gray"
-                            android:textSize="13sp" />
-
-                    <TextView
-                            android:id="@+id/tv_action_post_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_round_r"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="14sp" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ProgressBar
-                    android:id="@+id/pb_exp"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:max="100"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:progress="0" />
-
-                <TextView
-                    android:id="@+id/tv_exp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!--수정 시 삭제 버튼-->
-        <ImageView
+    <ImageView
             android:id="@+id/iv_delete"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_close_black"
-            android:visibility="gone" />
-        <!--수정 시 삭제 버튼-->
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="18dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_close_gray"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+    <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="55.6dp"
+            android:layout_height="55.6dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/drawer_user" />
+
+    <TextView
+            android:id="@+id/tv_value_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:fontFamily="@font/nanum_pen"
+            android:textColor="@color/black"
+            android:textSize="24.8sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_profile"
+            app:layout_constraintTop_toTopOf="@+id/iv_profile"
+            tools:text="드림어필" />
+
+    <TextView
+            android:id="@+id/tv_job"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bmjua"
+            android:textColor="@color/black"
+            android:textSize="24.8sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+            app:layout_constraintStart_toStartOf="@+id/tv_value_style"
+            app:layout_constraintTop_toBottomOf="@+id/tv_value_style"
+            tools:text="서버개발자" />
+
+    <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:textSize="14.7sp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_profile"
+            app:layout_constraintStart_toStartOf="@+id/iv_profile"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile"
+            tools:text="LV.99" />
+
+    <TextView
+            android:id="@+id/achivement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center_horizontal"
+            android:text="@string/str_achivement_post"
+            android:textColor="@color/brown_grey"
+            android:textSize="13.5sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_level"
+            app:layout_constraintStart_toStartOf="@+id/tv_job"
+            app:layout_constraintTop_toTopOf="@+id/tv_level"
+            tools:text="@string/str_achivement_post" />
+
+    <TextView
+            android:id="@+id/tv_achivement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center_horizontal"
+            android:textColor="@color/azure"
+            android:textSize="13.8sp"
+            app:layout_constraintBottom_toBottomOf="@+id/achivement"
+            app:layout_constraintStart_toEndOf="@+id/achivement"
+            app:layout_constraintTop_toTopOf="@+id/achivement"
+            tools:text="3회" />
 
 
-</LinearLayout>
+    <TextView
+            android:id="@+id/action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center_horizontal"
+            android:text="@string/str_action_post"
+            android:textColor="@color/brown_grey"
+            android:textSize="13.5sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_achivement"
+            app:layout_constraintStart_toEndOf="@+id/tv_achivement"
+            app:layout_constraintTop_toTopOf="@id/tv_achivement"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="실천" />
+
+    <TextView
+            android:id="@+id/tv_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center_horizontal"
+            android:textColor="@color/azure"
+            android:textSize="13.8sp"
+            app:layout_constraintBottom_toBottomOf="@+id/action"
+            app:layout_constraintStart_toEndOf="@+id/action"
+            app:layout_constraintTop_toTopOf="@+id/action"
+            tools:text="3회" />
+
+    <TextView
+            android:id="@+id/tv_exp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textSize="8.8sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pb_exp"
+            app:layout_constraintEnd_toEndOf="@+id/pb_exp"
+            app:layout_constraintStart_toStartOf="@+id/pb_exp"
+            app:layout_constraintTop_toTopOf="@+id/pb_exp"
+            tools:text="8271200 / 480418270" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
