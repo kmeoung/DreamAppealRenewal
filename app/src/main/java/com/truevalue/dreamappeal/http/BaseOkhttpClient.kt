@@ -36,9 +36,9 @@ object BaseOkhttpClient : OkHttpClient() {
         val call = client.newCall(clientRequest)
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                if (callback != null) {
-                    callback?.onFailure(call, e)
-                }
+                if(callback != null){
+                    callback.onFailure(call, e)
+                } else return
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -50,7 +50,7 @@ object BaseOkhttpClient : OkHttpClient() {
                 val message: String? = json.getString("message")
                 if (callback != null) {
                     if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                        handler.post(Runnable { callback?.onResponse(call, response.code, strBody, code, message) })
+                        handler.post(Runnable { callback.onResponse(call, response.code, strBody, code, message) })
                     }
                 }
 

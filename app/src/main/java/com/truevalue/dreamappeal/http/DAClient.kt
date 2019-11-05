@@ -35,6 +35,45 @@ object DAClient {
     }
 
     /**
+     * GET
+     * 내 유저 정보 가져오기
+     */
+    fun getMyUserData(callback: DAHttpCallback) {
+        val header = getHttpHeader()
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_USERS,
+            header,
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 다른 유저 정보 가져오기
+     */
+    fun getOtherUserData(
+        profile_idx: Int
+        , callback: DAHttpCallback
+    ) {
+        val header = getHttpHeader()
+        val url = Comm_Param.URL_USERS_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            profile_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            header,
+            null,
+            callback
+        )
+    }
+
+    /**
      * POST
      * 회원가입
      */
@@ -347,11 +386,9 @@ object DAClient {
      * PATCH
      * 꿈 목록 순서 변경
      */
-    fun updateProfilesList(){
+    fun updateProfilesList() {
         // todo : 생각이 필요함
     }
-
-
 
 
 }
