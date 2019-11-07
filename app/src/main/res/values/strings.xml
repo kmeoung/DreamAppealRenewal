@@ -176,4 +176,5 @@
     <string name="str_plz_match_password">비밀번호가 서로 일치하지 않습니다.</string>
     <string name="str_check_agreement">모든 약관에 동의해주십시오.</string>
     <string name="str_check_password_min_length">비밀번호를 최소 8자리로 입력해주세요.</string>
+    <string name="str_total_number_of_action_post">총 인증</string>
 </resources>

@@ -28,6 +28,9 @@ class FragmentDreamTitle : BaseFragment() {
 
     companion object{
 
+        /**
+         * 데이터 미리 저장
+         */
         fun newInstance(bean : BeanDreamPresent?) : FragmentDreamTitle{
             val fragment = FragmentDreamTitle()
             fragment.mBean = bean
@@ -104,7 +107,6 @@ class FragmentDreamTitle : BaseFragment() {
     private fun initRightBtn() {
         iv_check.isSelected = if (isAllInput()) false else true
     }
-
     private fun isAllInput(): Boolean {
         return TextUtils.isEmpty(et_job.text.toString()) || TextUtils.isEmpty(et_value_style.text.toString())
     }

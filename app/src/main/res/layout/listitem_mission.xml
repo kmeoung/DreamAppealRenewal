@@ -48,7 +48,6 @@
 
         </LinearLayout>
 
-
         <ProgressBar
                 android:id="@+id/pb_exp"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -64,7 +63,7 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:background="@drawable/bg_mission_btn_fill"
+            android:background="@drawable/ic_mission_btn_outline"
             android:layout_marginRight="12.3dp"
             android:id="@+id/ll_point">
 

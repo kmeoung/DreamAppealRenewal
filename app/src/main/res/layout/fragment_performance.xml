@@ -42,7 +42,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/nanum_square_round_r"
+                            android:fontFamily="@font/nanum_square_round_b"
                             android:text="@string/str_recent_performance"
                             android:textColor="@color/colorAccent"
                             android:textSize="16sp" />

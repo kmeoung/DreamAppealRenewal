@@ -8,7 +8,7 @@
             android:id="@+id/iv_side"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@drawable/ic_side" />
+            android:src="@drawable/ic_side_blue" />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -46,22 +46,44 @@
                     android:id="@+id/iv_object"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/black"
-                    android:src="@drawable/ic_image_black" />
+                    android:background="@color/azure"
+                    android:src="@drawable/ic_image_white" />
 
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#80000000" />
 
-            <TextView
-                    android:id="@+id/tv_object_count"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="@string/str_total_number_of_action_post"
+                        android:textSize="14.5sp"
+                        android:layout_marginBottom="13dp"/>
+
+
+                <TextView
+                        android:id="@+id/tv_object_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="17.7sp"
+                        android:text="1회"/>
+
+
+            </LinearLayout>
+
 
         </RelativeLayout>
 
