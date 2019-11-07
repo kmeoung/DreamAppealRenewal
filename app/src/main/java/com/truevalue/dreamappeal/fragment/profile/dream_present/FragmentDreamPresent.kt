@@ -7,21 +7,28 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
+import org.json.JSONException
 import org.json.JSONObject
+import kotlin.math.max
 
 class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -37,22 +44,28 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(mAdapter == null) {
+        if (mAdapter == null) {
+            // Init Adapter
+            initAdapter()
             // View 초기화
             initView()
             // 클릭 Listener
             onClickView()
-            // Init Adapter
-            initAdapter()
-            // bind Temp Data
-            bindTempData()
         }
+        // bind Temp Data
+        bindTempData()
     }
 
+    /**
+     * 임시 데이터 Bind
+     */
     private fun bindTempData() {
         for (i in 0..2) mAdapter!!.add("")
     }
 
+    /**
+     * View 초기화
+     */
     private fun initView() {
         // Default View 키워드 색상 변경
         var default_dream_title = getString(R.string.str_default_dream_title)
@@ -91,7 +104,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * Http
      * 내 꿈 소개 등록
      */
-    fun addDreamProfile() {
+    private fun addDreamProfile() {
         DAClient.addProfiles("",
             "",
             "",
@@ -128,8 +141,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * Http
      * 내 꿈 소개 조회
      */
-    fun getProfile() {
-        DAClient.getProfiles(Comm_Prefs.getUserProfileIndex(),object : DAHttpCallback{
+    private fun getProfile() {
+        DAClient.getProfiles(Comm_Prefs.getUserProfileIndex(), object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -143,6 +156,52 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
                     srl_refresh.isRefreshing = false
                     if (code == DAClient.SUCCESS) {
+                        val json = JSONObject(body)
+                        val profile = json.getJSONObject("profile")
+                        val gson = Gson()
+                        val bean = gson.fromJson<BeanDreamPresent>(profile.toString(),BeanDreamPresent::class.java)
+                        tv_dream_level.text = String.format("LV.%02d",bean.level)
+                        tv_dream_name.text = when(bean.profile_order){
+                            1->getString(R.string.str_first_dream)
+                            2->getString(R.string.str_second_dream)
+                            3->getString(R.string.str_third_dream)
+                            4->getString(R.string.str_forth_dream)
+                            5->getString(R.string.str_fifth_dream)
+                            6->getString(R.string.str_sixth_dream)
+                            7->getString(R.string.str_seventh_dream)
+                            8->getString(R.string.str_eighth_dream)
+                            9->getString(R.string.str_ninth_dream)
+                            10->getString(R.string.str_tenth_dream)
+                            else->getString(R.string.str_first_dream)
+                        }
+
+                        if(bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()){
+                            tv_init_dream_title.visibility = VISIBLE
+                        }else{
+                            tv_init_dream_title.visibility = GONE
+
+                            tv_value_style.text = bean.value_style
+                            tv_job.text = bean.job
+                        }
+
+                        if(bean.description.isNullOrEmpty()){
+                            tv_init_dream_description.visibility = GONE
+                        }else tv_dream_description.text = bean.description
+
+                        if(bean.meritNmotive.isNullOrEmpty()) tv_init_merit_and_motive.visibility = VISIBLE
+                        else tv_init_merit_and_motive.visibility = GONE
+
+                        tv_merit_and_motive.text = bean.meritNmotive
+
+                        try {
+                            val description_spec = profile.getJSONArray("description_spec");
+                            if(description_spec.length() < 1){
+                                tv_init_dream_description.visibility = GONE
+                            }
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            tv_init_dream_description.visibility = VISIBLE
+                        }
 
                     }
                 }
@@ -153,7 +212,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     /**
      * VIew OnClick Listener
      */
-    fun onClickView() {
+    private fun onClickView() {
         var listener = View.OnClickListener {
             when (it) {
                 ll_dreams -> {
@@ -204,7 +263,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     /**
      * Dream Description List Init Adapter
      */
-    fun initAdapter() {
+    private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(this)
         rv_dream_description.adapter = mAdapter
         rv_dream_description.layoutManager =
@@ -243,6 +302,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     override fun onRefresh() {
         getProfile()
+        srl_refresh.isRefreshing = false
     }
 }
 
