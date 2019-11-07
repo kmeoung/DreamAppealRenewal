@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
@@ -57,8 +58,9 @@ class FragmentDreamList : BaseFragment() {
         val activityMain = (activity as ActivityMain)
         // action Bar 설정
         activityMain.mMainViewType = ActivityMain.ACTION_BAR_TYPE_PROFILE_OTHER
-        activityMain.iv_back_black.visibility = VISIBLE
         activityMain.tv_title.text = getString(R.string.str_title_dream_list)
+        iv_back_black.visibility = GONE
+        iv_back_blue.visibility = VISIBLE
     }
 
     /**
@@ -76,6 +78,7 @@ class FragmentDreamList : BaseFragment() {
     private fun onClickView() {
         val listener = OnClickListener {
             when (it) {
+                iv_back_blue->{ activity!!.onBackPressed() }
                 iv_edit -> {
                     isEdit = !isEdit
                     // todo : 추가 작업 필요
@@ -87,6 +90,7 @@ class FragmentDreamList : BaseFragment() {
         }
 
         iv_edit.setOnClickListener(listener)
+        iv_back_blue.setOnClickListener(listener)
         (activity as ActivityMain).iv_back_blue.setOnClickListener(listener)
     }
 
@@ -137,7 +141,34 @@ class FragmentDreamList : BaseFragment() {
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             if(mAdapter != null) {
                 val bean: BeanDreamList = mAdapter!!.get(i) as BeanDreamList
-                bean.exp
+                val pbExp = h.getItemView<ProgressBar>(R.id.pb_exp)
+                val ivDelete = h.getItemView<ImageView>(R.id.iv_delete)
+                val ctlDreamListItem =  h.getItemView<ConstraintLayout>(R.id.ctl_dream_list_item)
+                val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
+                val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
+                val tvJob = h.getItemView<TextView>(R.id.tv_job)
+                val tvLevel = h.getItemView<TextView>(R.id.tv_level)
+                val tvAchivement = h.getItemView<TextView>(R.id.tv_achivement)
+                val tvAction = h.getItemView<TextView>(R.id.tv_action)
+                val tvExp = h.getItemView<TextView>(R.id.tv_exp)
+
+                if(bean.idx == Comm_Prefs.getUserProfileIndex()){
+                    ctlDreamListItem.background = resources.getDrawable(R.drawable.bg_empty_rectangle_blue_2)
+                }else{
+                    ctlDreamListItem.background = resources.getDrawable(R.drawable.bg_dream_list)
+                }
+
+                if(isEdit) ivDelete.visibility = VISIBLE
+                else ivDelete.visibility = GONE
+
+                pbExp.progress = bean.exp
+                pbExp.max = bean.max_exp
+                tvValueStyle.text = bean.value_style
+                tvJob.text = bean.job
+                tvLevel.text = String.format("Lv.%02d",bean.level)
+                tvAchivement.text = bean.achievement_post_count.toString() + "회"
+                tvAction.text = bean.action_post_count.toString() + "회"
+                tvExp.text = String.format("%d / %d",bean.exp,bean.max_exp)
             }
         }
 

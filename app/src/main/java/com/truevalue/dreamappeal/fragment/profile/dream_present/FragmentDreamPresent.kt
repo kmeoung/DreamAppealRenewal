@@ -34,6 +34,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
+    private var mBean: BeanDreamPresent? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -159,50 +160,56 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         val json = JSONObject(body)
                         val profile = json.getJSONObject("profile")
                         val gson = Gson()
-                        val bean = gson.fromJson<BeanDreamPresent>(profile.toString(),BeanDreamPresent::class.java)
-                        tv_dream_level.text = String.format("LV.%02d",bean.level)
-                        tv_dream_name.text = when(bean.profile_order){
-                            1->getString(R.string.str_first_dream)
-                            2->getString(R.string.str_second_dream)
-                            3->getString(R.string.str_third_dream)
-                            4->getString(R.string.str_forth_dream)
-                            5->getString(R.string.str_fifth_dream)
-                            6->getString(R.string.str_sixth_dream)
-                            7->getString(R.string.str_seventh_dream)
-                            8->getString(R.string.str_eighth_dream)
-                            9->getString(R.string.str_ninth_dream)
-                            10->getString(R.string.str_tenth_dream)
-                            else->getString(R.string.str_first_dream)
-                        }
-
-                        if(bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()){
-                            tv_init_dream_title.visibility = VISIBLE
-                        }else{
-                            tv_init_dream_title.visibility = GONE
-
-                            tv_value_style.text = bean.value_style
-                            tv_job.text = bean.job
-                        }
-
-                        if(bean.description.isNullOrEmpty()){
-                            tv_init_dream_description.visibility = GONE
-                        }else tv_dream_description.text = bean.description
-
-                        if(bean.meritNmotive.isNullOrEmpty()) tv_init_merit_and_motive.visibility = VISIBLE
-                        else tv_init_merit_and_motive.visibility = GONE
-
-                        tv_merit_and_motive.text = bean.meritNmotive
-
-                        try {
-                            val description_spec = profile.getJSONArray("description_spec");
-                            if(description_spec.length() < 1){
-                                tv_init_dream_description.visibility = GONE
+                        mBean = gson.fromJson<BeanDreamPresent>(
+                            profile.toString(),
+                            BeanDreamPresent::class.java
+                        )
+                        if (mBean != null) {
+                            val bean = mBean!!
+                            tv_dream_level.text = String.format("LV.%02d", bean.level)
+                            tv_dream_name.text = when (bean.profile_order) {
+                                1 -> getString(R.string.str_first_dream)
+                                2 -> getString(R.string.str_second_dream)
+                                3 -> getString(R.string.str_third_dream)
+                                4 -> getString(R.string.str_forth_dream)
+                                5 -> getString(R.string.str_fifth_dream)
+                                6 -> getString(R.string.str_sixth_dream)
+                                7 -> getString(R.string.str_seventh_dream)
+                                8 -> getString(R.string.str_eighth_dream)
+                                9 -> getString(R.string.str_ninth_dream)
+                                10 -> getString(R.string.str_tenth_dream)
+                                else -> getString(R.string.str_first_dream)
                             }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                            tv_init_dream_description.visibility = VISIBLE
-                        }
 
+                            if (bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()) {
+                                tv_init_dream_title.visibility = VISIBLE
+                            } else {
+                                tv_init_dream_title.visibility = GONE
+
+                                tv_value_style.text = bean.value_style
+                                tv_job.text = bean.job
+                            }
+
+                            if (bean.description.isNullOrEmpty()) {
+                                tv_init_dream_description.visibility = GONE
+                            } else tv_dream_description.text = bean.description
+
+                            if (bean.meritNmotive.isNullOrEmpty()) tv_init_merit_and_motive.visibility =
+                                VISIBLE
+                            else tv_init_merit_and_motive.visibility = GONE
+
+                            tv_merit_and_motive.text = bean.meritNmotive
+
+                            try {
+                                val description_spec = profile.getJSONArray("description_spec");
+                                if (description_spec.length() < 1) {
+                                    tv_init_dream_description.visibility = GONE
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                                tv_init_dream_description.visibility = VISIBLE
+                            }
+                        }
                     }
                 }
             }
@@ -228,7 +235,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_dream_title,
                 tv_init_dream_title -> {
                     // replace to Dream Title
-                    (activity as ActivityMain).replaceFragment(FragmentDreamTitle(), true)
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentDreamTitle.newInstance(mBean),
+                        true
+                    )
                 }
                 tv_dream_description,
                 tv_init_dream_description -> {
