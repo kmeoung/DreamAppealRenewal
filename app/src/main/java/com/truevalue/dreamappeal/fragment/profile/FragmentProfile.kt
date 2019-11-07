@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class FragmentProfile : BaseFragment() {
     private var mFragments: Array<BaseFragment>? = null
     private var mTabs: Array<String>? = null
+    private var pagerAdapter: ViewPagerAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +38,12 @@ class FragmentProfile : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Tabs 초기화
-        initTabs()
-        // Fragments 초기화화
-        initFragments()
+        if (pagerAdapter == null) {
+            // Tabs 초기화
+            initTabs()
+            // Fragments 초기화
+            initFragments()
+        }
         // View Adapter 초기화
         initAdapter()
         // View 클릭 리스너
@@ -47,7 +51,7 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun initAdapter() {
-        var pagerAdapter = ViewPagerAdapter(childFragmentManager)
+        pagerAdapter = ViewPagerAdapter(childFragmentManager)
         var viewpager: ViewPager = vp_profile
         viewpager.adapter = pagerAdapter
         var tabs: TabLayout = tl_profile
@@ -74,13 +78,18 @@ class FragmentProfile : BaseFragment() {
     /**
      * View Click Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                iv_menu->(activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_menu -> (activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
+                tv_title -> {
+                    val dialog = DialogAnotherProfile(context!!)
+                    dialog.show()
+                }
             }
         }
         iv_menu.setOnClickListener(listener)
+        tv_title.setOnClickListener(listener)
     }
 
     /**

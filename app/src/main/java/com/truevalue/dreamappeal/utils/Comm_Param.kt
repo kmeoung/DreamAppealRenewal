@@ -18,8 +18,11 @@ object Comm_Param {
     // API
     val URL_API = if (REAL) REAL_API else DEV_API
 
+    val PROFILE_INDEX = "PROFILE_INDEX"
+
     // 회원
     val URL_USERS = "$URL_API/users"
+    val URL_USERS_PROFILE_IDX = "$URL_USERS/$PROFILE_INDEX"
     val URL_USERS_SIGNUP = "$URL_USERS/signup"
 
     // 회원가입 유틸
@@ -37,7 +40,6 @@ object Comm_Param {
     val URL_RECOVER_PASSWORD = "$URL_RECOVER/password"
 
     // 프로필
-    val PROFILE_INDEX = "PROFILE_INDEX"
     val URL_PROFILES = "$URL_API/profiles"
     val URL_PROFILES_CUR_PROFILE_IDX = "$URL_PROFILES/$PROFILE_INDEX"
 

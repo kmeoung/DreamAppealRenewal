@@ -44,14 +44,20 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // View 초기화
+        initView()
+        // 클릭 Listener
+        onClickView()
+        // todo : 이 친구 간과할수가없음
         if (mAdapter == null) {
-            // Init Adapter
-            initAdapter()
-            // View 초기화
-            initView()
-            // 클릭 Listener
-            onClickView()
+            if (Comm_Prefs.getUserProfileIndex() > -1) {
+                getProfile()
+            } else {
+                addDreamProfile()
+            }
         }
+        // Init Adapter
+        initAdapter()
         // bind Temp Data
         bindTempData()
     }
@@ -60,7 +66,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * 임시 데이터 Bind
      */
     private fun bindTempData() {
-        for (i in 0..2) mAdapter!!.add("")
+        for (i in 0 until 3) mAdapter!!.add("")
     }
 
     /**
@@ -68,10 +74,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     private fun initView() {
         // Default View 키워드 색상 변경
-        var default_dream_title = getString(R.string.str_default_dream_title)
-        var default_dream_description = getString(R.string.str_default_dream_description)
-        var default_merit = getString(R.string.str_default_merit)
-        var default_morive = getString(R.string.str_default_motive)
+        val default_dream_title = getString(R.string.str_default_dream_title)
+        val default_dream_description = getString(R.string.str_default_dream_description)
+        val default_merit = getString(R.string.str_default_merit)
+        val default_morive = getString(R.string.str_default_motive)
 
         var spDreamTitle = Utils.replaceTextColor(
             context,
@@ -92,12 +98,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         tv_init_merit_and_motive.text = TextUtils.concat(spMerit, " ", spMotive)
         // Swipe Refresh Layout 설정
         Utils.setSwipeRefreshLayout(srl_refresh, this)
-
-        if (Comm_Prefs.getUserProfileIndex() > -1) {
-            getProfile()
-        } else {
-            addDreamProfile()
-        }
     }
 
     /**

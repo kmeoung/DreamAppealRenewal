@@ -30,7 +30,8 @@
         <include
                 layout="@layout/bottom_main_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/bottom_view"/>
 
         <!--하단 Nav-->
     </LinearLayout>
