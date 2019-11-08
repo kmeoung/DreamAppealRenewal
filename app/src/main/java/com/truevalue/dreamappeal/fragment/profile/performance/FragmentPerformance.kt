@@ -13,13 +13,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanAchivementPost
+import com.truevalue.dreamappeal.bean.BeanBestPost
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
+import com.truevalue.dreamappeal.http.DAClient
+import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_performance.*
+import okhttp3.Call
+import org.json.JSONObject
+import java.io.IOException
 
 class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -28,6 +39,8 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mPagerAdapter: ViewPagerAdapter? = null
+
+    private var mCurrentPage = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +56,9 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         // RecyclerView Adapter 초기화
         initAdapter()
         // Bind Temp Data
-        bindTempData()
+//        bindTempData()
+        // 주요 성과 가져오기
+        getAchivementPostMain()
     }
 
     override fun onResume() {
@@ -99,6 +114,82 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     }
 
     /**
+     * Http
+     * 주요 성과 페이지 조회
+     */
+    private fun getAchivementPostMain() {
+        // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
+        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        DAClient.achivementPostMain(profile_idx,
+            mCurrentPage,
+            object : DAHttpCallback {
+                override fun onFailure(call: Call, e: IOException) {
+                    super.onFailure(call, e)
+                    srl_refresh.isRefreshing = false
+                }
+
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    srl_refresh.isRefreshing = false
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+                        val json = JSONObject(body)
+                        val profileImage = json.getString("profile_image")
+
+                        val bestPosts = json.getJSONObject("best_posts")
+
+                        try {
+                            val bestPost = bestPosts.getJSONObject("best_post_1")
+                            val bean = Gson().fromJson<BeanBestPost>(
+                                bestPost.toString(),
+                                BeanBestPost::class.java
+                            )
+                        } catch (e: Exception) {
+                        }
+
+                        try {
+                            val bestPost = bestPosts.getJSONObject("best_post_2")
+                            val bean = Gson().fromJson<BeanBestPost>(
+                                bestPost.toString(),
+                                BeanBestPost::class.java
+                            )
+                        } catch (e: Exception) {
+                        }
+
+                        try {
+                            val bestPost = bestPosts.getJSONObject("best_post_3")
+                            val bean = Gson().fromJson<BeanBestPost>(
+                                bestPost.toString(),
+                                BeanBestPost::class.java
+                            )
+                        } catch (e: Exception) {
+                        }
+
+                        val achivementPosts = json.getJSONArray("achivement_posts")
+
+                        for (i in 0 until achivementPosts.length()) {
+                            val bean = Gson().fromJson<BeanAchivementPost>(
+                                achivementPosts.getJSONObject(i).toString(),
+                                BeanAchivementPost::class.java
+                            )
+                        }
+
+
+                        if (code == DAClient.SUCCESS) {
+
+                        }
+                    }
+                }
+            })
+    }
+
+    /**
      * Init View
      */
     private fun initView() {
@@ -137,7 +228,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      */
     override fun onRefresh() {
         // 여기다가 서버요청
-        srl_refresh.isRefreshing = false
+
     }
 
     /**

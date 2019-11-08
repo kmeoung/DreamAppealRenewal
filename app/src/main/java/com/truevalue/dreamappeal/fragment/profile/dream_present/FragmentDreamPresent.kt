@@ -174,6 +174,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             BeanDreamPresent::class.java
                         )
                         if (mBean != null) {
+                        Comm_Prefs.setUserProfileIndex(mBean!!.idx)
                             mBean!!.descriptions = ArrayList()
                             try {
                                 val description_spec = profile.getJSONArray("description_spec")
@@ -200,6 +201,14 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     private fun bindData() {
         if (mBean != null) {
             val bean = mBean!!
+
+            // todo : 팔로워 필요
+//            tv_follwer.text = bean.
+            tv_cheering.text = bean.like_count.toString()
+            tv_comment.text = bean.comment_count.toString()
+            tv_achivement_post_count.text = bean.achievement_post_count.toString()
+            tv_action_post_count.text = bean.action_post_count.toString()
+
             tv_dream_level.text = String.format("LV.%02d", bean.level)
             tv_dream_name.text = when (bean.profile_order) {
                 1 -> getString(R.string.str_first_dream)

@@ -6,6 +6,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 object DAClient {
 
@@ -347,10 +348,15 @@ object DAClient {
      * DELETE
      * 내 꿈 프로필 삭제
      */
-    fun deleteProfiles(profile_idx: Int,
-                       callback: DAHttpCallback) {
+    fun deleteProfiles(
+        profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
 
-        val url = Comm_Param.URL_PROFILES_CUR_PROFILE_IDX.replace(Comm_Param.PROFILE_INDEX,profile_idx.toString())
+        val url = Comm_Param.URL_PROFILES_CUR_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            profile_idx.toString()
+        )
 
         val header = getHttpHeader()
         BaseOkhttpClient.request(
@@ -393,6 +399,175 @@ object DAClient {
      */
     fun updateProfilesList() {
         // todo : 생각이 필요함
+    }
+
+    /**
+     * GET
+     * 주요 성과 페이지 조회
+     */
+    fun achivementPostMain(
+        cur_profile_index: Int,
+        cur_view_page: Int,
+        callback: DAHttpCallback
+    ) {
+        var url = Comm_Param.URL_ACHIVEMENT_POSTS_PROFILE_PROFILE_IDX_POST_SIZR.replace(
+            Comm_Param.POST_SIZE,
+            cur_view_page.toString()
+        )
+        url = url.replace(Comm_Param.PROFILE_INDEX, cur_profile_index.toString())
+        val header = getHttpHeader()
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            header,
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 실현 성과 상세 조회
+     */
+    fun achivementPostDetail(
+        post_index: Int,
+        callback: DAHttpCallback
+    ) {
+        val url =
+            Comm_Param.URL_ACHIVEMENT_POSTS_POST_IDX.replace(
+                Comm_Param.POST_INDEX,
+                post_index.toString()
+            )
+        val header = getHttpHeader()
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            header,
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 실현 성과 수정
+     */
+    fun editAchivementPost(
+        post_index: Int,
+        title: String,
+        content: String,
+        thumbnail_image: String,
+        tags: ArrayList<String>,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_ACHIVEMENT_POSTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_index.toString()
+        )
+        val header = getHttpHeader()
+        val params = DAHttpParams()
+        params.put("title", title)
+        params.put("content", content)
+        params.put("thumbnail_image", thumbnail_image)
+        // todo : 태그 확인 필요
+
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            header,
+            null,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 실현 성과 삭제
+     */
+    fun deleteAchivementPost(
+        post_index: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_ACHIVEMENT_POSTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_index.toString()
+        )
+        val header = getHttpHeader()
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            header,
+            null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 대표 성과 등록
+     */
+    fun uploadBestPost(
+        post_idx: Int,
+        best_post_number: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("post_idx", post_idx)
+        params.put("best_post_number", best_post_number)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_BEST_POST,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 대표성과 내리기
+     */
+    fun uploadBestPost(
+        best_post_number: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_BEST_POST_NUMBER.replace(
+            Comm_Param.BEST_POST_NUMBER,
+            best_post_number.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 발전 계획 페이지 조회
+     */
+    fun getBlueprint(
+        cur_profile_index: Int,
+        callback: DAHttpCallback
+    ) {
+        // todo : 아마 profile Index 가 필요할거 같습니다.
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_BLUEPRINT,
+            getHttpHeader(),
+            null,
+            callback
+        )
     }
 
 

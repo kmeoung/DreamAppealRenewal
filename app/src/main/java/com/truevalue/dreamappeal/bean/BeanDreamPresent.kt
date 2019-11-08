@@ -1,7 +1,6 @@
 package com.truevalue.dreamappeal.bean
 
 data class BeanDreamPresent(var idx : Int,
-                            var user_idx : Int,
                             var profile_order : Int,
                             var exp : Int,
                             var point : Int,
