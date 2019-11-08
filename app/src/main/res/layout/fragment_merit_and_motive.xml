@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_seven"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+    <!--툴바-->
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    <!--툴바-->
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp"
+                    android:background="@color/white_seven" />
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_eight" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="195dp"
+                    android:gravity="center_vertical|left"
+                    android:orientation="vertical"
+                    android:paddingLeft="21dp"
+                    android:paddingTop="17.7dp"
+                    android:paddingRight="21dp"
+                    android:paddingBottom="17.7dp">
+
+                <EditText
+                        android:id="@+id/et_merit_and_motive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="left|center_vertical"
+                        android:hint="@string/str_input_text_hint"
+                        android:lineSpacingExtra="11dp"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/warm_grey"
+                        android:textSize="15.7sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_eight" />
+
+            <!--Divider-->
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp"
+                    android:background="@color/white_seven" />
+            <!--Divider-->
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_eight" />
+
+
+            <!--예시 화면-->
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                <LinearLayout
+                        android:id="@+id/ll_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_round_rectangle_black"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                    <TextView
+                            android:id="@+id/tv_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text="10 / 10"
+                            android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <!--예시 화면-->
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_eight" />
+
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp"
+                    android:background="@color/white_seven" />
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_eight" />
+
+
+            <RelativeLayout
+                    android:id="@+id/rl_ad"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+                <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/pager_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorAccent" />
+
+                <LinearLayout
+                        android:id="@+id/ll_ad_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/bg_round_rectangle_black"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                    <TextView
+                            android:id="@+id/tv_ad_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

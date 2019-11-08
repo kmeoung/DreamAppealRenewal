@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
@@ -24,9 +25,15 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentProfile : BaseFragment() {
 
-    private var mFragments: Array<BaseFragment>? = null
-    private var mTabs: Array<String>? = null
-    private var pagerAdapter: ViewPagerAdapter? = null
+    private var mFragments: Array<BaseFragment>?
+    private var mTabs: Array<String>?
+    private var pagerAdapter: ViewPagerAdapter?
+
+    init {
+        mFragments = null
+        mTabs = null
+        pagerAdapter = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +59,12 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun initAdapter() {
-        pagerAdapter = ViewPagerAdapter(childFragmentManager)
+        if(pagerAdapter == null) pagerAdapter = ViewPagerAdapter(childFragmentManager)
         var viewpager: ViewPager = vp_profile
         viewpager.adapter = pagerAdapter
         var tabs: TabLayout = tl_profile
         tabs.setupWithViewPager(viewpager)
+        viewpager.offscreenPageLimit = 2
     }
 
     private fun initTabs() {
@@ -68,7 +76,6 @@ class FragmentProfile : BaseFragment() {
     }
 
     private fun initFragments() {
-        // todo : 조금 더 좋은 방법이 있는지 확인 필요
         mFragments = arrayOf(
             FragmentDreamPresent(),
             FragmentPerformance(),
@@ -99,7 +106,7 @@ class FragmentProfile : BaseFragment() {
      */
     private inner class ViewPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
         override fun getCount(): Int = mFragments!!.size
-        override fun getItem(position: Int): Fragment = mFragments!!.get(position)
+        override fun getItem(position: Int): Fragment = mFragments!![position]
         @Nullable
         override fun getPageTitle(position: Int): CharSequence = mTabs!![position]
     }

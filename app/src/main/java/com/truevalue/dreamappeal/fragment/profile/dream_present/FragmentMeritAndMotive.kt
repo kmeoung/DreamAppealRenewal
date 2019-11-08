@@ -15,24 +15,25 @@ import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_dream_present.*
-import kotlinx.android.synthetic.main.fragment_dream_title.*
+import kotlinx.android.synthetic.main.fragment_dream_description.*
+import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
 import okhttp3.Call
+import org.json.JSONArray
+import org.json.JSONObject
 
-class FragmentDreamTitle : BaseFragment() {
+class FragmentMeritAndMotive : BaseFragment() {
 
-    private var mBean : BeanDreamPresent? = null
+    private var mBean: BeanDreamPresent? = null
 
-    companion object{
+    companion object {
 
         /**
          * 데이터 미리 저장
          */
-        fun newInstance(bean : BeanDreamPresent?) : FragmentDreamTitle{
-            val fragment = FragmentDreamTitle()
+        fun newInstance(bean: BeanDreamPresent?): FragmentMeritAndMotive {
+            val fragment = FragmentMeritAndMotive()
             fragment.mBean = bean
             return fragment
         }
@@ -42,7 +43,7 @@ class FragmentDreamTitle : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_dream_title, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_merit_and_motive, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,35 +65,17 @@ class FragmentDreamTitle : BaseFragment() {
         tv_text_btn.text = getString(R.string.str_commit)
 
         // Default View 키워드 색상 변경
-        val default_dream_title = getString(R.string.str_default_dream_title)
+        val default_merit = getString(R.string.str_default_merit)
+        val default_morive = getString(R.string.str_default_motive)
 
-        var spDreamTitle = Utils.replaceTextColor(
-            context,
-            default_dream_title,
-            getString(R.string.str_designation)
-        )
+        var spMerit = Utils.replaceTextColor(context, default_merit, getString(R.string.str_merit))
+        var spMotive =
+            Utils.replaceTextColor(context, default_morive, getString(R.string.str_motive))
 
-        tv_title.text = spDreamTitle
+        tv_title.text = TextUtils.concat(spMerit, " ", spMotive)
 
-        // 하이라이팅 설정
-        val title_highlight = getString(R.string.str_dream_title_info_highlight)
-        tv_dream_title_info.text =
-            Utils.replaceTextColor(context, tv_dream_title_info, title_highlight)
+        et_merit_and_motive.addTextChangedListener(object : TextWatcher {
 
-        et_value_style.addTextChangedListener(object : TextWatcher{
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                initRightBtn()
-            }
-        })
-
-        et_job.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -105,9 +88,8 @@ class FragmentDreamTitle : BaseFragment() {
         })
 
         // 데이터 바인드
-        if(mBean != null){
-            if(!mBean!!.job.isNullOrEmpty()) et_job.setText(mBean!!.job)
-            if(!mBean!!.value_style.isNullOrEmpty()) et_value_style.setText(mBean!!.value_style)
+        if (mBean != null) {
+            if (!mBean!!.meritNmotive.isNullOrEmpty()) et_merit_and_motive.setText(mBean!!.meritNmotive)
         }
     }
 
@@ -117,8 +99,9 @@ class FragmentDreamTitle : BaseFragment() {
     private fun initRightBtn() {
         iv_check.isSelected = if (isAllInput()) false else true
     }
+
     private fun isAllInput(): Boolean {
-        return TextUtils.isEmpty(et_job.text.toString()) || TextUtils.isEmpty(et_value_style.text.toString())
+        return TextUtils.isEmpty(et_merit_and_motive.text.toString())
     }
 
     /**
@@ -129,8 +112,8 @@ class FragmentDreamTitle : BaseFragment() {
             when (it) {
                 iv_close -> activity?.onBackPressed()
                 iv_check -> {
-                    if(iv_check.isSelected){
-                        commitDreamTitle()
+                    if (iv_check.isSelected) {
+                        commitDreamMeritAndMotive()
                     }
                 }
             }
@@ -142,11 +125,15 @@ class FragmentDreamTitle : BaseFragment() {
     /**
      * 꿈 / 꿈소개 업데이트
      */
-    private fun commitDreamTitle(){
-        val job = et_job.text.toString()
-        val valueStyle = et_value_style.text.toString()
-        DAClient.updateProfiles(job,valueStyle,null,null,null,
-            object : DAHttpCallback{
+    private fun commitDreamMeritAndMotive() {
+        val meritAndMotive = et_merit_and_motive.text.toString()
+
+        DAClient.updateProfiles(null,
+            null,
+            null,
+           null,
+            meritAndMotive,
+            object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -154,11 +141,12 @@ class FragmentDreamTitle : BaseFragment() {
                     code: String,
                     message: String
                 ) {
-                    if(context != null){
-                        Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
 
-                        if(code == DAClient.SUCCESS){
-                            if(activity != null) activity!!.onBackPressed()
+                        if (code == DAClient.SUCCESS) {
+                            if (activity != null) activity!!.onBackPressed()
                         }
                     }
                 }

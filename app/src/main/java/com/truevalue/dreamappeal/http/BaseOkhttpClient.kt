@@ -10,7 +10,7 @@ import java.io.IOException
 
 object BaseOkhttpClient : OkHttpClient() {
 
-    private var client: OkHttpClient
+    private val client: OkHttpClient
     private val handler: Handler
 
     init {

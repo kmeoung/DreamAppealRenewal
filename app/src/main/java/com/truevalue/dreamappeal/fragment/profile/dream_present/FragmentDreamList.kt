@@ -85,7 +85,7 @@ class FragmentDreamList : BaseFragment() {
                 }
                 iv_edit -> {
                     isEdit = !isEdit
-                    // todo : 추가 작업 필요
+                    mAdapter!!.notifyDataSetChanged()
                 }
                 (activity as ActivityMain).iv_back_blue -> {
                     activity?.onBackPressed()
@@ -223,6 +223,7 @@ class FragmentDreamList : BaseFragment() {
                 if (bean.idx == Comm_Prefs.getUserProfileIndex()) {
                     ctlDreamListItem.background =
                         resources.getDrawable(R.drawable.bg_empty_rectangle_blue_2)
+                    ivDelete.visibility = GONE
                 } else {
                     if (isEdit) ivDelete.visibility = VISIBLE
                     else ivDelete.visibility = GONE

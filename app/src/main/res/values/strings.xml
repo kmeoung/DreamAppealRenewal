@@ -35,8 +35,9 @@
     <string name="str_action_post">실천</string>
     <string name="str_add_follow">+팔로우</string>
 
+
     <string name="str_default_dream_title">내 꿈에 특색있는 명칭 달기</string>
-    <string name="str_default_dream_description">핵심문장으로 꿈 설명하기</string>
+    <string name="str_default_dream_description">핵심 문장으로 꿈 설명하기</string>
     <string name="str_default_merit_and_motive">꿈의 매력과 계기 표현하기</string>
     <string name="str_default_merit">꿈의 매력과</string>
     <string name="str_default_motive">계기 표현하기</string>
@@ -102,6 +103,12 @@
 
     <string name="str_dream_title_info">내 꿈에 특색 있는 명칭을 달아주세요</string>
     <string name="str_dream_title_info_highlight">특색 있는</string>
+
+    <string name="str_dream_description_info">한 문장으로 어떤 사람일까?</string>
+    <string name="str_dream_description_highlight">한 문장</string>
+
+    <string name="str_dream_description_detail_info">구체적으로 어떤 일을 하는 걸까??</string>
+    <string name="str_dream_description_detail_highlight">구체적</string>
 
     <string name="str_input_text_hint">입력해주세요</string>
 

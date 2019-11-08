@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.http
 
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -317,7 +318,7 @@ object DAClient {
         job: String?,
         value_style: String?,
         description: String?,
-        description_spec: JSONObject?,
+        description_spec: JSONArray?,
         meritNmotive: String?,
         callback: DAHttpCallback
     ) {

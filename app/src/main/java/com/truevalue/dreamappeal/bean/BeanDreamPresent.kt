@@ -18,4 +18,5 @@ data class BeanDreamPresent(var idx : Int,
                             var comment_count : Int,
                             var like_count : Int,
                             var status : Boolean,
-                            var level : Int)
+                            var level : Int,
+                            var descriptions: ArrayList<String>)

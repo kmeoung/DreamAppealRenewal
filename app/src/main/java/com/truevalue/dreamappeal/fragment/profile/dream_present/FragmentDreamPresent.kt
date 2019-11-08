@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import kotlin.math.max
 
 class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
@@ -45,23 +47,26 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Init Adapter
+        initAdapter()
+        // 초기 데이터 설정
+        bindData()
         // View 초기화
         initView()
         // 클릭 Listener
         onClickView()
-        // todo : 이 친구 간과할수가없음
-        if (mAdapter == null) {
+        if (mBean == null) {
             if (Comm_Prefs.getUserProfileIndex() > -1) {
                 getProfile()
             } else {
                 addDreamProfile()
             }
         }
-        // Init Adapter
-        initAdapter()
+
         // bind Temp Data
-        bindTempData()
+//        bindTempData()
     }
+
 
     /**
      * 임시 데이터 Bind
@@ -144,6 +149,11 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     private fun getProfile() {
         DAClient.getProfiles(Comm_Prefs.getUserProfileIndex(), object : DAHttpCallback {
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                srl_refresh.isRefreshing = false
+            }
+
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -151,11 +161,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 code: String,
                 message: String
             ) {
+                srl_refresh.isRefreshing = false
                 if (context != null) {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
                         .show()
-
-                    srl_refresh.isRefreshing = false
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val profile = json.getJSONObject("profile")
@@ -165,55 +174,81 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             BeanDreamPresent::class.java
                         )
                         if (mBean != null) {
-                            val bean = mBean!!
-                            tv_dream_level.text = String.format("LV.%02d", bean.level)
-                            tv_dream_name.text = when (bean.profile_order) {
-                                1 -> getString(R.string.str_first_dream)
-                                2 -> getString(R.string.str_second_dream)
-                                3 -> getString(R.string.str_third_dream)
-                                4 -> getString(R.string.str_forth_dream)
-                                5 -> getString(R.string.str_fifth_dream)
-                                6 -> getString(R.string.str_sixth_dream)
-                                7 -> getString(R.string.str_seventh_dream)
-                                8 -> getString(R.string.str_eighth_dream)
-                                9 -> getString(R.string.str_ninth_dream)
-                                10 -> getString(R.string.str_tenth_dream)
-                                else -> getString(R.string.str_first_dream)
-                            }
-
-                            if (bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()) {
-                                tv_init_dream_title.visibility = VISIBLE
-                            } else {
-                                tv_init_dream_title.visibility = GONE
-
-                                tv_value_style.text = bean.value_style
-                                tv_job.text = bean.job
-                            }
-
-                            if (bean.description.isNullOrEmpty()) {
-                                tv_init_dream_description.visibility = GONE
-                            } else tv_dream_description.text = bean.description
-
-                            if (bean.meritNmotive.isNullOrEmpty()) tv_init_merit_and_motive.visibility =
-                                VISIBLE
-                            else tv_init_merit_and_motive.visibility = GONE
-
-                            tv_merit_and_motive.text = bean.meritNmotive
-
+                            mBean!!.descriptions = ArrayList()
                             try {
-                                val description_spec = profile.getJSONArray("description_spec");
-                                if (description_spec.length() < 1) {
-                                    tv_init_dream_description.visibility = GONE
+                                val description_spec = profile.getJSONArray("description_spec")
+                                for (i in 0 until description_spec.length()) {
+                                    val jsonObject = description_spec.getJSONObject(i)
+                                    val content = jsonObject.getString("content")
+                                    mBean!!.descriptions.add(content)
                                 }
-                            } catch (e: JSONException) {
+                            } catch (e: Exception) {
                                 e.printStackTrace()
-                                tv_init_dream_description.visibility = VISIBLE
+                            } finally {
+                                bindData()
                             }
                         }
                     }
                 }
             }
         })
+    }
+
+    /**
+     * 변수에 저장된 데이터를 다시 Binding 처리
+     */
+    private fun bindData() {
+        if (mBean != null) {
+            val bean = mBean!!
+            tv_dream_level.text = String.format("LV.%02d", bean.level)
+            tv_dream_name.text = when (bean.profile_order) {
+                1 -> getString(R.string.str_first_dream)
+                2 -> getString(R.string.str_second_dream)
+                3 -> getString(R.string.str_third_dream)
+                4 -> getString(R.string.str_forth_dream)
+                5 -> getString(R.string.str_fifth_dream)
+                6 -> getString(R.string.str_sixth_dream)
+                7 -> getString(R.string.str_seventh_dream)
+                8 -> getString(R.string.str_eighth_dream)
+                9 -> getString(R.string.str_ninth_dream)
+                10 -> getString(R.string.str_tenth_dream)
+                else -> getString(R.string.str_first_dream)
+            }
+
+            if (bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()) {
+                tv_init_dream_title.visibility = VISIBLE
+            } else {
+                tv_init_dream_title.visibility = GONE
+
+                tv_value_style.text = bean.value_style
+                tv_job.text = bean.job
+            }
+
+            if (bean.description.isNullOrEmpty()) {
+                tv_init_dream_description.visibility = VISIBLE
+            } else {
+                tv_dream_description.text = bean.description
+            }
+
+            if (bean.meritNmotive.isNullOrEmpty()) tv_init_merit_and_motive.visibility =
+                VISIBLE
+            else tv_init_merit_and_motive.visibility = GONE
+
+            tv_merit_and_motive.text = bean.meritNmotive
+
+            if (mAdapter != null) mAdapter!!.clear()
+
+            if (bean.descriptions.size > 0) {
+                tv_init_dream_description.visibility = GONE
+
+                for (i in 0 until bean.descriptions.size) {
+                    val content = bean.descriptions[i]
+                    mAdapter!!.add(content)
+                }
+            } else {
+                tv_init_dream_description.visibility = VISIBLE
+            }
+        }
     }
 
     /**
@@ -243,10 +278,18 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 tv_dream_description,
                 tv_init_dream_description -> {
                     // replace to Dream Description
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentDreamDescription.newInstance(mBean),
+                        true
+                    )
                 }
                 tv_merit_and_motive,
                 tv_init_merit_and_motive -> {
                     // replace to Merit and Motive
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentMeritAndMotive.newInstance(mBean),
+                        true
+                    )
                 }
                 btn_dream_description_more -> {
                     // Expend Description View
@@ -297,8 +340,14 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
         if (mAdapter != null) {
-            // todo : Data Class 파일
-//            var any = mAdapter!!.mArray[i]
+            val content: String = mAdapter!!.mArray[i] as String
+            h.getItemView<TextView>(R.id.tv_contents).text = content
+            h.itemView.setOnClickListener(View.OnClickListener {
+                (activity as ActivityMain).replaceFragment(
+                    FragmentDreamDescription.newInstance(mBean),
+                    true
+                )
+            })
         }
     }
 
@@ -312,7 +361,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     override fun onRefresh() {
         getProfile()
-        srl_refresh.isRefreshing = false
     }
 }
 

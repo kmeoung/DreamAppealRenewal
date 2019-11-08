@@ -3,11 +3,16 @@ package com.truevalue.dreamappeal.base
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import java.util.*
+import kotlin.collections.ArrayList
 
 class BaseRecyclerViewAdapter(listener: IORecyclerViewListener) :
     RecyclerView.Adapter<BaseViewHolder>() {
     private val mListener = listener
-    val mArray = ArrayList<Any>()
+    val mArray : ArrayList<Any>
+
+    init {
+        mArray = java.util.ArrayList<Any>()
+    }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): BaseViewHolder {
         return mListener.onCreateViewHolder(p0, p1)
