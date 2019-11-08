@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentProfile : BaseFragment() {
+
     private var mFragments: Array<BaseFragment>? = null
     private var mTabs: Array<String>? = null
     private var pagerAdapter: ViewPagerAdapter? = null

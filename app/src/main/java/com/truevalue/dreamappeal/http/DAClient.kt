@@ -346,11 +346,15 @@ object DAClient {
      * DELETE
      * 내 꿈 프로필 삭제
      */
-    fun deleteProfiles(callback: DAHttpCallback) {
+    fun deleteProfiles(profile_idx: Int,
+                       callback: DAHttpCallback) {
+
+        val url = Comm_Param.URL_PROFILES_CUR_PROFILE_IDX.replace(Comm_Param.PROFILE_INDEX,profile_idx.toString())
+
         val header = getHttpHeader()
         BaseOkhttpClient.request(
             HttpType.DELETE,
-            Comm_Param.URL_PROFILES,
+            url,
             header,
             null,
             callback
