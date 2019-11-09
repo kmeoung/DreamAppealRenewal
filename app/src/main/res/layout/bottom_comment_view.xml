@@ -122,7 +122,8 @@
                             android:gravity="center"
                             android:paddingBottom="3dp"
                             android:textColor="@color/black"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:text=""/>
 
 
                 </RelativeLayout>

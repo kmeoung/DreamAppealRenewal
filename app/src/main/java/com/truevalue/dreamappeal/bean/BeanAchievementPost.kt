@@ -1,6 +1,6 @@
 package com.truevalue.dreamappeal.bean
 
-data class BeanAchivementPost(var idx : Int,
+data class BeanAchievementPost(var idx : Int,
                               var profile_idx : Int,
                               var title : String,
                               var content : String,

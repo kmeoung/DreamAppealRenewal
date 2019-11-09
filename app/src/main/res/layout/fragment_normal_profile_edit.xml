@@ -7,14 +7,6 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-    <include
-            android:id="@+id/include"
-            layout="@layout/action_bar_other"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
             android:id="@+id/name"
@@ -27,7 +19,7 @@
             android:textColor="@color/azure"
             android:textSize="14.8sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
             android:id="@+id/nickname"

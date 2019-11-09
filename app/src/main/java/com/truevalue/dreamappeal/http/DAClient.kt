@@ -56,7 +56,7 @@ object DAClient {
      * GET
      * 다른 유저 정보 가져오기
      */
-    fun getOtherUserData(
+    fun getAnotherUserData(
         profile_idx: Int
         , callback: DAHttpCallback
     ) {
@@ -405,12 +405,12 @@ object DAClient {
      * GET
      * 주요 성과 페이지 조회
      */
-    fun achivementPostMain(
+    fun achievementPostMain(
         cur_profile_index: Int,
         cur_view_page: Int,
         callback: DAHttpCallback
     ) {
-        var url = Comm_Param.URL_ACHIVEMENT_POSTS_PROFILE_PROFILE_IDX_POST_SIZR.replace(
+        var url = Comm_Param.URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX_POST_SIZE.replace(
             Comm_Param.POST_SIZE,
             cur_view_page.toString()
         )
@@ -430,12 +430,12 @@ object DAClient {
      * GET
      * 실현 성과 상세 조회
      */
-    fun achivementPostDetail(
+    fun achievementPostDetail(
         post_index: Int,
         callback: DAHttpCallback
     ) {
         val url =
-            Comm_Param.URL_ACHIVEMENT_POSTS_POST_IDX.replace(
+            Comm_Param.URL_ACHIEVEMENT_POSTS_POST_IDX.replace(
                 Comm_Param.POST_INDEX,
                 post_index.toString()
             )
@@ -454,7 +454,7 @@ object DAClient {
      * PATCH
      * 실현 성과 수정
      */
-    fun editAchivementPost(
+    fun editachievementPost(
         post_index: Int,
         title: String,
         content: String,
@@ -462,7 +462,7 @@ object DAClient {
         tags: ArrayList<String>,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_ACHIVEMENT_POSTS_POST_IDX.replace(
+        val url = Comm_Param.URL_ACHIEVEMENT_POSTS_POST_IDX.replace(
             Comm_Param.POST_INDEX,
             post_index.toString()
         )
@@ -487,11 +487,11 @@ object DAClient {
      * DELETE
      * 실현 성과 삭제
      */
-    fun deleteAchivementPost(
+    fun deleteachievementPost(
         post_index: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_ACHIVEMENT_POSTS_POST_IDX.replace(
+        val url = Comm_Param.URL_ACHIEVEMENT_POSTS_POST_IDX.replace(
             Comm_Param.POST_INDEX,
             post_index.toString()
         )
@@ -560,10 +560,77 @@ object DAClient {
         callback: DAHttpCallback
     ) {
         // todo : 아마 profile Index 가 필요할거 같습니다.
+        val url = Comm_Param.URL_BLUEPRINT_PRFOILE_CUR_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            cur_profile_index.toString()
+        )
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 팔로우 / 언팔로우
+     */
+    fun follow(
+        cur_profile_index: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_FOLLOW_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            cur_profile_index.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+    }
+
+    /**
+     * GET
+     * 나를 팔로워한 사람들 리스트
+     */
+    fun getFollowerList(
+        cur_profile_index: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_FOLLOW_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            cur_profile_index.toString()
+        )
 
         BaseOkhttpClient.request(
             HttpType.GET,
-            Comm_Param.URL_BLUEPRINT,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+    }
+
+    /**
+     * GET
+     * 내가 팔로우한 사람들 리스트
+     */
+    fun getFollowingList(
+        callback: DAHttpCallback
+    ) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_FOLLOW,
             getHttpHeader(),
             null,
             callback

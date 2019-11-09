@@ -4,14 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.View.GONE
 import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
-import com.truevalue.dreamappeal.fragment.profile.FragmentNormalProfile
+import com.truevalue.dreamappeal.fragment.profile.FragmentMyProfile
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
@@ -159,13 +158,21 @@ class ActivityMain : BaseActivity() {
 //                    startActivity(intent)
 //                    finish()
                     // todo : 임시
-                    replaceFragment(FragmentNormalProfile(),true)
+                    val intent = Intent(this@ActivityMain,ActivityMyProfileContainer::class.java)
+                    startActivity(intent)
+                    dl_drawer.closeDrawer(Gravity.RIGHT)
+                }
+                ll_following->{
+                    val intent = Intent(this@ActivityMain, ActivityFollow::class.java)
+                    intent.putExtra(ActivityFollow.EXTRA_VIEW_TYPE,ActivityFollow.VIEW_TYPE_FOLLOWING)
+                    startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
             }
         }
         ll_logout.setOnClickListener(listener)
         ll_profile.setOnClickListener(listener)
+        ll_following.setOnClickListener(listener)
     }
 
     /**

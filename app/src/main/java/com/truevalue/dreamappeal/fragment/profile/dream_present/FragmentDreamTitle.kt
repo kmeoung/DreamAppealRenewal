@@ -10,15 +10,14 @@ import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_dream_present.*
 import kotlinx.android.synthetic.main.fragment_dream_title.*
 import okhttp3.Call
 

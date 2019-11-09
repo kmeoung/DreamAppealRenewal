@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.OnSingleClick
 import com.truevalue.dreamappeal.http.DAClient

@@ -1,7 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,15 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanDreamList
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
-import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_dream_list.*
@@ -215,7 +210,7 @@ class FragmentDreamList : BaseFragment() {
                 val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
                 val tvJob = h.getItemView<TextView>(R.id.tv_job)
                 val tvLevel = h.getItemView<TextView>(R.id.tv_level)
-                val tvAchivement = h.getItemView<TextView>(R.id.tv_achivement)
+                val tvachievement = h.getItemView<TextView>(R.id.tv_achievement)
                 val tvAction = h.getItemView<TextView>(R.id.tv_action)
                 val tvExp = h.getItemView<TextView>(R.id.tv_exp)
 
@@ -240,7 +235,7 @@ class FragmentDreamList : BaseFragment() {
                 tvValueStyle.text = bean.value_style
                 tvJob.text = bean.job
                 tvLevel.text = String.format("Lv.%02d", bean.level)
-                tvAchivement.text = bean.achievement_post_count.toString() + "회"
+                tvachievement.text = bean.achievement_post_count.toString() + "회"
                 tvAction.text = bean.action_post_count.toString() + "회"
                 tvExp.text = String.format("%d / %d", bean.exp, bean.max_exp)
             }

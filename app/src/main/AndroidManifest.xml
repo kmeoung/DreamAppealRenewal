@@ -68,6 +68,18 @@
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 
+        <!-- 팔로워 -->
+        <activity
+                android:name=".activity.ActivityFollow"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize" />
+
+        <!-- 내 프로필 -->
+        <activity
+                android:name=".activity.ActivityMyProfileContainer"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

@@ -16,13 +16,10 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.BeanAchivementPost
+import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.bean.BeanAchievementPost
 import com.truevalue.dreamappeal.bean.BeanBestPost
-import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
+import com.truevalue.dreamappeal.bean.BeanPerformance
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -41,6 +38,9 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     private var mPagerAdapter: ViewPagerAdapter? = null
 
     private var mCurrentPage = 0
+    private var mBestPostList: ArrayList<BeanBestPost?>? = null
+
+    private var mBeanPerformance: BeanPerformance? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,15 +50,18 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // Data 초기화
+        initData()
         // View 초기화
         initView()
         // RecyclerView Adapter 초기화
         initAdapter()
+        // bind Data
+        bindData()
         // Bind Temp Data
 //        bindTempData()
         // 주요 성과 가져오기
-        getAchivementPostMain()
+        getAchievementPostMain()
     }
 
     override fun onResume() {
@@ -71,6 +74,32 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         super.onPause()
         // 자동 스크롤 종료
         stopPageRolling()
+    }
+
+    /**
+     * 있는 데이터 집어넣기
+     */
+    private fun bindData() {
+        if (mBeanPerformance != null) {
+            mBestPostList!!.clear()
+            for(i in 0 until mBeanPerformance!!.best_posts.size){
+                mBestPostList!!.add(mBeanPerformance!!.best_posts[i])
+            }
+
+            mAdapter!!.clear()
+            for (i in 0 until mBeanPerformance!!.achievement_posts.size) {
+                mAdapter!!.add(mBeanPerformance!!.achievement_posts[i])
+            }
+        }
+    }
+
+    /**
+     * Data 초기화
+     */
+    private fun initData() {
+        if (mBestPostList == null) {
+            mBestPostList = ArrayList<BeanBestPost?>()
+        }
     }
 
     /**
@@ -117,10 +146,10 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * Http
      * 주요 성과 페이지 조회
      */
-    private fun getAchivementPostMain() {
+    private fun getAchievementPostMain() {
         // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
         val profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.achivementPostMain(profile_idx,
+        DAClient.achievementPostMain(profile_idx,
             mCurrentPage,
             object : DAHttpCallback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -139,49 +168,49 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                     if (context != null) {
                         Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
                             .show()
-                        val json = JSONObject(body)
-                        val profileImage = json.getString("profile_image")
-
-                        val bestPosts = json.getJSONObject("best_posts")
-
-                        try {
-                            val bestPost = bestPosts.getJSONObject("best_post_1")
-                            val bean = Gson().fromJson<BeanBestPost>(
-                                bestPost.toString(),
-                                BeanBestPost::class.java
-                            )
-                        } catch (e: Exception) {
-                        }
-
-                        try {
-                            val bestPost = bestPosts.getJSONObject("best_post_2")
-                            val bean = Gson().fromJson<BeanBestPost>(
-                                bestPost.toString(),
-                                BeanBestPost::class.java
-                            )
-                        } catch (e: Exception) {
-                        }
-
-                        try {
-                            val bestPost = bestPosts.getJSONObject("best_post_3")
-                            val bean = Gson().fromJson<BeanBestPost>(
-                                bestPost.toString(),
-                                BeanBestPost::class.java
-                            )
-                        } catch (e: Exception) {
-                        }
-
-                        val achivementPosts = json.getJSONArray("achivement_posts")
-
-                        for (i in 0 until achivementPosts.length()) {
-                            val bean = Gson().fromJson<BeanAchivementPost>(
-                                achivementPosts.getJSONObject(i).toString(),
-                                BeanAchivementPost::class.java
-                            )
-                        }
-
 
                         if (code == DAClient.SUCCESS) {
+                            mBeanPerformance = BeanPerformance(
+                                null,
+                                ArrayList(), ArrayList()
+                            )
+
+                            val json = JSONObject(body)
+                            val profileImage = json.getString("profile_image")
+
+                            mBeanPerformance!!.profile_image = profileImage
+                            mBeanPerformance!!.best_posts.clear()
+
+
+                            val bestPosts = json.getJSONObject("best_posts")
+                            mBestPostList!!.clear()
+
+                            for (i in 1..3) {
+                                try {
+                                    val bestPost = bestPosts.getJSONObject("best_post_$i")
+                                    val bean = Gson().fromJson<BeanBestPost>(
+                                        bestPost.toString(),
+                                        BeanBestPost::class.java
+                                    )
+                                    mBeanPerformance!!.best_posts.add(bean)
+                                    mBestPostList!!.add(bean)
+                                } catch (e: Exception) {
+                                    mBeanPerformance!!.best_posts.add(null)
+                                    mBestPostList!!.add(null)
+                                }
+                            }
+
+                            val achievementPosts = json.getJSONArray("achievement_posts")
+                            mAdapter!!.clear()
+                            mBeanPerformance!!.achievement_posts.clear()
+                            for (i in 0 until achievementPosts.length()) {
+                                val bean = Gson().fromJson<BeanAchievementPost>(
+                                    achievementPosts.getJSONObject(i).toString(),
+                                    BeanAchievementPost::class.java
+                                )
+                                mAdapter!!.add(bean)
+                                mBeanPerformance!!.achievement_posts.add(bean)
+                            }
 
                         }
                     }
@@ -206,7 +235,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * RecyclerView Create View Holder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
-        BaseViewHolder.newInstance(R.layout.listitem_achivement_post, parent, false)
+        BaseViewHolder.newInstance(R.layout.listitem_achievement_post, parent, false)
 
     /**
      * RecyclerView Bind View Holder
@@ -228,7 +257,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      */
     override fun onRefresh() {
         // 여기다가 서버요청
-
+        getAchievementPostMain()
     }
 
     /**
@@ -293,26 +322,33 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
         @NonNull
         override fun instantiateItem(@NonNull container: ViewGroup, position: Int): Any {
-            val view = mInflater.inflate(R.layout.layout_achivement, container, false)
+            val view = mInflater.inflate(R.layout.layout_achievement, container, false)
             val tvTitle = view.findViewById<TextView>(R.id.tv_title)
             tvTitle.text = getString(R.string.str_best_performance) + " " + (position + 1)
-//            if (mBestPostList.size > position && mBestPostList.get(position) != null) {
-//                val bean = mBestPostList.get(position)
-//                val tvBestPostAchivement = view.findViewById(R.id.tv_best_achivement)
-//                tvBestPostAchivement.setTextBtn(bean.getTitle())
-//                view.setOnClickListener(View.OnClickListener {
-//                    val intent = Intent(context, ActivityBestAchivementDetail::class.java)
-//                    intent.putExtra(
-//                        ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_INDEX,
-//                        bean.getIdx()
-//                    )
-//                    intent.putExtra(
-//                        ActivityBestAchivementDetail.EXTRA_BEST_ACHIVEMENT_BEST_INDEX,
-//                        position + 1
-//                    )
-//                    startActivityForResult(intent, FragmentMain.REQUEST_PERFORMANCE_BEST_ACHIVEMENT)
-//                })
-//            }
+            if (mBestPostList != null) {
+                if (mBestPostList!!.size > position && mBestPostList!![position] != null) {
+                    val bean = mBestPostList!![position]!!
+                    val tvBestPostachievement =
+                        view.findViewById<TextView>(R.id.tv_best_achievement)
+                    tvBestPostachievement.text = bean.title
+                    view.setOnClickListener(View.OnClickListener {
+                        // todo : 상세 이동
+//                        val intent = Intent(context, ActivityBestachievementDetail::class.java)
+//                        intent.putExtra(
+//                            ActivityBestachievementDetail.EXTRA_BEST_achievement_INDEX,
+//                            bean.getIdx()
+//                        )
+//                        intent.putExtra(
+//                            ActivityBestachievementDetail.EXTRA_BEST_achievement_BEST_INDEX,
+//                            position + 1
+//                        )
+//                        startActivityForResult(
+//                            intent,
+//                            FragmentMain.REQUEST_PERFORMANCE_BEST_achievement
+//                        )
+                    })
+                }
+            }
             container.addView(view)
             return view
         }

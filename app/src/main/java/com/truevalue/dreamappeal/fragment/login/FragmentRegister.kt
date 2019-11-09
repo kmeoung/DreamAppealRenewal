@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanRegister
 import com.truevalue.dreamappeal.http.DAClient
@@ -18,7 +19,6 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_login.*
-import kotlinx.android.synthetic.main.fragment_normal_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_register.et_id
 import kotlinx.android.synthetic.main.fragment_register.et_password

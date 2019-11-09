@@ -31,7 +31,7 @@
     <string name="str_agree_and_start">동의 및 시작</string>
 
     <string name="str_follower">팔로워</string>
-    <string name="str_achivement_post">성과</string>
+    <string name="str_achievement_post">성과</string>
     <string name="str_action_post">실천</string>
     <string name="str_add_follow">+팔로우</string>
 
@@ -42,6 +42,7 @@
     <string name="str_default_merit">꿈의 매력과</string>
     <string name="str_default_motive">계기 표현하기</string>
     <string name="str_default_ability_and_opportunity">꿈에 필요한 능력과 기회 정리하기</string>
+    <string name="str_default_object">능력/기회를 위한 실천목표를 등록해주세요</string>
     <string name="str_default_ability">꿈에 필요한 능력과</string>
     <string name="str_default_oppotunity">기회 정리하기</string>
 
@@ -137,6 +138,7 @@
 
     <string name="str_normal_profile">일반 프로필</string>
     <string name="str_normal_prifile_info">기본정보</string>
+    <string name="str_normal_edit_prifile">기본정보 수정</string>
     <string name="str_nickname">별명</string>
     <string name="str_age">나이</string>
     <string name="str_address">거주지</string>
@@ -192,4 +194,5 @@
 
     <string name="str_yes">네</string>
     <string name="str_no">아니오</string>
+    <string name="str_none">없음</string>
 </resources>

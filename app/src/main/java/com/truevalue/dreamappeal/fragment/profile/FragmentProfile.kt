@@ -11,17 +11,21 @@ import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentStatePagerAdapter
+import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
+import com.truevalue.dreamappeal.http.DAClient
+import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import okhttp3.Call
 
 class FragmentProfile : BaseFragment() {
 
@@ -83,6 +87,28 @@ class FragmentProfile : BaseFragment() {
         )
     }
 
+    private fun showDialog(){
+        val profile_idx = Comm_Prefs.getUserProfileIndex()
+
+        DAClient.getAnotherUserData(profile_idx,object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null) {
+                    Toast.makeText(context!!.applicationContext,message, Toast.LENGTH_SHORT).show()
+//                    val dialog = DialogAnotherProfile(context!!, null)
+//                    dialog.show()
+                }
+            }
+        })
+
+
+    }
+
     /**
      * View Click Listener
      */
@@ -91,8 +117,7 @@ class FragmentProfile : BaseFragment() {
             when (it) {
                 iv_menu -> (activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
                 tv_title -> {
-                    val dialog = DialogAnotherProfile(context!!)
-                    dialog.show()
+                    showDialog()
                 }
             }
         }

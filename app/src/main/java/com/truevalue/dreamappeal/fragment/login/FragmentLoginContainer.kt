@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
-import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login_container.*
 

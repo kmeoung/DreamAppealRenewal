@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanFindPassword
 import com.truevalue.dreamappeal.bean.BeanRegister

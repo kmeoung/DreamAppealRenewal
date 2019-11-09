@@ -21,7 +21,7 @@
             android:layout_marginStart="13dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_group"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -51,19 +51,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/nanum_square_round_l"
+                android:text="@string/str_group"
                 android:textColor="@color/black"
-                android:textSize="12.3dp"
-                android:text="@string/str_group" />
+                android:textSize="12.3dp" />
 
     </LinearLayout>
-
-    <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_edit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

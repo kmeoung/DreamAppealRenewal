@@ -48,7 +48,7 @@
                             android:textSize="16sp" />
 
                     <ImageView
-                            android:id="@+id/iv_add_achivement"
+                            android:id="@+id/iv_add_achievement"
                             android:layout_width="48dp"
                             android:layout_height="match_parent"
                             android:scaleX="0.5"

@@ -90,21 +90,21 @@
             tools:text="LV.99" />
 
     <TextView
-            android:id="@+id/achivement"
+            android:id="@+id/achievement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_square_round_r"
             android:gravity="center_horizontal"
-            android:text="@string/str_achivement_post"
+            android:text="@string/str_achievement_post"
             android:textColor="@color/brown_grey"
             android:textSize="13.5sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_level"
             app:layout_constraintStart_toStartOf="@+id/tv_job"
             app:layout_constraintTop_toTopOf="@+id/tv_level"
-            tools:text="@string/str_achivement_post" />
+            tools:text="@string/str_achievement_post" />
 
     <TextView
-            android:id="@+id/tv_achivement"
+            android:id="@+id/tv_achievement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -112,9 +112,9 @@
             android:gravity="center_horizontal"
             android:textColor="@color/azure"
             android:textSize="13.8sp"
-            app:layout_constraintBottom_toBottomOf="@+id/achivement"
-            app:layout_constraintStart_toEndOf="@+id/achivement"
-            app:layout_constraintTop_toTopOf="@+id/achivement"
+            app:layout_constraintBottom_toBottomOf="@+id/achievement"
+            app:layout_constraintStart_toEndOf="@+id/achievement"
+            app:layout_constraintTop_toTopOf="@+id/achievement"
             tools:text="3회" />
 
 
@@ -128,9 +128,9 @@
             android:text="@string/str_action_post"
             android:textColor="@color/brown_grey"
             android:textSize="13.5sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_achivement"
-            app:layout_constraintStart_toEndOf="@+id/tv_achivement"
-            app:layout_constraintTop_toTopOf="@id/tv_achivement"
+            app:layout_constraintBottom_toBottomOf="@id/tv_achievement"
+            app:layout_constraintStart_toEndOf="@+id/tv_achievement"
+            app:layout_constraintTop_toTopOf="@id/tv_achievement"
             app:layout_constraintVertical_bias="1.0"
             tools:text="실천" />
 

@@ -1,10 +1,10 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -12,14 +12,11 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityFollow
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -27,10 +24,8 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import kotlin.math.max
 
 class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
@@ -206,7 +201,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 //            tv_follwer.text = bean.
             tv_cheering.text = bean.like_count.toString()
             tv_comment.text = bean.comment_count.toString()
-            tv_achivement_post_count.text = bean.achievement_post_count.toString()
+            tv_achievement_post_count.text = bean.achievement_post_count.toString()
             tv_action_post_count.text = bean.action_post_count.toString()
 
             tv_dream_level.text = String.format("LV.%02d", bean.level)
@@ -272,6 +267,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 }
                 ll_follower -> {
                     // replace to Follower
+                    val intent = Intent(context, ActivityFollow::class.java)
+                    intent.putExtra(ActivityFollow.EXTRA_VIEW_TYPE,ActivityFollow.VIEW_TYPE_FOLLOWER)
+                    startActivity(intent)
                 }
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
@@ -359,6 +357,34 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             })
         }
     }
+
+    /**
+     * Http
+     * 팔로우 / 언팔로우
+     */
+    private fun follow(){
+        // todo : 보고있는 profile index 를 여기다가 넣어야 합니다
+        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        DAClient.follow(profile_idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                         // todo : 여기서 팔로우 설정
+                    }
+                }
+            }
+        })
+    }
+
+
 
     /**
      * RecyclerView Item View Type

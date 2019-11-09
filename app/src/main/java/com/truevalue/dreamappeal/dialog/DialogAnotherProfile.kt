@@ -10,11 +10,12 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileInfo
 import kotlinx.android.synthetic.main.dialog_another_profile.*
 
-class DialogAnotherProfile(context: Context) : Dialog(context) {
+class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Dialog(context) {
 
     private val LISTITEM_TYPE_INFO = 0
     private val LISTITEM_TYPE_GROUP = 1
