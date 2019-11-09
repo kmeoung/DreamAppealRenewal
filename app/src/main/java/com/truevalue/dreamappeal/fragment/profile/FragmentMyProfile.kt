@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
 import com.truevalue.dreamappeal.activity.BeanProfileGroup
 import com.truevalue.dreamappeal.base.*
@@ -16,6 +16,7 @@ import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.bean.BeanProfileUserPrivates
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_normal_profile.*
 import okhttp3.Call
@@ -46,7 +47,7 @@ class FragmentMyProfile : BaseFragment() {
         // RecyclerView Adatpr init
         initAdapter()
         // bind Temp Data
-        bindTempData()
+//        bindTempData()
     }
 
     /**
@@ -57,6 +58,7 @@ class FragmentMyProfile : BaseFragment() {
         (activity as ActivityMyProfileContainer).iv_back_black.visibility = View.GONE
         (activity as ActivityMyProfileContainer).iv_back_blue.visibility = View.VISIBLE
         (activity as ActivityMyProfileContainer).iv_check.visibility = View.GONE
+        (activity as ActivityMyProfileContainer).iv_close.visibility = View.GONE
         (activity as ActivityMyProfileContainer).tv_title.text = getString(R.string.str_normal_profile)
     }
 
@@ -68,10 +70,10 @@ class FragmentMyProfile : BaseFragment() {
             when (it) {
                 (activity as ActivityMyProfileContainer).iv_back_blue -> activity!!.onBackPressed()
                 iv_edit_normal_profile -> {
-                    (activity as ActivityMyProfileContainer).replaceFragment(FragmentNormalProfileEdit.newInstance(mBean), true)
+                    (activity as ActivityMyProfileContainer).replaceFragment(FragmentMyProfileEdit.newInstance(mBean), true)
                 }
                 iv_add_group -> {
-
+                    (activity as ActivityMyProfileContainer).replaceFragment(FragmentEditGroup(), true)
                 }
             }
         }
@@ -110,11 +112,13 @@ class FragmentMyProfile : BaseFragment() {
                         val sdf = SimpleDateFormat("yyyy-MM-dd")
                         val date = sdf.parse(bean.birth)
                         // todo : 추후 나이계산
-                        tv_age.text = 1.toString()
-                        tv_gender.text = if(bean.gender == 0) "여" else "남"
+                        tv_age.text = Utils.dateToAge(date).toString()
+                        tv_gender.text = getString(if(bean.gender == 0) R.string.str_female else R.string.str_male)
                         tv_address.text = if(bean.address.isNullOrEmpty()) getString(R.string.str_none) else bean.address
                         tv_email.text = bean.email
+
                         val groups = json.getJSONArray("groups")
+                        mAdapter!!.clear()
                         for (i in 0 until groups.length()){
                             val Object = groups.getJSONObject(i)
                             val group : BeanProfileGroup = Gson().fromJson(Object.toString(),BeanProfileGroup::class.java)
@@ -154,7 +158,10 @@ class FragmentMyProfile : BaseFragment() {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-
+            val bean = mAdapter!!.get(i) as BeanProfileGroup
+            h.getItemView<TextView>(R.id.tv_rank).text = bean.position
+            h.getItemView<TextView>(R.id.tv_group).text = bean.groupName
+            h.getItemView<TextView>(R.id.tv_time).text = "${bean.start_date} ~ ${bean.start_date}"
         }
 
         override fun getItemViewType(i: Int): Int {

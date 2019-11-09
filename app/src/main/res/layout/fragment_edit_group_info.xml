@@ -7,12 +7,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <include
-            android:id="@+id/include3"
-            layout="@layout/action_bar_other"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     <TextView
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
@@ -24,7 +18,7 @@
             android:textColor="@color/azure"
             android:textSize="14.8sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include3" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
             android:id="@+id/group_rank"

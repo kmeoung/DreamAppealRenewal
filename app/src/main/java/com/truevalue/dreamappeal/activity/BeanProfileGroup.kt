@@ -3,7 +3,7 @@ package com.truevalue.dreamappeal.activity
 data class BeanProfileGroup(var group_idx:  Int,
                             var groupName: String,
                             var Class :  Int, //
-                            var position:  Int,
+                            var position:  String,
                             var description: String,
                             var start_date: String,
                             var end_date: String){

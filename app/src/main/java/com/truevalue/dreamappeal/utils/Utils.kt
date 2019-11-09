@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.TextView
 import com.truevalue.dreamappeal.R
+import java.util.*
 import java.util.regex.Pattern
 
 object Utils {
@@ -97,5 +98,16 @@ object Utils {
     ) {
         srl.setOnRefreshListener(listener)
         srl.setColorSchemeResources(R.color.main_blue)
+    }
+
+    /**
+     * 나이 계산하기
+     */
+    fun dateToAge(date : Date) : Int{
+        val cal = Calendar.getInstance()
+        val curYear = cal.get(Calendar.YEAR)
+        cal.time = date
+        val inputYear = cal.get(Calendar.YEAR)
+        return curYear - inputYear + 1
     }
 }

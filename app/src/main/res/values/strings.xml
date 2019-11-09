@@ -87,6 +87,7 @@
     <string name="str_gender">성별</string>
     <string name="str_birthday">생년월일</string>
     <string name="str_year">년도</string>
+    <string name="str_year2">년도</string>
     <string name="str_month">월</string>
     <string name="str_date">일</string>
     <string name="str_email">이메일</string>
@@ -191,6 +192,8 @@
     <string name="str_delete_profile_dialog_contents">프로필을 삭제하시겠습니까?</string>
     <string name="str_error_using_profile">현재 사용중인 프로필은 삭제가 불가능 합니다.</string>
     <string name="str_error_min_profile">최소 1개의 프로필이 있어야 합니다.</string>
+    <string name="str_add_group_info">소속정보 추가</string>
+    <string name="str_edit_group_info">소속정보 수정</string>
 
     <string name="str_yes">네</string>
     <string name="str_no">아니오</string>

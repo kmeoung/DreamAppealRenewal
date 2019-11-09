@@ -1,5 +1,7 @@
 package com.truevalue.dreamappeal.http
 
+import com.google.gson.Gson
+import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import org.json.JSONArray
@@ -50,6 +52,118 @@ object DAClient {
             null,
             callback
         )
+    }
+
+    /**
+     * POST
+     * 유저 그룹 추가하기
+     */
+    fun addUsersGroup(
+        groupName: String,
+        position: String,
+        Class: Int,
+        start_date: String,
+        end_date: String,
+        description: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("groupName", groupName)
+        params.put("position", position)
+        params.put("class", Class)
+        params.put("start_date", start_date)
+        params.put("end_date", end_date)
+        params.put("description", description)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_USERS_GROUP,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 유저 그룹 수정하기
+     */
+    fun editUsersGroup(
+        group_idx : Int,
+        groupName: String,
+        position: String,
+        Class: Int,
+        start_date: String,
+        end_date: String,
+        description: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX,group_idx.toString())
+        val params = DAHttpParams()
+        params.put("groupName", groupName)
+        params.put("position", position)
+        params.put("class", Class)
+        params.put("start_date", start_date)
+        params.put("end_date", end_date)
+        params.put("description", description)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 유저 그룹 삭제
+     */
+    fun deleteUsersGroup(
+        group_idx : Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX,group_idx.toString())
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 내 유저 정보 업데이트
+     */
+    fun updateMyUserData(
+        bean: BeanProfileUser,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("name", bean.name)
+        params.put("nickname", bean.nickname)
+        params.put("gender", bean.gender)
+        params.put("address", bean.address)
+
+        val privates = Gson().toJson(bean.private)
+        params.put("privates", privates)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_USERS,
+            getHttpHeader(),
+            params,
+            callback
+        )
+
+
     }
 
     /**
@@ -581,7 +695,6 @@ object DAClient {
         cur_profile_index: Int,
         callback: DAHttpCallback
     ) {
-
         val url = Comm_Param.URL_FOLLOW_PROFILE_IDX.replace(
             Comm_Param.PROFILE_INDEX,
             cur_profile_index.toString()
@@ -594,7 +707,6 @@ object DAClient {
             null,
             callback
         )
-
     }
 
     /**
@@ -627,7 +739,6 @@ object DAClient {
     fun getFollowingList(
         callback: DAHttpCallback
     ) {
-
         BaseOkhttpClient.request(
             HttpType.GET,
             Comm_Param.URL_FOLLOW,

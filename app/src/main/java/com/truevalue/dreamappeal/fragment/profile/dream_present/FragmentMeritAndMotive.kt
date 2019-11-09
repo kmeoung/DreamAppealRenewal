@@ -95,7 +95,7 @@ class FragmentMeritAndMotive : BaseFragment() {
      * 오른쪽 상단 아이콘 설정
      */
     private fun initRightBtn() {
-        iv_check.isSelected = if (isAllInput()) false else true
+        iv_check.isSelected = !isAllInput()
     }
 
     private fun isAllInput(): Boolean {

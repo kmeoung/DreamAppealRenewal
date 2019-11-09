@@ -19,9 +19,13 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_login.*
+import kotlinx.android.synthetic.main.fragment_normal_profile_edit.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.fragment_register.et_id
+import kotlinx.android.synthetic.main.fragment_register.et_name
 import kotlinx.android.synthetic.main.fragment_register.et_password
+import kotlinx.android.synthetic.main.fragment_register.tv_date
+import kotlinx.android.synthetic.main.fragment_register.tv_gender
 import okhttp3.Call
 import java.util.*
 import kotlin.collections.HashMap
@@ -160,13 +164,13 @@ class FragmentRegister : BaseFragment() {
      */
     private fun setGenderView() {
         val popupMenu = PopupMenu(context!!, tv_gender)
-        popupMenu.menu.add("남")
-        popupMenu.menu.add("여")
+        popupMenu.menu.add(getString(R.string.str_male))
+        popupMenu.menu.add(getString(R.string.str_female))
 
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
-                "남" -> isGender = false
-                "여" -> isGender = true
+                getString(R.string.str_male) -> isGender = false
+                getString(R.string.str_female) -> isGender = true
             }
             tv_gender.text = it.title
             false
@@ -186,9 +190,9 @@ class FragmentRegister : BaseFragment() {
                 mCal.set(Calendar.MONTH, month)
                 mCal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                tv_year.text = String.format("%04d", year) + "년"
-                tv_month.text = String.format("%02d", month + 1) + "월"
-                tv_date.text = String.format("%02d", dayOfMonth) + "일"
+                tv_year.text = String.format("%04d", year) + getString(R.string.str_year2)
+                tv_month.text = String.format("%02d", month + 1) + getString(R.string.str_month)
+                tv_date.text = String.format("%02d", dayOfMonth) + getString(R.string.str_date)
             }, mCal.get(Calendar.YEAR), mCal.get(Calendar.MONTH), mCal.get(Calendar.DAY_OF_MONTH)
         )
         dialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
