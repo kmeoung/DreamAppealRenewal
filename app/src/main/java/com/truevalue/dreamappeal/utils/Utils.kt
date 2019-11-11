@@ -1,16 +1,17 @@
 package com.truevalue.dreamappeal.utils
 
 import android.content.Context
-import androidx.core.content.ContextCompat
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.view.View
+import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.truevalue.dreamappeal.R
 import java.util.*
 import java.util.regex.Pattern
+
 
 object Utils {
 
@@ -109,5 +110,27 @@ object Utils {
         cal.time = date
         val inputYear = cal.get(Calendar.YEAR)
         return curYear - inputYear + 1
+    }
+
+    /**
+     * Spinner Dropdown 크기 조정
+     */
+    fun setDropDownHeight(spinner: Spinner, size: Int) {
+        try {
+            val popup = Spinner::class.java.getDeclaredField("mPopup")
+            popup.isAccessible = true
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            val popupWindow = popup.get(spinner) as android.widget.ListPopupWindow
+
+            // Set popupWindow height to 500px
+            popupWindow.height = size
+        } catch (e: NoClassDefFoundError) {
+            // silently fail...
+        } catch (e: ClassCastException) {
+        } catch (e: NoSuchFieldException) {
+        } catch (e: IllegalAccessException) {
+        }
+
     }
 }

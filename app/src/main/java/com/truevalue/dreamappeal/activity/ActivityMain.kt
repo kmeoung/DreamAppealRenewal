@@ -154,10 +154,6 @@ class ActivityMain : BaseActivity() {
                     finish()
                 }
                 ll_profile->{
-//                    val intent = Intent(this@ActivityMain,ActivityLoginContainer::class.java)
-//                    startActivity(intent)
-//                    finish()
-                    // todo : 임시
                     val intent = Intent(this@ActivityMain,ActivityMyProfileContainer::class.java)
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
@@ -168,11 +164,17 @@ class ActivityMain : BaseActivity() {
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
+                ll_dream_point->{
+                    val intent = Intent(this@ActivityMain, ActivityDreamPoint::class.java)
+                    startActivity(intent)
+                    dl_drawer.closeDrawer(Gravity.RIGHT)
+                }
             }
         }
         ll_logout.setOnClickListener(listener)
         ll_profile.setOnClickListener(listener)
         ll_following.setOnClickListener(listener)
+        ll_dream_point.setOnClickListener(listener)
     }
 
     /**

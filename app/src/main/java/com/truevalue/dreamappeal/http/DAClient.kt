@@ -129,7 +129,7 @@ object DAClient {
 
         val url = Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX,group_idx.toString())
         BaseOkhttpClient.request(
-            HttpType.PATCH,
+            HttpType.DELETE,
             url,
             getHttpHeader(),
             null,

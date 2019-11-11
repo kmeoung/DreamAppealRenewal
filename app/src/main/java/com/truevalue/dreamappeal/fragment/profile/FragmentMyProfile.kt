@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
-import com.truevalue.dreamappeal.activity.BeanProfileGroup
+import com.truevalue.dreamappeal.bean.BeanProfileGroup
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.bean.BeanProfileUserPrivates
@@ -111,7 +112,6 @@ class FragmentMyProfile : BaseFragment() {
                         tv_nickname.text = if(bean.nickname.isNullOrEmpty()) getString(R.string.str_none) else bean.nickname
                         val sdf = SimpleDateFormat("yyyy-MM-dd")
                         val date = sdf.parse(bean.birth)
-                        // todo : 추후 나이계산
                         tv_age.text = Utils.dateToAge(date).toString()
                         tv_gender.text = getString(if(bean.gender == 0) R.string.str_female else R.string.str_male)
                         tv_address.text = if(bean.address.isNullOrEmpty()) getString(R.string.str_none) else bean.address
@@ -121,7 +121,8 @@ class FragmentMyProfile : BaseFragment() {
                         mAdapter!!.clear()
                         for (i in 0 until groups.length()){
                             val Object = groups.getJSONObject(i)
-                            val group : BeanProfileGroup = Gson().fromJson(Object.toString(),BeanProfileGroup::class.java)
+                            val group : BeanProfileGroup = Gson().fromJson(Object.toString(),
+                                BeanProfileGroup::class.java)
                             group.Class = Object.getInt("class")
                             mAdapter!!.add(group)
                         }
@@ -161,11 +162,55 @@ class FragmentMyProfile : BaseFragment() {
             val bean = mAdapter!!.get(i) as BeanProfileGroup
             h.getItemView<TextView>(R.id.tv_rank).text = bean.position
             h.getItemView<TextView>(R.id.tv_group).text = bean.groupName
-            h.getItemView<TextView>(R.id.tv_time).text = "${bean.start_date} ~ ${bean.start_date}"
+            h.getItemView<TextView>(R.id.tv_time).text = "${bean.start_date} ~ ${bean.end_date}"
+
+            h.itemView.setOnLongClickListener(View.OnLongClickListener {
+                val popupMenu = PopupMenu(context!!, h.itemView)
+                popupMenu.menu.add(getString(R.string.str_edit))
+                popupMenu.menu.add(getString(R.string.str_delete))
+
+                popupMenu.setOnMenuItemClickListener {
+                    when(it.title){
+                        getString(R.string.str_edit)->{
+                            (activity as ActivityMyProfileContainer).replaceFragment(FragmentEditGroup.newInstance(bean), true)
+                        }
+                        getString(R.string.str_delete)->{
+                            deleteGroupInfo(bean.idx)
+                        }
+                    }
+                    false
+                }
+                popupMenu.show()
+                false
+            })
         }
 
         override fun getItemViewType(i: Int): Int {
             return 0
+        }
+
+        /**
+         * Http
+         * 소속수정 삭제
+         */
+        private fun deleteGroupInfo(idx : Int){
+            DAClient.deleteUsersGroup(idx,object : DAHttpCallback{
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if(context != null){
+                        Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                        if(code == DAClient.SUCCESS){
+                            getUserProfile()
+                        }
+                    }
+                }
+            })
         }
     }
 }
