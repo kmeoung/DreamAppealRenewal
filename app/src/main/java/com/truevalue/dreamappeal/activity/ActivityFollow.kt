@@ -21,7 +21,7 @@ import okhttp3.Call
 
 class ActivityFollow : BaseActivity() {
 
-    private var mViewType : String? = null
+    private var mViewType: String? = null
 
     companion object {
         val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
@@ -59,15 +59,15 @@ class ActivityFollow : BaseActivity() {
     /**
      * 데이터 초기화
      */
-    private fun initData(){
+    private fun initData() {
         mViewType = intent.getStringExtra(EXTRA_VIEW_TYPE)
-        if(!mViewType.isNullOrEmpty()){
-            when(mViewType){
-                VIEW_TYPE_FOLLOWER->{
+        if (!mViewType.isNullOrEmpty()) {
+            when (mViewType) {
+                VIEW_TYPE_FOLLOWER -> {
                     tv_title.text = getString(R.string.str_follower)
                     getFollower()
                 }
-                VIEW_TYPE_FOLLOWING->{
+                VIEW_TYPE_FOLLOWING -> {
                     tv_title.text = getString(R.string.str_menu_following)
                     getFollowing()
                 }
@@ -110,10 +110,10 @@ class ActivityFollow : BaseActivity() {
      * Http
      * 나를 팔로우한 사람들 리스트 가져오기
      */
-    private fun getFollower(){
+    private fun getFollower() {
         // todo : 현재 보고있는 프로필의 인덱스를 넣어야 합니다
         val profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.getFollowerList(profile_idx, object : DAHttpCallback{
+        DAClient.getFollowerList(profile_idx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -121,9 +121,9 @@ class ActivityFollow : BaseActivity() {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
 
                 }
             }
@@ -134,8 +134,8 @@ class ActivityFollow : BaseActivity() {
      * Http
      * 내가 팔로우한 사람들 리스트 가져오기
      */
-    private fun getFollowing(){
-        DAClient.getFollowingList(object : DAHttpCallback{
+    private fun getFollowing() {
+        DAClient.getFollowingList(object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -143,15 +143,14 @@ class ActivityFollow : BaseActivity() {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
 
                 }
             }
         })
     }
-
 
     /**
      * RecyclerView Listener

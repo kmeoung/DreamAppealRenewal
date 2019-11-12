@@ -151,10 +151,13 @@
 
     <string name="str_reset_password">비밀번호 재설정</string>
 
-    <string name="str_success_mision">미션 달성</string>
+    <string name="str_success_mission">미션 달성</string>
     <string name="str_success">완료</string>
     <string name="str_get">획득</string>
-    <string name="str_dream_point_info">미션 달성하고 포인트 획득하자</string>
+    <string name="str_dream_point">드림포인트</string>
+    <string name="str_dream_point_usage">드림포인트 이용내역</string>
+    <string name="str_dream_point_info_mission">미션 달성하고</string>
+    <string name="str_dream_point_info_get_point">포인트 획득하자</string>
     <string name="str_get_and_usage">획득 및 사용내역 ></string>
     <string name="str_add_coupon">쿠폰 등록</string>
     <string name="str_daily">일간</string>
@@ -174,6 +177,8 @@
     <string name="str_hint_detail_info">소속에 대해 설명해주세요(선택사항)</string>
     <string name="str_accumulate_use">사용 누적</string>
     <string name="str_lifestyle">일상 / 경험</string>
+    <string name="str_get_list">획득 내역</string>
+    <string name="str_use_list">사용 내역</string>
     <string name="str_idea">영감 갤러리</string>
     <string name="str_abiity_long">내 꿈에 맞게 갖출 능력</string>
     <string name="str_opportunity_long">내 꿈에 맞게 만들고픈 기회</string>

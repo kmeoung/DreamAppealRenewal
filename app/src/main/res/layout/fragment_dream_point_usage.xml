@@ -5,25 +5,65 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="38dp">
+            android:layout_height="46.3dp"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_marginBottom="1dp">
 
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_alignParentBottom="true"
-                android:background="@color/underline_gray" />
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabSelectedTextColor="@color/black"
-                app:tabTextAppearance="@style/profile_main_tab_font"
-                app:tabTextColor="@color/tab_none_select_gray" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textSize="15.7sp"
+                    android:textColor="@color/color_dream_point_usage"
+                    android:text="@string/str_get_list"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:id="@+id/tv_get_list"
+                    android:gravity="center"/>
 
-    </RelativeLayout>
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/main_blue"
+                    android:id="@+id/iv_get_list"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textSize="15.7sp"
+                    android:textColor="@color/color_dream_point_usage"
+                    android:text="@string/str_use_list"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:id="@+id/tv_use_list"
+                    android:gravity="center"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/main_blue"
+                    android:id="@+id/iv_use_list" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -47,8 +87,8 @@
                 android:layout_weight="1" />
 
         <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
                 android:layout_marginRight="8dp"
                 android:src="@drawable/ic_point_white" />
 

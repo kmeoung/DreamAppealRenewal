@@ -90,7 +90,7 @@ object DAClient {
      * 유저 그룹 수정하기
      */
     fun editUsersGroup(
-        group_idx : Int,
+        group_idx: Int,
         groupName: String,
         position: String,
         Class: Int,
@@ -100,7 +100,8 @@ object DAClient {
         callback: DAHttpCallback
     ) {
 
-        val url = Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX,group_idx.toString())
+        val url =
+            Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX, group_idx.toString())
         val params = DAHttpParams()
         params.put("groupName", groupName)
         params.put("position", position)
@@ -123,11 +124,12 @@ object DAClient {
      * 유저 그룹 삭제
      */
     fun deleteUsersGroup(
-        group_idx : Int,
+        group_idx: Int,
         callback: DAHttpCallback
     ) {
 
-        val url = Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX,group_idx.toString())
+        val url =
+            Comm_Param.URL_USERS_GROUP_IDX.replace(Comm_Param.GROUP_INDEX, group_idx.toString())
         BaseOkhttpClient.request(
             HttpType.DELETE,
             url,
@@ -742,6 +744,74 @@ object DAClient {
         BaseOkhttpClient.request(
             HttpType.GET,
             Comm_Param.URL_FOLLOW,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 드림포인트 조회
+     */
+    fun getDreamPoint(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_DREAMPOINT,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 드림포인트 미션 포인트 얻기
+     */
+    fun getMissionPoint(
+        mission_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_DREAMPOINT_MISSION_IDX.replace(
+            Comm_Param.MISSION_INDEX,
+            mission_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 드림포인트 획득내역 가져오기
+     */
+    fun historyGet(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_DREAMPOINT_HISTORY_GET,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 드림포인트 사용내역 가져오기
+     */
+    fun historyUse(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_DREAMPOINT_HISTORY_USE,
             getHttpHeader(),
             null,
             callback
