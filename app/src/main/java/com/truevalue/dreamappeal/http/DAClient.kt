@@ -818,5 +818,26 @@ object DAClient {
         )
     }
 
+    /**
+     * POST
+     * 드림포인트 쿠폰 입력
+     */
+    fun addDreamPointCoupon(
+        serial_code: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("serial_code", serial_code)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_DREAMPOINT_COUPON,
+            getHttpHeader(),
+            params,
+            callback)
+
+    }
+
 
 }

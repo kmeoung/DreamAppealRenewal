@@ -176,6 +176,7 @@
     <string name="str_defail_info">상세정보</string>
     <string name="str_hint_detail_info">소속에 대해 설명해주세요(선택사항)</string>
     <string name="str_accumulate_use">사용 누적</string>
+    <string name="str_accumulate_get">획득 누적</string>
     <string name="str_lifestyle">일상 / 경험</string>
     <string name="str_get_list">획득 내역</string>
     <string name="str_use_list">사용 내역</string>
@@ -210,4 +211,7 @@
     <string name="str_class_school">학교</string>
     <string name="str_class_circle">동아리</string>
     <string name="str_class_group">단체</string>
+    <string name="str_coupon_info">쿠폰번호를 입력해주세요</string>
+    <string name="str_coupon_info_2">- 입력 후 확인을 누르면 해당 포인트가 자동으로 추가됩니다.</string>
+    <string name="str_coupon_info_3">- 한번 사용하신 쿠폰은 재사용이 불가능합니다.</string>
 </resources>

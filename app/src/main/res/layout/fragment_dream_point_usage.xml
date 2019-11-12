@@ -77,9 +77,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:text="@string/str_accumulate_use"
+                android:text="@string/str_accumulate_get"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:id="@+id/tv_accumulate"/>
 
         <Space
                 android:layout_width="0dp"
