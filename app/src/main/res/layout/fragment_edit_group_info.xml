@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -143,10 +147,6 @@
             android:ems="10"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_hint_detail_info"
-            android:imeOptions="actionNext"
-            android:inputType="textPersonName|text"
-            android:lines="1"
-            android:maxLines="1"
             android:paddingLeft="11.3dp"
             android:textColor="@color/black"
             android:textColorHint="@color/silver"
@@ -245,3 +245,5 @@
             app:layout_constraintTop_toTopOf="@+id/tv_start_year" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

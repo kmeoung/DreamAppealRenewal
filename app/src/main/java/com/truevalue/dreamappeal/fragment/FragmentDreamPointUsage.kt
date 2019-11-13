@@ -147,9 +147,9 @@ class FragmentDreamPointUsage : BaseFragment() {
                 val tvDate = h.getItemView<TextView>(R.id.tv_date)
                 val tvPoint = h.getItemView<TextView>(R.id.tv_point)
                 val totalName = "${bean.type} ${bean.name}"
-                tvTitle.text = Utils.replaceTextColor(context,totalName,bean.name)
+                tvTitle.text = Utils.replaceTextColor(context,totalName,R.color.bright_blue_two,bean.name)
                 val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                val sdf2 = SimpleDateFormat("yyyy. MM. dd HH:mm:ss")
+                val sdf2 = SimpleDateFormat("yyyy. MM. dd")
                 val date = sdf.parse(bean.date)
                 tvDate.text = sdf2.format(date)
                 tvPoint.text = String.format("%,d",bean.point)
