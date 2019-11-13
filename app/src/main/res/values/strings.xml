@@ -155,6 +155,7 @@
     <string name="str_success">완료</string>
     <string name="str_get">획득</string>
     <string name="str_dream_point">드림포인트</string>
+    <string name="str_dream_note">드림노트</string>
     <string name="str_dream_point_usage">드림포인트 이용내역</string>
     <string name="str_dream_point_info_mission">미션 달성하고</string>
     <string name="str_dream_point_info_get_point">포인트 획득하자</string>

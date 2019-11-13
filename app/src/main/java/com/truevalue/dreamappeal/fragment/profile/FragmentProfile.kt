@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import androidx.annotation.Nullable
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityDreamNote
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
@@ -62,6 +64,9 @@ class FragmentProfile : BaseFragment() {
         onClickView()
     }
 
+    /**
+     * Adapter 초기화
+     */
     private fun initAdapter() {
         if(pagerAdapter == null) pagerAdapter = ViewPagerAdapter(childFragmentManager)
         var viewpager: ViewPager = vp_profile
@@ -71,6 +76,9 @@ class FragmentProfile : BaseFragment() {
         viewpager.offscreenPageLimit = 2
     }
 
+    /**
+     * Tab 초기화
+     */
     private fun initTabs() {
         mTabs = arrayOf(
             getString(R.string.str_dream_present),
@@ -79,6 +87,9 @@ class FragmentProfile : BaseFragment() {
         )
     }
 
+    /**
+     * Fragment 초기화
+     */
     private fun initFragments() {
         mFragments = arrayOf(
             FragmentDreamPresent(),
@@ -87,6 +98,9 @@ class FragmentProfile : BaseFragment() {
         )
     }
 
+    /**
+     * Dialog 띄우기
+     */
     private fun showDialog(){
         val profile_idx = Comm_Prefs.getUserProfileIndex()
 
@@ -119,10 +133,15 @@ class FragmentProfile : BaseFragment() {
                 tv_title -> {
                     showDialog()
                 }
+                iv_dream_note->{
+                    val intent = Intent(context!!,ActivityDreamNote::class.java)
+                    startActivity(intent)
+                }
             }
         }
         iv_menu.setOnClickListener(listener)
         tv_title.setOnClickListener(listener)
+        iv_dream_note.setOnClickListener(listener)
     }
 
     /**

@@ -835,8 +835,51 @@ object DAClient {
             Comm_Param.URL_DREAMPOINT_COUPON,
             getHttpHeader(),
             params,
-            callback)
+            callback
+        )
 
+    }
+
+    /**
+     * GET
+     * 현재 보고있는 프로필의 드림노트 일상 경험 가져오기
+     */
+    fun getDreamNoteLife(
+        cur_profile_index: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_DREAMNOTE_LIFE_PROFILE_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            cur_profile_index.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null, callback
+        )
+    }
+
+    /**
+     * GET
+     * 현재 보고있는 프로필의 드림노트 영감갤러리 가져오기
+     */
+    fun getDreamNoteIdea(
+        cur_profile_index: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_DREAMNOTE_IDEA_PROFILE_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            cur_profile_index.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null, callback
+        )
     }
 
 
