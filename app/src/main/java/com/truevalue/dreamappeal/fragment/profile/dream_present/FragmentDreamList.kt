@@ -138,6 +138,40 @@ class FragmentDreamList : BaseFragment() {
     }
 
     /**
+     * Http
+     * 프로필 변경
+     */
+    private fun changeProfile(profile_order: Int) {
+
+        DAClient.profileChange(
+            profile_order,
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+
+                        if (code == DAClient.SUCCESS) {
+                            val json = JSONObject(body)
+                            val token = json.getString("token")
+                            val profile_idx = json.getInt("profile_idx")
+                            Comm_Prefs.setUserProfileIndex(profile_idx)
+                            Comm_Prefs.setToken(token)
+                            mAdapter!!.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    /**
      * HTTP
      * 꿈 목록 삭제
      */
@@ -174,7 +208,7 @@ class FragmentDreamList : BaseFragment() {
                         if (idx == Comm_Prefs.getUserProfileIndex()) {
                             Toast.makeText(
                                 context!!.applicationContext,
-                                getString(R.string.str_error_using_profile),
+                                getString(R.string.str_error_delete_using_profile),
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
@@ -189,6 +223,26 @@ class FragmentDreamList : BaseFragment() {
                     }
                 }
                 dialog.dismiss()
+            }
+            .setNegativeButton(
+                getString(R.string.str_no)
+            ) { dialog, which -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    /**
+     * 꿈 목록 변경 팝업
+     */
+    private fun showChangeProfileDialog(profile_order: Int) {
+        val builder = AlertDialog.Builder(context)
+            .setTitle(getString(R.string.str_change_profile_dialog_title))
+            .setMessage(getString(R.string.str_change_profile_dialog_contents))
+            .setPositiveButton(getString(R.string.str_yes)) { dialog, which ->
+                if (mAdapter != null) {
+                    changeProfile(profile_order)
+                    dialog.dismiss()
+                }
             }
             .setNegativeButton(
                 getString(R.string.str_no)
@@ -227,7 +281,12 @@ class FragmentDreamList : BaseFragment() {
                     if (isEdit) ivDelete.visibility = VISIBLE
                     else ivDelete.visibility = GONE
 
-                    ctlDreamListItem.background = resources.getDrawable(R.drawable.bg_dream_list)
+                    ctlDreamListItem.background =
+                        resources.getDrawable(R.drawable.bg_dream_list)
+
+                    h.itemView.setOnClickListener(OnClickListener {
+                        showChangeProfileDialog(bean.profile_order)
+                    })
                 }
 
                 ivDelete.setOnClickListener(OnClickListener {

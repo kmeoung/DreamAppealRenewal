@@ -197,8 +197,13 @@
 
     <string name="str_delete_profile_dialog_title">프로필 삭제</string>
     <string name="str_delete_profile_dialog_contents">프로필을 삭제하시겠습니까?</string>
-    <string name="str_error_using_profile">현재 사용중인 프로필은 삭제가 불가능 합니다.</string>
+    <string name="str_error_delete_using_profile">현재 사용중인 프로필은 삭제가 불가능 합니다.</string>
     <string name="str_error_min_profile">최소 1개의 프로필이 있어야 합니다.</string>
+
+    <string name="str_change_profile_dialog_title">프로필 변경</string>
+    <string name="str_change_profile_dialog_contents">프로필을 변경하시겠습니까?</string>
+    <string name="str_error_change_using_profile">현재 사용중인 프로필은 선택이 불가능 합니다.</string>
+
     <string name="str_add_group_info">소속정보 추가</string>
     <string name="str_edit_group_info">소속정보 수정</string>
 

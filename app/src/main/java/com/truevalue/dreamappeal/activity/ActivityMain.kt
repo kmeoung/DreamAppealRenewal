@@ -32,8 +32,8 @@ import java.lang.Exception
 
 class ActivityMain : BaseActivity() {
 
-
-
+    // todo : 자신의 프로필이고 자신의 프로필이 변경이 되었다고 확인이 드는 순간 페이지 리로드
+    private var mProfileIdx = -1
     var mActionListener: IOActionBarListener? = null
 
     companion object {
@@ -55,6 +55,7 @@ class ActivityMain : BaseActivity() {
         setContentView(R.layout.activity_main)
         // Action
         onAction()
+        mProfileIdx = Comm_Prefs.getUserProfileIndex()
     }
 
     /**
@@ -256,6 +257,10 @@ class ActivityMain : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        if(mProfileIdx != Comm_Prefs.getUserProfileIndex()){
+            mProfileIdx = Comm_Prefs.getUserProfileIndex()
+            if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
+        }
     }
 
     fun onBackPressed(isRefreshMain: Boolean) {

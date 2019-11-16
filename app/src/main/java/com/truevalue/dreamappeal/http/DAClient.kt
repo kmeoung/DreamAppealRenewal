@@ -511,6 +511,27 @@ object DAClient {
 
     /**
      * PATCH
+     * 프로필 변경 (토큰 재생성)
+     */
+    fun profileChange(
+        profile_order: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("profile_order", profile_order)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_USERS_TOKENS_CHANGE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
      * 꿈 목록 순서 변경
      */
     fun updateProfilesList() {
@@ -676,7 +697,7 @@ object DAClient {
         callback: DAHttpCallback
     ) {
         // todo : 아마 profile Index 가 필요할거 같습니다.
-        val url = Comm_Param.URL_BLUEPRINT_PRFOILE_CUR_PROFILE_IDX.replace(
+        val url = Comm_Param.URL_BLUEPRINTS_PRFOILE_CUR_PROFILE_IDX.replace(
             Comm_Param.PROFILE_INDEX,
             cur_profile_index.toString()
         )

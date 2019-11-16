@@ -37,6 +37,7 @@ object Comm_Param {
 
     // 로그인
     val URL_USERS_TOKENS = "$URL_USERS/tokens"
+    val URL_USERS_TOKENS_CHANGE = "$URL_USERS_TOKENS/change"
 
     // 비밀번호 재설정
     val URL_RECOVER = "$URL_API/recover"
@@ -69,8 +70,9 @@ object Comm_Param {
 
     // 발전계획
     val URL_BLUEPRINT = "$URL_API/blueprint"
-    val URL_BLUEPRINT_PROFILE = "$URL_BLUEPRINT/profile"
-    val URL_BLUEPRINT_PRFOILE_CUR_PROFILE_IDX = "$URL_BLUEPRINT_PROFILE/$PROFILE_INDEX"
+    val URL_BLUEPRINTS = "$URL_API/blueprints"
+    val URL_BLUEPRINTS_PROFILE = "$URL_BLUEPRINTS/profile"
+    val URL_BLUEPRINTS_PRFOILE_CUR_PROFILE_IDX = "$URL_BLUEPRINTS_PROFILE/$PROFILE_INDEX"
 
     // 팔로우
     val URL_FOLLOW = "$URL_API/follow"

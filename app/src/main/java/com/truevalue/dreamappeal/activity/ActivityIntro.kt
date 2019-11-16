@@ -36,7 +36,7 @@ class ActivityIntro : BaseActivity() {
         ) {
             val prefs = Comm_Prefs
             if (prefs.getUserProfileIndex() > -1) { // 바로 메인
-                intent = Intent(this@ActivityIntro, ActivityCameraGallery::class.java)
+                intent = Intent(this@ActivityIntro, ActivityMain::class.java)
             } else { // 로그인 페이지
                 intent = Intent(this@ActivityIntro, ActivityLoginContainer::class.java)
             }
