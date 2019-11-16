@@ -54,6 +54,14 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 //        bindTempData()
     }
 
+    /**
+     * Main에서 넘어온 Refresh 요청
+     */
+    override fun OnServerRefresh() {
+        super.OnServerRefresh()
+        getBlueprint()
+    }
+
     private fun bindTempData() {
         for (i in 0..10) {
             mAnOAdapter!!.add("")

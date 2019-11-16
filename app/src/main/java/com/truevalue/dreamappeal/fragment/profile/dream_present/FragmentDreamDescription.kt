@@ -10,6 +10,7 @@ import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
@@ -229,7 +230,7 @@ class FragmentDreamDescription : BaseFragment() {
                             .show()
 
                         if (code == DAClient.SUCCESS) {
-                            if (activity != null) activity!!.onBackPressed()
+                            (activity as ActivityMain).onBackPressed(true)
                         }
                     }
                 }

@@ -18,7 +18,6 @@
             android:textColor="@color/black"
             android:textSize="14.7sp" />
 
-
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"

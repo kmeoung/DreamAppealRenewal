@@ -3,22 +3,27 @@
         package="com.truevalue.dreamappeal">
     <!--인터넷-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--저장소-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--카메라-->
     <uses-permission android:name="android.permission.CAMERA" />
 
-<!--  todo : 임시    android:usesCleartextTraffic="true" 모든 cleartext 트래픽은 허용처리가 됩니다.-->
+    <!--  todo : 임시    android:usesCleartextTraffic="true" 모든 cleartext 트래픽은 허용처리가 됩니다.-->
     <application
             android:name=".base.BaseApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="${appName}"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:usesCleartextTraffic="true"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
+        <!-- AWS SERVICE 연동 -->
+        <service
+                android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+                android:enabled="true" />
 
         <!-- 인트로 -->
         <activity
@@ -83,6 +88,12 @@
         <!-- 드림 노트 -->
         <activity
                 android:name=".activity.ActivityDreamNote"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize" />
+
+        <!-- 이미지 갤러리 선택 -->
+        <activity
+                android:name=".activity.ActivityCameraGallery"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
+        android:background="@color/white_three"
         android:orientation="vertical">
 
     <View
@@ -23,58 +23,58 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="38dp"
                     android:fontFamily="@font/bmjua"
                     android:gravity="center"
                     android:text="@string/str_setting_permissions"
                     android:textColor="@color/black"
-                    android:textSize="40sp" />
+                    android:textSize="35.7sp" />
 
             <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="22.7dp"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:gravity="left"
                     android:text="@string/str_permission_info"
                     android:textColor="@color/black"
-                    android:textSize="13sp" />
+                    android:textSize="12.3sp"
+                    android:layout_gravity="center"
+                    android:lineSpacingExtra="3.3sp"/>
 
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="23dp"
                     android:fontFamily="@font/bmjua"
                     android:gravity="left"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="29.3dp"
                     android:paddingRight="10dp"
                     android:text="@string/str_essential_access"
                     android:textColor="@color/black"
-                    android:textSize="25sp" />
+                    android:textSize="22.3sp" />
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="29.3dp"
+                    android:layout_marginTop="13.3dp"
+                    android:layout_marginRight="29.3dp"
                     android:background="@drawable/bg_permission_box_gray"
                     android:orientation="vertical">
 
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="20dp"
                         android:paddingRight="10dp">
 
                     <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="18dp"
                             android:src="@drawable/ic_storage" />
 
                     <TextView
@@ -84,7 +84,8 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_storage_permission_info"
                             android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            android:textSize="12.3sp"
+                            android:lineSpacingExtra="3.3sp"/>
 
                 </LinearLayout>
 
@@ -97,16 +98,16 @@
 
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="20dp"
                         android:paddingRight="10dp">
 
                     <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="18dp"
                             android:src="@drawable/ic_camera" />
 
                     <TextView
@@ -116,7 +117,8 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="@string/str_camera_permission_info"
                             android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            android:textSize="12.3sp"
+                            android:lineSpacingExtra="3.3sp"/>
 
                 </LinearLayout>
 
@@ -126,32 +128,33 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="29.3dp"
+                    android:layout_marginTop="13.3dp"
+                    android:layout_marginRight="29.3dp"
                     android:background="@drawable/bg_permission_box_gray"
-                    android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="12.3dp">
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_round_b"
+                        android:fontFamily="@font/nanum_square_round_r"
                         android:gravity="center"
                         android:text="@string/str_warning_access_method"
-                        android:textColor="@color/permission_red"
-                        android:textSize="13sp" />
+                        android:textColor="@color/black"
+                        android:textSize="12.3sp"
+                        android:lineSpacingExtra="3.3sp"/>
 
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:fontFamily="@font/nanum_square_round_b"
+                        android:fontFamily="@font/nanum_square_round_r"
                         android:gravity="left"
                         android:text="@string/str_access_method"
                         android:textColor="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="12.3sp"
+                        android:lineSpacingExtra="8.7sp"/>
 
 
             </LinearLayout>
@@ -160,16 +163,16 @@
             <Button
                     android:id="@+id/btn_permission"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="52.3dp"
+                    android:layout_marginTop="23.3dp"
+                    android:layout_marginRight="52.3dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/colorAccent"
+                    android:background="@drawable/bg_round_rectangle_blue_2"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="@string/str_agree_and_start"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
         </LinearLayout>
 

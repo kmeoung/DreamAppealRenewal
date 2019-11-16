@@ -62,6 +62,13 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 //        bindTempData()
     }
 
+    /**
+    * Main에서 넘어온 Refresh 요청
+    */
+    override fun OnServerRefresh() {
+        super.OnServerRefresh()
+        getProfile()
+    }
 
     /**
      * 임시 데이터 Bind

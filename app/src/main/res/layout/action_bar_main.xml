@@ -9,7 +9,6 @@
         android:layout_marginBottom="5dp">
 
     <!--툴바-->
-
     <ImageView
             android:id="@+id/iv_dream_note"
             android:layout_width="45dp"

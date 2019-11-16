@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -46,4 +47,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.2.2")
     // gson
     implementation 'com.google.code.gson:gson:2.8.6'
+    // aws s3
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.7.+@aar') { transitive = true }
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.7.+'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.7.+'
 }

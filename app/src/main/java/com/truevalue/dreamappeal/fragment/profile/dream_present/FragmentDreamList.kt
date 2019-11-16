@@ -82,15 +82,19 @@ class FragmentDreamList : BaseFragment() {
                     isEdit = !isEdit
                     mAdapter!!.notifyDataSetChanged()
                 }
-                (activity as ActivityMain).iv_back_blue -> {
-                    activity?.onBackPressed()
+                ll_add_dream -> { // 새로운 프로필 추가
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentDreamTitle.newInstance(
+                            FragmentDreamTitle.MODE_NEW_PROFILE
+                        ), true
+                    )
                 }
             }
         }
 
         iv_edit.setOnClickListener(listener)
         iv_back_blue.setOnClickListener(listener)
-        (activity as ActivityMain).iv_back_blue.setOnClickListener(listener)
+        ll_add_dream.setOnClickListener(listener)
     }
 
     /**

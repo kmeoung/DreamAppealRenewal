@@ -93,7 +93,6 @@ class FragmentDreamPoint : BaseFragment() {
         (activity as ActivityDreamPoint).iv_close.visibility = GONE
         (activity as ActivityDreamPoint).tv_title.text = getString(R.string.str_dream_point)
 
-
         val mission = getString(R.string.str_dream_point_info_mission)
         val getPoint = getString(R.string.str_dream_point_info_get_point)
         val missionColor =

@@ -1,12 +1,20 @@
 package com.truevalue.dreamappeal.activity
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.AmazonS3Client
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
@@ -19,10 +27,15 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
+import java.io.File
+import java.lang.Exception
 
 class ActivityMain : BaseActivity() {
 
-    var mActionListener : IOActionBarListener? = null
+
+
+    var mActionListener: IOActionBarListener? = null
+
     companion object {
         val MAIN_TYPE_HOME = "MAIN_TYPE_HOME"
         val MAIN_TYPE_TIMELINE = "MAIN_TYPE_TIMELINE"
@@ -68,8 +81,8 @@ class ActivityMain : BaseActivity() {
     /**
      * Drawer 설정
      */
-    private fun setDrawer(){
-        dl_drawer.addDrawerListener(object : DrawerLayout.DrawerListener{
+    private fun setDrawer() {
+        dl_drawer.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
 
             }
@@ -91,7 +104,7 @@ class ActivityMain : BaseActivity() {
     /**
      * Drawer 열기 여부 관리
      */
-    private fun isOpenDrawer() : Boolean{
+    private fun isOpenDrawer(): Boolean {
         val fragment = supportFragmentManager.findFragmentById(R.id.base_container)
         return (fragment is FragmentProfile)
                 || (fragment is FragmentBlueprint)
@@ -142,29 +155,32 @@ class ActivityMain : BaseActivity() {
     /**
      * Drawer View Click Listener
      */
-    private fun onClickDrawerView(){
-        val listener = View.OnClickListener{
-            when(it){
-                ll_logout->{
+    private fun onClickDrawerView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                ll_logout -> {
                     Comm_Prefs.setUserProfileIndex(-1)
                     Comm_Prefs.setToken(null)
 
-                    val intent = Intent(this@ActivityMain,ActivityLoginContainer::class.java)
+                    val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
                     startActivity(intent)
                     finish()
                 }
-                ll_profile->{
-                    val intent = Intent(this@ActivityMain,ActivityMyProfileContainer::class.java)
+                ll_profile -> {
+                    val intent = Intent(this@ActivityMain, ActivityMyProfileContainer::class.java)
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
-                ll_following->{
+                ll_following -> {
                     val intent = Intent(this@ActivityMain, ActivityFollow::class.java)
-                    intent.putExtra(ActivityFollow.EXTRA_VIEW_TYPE,ActivityFollow.VIEW_TYPE_FOLLOWING)
+                    intent.putExtra(
+                        ActivityFollow.EXTRA_VIEW_TYPE,
+                        ActivityFollow.VIEW_TYPE_FOLLOWING
+                    )
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
-                ll_dream_point->{
+                ll_dream_point -> {
                     val intent = Intent(this@ActivityMain, ActivityDreamPoint::class.java)
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
@@ -238,6 +254,15 @@ class ActivityMain : BaseActivity() {
         replaceFragment(R.id.base_container, fragment, false)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
+    fun onBackPressed(isRefreshMain: Boolean) {
+        onBackPressed()
+        if(isRefreshMain && mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
+    }
+
     /**
      * Init Fragment Stack
      */
@@ -246,5 +271,14 @@ class ActivityMain : BaseActivity() {
         for (i in 0..fm.backStackEntryCount) {
             fm.popBackStack()
         }
+    }
+
+    var mViewRefreshListener : IOMainViewRefresh? = null
+
+    /**
+     * Main 페이지에서 View가 Refresh되지 않는 현상을 수정
+     */
+    interface IOMainViewRefresh {
+        fun OnRefreshView()
     }
 }

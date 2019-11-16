@@ -10,7 +10,7 @@ import android.view.View.*
 import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.base.BaseActivity
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
@@ -20,19 +20,32 @@ import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_dream_title.*
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentDreamTitle : BaseFragment() {
 
-    private var mBean : BeanDreamPresent? = null
+    private var mBean: BeanDreamPresent? = null
+    private var mViewType: String? = null
 
-    companion object{
+    companion object {
+
+        val MODE_NEW_PROFILE = "MODE_NEW_PROFILE"
 
         /**
          * 데이터 미리 저장
          */
-        fun newInstance(bean : BeanDreamPresent?) : FragmentDreamTitle{
+        fun newInstance(bean: BeanDreamPresent?): FragmentDreamTitle {
             val fragment = FragmentDreamTitle()
             fragment.mBean = bean
+            return fragment
+        }
+
+        /**
+         * View 모드 설정
+         */
+        fun newInstance(mode: String): FragmentDreamTitle {
+            val fragment = FragmentDreamTitle()
+            fragment.mViewType = mode
             return fragment
         }
     }
@@ -78,7 +91,7 @@ class FragmentDreamTitle : BaseFragment() {
         tv_dream_title_info.text =
             Utils.replaceTextColor(context, tv_dream_title_info, title_highlight)
 
-        et_value_style.addTextChangedListener(object : TextWatcher{
+        et_value_style.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -91,7 +104,7 @@ class FragmentDreamTitle : BaseFragment() {
             }
         })
 
-        et_job.addTextChangedListener(object : TextWatcher{
+        et_job.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -104,9 +117,9 @@ class FragmentDreamTitle : BaseFragment() {
         })
 
         // 데이터 바인드
-        if(mBean != null){
-            if(!mBean!!.job.isNullOrEmpty()) et_job.setText(mBean!!.job)
-            if(!mBean!!.value_style.isNullOrEmpty()) et_value_style.setText(mBean!!.value_style)
+        if (mBean != null) {
+            if (!mBean!!.job.isNullOrEmpty()) et_job.setText(mBean!!.job)
+            if (!mBean!!.value_style.isNullOrEmpty()) et_value_style.setText(mBean!!.value_style)
         }
     }
 
@@ -116,6 +129,7 @@ class FragmentDreamTitle : BaseFragment() {
     private fun initRightBtn() {
         iv_check.isSelected = !isAllInput()
     }
+
     private fun isAllInput(): Boolean {
         return TextUtils.isEmpty(et_job.text.toString()) || TextUtils.isEmpty(et_value_style.text.toString())
     }
@@ -128,8 +142,13 @@ class FragmentDreamTitle : BaseFragment() {
             when (it) {
                 iv_close -> activity?.onBackPressed()
                 iv_check -> {
-                    if(iv_check.isSelected){
-                        commitDreamTitle()
+                    if (iv_check.isSelected) {
+
+                        if (mViewType.isNullOrEmpty())
+                            commitDreamTitle()
+                        else if(mViewType.equals(MODE_NEW_PROFILE)){
+                            newProfile()
+                        }
                     }
                 }
             }
@@ -141,11 +160,11 @@ class FragmentDreamTitle : BaseFragment() {
     /**
      * 꿈 / 꿈소개 업데이트
      */
-    private fun commitDreamTitle(){
+    private fun commitDreamTitle() {
         val job = et_job.text.toString()
         val valueStyle = et_value_style.text.toString()
-        DAClient.updateProfiles(job,valueStyle,null,null,null,
-            object : DAHttpCallback{
+        DAClient.updateProfiles(job, valueStyle, null, null, null,
+            object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -153,14 +172,40 @@ class FragmentDreamTitle : BaseFragment() {
                     code: String,
                     message: String
                 ) {
-                    if(context != null){
-                        Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
 
-                        if(code == DAClient.SUCCESS){
-                            if(activity != null) activity!!.onBackPressed()
+                        if (code == DAClient.SUCCESS) {
+                            (activity as ActivityMain).onBackPressed(true)
                         }
                     }
                 }
             })
+    }
+
+    /**
+     * Profile 생성
+     */
+    private fun newProfile(){
+        val job = et_job.text.toString()
+        val valueStyle = et_value_style.text.toString()
+        DAClient.addProfiles(job,valueStyle,"", JSONObject(),"",object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                        (activity as ActivityMain).onBackPressed(false)
+                    }
+                }
+            }
+        })
     }
 }

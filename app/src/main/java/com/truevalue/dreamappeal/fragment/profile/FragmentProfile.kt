@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.Call
 
-class FragmentProfile : BaseFragment() {
+class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
 
     private var mFragments: Array<BaseFragment>?
     private var mTabs: Array<String>?
@@ -58,6 +58,8 @@ class FragmentProfile : BaseFragment() {
             // Fragments 초기화
             initFragments()
         }
+        // Refresh Listener 연결
+        (activity as ActivityMain).mViewRefreshListener = this
         // View Adapter 초기화
         initAdapter()
         // View 클릭 리스너
@@ -155,6 +157,13 @@ class FragmentProfile : BaseFragment() {
         override fun getPageTitle(position: Int): CharSequence = mTabs!![position]
     }
 
-
+    /**
+     * Refresh Listener
+     */
+    override fun OnRefreshView() {
+        if(mFragments != null){
+            mFragments!![vp_profile.currentItem].OnServerRefresh()
+        }
+    }
 }
 

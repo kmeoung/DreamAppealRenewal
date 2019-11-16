@@ -77,6 +77,14 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     }
 
     /**
+     * Main에서 넘어온 Refresh 요청
+     */
+    override fun OnServerRefresh() {
+        super.OnServerRefresh()
+        getAchievementPostMain()
+    }
+
+    /**
      * 있는 데이터 집어넣기
      */
     private fun bindData() {
