@@ -44,6 +44,10 @@ class BaseRecyclerViewAdapter(listener: IORecyclerViewListener) :
     }
 
     fun size() : Int = mArray.size
+
+    fun getList() : ArrayList<Any>{
+        return mArray
+    }
 }
 
 

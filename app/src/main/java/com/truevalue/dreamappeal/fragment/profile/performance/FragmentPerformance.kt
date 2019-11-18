@@ -60,8 +60,10 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         bindData()
         // Bind Temp Data
 //        bindTempData()
-        // 주요 성과 가져오기
-        getAchievementPostMain()
+        if (mBeanPerformance == null) {
+            // 주요 성과 가져오기
+            getAchievementPostMain()
+        }
     }
 
     override fun onResume() {
@@ -90,7 +92,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     private fun bindData() {
         if (mBeanPerformance != null) {
             mBestPostList!!.clear()
-            for(i in 0 until mBeanPerformance!!.best_posts.size){
+            for (i in 0 until mBeanPerformance!!.best_posts.size) {
                 mBestPostList!!.add(mBeanPerformance!!.best_posts[i])
             }
 
