@@ -1,6 +1,9 @@
 package com.truevalue.dreamappeal.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_add_coupon.*
 import okhttp3.Call
+
 
 class FragmentDreamPointCoupon : BaseFragment() {
 
@@ -42,16 +46,80 @@ class FragmentDreamPointCoupon : BaseFragment() {
         (activity as ActivityDreamPoint).iv_check.visibility = View.GONE
         (activity as ActivityDreamPoint).tv_title.text = getString(R.string.str_add_coupon)
 
+        et_coupon.addTextChangedListener(object : TextWatcher {
+            private var beforeLength = 0
+            private var afterLength = 0
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0.isNullOrEmpty()) {
+                    beforeLength = 0
+                } else beforeLength = p0!!.length
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (s == null || s.isEmpty()) {
+                    Log.d(
+                        "addTextChangedListener",
+                        "onTextChanged: Intput text is wrong (Type : Length)"
+                    )
+                    return
+                }
+
+                val inputChar = s[s.length - 1]
+                if (inputChar != '-' && (inputChar < '0' || inputChar > '9')) {
+                    et_coupon.text.delete(s.length - 1, s.length)
+                    Log.d(
+                        "addTextChangedListener",
+                        "onTextChanged: Intput text is wrong (Type : Number)"
+                    )
+                    return
+                }
+
+                afterLength = s.length
+
+                // 삭제 중
+                if (beforeLength > afterLength) {
+                    // 삭제 중에 마지막에 -는 자동으로 지우기
+                    if (s.toString().endsWith("-")) {
+                        et_coupon.setText(s.toString().substring(0, s.length - 1))
+                    }
+                } else if (beforeLength < afterLength) {
+                    if (afterLength === 5 && s.toString().indexOf("-") < 0) {
+                        et_coupon.setText("${s.toString().subSequence(0, 4)}-${s.toString().substring(4, s.length)}")
+                    } else if (afterLength === 10) {
+                        et_coupon.setText("${s.toString().subSequence(0, 9)}-${s.toString().substring(9, s.length)}")
+                    } else if (afterLength === 15) {
+                        et_coupon.setText("${s.toString().subSequence(0, 14)}-${s.toString().substring(14, s.length)}")
+                    }
+                }// 입력 중
+                et_coupon.setSelection(et_coupon.length())
+
+//                if (s.length() === 19) {
+//                    btnInput.setBackground(
+//                        ContextCompat.getDrawable(context!!, R.drawable.btn_active)
+//                    )
+//                } else {
+//                    btnInput.setBackground(
+//                        ContextCompat.getDrawable(context!!, R.drawable.btn_inactive)
+//                    )
+//                }
+
+            }
+        })
     }
 
     /**
      * View Click Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                (activity as ActivityDreamPoint).iv_close-> activity!!.onBackPressed()
-                btn_input->{
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                (activity as ActivityDreamPoint).iv_close -> activity!!.onBackPressed()
+                btn_input -> {
                     addDreamPointCoupon()
                 }
             }
@@ -65,12 +133,12 @@ class FragmentDreamPointCoupon : BaseFragment() {
      * Http
      * 드림 포인트 쿠폰 사용하기
      */
-    private fun addDreamPointCoupon(){
+    private fun addDreamPointCoupon() {
         // todo : 글자수는 무조건 16자리입니다
-        val coupon = et_coupon.text.toString()
+        val coupon = et_coupon.text.toString().replace("-","")
         if (coupon.length == 16) {
             DAClient.addDreamPointCoupon(coupon,
-                object : DAHttpCallback{
+                object : DAHttpCallback {
                     override fun onResponse(
                         call: Call,
                         serverCode: Int,
@@ -78,11 +146,12 @@ class FragmentDreamPointCoupon : BaseFragment() {
                         code: String,
                         message: String
                     ) {
-                        if(context != null){
+                        if (context != null) {
                             val context = context!!
-                            Toast.makeText(context.applicationContext,message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
 
-                            if(code == DAClient.SUCCESS){
+                            if (code == DAClient.SUCCESS) {
                                 activity!!.onBackPressed()
                             }
                         }

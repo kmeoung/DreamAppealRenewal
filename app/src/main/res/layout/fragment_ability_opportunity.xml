@@ -3,7 +3,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/colorPrimary">
 
     <include
             layout="@layout/action_bar_other"
@@ -19,12 +19,13 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="9.7dp"
             android:background="@color/white"
-            android:elevation="10dp">
+            android:elevation="3dp"
+            android:layout_marginBottom="3dp">
 
         <ImageView
                 android:layout_width="24dp"
@@ -72,17 +73,19 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="9.7dp"
             android:background="@color/white"
-            android:elevation="10dp">
+            android:elevation="3dp"
+            android:layout_marginBottom="3dp">
 
         <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginRight="8.7dp"
+                android:rotation="90"
                 android:src="@drawable/ic_puzzle_orange" />
 
         <TextView

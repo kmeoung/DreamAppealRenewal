@@ -903,5 +903,173 @@ object DAClient {
         )
     }
 
+    /**
+     * GET
+     * 갖출 능력 조회
+     */
+    fun getAbilities(
+        profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ABILITIES_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            profile_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null, callback
+        )
+    }
+
+    /**
+     * POST
+     * 갖출 능력 등록
+     */
+    fun addAbility(
+        ability: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params: DAHttpParams = DAHttpParams()
+        params.put("ability", ability)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_ABILITIES,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 갖출 능력 수정
+     */
+    fun updateAbility(
+        ability_idx : Int,
+        ability: String,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_ABILITIES_IDX.replace(Comm_Param.ABILITY_INDEX,ability_idx.toString())
+        val params = DAHttpParams()
+        params.put("ability", ability)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 갖출 능력 삭제
+     */
+    fun deleteAbility(
+        ability_idx : Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_ABILITIES_IDX.replace(Comm_Param.ABILITY_INDEX,ability_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 민들고픈 기회 조회
+     */
+    fun getOpportunity(
+        profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_OPPORTUNITIES_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            profile_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null, callback
+        )
+    }
+
+    /**
+     * POST
+     * 만들고픈 기회 등록
+     */
+    fun addOpportunity(
+        opportunity: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("opportunity", opportunity)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_OPPORTUNITIES,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 만들고픈 기회 수정
+     */
+    fun updateOpportunity(
+        opportunity_idx : Int,
+        opportunity: String,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OPPORTUNITIES_IDX.replace(Comm_Param.OPPORTUNITY_INDEX,opportunity_idx.toString())
+        val params = DAHttpParams()
+        params.put("opportunity", opportunity)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 만들고픈 기회 삭제
+     */
+    fun deleteOpportunity(
+        opportunity_idx : Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OPPORTUNITIES_IDX.replace(Comm_Param.OPPORTUNITY_INDEX,opportunity_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
 
 }

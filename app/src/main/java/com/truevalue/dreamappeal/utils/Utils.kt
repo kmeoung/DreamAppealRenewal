@@ -19,6 +19,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -114,7 +116,7 @@ object Utils {
     /**
      * 나이 계산하기
      */
-    fun dateToAge(date : Date) : Int{
+    fun dateToAge(date: Date): Int {
         val cal = Calendar.getInstance()
         val curYear = cal.get(Calendar.YEAR)
         cal.time = date
@@ -274,11 +276,94 @@ object Utils {
 
             if (!TextUtils.isEmpty(absolutePathOfImage)) {
 
-                val info = BeanGalleryInfo(bucketName,bucketId,absolutePathOfImage)
+                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage)
                 imageInfoList.add(info)
             }
         }
 
-        return BeanGalleryInfoList(bucketNameList,bucketIdList,imageInfoList)
+        return BeanGalleryInfoList(bucketNameList, bucketIdList, imageInfoList)
     }
+
+    /**
+     * 타이머 남은 시간 계산
+     */
+    fun getTimerTime(endDate: String): String {
+        var strDate = ""
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val endDate = sdf.parse(endDate)
+        val curDate = Date()
+
+        var time: Long = endDate.time - curDate.time
+        val day : Int = (time / (24 * 60 * 60 * 1000)).toInt()
+        time -= day * (24 * 60 * 60 * 1000)
+        val hour : Int = (time / (60 * 60 * 1000)).toInt()
+        time -= hour * (60 * 60 * 1000)
+        val min : Int = (time / (60 * 1000)).toInt()
+        time -= min * (60 * 1000)
+        val sec : Int = (time / 1000).toInt()
+
+        strDate = if (day > 0) {
+            String.format("%d일 %d시간 %d분", day, hour, min)
+        } else {
+            String.format("%d시간 %d분 %d초", hour, min, sec)
+        }
+        return strDate
+    }
+
+
+    fun convertFromDate(strPostDate: String): String {
+
+        var strDate = ""
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val sdf2 = SimpleDateFormat("yyyy. MM. dd")
+        val cal = Calendar.getInstance()
+
+        val nowHour = cal.get(Calendar.HOUR)
+        val nowMinute = cal.get(Calendar.MINUTE)
+        val nowSeconds = cal.get(Calendar.SECOND)
+        try {
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+
+            val nowDate = cal.time
+
+            val parseDate = sdf.parse(strPostDate)
+            cal.time = parseDate
+
+            val postHour = cal.get(Calendar.HOUR_OF_DAY)
+            val postMinute = cal.get(Calendar.MINUTE)
+            val postSeconds = cal.get(Calendar.SECOND)
+
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+
+            val postDate = cal.time
+
+            if (nowDate.compareTo(postDate) > 0) {
+                val viewSdf = SimpleDateFormat("yy. MM. dd")
+                strDate = viewSdf.format(postDate)
+            } else {
+                if (postHour < nowHour) {
+                    strDate = String.format("%d시간전", nowHour - postHour)
+                } else {
+                    if (postMinute < nowMinute) {
+                        strDate = String.format("%d분전", nowMinute - postMinute)
+                    } else {
+                        var second = nowSeconds - postSeconds
+                        if (second < 0) second = 0
+                        strDate = String.format("%d초전", second)
+                    }
+                }
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        return strDate
+    }
+
 }

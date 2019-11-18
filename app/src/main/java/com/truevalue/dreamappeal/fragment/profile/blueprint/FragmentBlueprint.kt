@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,16 +16,25 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityFollow
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanBlueprint
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamDescription
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamList
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamTitle
+import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentMeritAndMotive
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.bottom_comment_view.*
+import kotlinx.android.synthetic.main.bottom_comment_view.tv_comment
 import kotlinx.android.synthetic.main.fragment_blueprint.*
+import kotlinx.android.synthetic.main.fragment_blueprint.srl_refresh
+import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONException
@@ -53,6 +64,8 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         initAdapter()
         // 데이터 바인드
         bindData()
+        // View Onclick
+        onClickView()
         if (mBean == null) {
             // 발전계획 페이지 조회
             getBlueprint()
@@ -74,6 +87,31 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             mAnOAdapter!!.add("")
             mObjectAdapter!!.add("")
         }
+    }
+
+    /**
+     * VIew OnClick Listener
+     */
+    private fun onClickView() {
+        var listener = View.OnClickListener {
+            when (it) {
+                tv_default_ability_opportunity -> {
+                    // replace to Dream List
+                    (activity as ActivityMain).replaceFragment(FragmentAnO(), true)
+                }
+                tv_default_object -> {
+                    // replace to Follower
+                    val intent = Intent(context, ActivityFollow::class.java)
+                    intent.putExtra(ActivityFollow.EXTRA_VIEW_TYPE, ActivityFollow.VIEW_TYPE_FOLLOWER)
+                    startActivity(intent)
+                }
+
+            }
+        }
+
+        tv_default_ability_opportunity.setOnClickListener(listener)
+        tv_default_object.setOnClickListener(listener)
+
     }
 
     /**
@@ -366,6 +404,12 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             BaseViewHolder.newInstance(R.layout.listitem_dot_text, parent, false)
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
+            val bean = mAnOAdapter!!.get(i) as BeanBlueprintAnO
+            val tvContents = h.getItemView<TextView>(R.id.tv_contents)
+            tvContents.text = bean.contents
+            tvContents.setOnClickListener(View.OnClickListener {
+                (activity as ActivityMain).replaceFragment(FragmentAnO(), true)
+            })
         }
 
         override fun getItemViewType(i: Int): Int = 0
@@ -384,6 +428,12 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             BaseViewHolder.newInstance(R.layout.listitem_object, parent, false)
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
+            val bean = mAnOAdapter!!.get(i) as BeanBlueprintObject
+            val tvObjectTitle = h.getItemView<TextView>(R.id.tv_object_title)
+            tvObjectTitle.text = bean.object_name
+            tvObjectTitle.setOnClickListener(View.OnClickListener {
+
+            })
         }
 
         override fun getItemViewType(i: Int): Int = 0

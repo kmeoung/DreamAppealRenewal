@@ -31,7 +31,7 @@
             android:background="@drawable/bg_white_rectangle_gray_2"
             android:fontFamily="@font/nanum_square_round_b"
             android:importantForAutofill="no"
-            android:maxLength="16"
+            android:maxLength="19"
             android:inputType="text"
             android:gravity="center"
             android:textColor="@color/black"

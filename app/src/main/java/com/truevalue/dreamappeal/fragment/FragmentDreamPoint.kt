@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanDreamPoint
+import com.truevalue.dreamappeal.bean.BeanPointTimer
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
@@ -25,6 +28,7 @@ import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_dream_point.*
 import okhttp3.Call
 import org.json.JSONObject
+
 
 class FragmentDreamPoint : BaseFragment() {
 
@@ -36,6 +40,15 @@ class FragmentDreamPoint : BaseFragment() {
 
     private var mDailyType = DAILY_SELECT_TYPE_DAILY
     private var mPointType: HashMap<Int, ArrayList<BeanDreamPoint>?>? = null
+    private var mBeanPointTimer : BeanPointTimer? = null
+
+    private val mTimer = object : Handler(){
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            setPointTimer()
+            this.sendEmptyMessageDelayed(0,100)
+        }
+    }
 
     init {
 
@@ -80,6 +93,17 @@ class FragmentDreamPoint : BaseFragment() {
         for (i in 1..10) {
             mAdapter!!.add("")
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        mTimer.sendEmptyMessage(0)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mTimer.removeMessages(0)
     }
 
     /**
@@ -266,10 +290,42 @@ class FragmentDreamPoint : BaseFragment() {
                             e.printStackTrace()
                         }
 
+                        try{
+                            val left_time = json.getJSONObject("left_time")
+                            val day = left_time.getString("day")
+                            val week = left_time.getString("week")
+                            val month = left_time.getString("month")
+                            mBeanPointTimer = BeanPointTimer(day,week, month)
+
+                        }catch (e: Exception){
+                            e.printStackTrace()
+                        }
                     }
                 }
             }
         })
+    }
+
+    /**
+     * Point Timer 설정
+     */
+    private fun setPointTimer(){
+        if(mBeanPointTimer != null){
+            var maximum = when(mDailyType){
+                DAILY_SELECT_TYPE_DAILY->{
+                    mBeanPointTimer!!.day
+                }
+                DAILY_SELECT_TYPE_WEEKLY->{
+                    mBeanPointTimer!!.week
+                }
+                DAILY_SELECT_TYPE_MONTHLY->{
+                    mBeanPointTimer!!.month
+                }
+                else-> ""
+            }
+
+            tv_time.text = Utils.getTimerTime(maximum)
+        }
     }
 
 
