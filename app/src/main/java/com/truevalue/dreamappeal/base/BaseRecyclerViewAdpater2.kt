@@ -12,7 +12,7 @@ class BaseRecyclerViewAdapter2<T>(listener: IORecyclerViewListener) :
     val mArray : ArrayList<T>
 
     init {
-        mArray = java.util.ArrayList<T>()
+        mArray = java.util.ArrayList()
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): BaseViewHolder {
