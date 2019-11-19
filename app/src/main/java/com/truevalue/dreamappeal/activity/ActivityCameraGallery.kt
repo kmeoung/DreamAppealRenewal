@@ -1,12 +1,9 @@
 package com.truevalue.dreamappeal.activity
 
+import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
+import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,94 +13,67 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import com.amazonaws.auth.AWSCredentials
-import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
-import com.amazonaws.regions.Regions
 import com.amazonaws.services.s3.AmazonS3Client
-import com.amazonaws.services.s3.model.AccessControlList
-import com.amazonaws.services.s3.model.CannedAccessControlList
-import com.amazonaws.services.s3.model.PutObjectRequest
 import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
-import com.truevalue.dreamappeal.base.BaseImageUploader
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_gallery.*
 import kotlinx.android.synthetic.main.activity_camera_gallery.*
 import java.io.File
-import java.io.FileOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ActivityCameraGallery : BaseActivity() {
 
-    private val AWS_LOG = "AWS_LOG"
+
 
     private var mOldPath: ArrayList<BeanGalleryInfo>? = null
     private var mItemPath: ArrayList<BeanGalleryInfo>? = null
     private var mBucked: ArrayList<BeanGalleryInfo>? = null
-    private var mImageTest : String? = null
+    private var isMultiMode = false
+    private val mArrayImage : ArrayList<File>?
+    private var mCurrentViewImage : File? = null
+
+    init {
+        mArrayImage = ArrayList()
+    }
+
+    companion object{
+        val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera_gallery)
 
-        // Init Aws
-//        AWSMobileClient.getInstance().initialize(this) {
-//            Log.d(AWS_LOG, "AWSMobileClient is initialized")
-//        }.execute()
-        // todo : TEST
         initAdapter()
+
+        // View OnClick Listener
+        onClickView()
     }
 
     /**
-     * Upload
+     * View OnClick Listener
      */
-    fun uploadTransferUtility(imagePath: String?) {
-        val transferUtility = TransferUtility.builder()
-            .context(applicationContext)
-            .awsConfiguration(AWSMobileClient.getInstance().configuration)
-            .s3Client(AmazonS3Client(AWSMobileClient.getInstance().credentialsProvider))
-            .build()
-
-        val extStorageDirectory = Environment.getExternalStorageDirectory().toString()
-        val file = File(imagePath)
-
-        val uploadObserver = transferUtility.upload(
-            "test.png",
-            file
-        )
-
-        uploadObserver.setTransferListener(object : TransferListener {
-            override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
-                Log.d(AWS_LOG, "UPLOAD - - ID: $id, percent done = $done")
-            }
-
-            override fun onStateChanged(id: Int, state: TransferState?) {
-                if (state == TransferState.COMPLETED) {
-                    // Handle a completed upload
+    private fun onClickView(){
+        val listener = View.OnClickListener{
+            when(it){
+                iv_check->{
+                    val intent = Intent()
+                    intent.putExtra(REQUEST_IMAGE_FILES, mArrayImage)
+                    setResult(Activity.RESULT_OK,intent)
+                    finish()
                 }
             }
-
-            override fun onError(id: Int, ex: Exception?) {
-                Log.d(AWS_LOG, "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
-            }
-
-
-        })
-
-        // If you prefer to long-poll for updates
-        if (uploadObserver.state == TransferState.COMPLETED) {
-            /* Handle completion */
         }
-
-        val bytesTransferred = uploadObserver.bytesTransferred
+        iv_check.setOnClickListener(listener)
     }
 
     private fun initAdapter() {
@@ -132,7 +102,9 @@ class ActivityCameraGallery : BaseActivity() {
             R.layout.support_simple_spinner_dropdown_item,
             strBucketNameList
         )
-        titleSpinner.setAdapter(arrayAdapter)
+
+        titleSpinner.adapter = arrayAdapter
+        Utils.setDropDownHeight(sp_title,500)
 
         for (i in beanImageInfoList.indices) {
             val (bucketName, bucketId, imagePath) = beanImageInfoList[i]
@@ -141,7 +113,7 @@ class ActivityCameraGallery : BaseActivity() {
 
             if (!firstImage) {
                 Glide.with(applicationContext!!)
-                    .load(mItemPath!!.get(0).imagePath)
+                    .load(mItemPath!![0].imagePath)
                     .into(iv_select_image)
 
 //                iv_select_image.setmImageFile(File(mItemPath!!.get(0).imagePath))
@@ -151,25 +123,38 @@ class ActivityCameraGallery : BaseActivity() {
         val mGridAdapter = GridAdapter(applicationContext, mItemPath!!)
         gv_gallery.adapter = mGridAdapter
 
-        mImageTest = mItemPath!![0].imagePath
+        mCurrentViewImage = File(mItemPath!![0].imagePath)
 
-        gv_gallery.setOnItemClickListener(AdapterView.OnItemClickListener { adapterView, view, i, l ->
+        if(mArrayImage!!.size < 1 || isMultiMode){
+            mArrayImage!!.add(mCurrentViewImage!!)
+        }else{
+            mArrayImage!![0] = mCurrentViewImage!!
+        }
+
+        gv_gallery.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
             Glide.with(applicationContext!!)
-                .load(mItemPath!!.get(i).imagePath)
+                .load(mItemPath!![i].imagePath)
                 .into(iv_select_image)
 
-            mImageTest = mItemPath!![i].imagePath
-//            (getActivity() as ActivityGalleryCamera).setmImageFile(File(mItemPath!!.get(i).imagePath))
-        })
+            mCurrentViewImage = File(mItemPath!![i].imagePath)
 
-        titleSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            if(mArrayImage!!.size < 1){
+                mArrayImage!!.add(mCurrentViewImage!!)
+            }else{
+                mArrayImage!![0] = mCurrentViewImage!!
+            }
+        }
+
+        // todo : 여기에 멀티 셀렉트 모드 추가 Listener 만들어야 함
+
+        val spinnerListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
                 position: Int,
                 id: Long
             ) {
-                val bean = mBucked!!.get(position)
+                val bean = mBucked!![position]
                 mItemPath!!.clear()
                 if (TextUtils.equals(bean.bucketId, "All")) {
                     mItemPath!!.addAll(mOldPath!!)
@@ -183,35 +168,29 @@ class ActivityCameraGallery : BaseActivity() {
                 }
                 // 이미지뷰 초기화
                 if (mItemPath!!.size > 0) {
-                    Glide.with(applicationContext!!)
-                        .load(mItemPath!!.get(0).imagePath)
-                        .into(iv_select_image)
 
+                    mCurrentViewImage = File(mItemPath!![0].imagePath)
+
+                    Glide.with(applicationContext!!)
+                        .load(mItemPath!![0].imagePath)
+                        .into(iv_select_image)
 //                    (getActivity() as ActivityGalleryCamera).setmImageFile(File(mItemPath!!.get(0).imagePath))
                 }
 
                 mGridAdapter.notifyDataSetChanged()
-
-                tv_camera.setOnClickListener(View.OnClickListener {
-//                                        uploadTransferUtility(mItemPath!!.get(0).imagePath)
-                    val file = File(mImageTest!!)
-
-
-                    val thread = object : Thread(){
-                        override fun run() {
-                            super.run()
-                            val uploader = BaseImageUploader()
-                            uploader.uploadFile(file)
-                        }
-                    }
-                    thread.start()
-
-                })
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
 
             }
+        }
+
+        sp_title.onItemSelectedListener = spinnerListener
+
+        tv_camera.setOnClickListener(View.OnClickListener {
+            //                                        uploadTransferUtility(mItemPath!!.get(0).imagePath)
+
+            // todo : 여기서 카메라 처리
         })
     }
 

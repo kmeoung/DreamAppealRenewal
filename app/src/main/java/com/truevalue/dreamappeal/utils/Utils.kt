@@ -8,11 +8,18 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
+import com.amazonaws.services.s3.AmazonS3Client
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.base.IOS3ImageUploaderListener
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList
 import java.io.File
@@ -364,6 +371,54 @@ object Utils {
         }
 
         return strDate
+    }
+
+    /**
+     * AWS ImageUploader
+     */
+    fun uploadWithTransferUtility(context : Context, file: File,subBucket : String,listener : IOS3ImageUploaderListener) {
+        val AWS_LOG = "AWS_LOG"
+        val transferUtility = TransferUtility.builder()
+            .context(context)
+            .awsConfiguration(AWSMobileClient.getInstance().configuration)
+            .s3Client(AmazonS3Client(AWSMobileClient.getInstance().credentialsProvider))
+            .build()
+
+
+        val other = if(subBucket.isNullOrEmpty()) "" else "$subBucket/"
+        val KEY = "public/$other"
+
+        val date = Date()
+        val pos = file.name.lastIndexOf(".")
+        val ext = file.name.substring(pos + 1)
+
+        val fileName = "${date.time}.$ext"
+        val uploadObserver = transferUtility.upload(KEY + fileName, file)
+        Log.d(AWS_LOG, "UPLOAD - - It Is a Key: ${uploadObserver.key}")
+        // Attach a listener to the observer
+        uploadObserver.setTransferListener(object : TransferListener{
+            override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+                val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
+                Log.d("AWS_LOG", "UPLOAD - - ID: $id, percent done = $done")
+            }
+
+            override fun onStateChanged(id: Int, state: TransferState?) {
+                if(state == TransferState.COMPLETED){
+                    listener.onStateCompleted(id,state,uploadObserver.key)
+                }
+            }
+
+            override fun onError(id: Int, ex: java.lang.Exception?) {
+                Log.d("AWS_LOG", "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
+            }
+        })
+
+        // If you prefer to long-poll for updates
+        if (uploadObserver.state == TransferState.COMPLETED) {
+            /* Handle completion */
+        }
+
+        val bytesTransferred = uploadObserver.bytesTransferred
     }
 
 }

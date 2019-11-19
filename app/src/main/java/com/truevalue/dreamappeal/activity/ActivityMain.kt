@@ -56,6 +56,11 @@ class ActivityMain : BaseActivity() {
         // Action
         onAction()
         mProfileIdx = Comm_Prefs.getUserProfileIndex()
+
+        // todo : AWS Mobile Init
+        AWSMobileClient.getInstance().initialize(this) {
+            Log.d("AWS_LOG", "AWS INITIALIZED")
+        }.execute()
     }
 
     /**

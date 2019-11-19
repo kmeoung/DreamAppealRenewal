@@ -4,7 +4,7 @@
   "CredentialsProvider": {
     "CognitoIdentity": {
       "Default": {
-        "PoolId": "ap-northeast-2:eae78c0e-6fb3-4824-af49-612af5639974",
+        "PoolId": "ap-northeast-2:5c80d289-ec0b-4e01-aa68-4c31687b2625",
         "Region": "ap-northeast-2"
       }
     }
@@ -12,9 +12,15 @@
   "IdentityManager": {
     "Default": {}
   },
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "dreamappeal-userfiles-mobilehub-220050332",
+      "Region": "ap-northeast-2"
+    }
+  },
   "PinpointAnalytics": {
     "Default": {
-      "AppId": "102d055241874237b7275af947cae6f2",
+      "AppId": "d706f3cfa7f74dc78f84e170f37290ca",
       "Region": "us-east-1"
     }
   },
@@ -23,9 +29,9 @@
       "Region": "us-east-1"
     }
   },
-  "S3TransferUtility": {
+  "UserFileManager": {
     "Default": {
-      "Bucket": "dreamappeal-dev",
+      "Bucket": "dreamappeal-userfiles-mobilehub-220050332",
       "Region": "ap-northeast-2"
     }
   }

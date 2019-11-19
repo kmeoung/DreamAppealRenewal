@@ -1,10 +1,12 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -12,8 +14,13 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityCameraGallery
 import com.truevalue.dreamappeal.activity.ActivityFollow
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
@@ -25,6 +32,7 @@ import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
 import org.json.JSONObject
+import java.io.File
 import java.io.IOException
 
 class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
@@ -32,6 +40,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mBean: BeanDreamPresent? = null
+
+    private val REQUEST_CODE_PICK_PROFILE_IMAGE = 1000
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,8 +73,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     }
 
     /**
-    * Main에서 넘어온 Refresh 요청
-    */
+     * Main에서 넘어온 Refresh 요청
+     */
     override fun OnServerRefresh() {
         super.OnServerRefresh()
         getProfile()
@@ -176,7 +186,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             BeanDreamPresent::class.java
                         )
                         if (mBean != null) {
-                        Comm_Prefs.setUserProfileIndex(mBean!!.idx)
+                            Comm_Prefs.setUserProfileIndex(mBean!!.idx)
                             mBean!!.descriptions = ArrayList()
                             try {
                                 val description_spec = profile.getJSONArray("description_spec")
@@ -275,11 +285,16 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_follower -> {
                     // replace to Follower
                     val intent = Intent(context, ActivityFollow::class.java)
-                    intent.putExtra(ActivityFollow.EXTRA_VIEW_TYPE,ActivityFollow.VIEW_TYPE_FOLLOWER)
+                    intent.putExtra(
+                        ActivityFollow.EXTRA_VIEW_TYPE,
+                        ActivityFollow.VIEW_TYPE_FOLLOWER
+                    )
                     startActivity(intent)
                 }
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
+                    val intent = Intent(context, ActivityCameraGallery::class.java)
+                    startActivityForResult(intent, REQUEST_CODE_PICK_PROFILE_IMAGE)
                 }
                 ll_dream_title,
                 tv_init_dream_title -> {
@@ -369,10 +384,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * Http
      * 팔로우 / 언팔로우
      */
-    private fun follow(){
+    private fun follow() {
         // todo : 보고있는 profile index 를 여기다가 넣어야 합니다
         val profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.follow(profile_idx,object : DAHttpCallback{
+        DAClient.follow(profile_idx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -380,17 +395,16 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 code: String,
                 message: String
             ) {
-                if(context != null){
-                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if(code == DAClient.SUCCESS){
-                         // todo : 여기서 팔로우 설정
+                    if (code == DAClient.SUCCESS) {
+                        // todo : 여기서 팔로우 설정
                     }
                 }
             }
         })
     }
-
 
 
     /**
@@ -403,6 +417,46 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     override fun onRefresh() {
         getProfile()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_PICK_PROFILE_IMAGE) {
+                val fileArray =
+                    data!!.getSerializableExtra(ActivityCameraGallery.REQUEST_IMAGE_FILES) as ArrayList<File>
+
+                if (fileArray != null) {
+                    if (fileArray.size > 0) {
+                        Utils.uploadWithTransferUtility(
+                            context!!.applicationContext,
+                            fileArray[0],
+                            "",
+                            object :
+                                IOS3ImageUploaderListener {
+                                override fun onStateCompleted(
+                                    id: Int,
+                                    state: TransferState,
+                                    imageBucketAddress: String
+                                ) {
+                                    // todo : 성공
+                                    Toast.makeText(
+                                        context!!.applicationContext,
+                                        imageBucketAddress,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
+
+                        Glide.with(this)
+                            .load(fileArray[0])
+                            .placeholder(R.drawable.drawer_user)
+                            .apply(RequestOptions().circleCrop())
+                            .into(iv_dream_profile)
+                    }
+                }
+            }
+        }
     }
 }
 

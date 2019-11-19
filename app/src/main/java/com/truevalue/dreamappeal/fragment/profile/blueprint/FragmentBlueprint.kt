@@ -18,30 +18,24 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityFollow
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
+import com.truevalue.dreamappeal.base.BaseViewHolder
+import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanBlueprint
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject
-import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamDescription
-import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamList
-import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamTitle
-import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentMeritAndMotive
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.bottom_comment_view.*
-import kotlinx.android.synthetic.main.bottom_comment_view.tv_comment
 import kotlinx.android.synthetic.main.fragment_blueprint.*
-import kotlinx.android.synthetic.main.fragment_blueprint.srl_refresh
-import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.util.*
-import kotlin.collections.ArrayList
 
 class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -102,7 +96,10 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 tv_default_object -> {
                     // replace to Follower
                     val intent = Intent(context, ActivityFollow::class.java)
-                    intent.putExtra(ActivityFollow.EXTRA_VIEW_TYPE, ActivityFollow.VIEW_TYPE_FOLLOWER)
+                    intent.putExtra(
+                        ActivityFollow.EXTRA_VIEW_TYPE,
+                        ActivityFollow.VIEW_TYPE_FOLLOWER
+                    )
                     startActivity(intent)
                 }
 
@@ -175,11 +172,11 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 } else {
                     tv_default_ability_opportunity.visibility = VISIBLE
                 }
-            }else{
+            } else {
                 tv_default_ability_opportunity.visibility = VISIBLE
             }
 
-            if(mObjectAdapter != null){
+            if (mObjectAdapter != null) {
                 mObjectAdapter!!.clear()
                 if (mBean!!.objects.size > 0) {
                     tv_default_object.visibility = GONE
@@ -189,7 +186,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 } else {
                     tv_default_object.visibility = VISIBLE
                 }
-            }else{
+            } else {
                 tv_default_object.visibility = VISIBLE
             }
         }
@@ -384,7 +381,6 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             e.printStackTrace()
 
                         }
-
                     }
                 }
             }
