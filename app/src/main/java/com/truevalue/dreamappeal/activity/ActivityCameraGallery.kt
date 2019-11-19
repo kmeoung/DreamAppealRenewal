@@ -66,9 +66,11 @@ class ActivityCameraGallery : BaseActivity() {
         val listener = View.OnClickListener{
             when(it){
                 iv_check->{
-                    val intent = Intent()
-                    intent.putExtra(REQUEST_IMAGE_FILES, mArrayImage)
-                    setResult(Activity.RESULT_OK,intent)
+                    if(mArrayImage != null && mArrayImage.size > 0) {
+                        val intent = Intent()
+                        intent.putExtra(REQUEST_IMAGE_FILES, mArrayImage)
+                        setResult(Activity.RESULT_OK, intent)
+                    }
                     finish()
                 }
             }
@@ -122,6 +124,8 @@ class ActivityCameraGallery : BaseActivity() {
         }
         val mGridAdapter = GridAdapter(applicationContext, mItemPath!!)
         gv_gallery.adapter = mGridAdapter
+
+        if(mItemPath!!.size < 1) return
 
         mCurrentViewImage = File(mItemPath!![0].imagePath)
 

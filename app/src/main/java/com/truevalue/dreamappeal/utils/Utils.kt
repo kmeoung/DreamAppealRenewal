@@ -18,10 +18,13 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
 import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.amazonaws.services.s3.model.PutObjectRequest
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.IOS3ImageUploaderListener
 import com.truevalue.dreamappeal.bean.BeanGalleryInfo
 import com.truevalue.dreamappeal.bean.BeanGalleryInfoList
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -384,7 +387,6 @@ object Utils {
             .s3Client(AmazonS3Client(AWSMobileClient.getInstance().credentialsProvider))
             .build()
 
-
         val other = if(subBucket.isNullOrEmpty()) "" else "$subBucket/"
         val KEY = "public/$other"
 
@@ -410,6 +412,7 @@ object Utils {
 
             override fun onError(id: Int, ex: java.lang.Exception?) {
                 Log.d("AWS_LOG", "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
+                listener.onError(id,ex)
             }
         })
 

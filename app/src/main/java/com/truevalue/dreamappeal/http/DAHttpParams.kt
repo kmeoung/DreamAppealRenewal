@@ -14,19 +14,25 @@ class DAHttpParams {
         }
     }
 
-    private val map: LinkedHashMap<String, Any>
+    private val map: LinkedHashMap<String, Any>?
+    private var mJson : JSONObject?
 
     init {
         map = LinkedHashMap()
+        mJson = null
+    }
+
+    fun put(jsonObject : JSONObject){
+        mJson = jsonObject
     }
 
     fun put(key: Any, value: Any) {
-        map.put(key.toString(), value)
+        map!![key.toString()] = value
     }
 
     fun urlParams(): String {
         var urlParam: String = ""
-        if (map.size > 0) {
+        if (map!!.size > 0) {
             var i = 0
             for (key: String in map.keys) {
                 urlParam = when (i) {
@@ -42,8 +48,9 @@ class DAHttpParams {
     }
 
     fun bodyParams(): RequestBody {
+        if(mJson != null) return toRequestType(mJson!!)
         val json = JSONObject()
-        if (map.size > 0) {
+        if (map!!.size > 0) {
             for (key: String in map.keys) {
                 json.put(key, map[key])
             }

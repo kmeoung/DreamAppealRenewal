@@ -7,4 +7,6 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 interface IOS3ImageUploaderListener {
 
     fun onStateCompleted(id: Int, state: TransferState,imageBucketAddress : String)
+
+    fun onError(id: Int, ex: java.lang.Exception?)
 }

@@ -38,6 +38,45 @@ object DAClient {
         return header
     }
 
+    val IMAGE_TYPE_PROFILE = 0
+    val IMAGE_TYPE_ACTION_POST = 1
+    val IMAGE_TYPE_ACHIVEMENT_POST = 2
+
+    /**
+     * PATCH
+     * 이미지 업로드
+     * idx -> profile_idx | achievement_post_idx | action_post_idx
+     * type -> 0 : profile | 1 : action_post | 2 : achievement_post
+     */
+    fun uploadsImage(
+        idx: Int,
+        type: Int,
+        url: ArrayList<String>,
+        callback: DAHttpCallback
+    ) {
+        val params = DAHttpParams()
+        val jsonObject = JSONObject()
+        jsonObject.put("idx", idx)
+        jsonObject.put("type", type)
+        val path = JSONArray()
+        for (i in 0 until url.size){
+            val jsonUrl = JSONObject()
+            jsonUrl.put("url",url[i])
+            path.put(jsonUrl)
+        }
+        jsonObject.put("path", path)
+        params.put(jsonObject)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_UPLOADS,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+
     /**
      * GET
      * 내 유저 정보 가져오기
@@ -951,11 +990,12 @@ object DAClient {
      * 갖출 능력 수정
      */
     fun updateAbility(
-        ability_idx : Int,
+        ability_idx: Int,
         ability: String,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_ABILITIES_IDX.replace(Comm_Param.ABILITY_INDEX,ability_idx.toString())
+        val url =
+            Comm_Param.URL_ABILITIES_IDX.replace(Comm_Param.ABILITY_INDEX, ability_idx.toString())
         val params = DAHttpParams()
         params.put("ability", ability)
 
@@ -973,10 +1013,11 @@ object DAClient {
      * 갖출 능력 삭제
      */
     fun deleteAbility(
-        ability_idx : Int,
+        ability_idx: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_ABILITIES_IDX.replace(Comm_Param.ABILITY_INDEX,ability_idx.toString())
+        val url =
+            Comm_Param.URL_ABILITIES_IDX.replace(Comm_Param.ABILITY_INDEX, ability_idx.toString())
 
         BaseOkhttpClient.request(
             HttpType.DELETE,
@@ -1035,11 +1076,14 @@ object DAClient {
      * 만들고픈 기회 수정
      */
     fun updateOpportunity(
-        opportunity_idx : Int,
+        opportunity_idx: Int,
         opportunity: String,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_OPPORTUNITIES_IDX.replace(Comm_Param.OPPORTUNITY_INDEX,opportunity_idx.toString())
+        val url = Comm_Param.URL_OPPORTUNITIES_IDX.replace(
+            Comm_Param.OPPORTUNITY_INDEX,
+            opportunity_idx.toString()
+        )
         val params = DAHttpParams()
         params.put("opportunity", opportunity)
 
@@ -1057,10 +1101,13 @@ object DAClient {
      * 만들고픈 기회 삭제
      */
     fun deleteOpportunity(
-        opportunity_idx : Int,
+        opportunity_idx: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_OPPORTUNITIES_IDX.replace(Comm_Param.OPPORTUNITY_INDEX,opportunity_idx.toString())
+        val url = Comm_Param.URL_OPPORTUNITIES_IDX.replace(
+            Comm_Param.OPPORTUNITY_INDEX,
+            opportunity_idx.toString()
+        )
 
         BaseOkhttpClient.request(
             HttpType.DELETE,

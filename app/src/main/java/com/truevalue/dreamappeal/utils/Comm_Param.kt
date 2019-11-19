@@ -20,6 +20,9 @@ object Comm_Param {
 
     val PROFILE_INDEX = "PROFILE_INDEX"
 
+    // 이미지 업로드
+    val URL_UPLOADS = "$URL_API/uploads/"
+
     // 회원
     val URL_USERS = "$URL_API/users"
     val URL_USERS_PROFILE_IDX = "$URL_USERS/$PROFILE_INDEX"

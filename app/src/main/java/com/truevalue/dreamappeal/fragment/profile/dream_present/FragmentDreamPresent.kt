@@ -236,6 +236,12 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 else -> getString(R.string.str_first_dream)
             }
 
+            Glide.with(this)
+                .load(bean.image)
+                .placeholder(R.drawable.drawer_user)
+                .apply(RequestOptions().circleCrop())
+                .into(iv_dream_profile)
+
             if (bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()) {
                 tv_init_dream_title.visibility = VISIBLE
             } else {
@@ -428,10 +434,14 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
                 if (fileArray != null) {
                     if (fileArray.size > 0) {
+
+                        val idx = Comm_Prefs.getUserProfileIndex()
+                        val type = DAClient.IMAGE_TYPE_PROFILE
+
                         Utils.uploadWithTransferUtility(
                             context!!.applicationContext,
                             fileArray[0],
-                            "",
+                            "$idx/$type",
                             object :
                                 IOS3ImageUploaderListener {
                                 override fun onStateCompleted(
@@ -439,12 +449,11 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                     state: TransferState,
                                     imageBucketAddress: String
                                 ) {
-                                    // todo : 성공
-                                    Toast.makeText(
-                                        context!!.applicationContext,
-                                        imageBucketAddress,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    updateProfileImage(idx,type,imageBucketAddress)
+                                }
+
+                                override fun onError(id: Int, ex: java.lang.Exception?) {
+
                                 }
                             })
 
@@ -457,6 +466,32 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 }
             }
         }
+    }
+
+    /**
+     * Http
+     * Profile Image Update
+     */
+    private fun updateProfileImage(idx : Int,type : Int,url: String) {
+        val list = ArrayList<String>()
+        list.add(url)
+        DAClient.uploadsImage(idx, type, list, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+
+                    }
+                }
+            }
+        })
     }
 }
 
