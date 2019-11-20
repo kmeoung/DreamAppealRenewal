@@ -3,11 +3,17 @@ package com.truevalue.dreamappeal.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -33,19 +39,27 @@ import kotlin.collections.ArrayList
 class ActivityCameraGallery : BaseActivity() {
 
 
-
     private var mOldPath: ArrayList<BeanGalleryInfo>? = null
     private var mItemPath: ArrayList<BeanGalleryInfo>? = null
     private var mBucked: ArrayList<BeanGalleryInfo>? = null
     private var isMultiMode = false
-    private val mArrayImage : ArrayList<File>?
-    private var mCurrentViewImage : File? = null
+    private val mArrayImage: ArrayList<File>?
+    private var mCurrentViewImage: File? = null
+
+    private var mSelectType: String?
+
+    val REQUEST_IMAGE_CAPTURE = 1004
 
     init {
         mArrayImage = ArrayList()
+        // 기본 싱글
+        mSelectType = EXTRA_IMAGE_SINGLE_SELECT
     }
 
-    companion object{
+    companion object {
+        val EXTRA_IMAGE_SINGLE_SELECT = "EXTRA_IMAGE_SINGLE_SELECT"
+        val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
+        val SELECT_TYPE = "SELECT_TYPE"
         val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
     }
 
@@ -53,29 +67,54 @@ class ActivityCameraGallery : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera_gallery)
 
+        // View 초기화
+        initView()
+        // Adapter 초기화
         initAdapter()
-
         // View OnClick Listener
         onClickView()
     }
 
     /**
+     * View Init
+     */
+    private fun initView() {
+        if (!intent.getStringExtra("SELECT_TYPE").isNullOrEmpty()) {
+            mSelectType = intent.getStringExtra("SELECT_TYPE")
+        }
+
+        when (mSelectType) {
+            EXTRA_IMAGE_SINGLE_SELECT -> {
+                btn_multi_select.visibility = GONE
+                isMultiMode = false
+            }
+            EXTRA_IMAGE_MULTI_SELECT -> {
+                btn_multi_select.visibility = VISIBLE
+            }
+        }
+    }
+
+    /**
      * View OnClick Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                iv_check->{
-                    if(mArrayImage != null && mArrayImage.size > 0) {
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_check -> {
+                    if (mArrayImage != null && mArrayImage.size > 0) {
                         val intent = Intent()
                         intent.putExtra(REQUEST_IMAGE_FILES, mArrayImage)
                         setResult(Activity.RESULT_OK, intent)
                     }
                     finish()
                 }
+                btn_multi_select -> {
+
+                }
             }
         }
         iv_check.setOnClickListener(listener)
+        btn_multi_select.setOnClickListener(listener)
     }
 
     private fun initAdapter() {
@@ -106,7 +145,7 @@ class ActivityCameraGallery : BaseActivity() {
         )
 
         titleSpinner.adapter = arrayAdapter
-        Utils.setDropDownHeight(sp_title,500)
+        Utils.setDropDownHeight(sp_title, 500)
 
         for (i in beanImageInfoList.indices) {
             val (bucketName, bucketId, imagePath) = beanImageInfoList[i]
@@ -125,13 +164,13 @@ class ActivityCameraGallery : BaseActivity() {
         val mGridAdapter = GridAdapter(applicationContext, mItemPath!!)
         gv_gallery.adapter = mGridAdapter
 
-        if(mItemPath!!.size < 1) return
+        if (mItemPath!!.size < 1) return
 
         mCurrentViewImage = File(mItemPath!![0].imagePath)
 
-        if(mArrayImage!!.size < 1 || isMultiMode){
+        if (mArrayImage!!.size < 1 || isMultiMode) {
             mArrayImage!!.add(mCurrentViewImage!!)
-        }else{
+        } else {
             mArrayImage!![0] = mCurrentViewImage!!
         }
 
@@ -142,9 +181,9 @@ class ActivityCameraGallery : BaseActivity() {
 
             mCurrentViewImage = File(mItemPath!![i].imagePath)
 
-            if(mArrayImage!!.size < 1){
+            if (mArrayImage!!.size < 1) {
                 mArrayImage!!.add(mCurrentViewImage!!)
-            }else{
+            } else {
                 mArrayImage!![0] = mCurrentViewImage!!
             }
         }
@@ -192,12 +231,61 @@ class ActivityCameraGallery : BaseActivity() {
         sp_title.onItemSelectedListener = spinnerListener
 
         tv_camera.setOnClickListener(View.OnClickListener {
-            //                                        uploadTransferUtility(mItemPath!!.get(0).imagePath)
-
-            // todo : 여기서 카메라 처리
+            // 카메라 처리
+            onClickedCamera()
         })
     }
 
+    /**
+     * 사진찍어서 가져오기
+     */
+    fun onClickedCamera() {
+        val intent = Intent()
+        intent.action = MediaStore.ACTION_IMAGE_CAPTURE
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            var extras: Bundle? = null
+            try {
+                extras = data!!.extras
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            var uri: Uri? = null
+            try {
+                uri = data!!.data
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            var file: File? = null
+            if (extras != null) {
+                val photo = extras.getParcelable<Bitmap>("data")
+                val filePath = Environment.getExternalStorageDirectory().path + "/"
+                val fileName: String
+                fileName = Date().time.toString() + ".jpeg"
+                Utils.SaveBitmapToFileCache(photo!!, filePath, fileName)
+                file = File(filePath + fileName)
+            }
+            if (uri != null) {
+                uri = data!!.data
+                file = File(Utils.getRealPathFromURI(this@ActivityCameraGallery, uri!!))
+            }
+
+            val array = ArrayList<File>()
+            array.add(file!!)
+            // todo : 이미지
+            val intent = Intent()
+            intent.putExtra(REQUEST_IMAGE_FILES, array)
+            setResult(Activity.RESULT_OK, intent)
+
+
+        }
+    }
 
     /**
      * GridAdapter
@@ -232,6 +320,11 @@ class ActivityCameraGallery : BaseActivity() {
                 convertView = inflater.inflate(R.layout.listitem_gallery, parent, false)
             }
             val imageView = convertView!!.findViewById<ImageView>(R.id.iv_image)
+            val multiCheck = convertView!!.findViewById<ImageView>(R.id.iv_multi)
+
+            multiCheck.setOnClickListener(View.OnClickListener {
+                // todo : 멀티 버튼 필요
+            })
 
             //onCreate에서 정해준 크기로 이미지를 붙인다.
             Glide.with(mContext)

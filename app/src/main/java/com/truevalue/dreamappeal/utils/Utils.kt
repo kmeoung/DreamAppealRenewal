@@ -33,6 +33,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 
 object Utils {
@@ -377,6 +378,7 @@ object Utils {
     }
 
     /**
+     * 단일 이미지 업로드
      * AWS ImageUploader
      */
     fun uploadWithTransferUtility(context : Context, file: File,subBucket : String,listener : IOS3ImageUploaderListener) {
@@ -423,5 +425,63 @@ object Utils {
 
         val bytesTransferred = uploadObserver.bytesTransferred
     }
+
+    /**
+     * 다중 이미지 업로드
+     */
+    fun multiUploadWithTransferUtility(context : Context, file: ArrayList<File>,subBucket : String,listener : IOS3ImageUploaderListener) {
+        val AWS_LOG = "AWS_LOG"
+        val transferUtility = TransferUtility.builder()
+            .context(context)
+            .awsConfiguration(AWSMobileClient.getInstance().configuration)
+            .s3Client(AmazonS3Client(AWSMobileClient.getInstance().credentialsProvider))
+            .build()
+
+        val other = if(subBucket.isNullOrEmpty()) "" else "$subBucket/"
+        val KEY = "public/$other"
+        var completeFile = 0
+        var addressList = ArrayList<String>()
+        for (i in 0 until file.size) {
+
+            val date = Date()
+            val pos = file[i].name.lastIndexOf(".")
+            val ext = file[i].name.substring(pos + 1)
+
+            val fileName = "${date.time}_$i.$ext"
+            val uploadObserver = transferUtility.upload(KEY + fileName, file[i])
+            Log.d(AWS_LOG, "UPLOAD - - It Is a Key: ${uploadObserver.key}")
+
+            addressList.add(uploadObserver.key)
+
+            // Attach a listener to the observer
+            uploadObserver.setTransferListener(object : TransferListener {
+                override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
+                    val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
+                    Log.d("AWS_LOG", "UPLOAD - - ID: $id, percent done = $done")
+                }
+
+                override fun onStateChanged(id: Int, state: TransferState?) {
+                    if (state == TransferState.COMPLETED) {
+                        listener.onStateCompleted(id, state, uploadObserver.key)
+                        // todo : 모든 이미지가 성공했을 시 업로드
+                        if(++completeFile >= file.size) listener.onMutiStateCompleted(addressList)
+                    }
+                }
+
+                override fun onError(id: Int, ex: java.lang.Exception?) {
+                    Log.d("AWS_LOG", "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
+                    listener.onError(id, ex)
+                }
+            })
+
+            // If you prefer to long-poll for updates
+            if (uploadObserver.state == TransferState.COMPLETED) {
+                /* Handle completion */
+            }
+
+            val bytesTransferred = uploadObserver.bytesTransferred
+        }
+    }
+
 
 }
