@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
 import com.truevalue.dreamappeal.bean.BeanBestPost
@@ -58,6 +61,8 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         initAdapter()
         // bind Data
         bindData()
+        // View Click Listener
+        onClickView()
         // Bind Temp Data
 //        bindTempData()
         if (mBeanPerformance == null) {
@@ -76,6 +81,20 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         super.onPause()
         // 자동 스크롤 종료
         stopPageRolling()
+    }
+
+    /**
+     * View Click Listener
+     */
+    private fun onClickView(){
+        val listener = View.OnClickListener{
+            when(it){
+                iv_add_achievement->{
+                    (activity as ActivityMain).replaceFragment(FragmentAddAchivementPost(),true)
+                }
+            }
+        }
+        iv_add_achievement.setOnClickListener(listener)
     }
 
     /**
@@ -218,6 +237,14 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                                     achievementPosts.getJSONObject(i).toString(),
                                     BeanAchievementPost::class.java
                                 )
+
+                                val thumbnail = achievementPosts.getJSONObject(i).getJSONArray("thumbnail_image")
+                                if(thumbnail.length() > 0){
+                                    val image = thumbnail.getJSONObject(0)
+                                    val imageUrl = image.getString("image_url")
+                                    bean.thumbnailImage = imageUrl
+                                }
+
                                 mAdapter!!.add(bean)
                                 mBeanPerformance!!.achievement_posts.add(bean)
                             }
@@ -253,7 +280,23 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
         if (mAdapter != null) {
             // todo : Data Class 파일
-//            var any = mAdapter!!.mArray[i]
+            var bean = mAdapter!!.get(i) as BeanAchievementPost
+            val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+            val tvContents = h.getItemView<TextView>(R.id.tv_contents)
+            val ivThubnail = h.getItemView<ImageView>(R.id.iv_thumbnail)
+            val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
+
+            tvTitle.text = bean.title
+            tvContents.text = bean.content
+
+
+            Glide.with(this).load(mBeanPerformance!!.profile_image)
+                .placeholder(R.drawable.drawer_user)
+                .into(ivProfile)
+
+            Glide.with(this).load(bean.thumbnailImage)
+                .placeholder(R.drawable.ic_image_black)
+                .into(ivThubnail)
         }
     }
 

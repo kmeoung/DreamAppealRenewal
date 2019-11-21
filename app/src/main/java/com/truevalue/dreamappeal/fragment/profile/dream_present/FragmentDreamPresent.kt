@@ -298,6 +298,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
                     val intent = Intent(context, ActivityCameraGallery::class.java)
+                    intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_SINGLE_SELECT)
                     startActivityForResult(intent, REQUEST_CODE_PICK_PROFILE_IMAGE)
                 }
                 ll_dream_title,

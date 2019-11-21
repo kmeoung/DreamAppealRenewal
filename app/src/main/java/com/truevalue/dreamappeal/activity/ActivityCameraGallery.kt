@@ -342,8 +342,6 @@ class ActivityCameraGallery : BaseActivity() {
                 multiCheck.visibility = GONE
             }
 
-
-
             multiCheck.setOnClickListener(View.OnClickListener {
                 // todo : 멀티 버튼 테스트
                 if(bean.imageCheck){

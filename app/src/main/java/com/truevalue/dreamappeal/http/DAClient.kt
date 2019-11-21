@@ -59,9 +59,9 @@ object DAClient {
         jsonObject.put("idx", idx)
         jsonObject.put("type", type)
         val path = JSONArray()
-        for (i in 0 until url.size){
+        for (i in 0 until url.size) {
             val jsonUrl = JSONObject()
-            jsonUrl.put("url",url[i])
+            jsonUrl.put("url", url[i])
             path.put(jsonUrl)
         }
         jsonObject.put("path", path)
@@ -601,6 +601,35 @@ object DAClient {
             callback
         )
     }
+
+    /**
+     * POST
+     * 주요 성과 페이지 등록
+     */
+    fun addAchivementPost(
+        title: String,
+        content: String,
+        register_date: String,
+        tags: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("title",title)
+        params.put("content",content)
+        params.put("register_date",register_date)
+        params.put("tags",tags)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_ACHIEVEMENT_POSTS,
+            getHttpHeader(),
+            params,
+            callback
+        )
+
+    }
+
 
     /**
      * GET
