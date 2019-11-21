@@ -43,15 +43,16 @@ class ActivityCameraGallery : BaseActivity() {
     private var mItemPath: ArrayList<BeanGalleryInfo>? = null
     private var mBucked: ArrayList<BeanGalleryInfo>? = null
     private var isMultiMode = false
-    private val mArrayImage: ArrayList<File>?
+    private val mMultiImage: ArrayList<BeanGalleryInfo>?
     private var mCurrentViewImage: File? = null
+    private var mGridAdapter : GridAdapter? = null
 
     private var mSelectType: String?
 
     val REQUEST_IMAGE_CAPTURE = 1004
 
     init {
-        mArrayImage = ArrayList()
+        mMultiImage = ArrayList()
         // 기본 싱글
         mSelectType = EXTRA_IMAGE_SINGLE_SELECT
     }
@@ -101,14 +102,34 @@ class ActivityCameraGallery : BaseActivity() {
         val listener = View.OnClickListener {
             when (it) {
                 iv_check -> {
-                    if (mArrayImage != null && mArrayImage.size > 0) {
+                    val array = ArrayList<File>()
+                    if (isMultiMode) {
+
+                        for (i in 0 until mMultiImage!!.size) {
+                            array.add(File(mMultiImage[i].imagePath))
+                        }
                         val intent = Intent()
-                        intent.putExtra(REQUEST_IMAGE_FILES, mArrayImage)
+                        intent.putExtra(REQUEST_IMAGE_FILES, array)
                         setResult(Activity.RESULT_OK, intent)
+                    } else {
+                        if (mCurrentViewImage != null) {
+                            val intent = Intent()
+                            array.add(mCurrentViewImage!!)
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            setResult(Activity.RESULT_OK, intent)
+                        }
                     }
                     finish()
                 }
                 btn_multi_select -> {
+                    isMultiMode = when (isMultiMode) {
+                        true -> {
+                            mMultiImage!!.clear()
+                            false
+                        }
+                        else -> true
+                    }
+                    mGridAdapter!!.notifyDataSetChanged()
 
                 }
             }
@@ -132,7 +153,7 @@ class ActivityCameraGallery : BaseActivity() {
         for (i in bucketNameList.indices) {
             val title = bucketNameList[i]
             val id = bucketIdList[i]
-            mBucked!!.add(BeanGalleryInfo(title, id, null))
+            mBucked!!.add(BeanGalleryInfo(title, id, null,false))
             strBucketNameList.add(title)
         }
 
@@ -149,8 +170,8 @@ class ActivityCameraGallery : BaseActivity() {
 
         for (i in beanImageInfoList.indices) {
             val (bucketName, bucketId, imagePath) = beanImageInfoList[i]
-            mOldPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath))
-            mItemPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath))
+            mOldPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false))
+            mItemPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false))
 
             if (!firstImage) {
                 Glide.with(applicationContext!!)
@@ -161,18 +182,12 @@ class ActivityCameraGallery : BaseActivity() {
                 firstImage = true
             }
         }
-        val mGridAdapter = GridAdapter(applicationContext, mItemPath!!)
+        mGridAdapter = GridAdapter(applicationContext, mItemPath!!)
         gv_gallery.adapter = mGridAdapter
 
         if (mItemPath!!.size < 1) return
 
         mCurrentViewImage = File(mItemPath!![0].imagePath)
-
-        if (mArrayImage!!.size < 1 || isMultiMode) {
-            mArrayImage!!.add(mCurrentViewImage!!)
-        } else {
-            mArrayImage!![0] = mCurrentViewImage!!
-        }
 
         gv_gallery.onItemClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
             Glide.with(applicationContext!!)
@@ -180,12 +195,6 @@ class ActivityCameraGallery : BaseActivity() {
                 .into(iv_select_image)
 
             mCurrentViewImage = File(mItemPath!![i].imagePath)
-
-            if (mArrayImage!!.size < 1) {
-                mArrayImage!!.add(mCurrentViewImage!!)
-            } else {
-                mArrayImage!![0] = mCurrentViewImage!!
-            }
         }
 
         // todo : 여기에 멀티 셀렉트 모드 추가 Listener 만들어야 함
@@ -217,10 +226,9 @@ class ActivityCameraGallery : BaseActivity() {
                     Glide.with(applicationContext!!)
                         .load(mItemPath!![0].imagePath)
                         .into(iv_select_image)
-//                    (getActivity() as ActivityGalleryCamera).setmImageFile(File(mItemPath!!.get(0).imagePath))
                 }
 
-                mGridAdapter.notifyDataSetChanged()
+                mGridAdapter!!.notifyDataSetChanged()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -282,7 +290,7 @@ class ActivityCameraGallery : BaseActivity() {
             val intent = Intent()
             intent.putExtra(REQUEST_IMAGE_FILES, array)
             setResult(Activity.RESULT_OK, intent)
-
+            finish()
 
         }
     }
@@ -319,12 +327,38 @@ class ActivityCameraGallery : BaseActivity() {
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.listitem_gallery, parent, false)
             }
+
+            val bean = pictureList[position]
+
             val imageView = convertView!!.findViewById<ImageView>(R.id.iv_image)
             val multiCheck = convertView!!.findViewById<ImageView>(R.id.iv_multi)
 
+            if (isMultiMode) {
+                multiCheck.visibility = VISIBLE
+
+                multiCheck.isSelected = bean.imageCheck
+
+            }else{
+                multiCheck.visibility = GONE
+            }
+
+
+
             multiCheck.setOnClickListener(View.OnClickListener {
-                // todo : 멀티 버튼 필요
+                // todo : 멀티 버튼 테스트
+                if(bean.imageCheck){
+                    pictureList[position].imageCheck = false
+                    mMultiImage!!.remove(bean)
+
+                }else {
+                    if (mMultiImage!!.size < 11) {
+                        pictureList[position].imageCheck = true
+                        mMultiImage!!.add(bean)
+                    }
+                }
+                mGridAdapter!!.notifyDataSetChanged()
             })
+
 
             //onCreate에서 정해준 크기로 이미지를 붙인다.
             Glide.with(mContext)

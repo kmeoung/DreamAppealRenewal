@@ -287,7 +287,7 @@ object Utils {
 
             if (!TextUtils.isEmpty(absolutePathOfImage)) {
 
-                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage)
+                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage,false)
                 imageInfoList.add(info)
             }
         }
