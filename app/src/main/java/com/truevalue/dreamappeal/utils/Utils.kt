@@ -439,8 +439,9 @@ object Utils {
 
         val other = if(subBucket.isNullOrEmpty()) "" else "$subBucket/"
         val KEY = "public/$other"
-        var completeFile = 0
+        var completeFile = 1
         var addressList = ArrayList<String>()
+
         for (i in 0 until file.size) {
 
             val date = Date()
@@ -465,6 +466,8 @@ object Utils {
                         listener.onStateCompleted(id, state, uploadObserver.key)
                         // todo : 모든 이미지가 성공했을 시 업로드
                         if(++completeFile >= file.size) listener.onMutiStateCompleted(addressList)
+                        Log.d("MULTI : ", "$completeFile : CompleteSize")
+                        Log.d("MULTI : ", "$file.size : FileSize")
                     }
                 }
 

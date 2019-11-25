@@ -219,7 +219,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             tv_achievement_post_count.text = bean.achievement_post_count.toString()
             tv_action_post_count.text = bean.action_post_count.toString()
 
-            tv_dream_level.text = String.format("LV.%02d", bean.level)
+            tv_dream_level.text = String.format("Lv.%02d", bean.level)
             tv_dream_name.text = when (bean.profile_order) {
                 1 -> getString(R.string.str_first_dream)
                 2 -> getString(R.string.str_second_dream)

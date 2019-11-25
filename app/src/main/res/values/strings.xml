@@ -70,7 +70,7 @@
     <string name="str_tenth_dream">열번째 꿈</string>
 
     <string name="str_error">Error</string>
-    <string name="lv_00">LV.00</string>
+    <string name="lv_00">Lv.00</string>
     <string name="str_recent_performance">최근 성과</string>
     <string name="str_best_performance">대표 성과</string>
     <string name="str_default_best_performance">대표로 지정한 성과가\n여기에 표시됩니다</string>

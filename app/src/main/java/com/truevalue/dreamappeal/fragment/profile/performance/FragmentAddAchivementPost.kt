@@ -59,7 +59,7 @@ class FragmentAddAchivementPost : BaseFragment() {
         onClickView()
     }
 
-    private fun initView(){
+    private fun initView() {
         iv_check.visibility = View.VISIBLE
 
         et_title.addTextChangedListener(object : TextWatcher {
@@ -92,7 +92,8 @@ class FragmentAddAchivementPost : BaseFragment() {
     }
 
     private fun initRightText() {
-        iv_check.isSelected = !et_title.text.toString().isNullOrEmpty() && !et_contents.text.toString().isNullOrEmpty()
+        iv_check.isSelected =
+            !et_title.text.toString().isNullOrEmpty() && !et_contents.text.toString().isNullOrEmpty()
     }
 
     /**
@@ -111,7 +112,7 @@ class FragmentAddAchivementPost : BaseFragment() {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-                iv_back_black->(activity as ActivityMain).onBackPressed(false)
+                iv_back_black -> (activity as ActivityMain).onBackPressed(false)
                 iv_add_img -> {
                     val intent = Intent(context!!, ActivityCameraGallery::class.java)
                     intent.putExtra(
@@ -124,8 +125,8 @@ class FragmentAddAchivementPost : BaseFragment() {
                     isEdit = !isEdit
                     mAdapter!!.notifyDataSetChanged()
                 }
-                iv_check->{
-                    if(iv_check.isSelected) addAchivementPost()
+                iv_check -> {
+                    if (iv_check.isSelected) addAchivementPost()
                 }
             }
         }
@@ -135,13 +136,13 @@ class FragmentAddAchivementPost : BaseFragment() {
         iv_back_black.setOnClickListener(listener)
     }
 
-    private fun addAchivementPost(){
+    private fun addAchivementPost() {
         val title = et_title.text.toString()
         val contents = et_contents.text.toString()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val reg_date = sdf.format(Date())
         val tags = ""
-        DAClient.addAchivementPost(title,contents,reg_date,tags,object : DAHttpCallback{
+        DAClient.addAchivementPost(title, contents, reg_date, tags, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -149,10 +150,10 @@ class FragmentAddAchivementPost : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(context != null){
-                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if(code == DAClient.SUCCESS){
+                    if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val result = json.getJSONObject("result")
                         val insertId = result.getInt("insertId")
@@ -167,39 +168,35 @@ class FragmentAddAchivementPost : BaseFragment() {
      * Http
      * 이미지 업로드
      */
-    private fun uploadImage(post_idx : Int){
+    private fun uploadImage(post_idx: Int) {
         val idx = post_idx
         val type = DAClient.IMAGE_TYPE_ACHIVEMENT_POST
 
-        if(mAdapter != null){
-            for (i in 0 until mAdapter!!.size()){
-                Utils.multiUploadWithTransferUtility(
-                    context!!.applicationContext,
-                    mAdapter!!.mArray as ArrayList<File>,
-                    "$idx/$type",
-                    object :
-                        IOS3ImageUploaderListener {
-                        override fun onMutiStateCompleted(adressList: ArrayList<String>) {
-                            super.onMutiStateCompleted(adressList)
-                            // todo :
-                            updateProfileImage(idx,type,adressList)
-                        }
+        if (mAdapter != null) {
+            Utils.multiUploadWithTransferUtility(
+                context!!.applicationContext,
+                mAdapter!!.mArray as ArrayList<File>,
+                "$idx/$type",
+                object :
+                    IOS3ImageUploaderListener {
+                    override fun onMutiStateCompleted(adressList: ArrayList<String>) {
+                        super.onMutiStateCompleted(adressList)
+                        // todo :
+                        updateProfileImage(idx, type, adressList)
+                    }
 
-                        override fun onStateCompleted(
-                            id: Int,
-                            state: TransferState,
-                            imageBucketAddress: String
-                        ) {
+                    override fun onStateCompleted(
+                        id: Int,
+                        state: TransferState,
+                        imageBucketAddress: String
+                    ) {
 
-                        }
+                    }
 
-                        override fun onError(id: Int, ex: java.lang.Exception?) {
+                    override fun onError(id: Int, ex: java.lang.Exception?) {
 
-                        }
-                    })
-            }
-
-
+                    }
+                })
         }
     }
 
@@ -207,7 +204,7 @@ class FragmentAddAchivementPost : BaseFragment() {
      * Http
      * Profile Image Update
      */
-    private fun updateProfileImage(idx : Int,type : Int,url: ArrayList<String>) {
+    private fun updateProfileImage(idx: Int, type: Int, url: ArrayList<String>) {
         val list = ArrayList<String>()
         for (s in url) {
             list.add(s)
