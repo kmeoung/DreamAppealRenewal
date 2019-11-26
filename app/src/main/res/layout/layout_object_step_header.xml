@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/object_step_header"
+        android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="11dp"
+            android:paddingTop="13dp"
+            android:paddingRight="11dp">
+
+        <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="73dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/bmjua"
+                android:shadowColor="@color/black"
+                android:shadowDx="5.0"
+                android:shadowDy="5.0"
+                android:shadowRadius="5.0"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+        <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="45dp"
+                android:layout_height="37dp"
+                android:layout_gravity="top"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:src="@drawable/btn_more_white" />
+
+    </LinearLayout>
+
+    <!--하단-->
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:paddingLeft="11dp"
+                android:paddingRight="11dp">
+
+            <TextView
+                    android:id="@+id/tv_detail_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:text="@string/str_add_object_step_detail"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            <TextView
+                    android:id="@+id/tv_total_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/ll_complete"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="7dp"
+                android:background="#86000000"
+                android:gravity="right|center_vertical"
+                android:visibility="gone">
+
+            <TextView
+                    android:id="@+id/tv_complete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/bmjua"
+                    android:text="Complete"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <!--하단-->
+
+</LinearLayout>

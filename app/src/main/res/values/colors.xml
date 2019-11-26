@@ -28,6 +28,8 @@
 
     <color name="tab_none_select_gray">#818181</color>
 
+    <color name="object_step_header">#fc5378</color>
+
     <!-- 제플린 사용-->
     <color name="black_20">#33000000</color>
     <color name="azure">#00B0F0</color>
