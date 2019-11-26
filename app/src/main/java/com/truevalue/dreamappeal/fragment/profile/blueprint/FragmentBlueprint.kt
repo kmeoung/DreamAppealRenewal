@@ -102,12 +102,14 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     )
                     startActivity(intent)
                 }
+                iv_add_object->(activity as ActivityMain).replaceFragment(FragmentObjectStep(), true)
 
             }
         }
 
         tv_default_ability_opportunity.setOnClickListener(listener)
         tv_default_object.setOnClickListener(listener)
+        iv_add_object.setOnClickListener(listener)
 
     }
 

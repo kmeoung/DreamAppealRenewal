@@ -242,6 +242,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
             if (bean.value_style.isNullOrEmpty() && bean.job.isNullOrEmpty()) {
                 tv_init_dream_title.visibility = VISIBLE
+                tv_value_style.text = ""
+                tv_job.text = ""
             } else {
                 tv_init_dream_title.visibility = GONE
 
@@ -251,6 +253,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
             if (bean.description.isNullOrEmpty()) {
                 tv_init_dream_description.visibility = VISIBLE
+                tv_dream_description.text = ""
             } else {
                 tv_dream_description.text = bean.description
             }
