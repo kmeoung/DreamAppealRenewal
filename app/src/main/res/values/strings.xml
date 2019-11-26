@@ -223,4 +223,7 @@
 
     <string name="str_camera">카메라</string>
     <string name="str_gallery">갤러리</string>
+
+    <string name="str_select_object">목표선택</string>
+    <string name="str_select_step">세부단계 선택</string>
 </resources>

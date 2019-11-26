@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyish" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="42.7dp"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/iv_check"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/ic_select_step_check" />
+
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="15.7sp" />
+
+        </LinearLayout>
+
+        <ImageView
+                android:id="@+id/iv_side"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:rotation="90"
+                android:src="@drawable/ic_side_blue" />
+
+    </LinearLayout>
+
+</LinearLayout>
