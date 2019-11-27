@@ -71,13 +71,12 @@
             android:text="@string/str_level_info"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:lineSpacingExtra="@dimen/text_line_spacing"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_dream_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
+            android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -24,16 +24,6 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="9dp"
-                    android:background="@color/white_seven" />
-
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/white_eight" />
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,22 +98,11 @@
                         android:paddingLeft="19dp"
                         android:paddingRight="19dp"/>
 
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_eight" />
 
-                <!--Divider-->
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/white_seven" />
-                <!--Divider-->
-
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_eight" />
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -173,20 +152,8 @@
 
                 <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_eight" />
-
-                <!--Divider-->
-                <ImageView
-                        android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/white_seven" />
-                <!--Divider-->
-
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_eight" />
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -241,22 +208,11 @@
 
                 </LinearLayout>
 
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_eight" />
 
-                <!--Divider-->
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/white_seven" />
-                <!--Divider-->
-
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="@color/white_eight" />
 
                 <LinearLayout
                         android:layout_width="match_parent"

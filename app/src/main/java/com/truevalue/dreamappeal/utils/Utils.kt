@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,6 +10,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -287,7 +289,7 @@ object Utils {
 
             if (!TextUtils.isEmpty(absolutePathOfImage)) {
 
-                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage,false)
+                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage, false)
                 imageInfoList.add(info)
             }
         }
@@ -305,13 +307,13 @@ object Utils {
         val curDate = Date()
 
         var time: Long = endDate.time - curDate.time
-        val day : Int = (time / (24 * 60 * 60 * 1000)).toInt()
+        val day: Int = (time / (24 * 60 * 60 * 1000)).toInt()
         time -= day * (24 * 60 * 60 * 1000)
-        val hour : Int = (time / (60 * 60 * 1000)).toInt()
+        val hour: Int = (time / (60 * 60 * 1000)).toInt()
         time -= hour * (60 * 60 * 1000)
-        val min : Int = (time / (60 * 1000)).toInt()
+        val min: Int = (time / (60 * 1000)).toInt()
         time -= min * (60 * 1000)
-        val sec : Int = (time / 1000).toInt()
+        val sec: Int = (time / 1000).toInt()
 
         strDate = if (day > 0) {
             String.format("%d일 %d시간 %d분", day, hour, min)
@@ -381,7 +383,12 @@ object Utils {
      * 단일 이미지 업로드
      * AWS ImageUploader
      */
-    fun uploadWithTransferUtility(context : Context, file: File,subBucket : String,listener : IOS3ImageUploaderListener) {
+    fun uploadWithTransferUtility(
+        context: Context,
+        file: File,
+        subBucket: String,
+        listener: IOS3ImageUploaderListener
+    ) {
         val AWS_LOG = "AWS_LOG"
         val transferUtility = TransferUtility.builder()
             .context(context)
@@ -389,7 +396,7 @@ object Utils {
             .s3Client(AmazonS3Client(AWSMobileClient.getInstance().credentialsProvider))
             .build()
 
-        val other = if(subBucket.isNullOrEmpty()) "" else "$subBucket/"
+        val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
         val KEY = "public/$other"
 
         val date = Date()
@@ -400,21 +407,21 @@ object Utils {
         val uploadObserver = transferUtility.upload(KEY + fileName, file)
         Log.d(AWS_LOG, "UPLOAD - - It Is a Key: ${uploadObserver.key}")
         // Attach a listener to the observer
-        uploadObserver.setTransferListener(object : TransferListener{
+        uploadObserver.setTransferListener(object : TransferListener {
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
                 val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
                 Log.d("AWS_LOG", "UPLOAD - - ID: $id, percent done = $done")
             }
 
             override fun onStateChanged(id: Int, state: TransferState?) {
-                if(state == TransferState.COMPLETED){
-                    listener.onStateCompleted(id,state,uploadObserver.key)
+                if (state == TransferState.COMPLETED) {
+                    listener.onStateCompleted(id, state, uploadObserver.key)
                 }
             }
 
             override fun onError(id: Int, ex: java.lang.Exception?) {
                 Log.d("AWS_LOG", "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
-                listener.onError(id,ex)
+                listener.onError(id, ex)
             }
         })
 
@@ -429,7 +436,12 @@ object Utils {
     /**
      * 다중 이미지 업로드
      */
-    fun multiUploadWithTransferUtility(context : Context, file: ArrayList<File>,subBucket : String,listener : IOS3ImageUploaderListener) {
+    fun multiUploadWithTransferUtility(
+        context: Context,
+        file: ArrayList<File>,
+        subBucket: String,
+        listener: IOS3ImageUploaderListener
+    ) {
         val AWS_LOG = "AWS_LOG"
         val transferUtility = TransferUtility.builder()
             .context(context)
@@ -437,7 +449,7 @@ object Utils {
             .s3Client(AmazonS3Client(AWSMobileClient.getInstance().credentialsProvider))
             .build()
 
-        val other = if(subBucket.isNullOrEmpty()) "" else "$subBucket/"
+        val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
         val KEY = "public/$other"
         var completeFile = 1
         var addressList = ArrayList<String>()
@@ -465,7 +477,7 @@ object Utils {
                     if (state == TransferState.COMPLETED) {
                         listener.onStateCompleted(id, state, uploadObserver.key)
                         // todo : 모든 이미지가 성공했을 시 업로드
-                        if(++completeFile >= file.size) listener.onMutiStateCompleted(addressList)
+                        if (++completeFile >= file.size) listener.onMutiStateCompleted(addressList)
                         Log.d("MULTI : ", "$completeFile : CompleteSize")
                         Log.d("MULTI : ", "$file.size : FileSize")
                     }
@@ -483,6 +495,20 @@ object Utils {
             }
 
             val bytesTransferred = uploadObserver.bytesTransferred
+        }
+    }
+
+    /**
+     * 이미지 뷰 정사각형 처리
+     */
+    fun setImageViewSquare(context: Context?, view: View) {
+        if (context != null) {
+            val params = view.layoutParams
+            val display = context!!.resources.displayMetrics
+            val swidth = display.widthPixels
+            params.width = swidth
+            params.height = swidth
+            view.layoutParams = params
         }
     }
 

@@ -1,6 +1,5 @@
 package com.truevalue.dreamappeal.activity
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +9,9 @@ import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
-import com.amazonaws.services.s3.AmazonS3
-import com.amazonaws.services.s3.AmazonS3Client
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
-import com.truevalue.dreamappeal.fragment.profile.FragmentMyProfile
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
@@ -27,16 +20,16 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
-import java.io.File
-import java.lang.Exception
 
 class ActivityMain : BaseActivity() {
-
-    // todo : 자신의 프로필이고 자신의 프로필이 변경이 되었다고 확인이 드는 순간 페이지 리로드
-    private var mProfileIdx = -1
     var mActionListener: IOActionBarListener? = null
+    // todo : 현재 나의 프로필을 보고 있고, 내가 다른 프로필을 선택하여
+    // todo : 변겅이 되었는지를 확인하여 MainProfile을 변경
+    private var mCurrentUserIdx : Int = -1
 
     companion object {
+        var isMainRefresh = false
+
         val MAIN_TYPE_HOME = "MAIN_TYPE_HOME"
         val MAIN_TYPE_TIMELINE = "MAIN_TYPE_TIMELINE"
         val MAIN_TYPE_ADD_BOARD = "MAIN_TYPE_ADD_BOARD"
@@ -55,7 +48,8 @@ class ActivityMain : BaseActivity() {
         setContentView(R.layout.activity_main)
         // Action
         onAction()
-        mProfileIdx = Comm_Prefs.getUserProfileIndex()
+
+        mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
 
         // todo : AWS Mobile Init
         AWSMobileClient.getInstance().initialize(this) {
@@ -123,6 +117,15 @@ class ActivityMain : BaseActivity() {
      */
     fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
         replaceFragment(R.id.base_container, fragment, addToBack)
+    }
+
+    /**
+     * Fragment에서 접근하는 Fragment 변경
+     * IsMainRefresh = 메인 프로필 조회할 것인지
+     */
+    fun replaceFragment(fragment: Fragment, addToBack: Boolean, isMainRefresh : Boolean) {
+        replaceFragment(R.id.base_container, fragment, addToBack)
+        ActivityMain.isMainRefresh = isMainRefresh
     }
 
     /**
@@ -262,17 +265,19 @@ class ActivityMain : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if(mProfileIdx != Comm_Prefs.getUserProfileIndex()){
-            mProfileIdx = Comm_Prefs.getUserProfileIndex()
+
+        if(isMainRefresh || mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
+            if(mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()) mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
+
+            isMainRefresh = false
             if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
         }
     }
 
-    fun onBackPressed(isRefreshMain: Boolean) {
+    fun onBackPressed(isMainRefresh: Boolean){
+        ActivityMain.isMainRefresh = isMainRefresh
         onBackPressed()
-        if(isRefreshMain && mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
     }
-
     /**
      * Init Fragment Stack
      */

@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
@@ -86,11 +84,11 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * View Click Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                iv_add_achievement->{
-                    (activity as ActivityMain).replaceFragment(FragmentAddAchivementPost(),true)
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_add_achievement -> {
+                    (activity as ActivityMain).replaceFragment(FragmentAddAchivementPost(), true)
                 }
             }
         }
@@ -238,8 +236,9 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                                     BeanAchievementPost::class.java
                                 )
 
-                                val thumbnail = achievementPosts.getJSONObject(i).getJSONArray("thumbnail_image")
-                                if(thumbnail.length() > 0){
+                                val thumbnail = achievementPosts.getJSONObject(i)
+                                    .getJSONArray("thumbnail_image")
+                                if (thumbnail.length() > 0) {
                                     val image = thumbnail.getJSONObject(0)
                                     val imageUrl = image.getString("image_url")
                                     bean.thumbnailImage = imageUrl
@@ -283,12 +282,14 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
             var bean = mAdapter!!.get(i) as BeanAchievementPost
             val tvTitle = h.getItemView<TextView>(R.id.tv_title)
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
-            val ivThubnail = h.getItemView<ImageView>(R.id.iv_thumbnail)
+            val ivThumbnail = h.getItemView<ImageView>(R.id.iv_thumbnail)
             val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
+            val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
 
             tvTitle.text = bean.title
             tvContents.text = bean.content
 
+            Utils.setImageViewSquare(context, ivThumbnail)
 
             Glide.with(this).load(mBeanPerformance!!.profile_image)
                 .placeholder(R.drawable.drawer_user)
@@ -296,7 +297,15 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
             Glide.with(this).load(bean.thumbnailImage)
                 .placeholder(R.drawable.ic_image_black)
-                .into(ivThubnail)
+                .into(ivThumbnail)
+
+            llItem.setOnClickListener(View.OnClickListener {
+                (activity as ActivityMain).replaceFragment(
+                    FragmentAchivementPostDetail(),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
+            })
         }
     }
 
@@ -384,24 +393,17 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                     val tvBestPostachievement =
                         view.findViewById<TextView>(R.id.tv_best_achievement)
                     tvBestPostachievement.text = bean.title
-                    view.setOnClickListener(View.OnClickListener {
-                        // todo : 상세 이동
-//                        val intent = Intent(context, ActivityBestachievementDetail::class.java)
-//                        intent.putExtra(
-//                            ActivityBestachievementDetail.EXTRA_BEST_achievement_INDEX,
-//                            bean.getIdx()
-//                        )
-//                        intent.putExtra(
-//                            ActivityBestachievementDetail.EXTRA_BEST_achievement_BEST_INDEX,
-//                            position + 1
-//                        )
-//                        startActivityForResult(
-//                            intent,
-//                            FragmentMain.REQUEST_PERFORMANCE_BEST_achievement
-//                        )
-                    })
                 }
             }
+
+            view.setOnClickListener(View.OnClickListener {
+                // todo : 상세 이동
+                (activity as ActivityMain).replaceFragment(
+                    FragmentBestPost(),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
+            })
             container.addView(view)
             return view
         }

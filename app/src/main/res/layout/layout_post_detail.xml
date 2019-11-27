@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ll_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="30px"
-            android:background="@color/white_six" />
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="75.3dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="8dp">
 
         <ImageView
                 android:id="@+id/iv_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="51.7dp"
+                android:layout_height="51.7dp"
                 android:src="@drawable/drawer_user" />
 
         <TextView
@@ -42,9 +34,10 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@null"
+                android:scaleType="centerInside"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/more_btn" />
+                android:src="@drawable/btn_more_black" />
 
     </LinearLayout>
 
@@ -52,7 +45,6 @@
             android:id="@+id/iv_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="360dp" />
-
 
     <TextView
             android:id="@+id/tv_contents"
@@ -66,8 +58,7 @@
             android:textSize="13sp" />
 
     <include
-            layout="@layout/bottom_post_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            layout="@layout/bottom_post_view"/>
 </LinearLayout>
