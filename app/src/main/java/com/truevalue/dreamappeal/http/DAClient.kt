@@ -1,11 +1,16 @@
 package com.truevalue.dreamappeal.http
 
+import android.text.TextUtils
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.Utils
+import okhttp3.Call
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -1145,6 +1150,78 @@ object DAClient {
             null,
             callback
         )
+    }
+
+    /**
+     * GET
+     * profile 예시 이미지 조회
+     */
+    private fun profileExampleImage(ex_idx : Int,
+                                    callback: DAHttpCallback) {
+        val url = Comm_Param.URL_EXAMPLE_PROFILE_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+
+        BaseOkhttpClient.request(HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback)
+    }
+
+    /**
+     * GET
+     * ability 예시 이미지 조회
+     */
+    private fun abilityExampleImage(ex_idx : Int,
+                                    callback: DAHttpCallback) {
+        val url = Comm_Param.URL_EXAMPLE_ABILITY_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+
+        BaseOkhttpClient.request(HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback)
+    }
+
+    /**
+     * GET
+     * opportunity 예시 이미지 조회
+     */
+    private fun opportunityExampleImage(ex_idx : Int,
+                                    callback: DAHttpCallback) {
+        val url = Comm_Param.URL_EXAMPLE_OPPORTUNITY_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+
+        BaseOkhttpClient.request(HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback)
+    }
+
+    /**
+     * GET
+     * object 예시 이미지 조회
+     */
+    private fun objectExampleImage(ex_idx : Int,
+                                    callback: DAHttpCallback) {
+        val url = Comm_Param.URL_EXAMPLE_OBJECT_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+
+        BaseOkhttpClient.request(HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback)
+    }
+
+    /**
+     * GET
+     * Ad Image
+     */
+    private fun getAd(callback: DAHttpCallback) {
+        BaseOkhttpClient.request(HttpType.GET,
+            Comm_Param.URL_AD,
+            getHttpHeader(),
+            null,
+            callback)
     }
 
 

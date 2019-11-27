@@ -44,21 +44,37 @@
                     android:paddingRight="21dp"
                     android:paddingBottom="17.7dp">
 
-                <EditText
-                        android:id="@+id/et_merit_and_motive"
+                <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="195dp"
-                        android:layout_gravity="left"
-                        android:background="@null"
-                        android:fontFamily="@font/nanum_square_round_r"
-                        android:gravity="left|center_vertical"
-                        android:hint="@string/str_input_text_hint"
-                        android:lineSpacingExtra="11dp"
-                        android:text=""
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/warm_grey"
-                        android:textSize="15.7sp" />
+                        android:minHeight="195dp">
+
+                    <EditText
+                            android:id="@+id/et_merit_and_motive"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="left"
+                            android:background="@null"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:gravity="left|top"
+                            android:lineSpacingExtra="@dimen/text_line_spacing"
+                            android:minHeight="195dp"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/warm_grey"
+                            android:textSize="14.7sp" />
+
+                    <TextView
+                            android:id="@+id/tv_init_merit_and_motive"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:minHeight="195dp"
+                            android:text="@string/str_default_merit_and_motive_2"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="14.7sp" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

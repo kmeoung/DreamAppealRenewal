@@ -27,7 +27,14 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
+import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_dream_present.*
+import kotlinx.android.synthetic.main.fragment_dream_present.ll_cheering
+import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment
+import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment_detail
+import kotlinx.android.synthetic.main.fragment_dream_present.ll_share
+import kotlinx.android.synthetic.main.fragment_dream_present.tv_cheering
+import kotlinx.android.synthetic.main.fragment_dream_present.tv_comment
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.File
@@ -334,6 +341,15 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 btn_merit_and_motive_more -> {
                     // Expend Merit Motive View
                 }
+                ll_cheering -> {
+
+                }
+                ll_comment, ll_comment_detail -> {
+
+                }
+                ll_share -> {
+
+                }
             }
         }
 
@@ -348,6 +364,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         tv_init_merit_and_motive.setOnClickListener(listener)
         btn_dream_description_more.setOnClickListener(listener)
         btn_merit_and_motive_more.setOnClickListener(listener)
+        ll_cheering.setOnClickListener(listener)
+        ll_comment.setOnClickListener(listener)
+        ll_comment_detail.setOnClickListener(listener)
+        ll_share.setOnClickListener(listener)
     }
 
     /**

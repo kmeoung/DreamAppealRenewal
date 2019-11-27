@@ -301,7 +301,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
             llItem.setOnClickListener(View.OnClickListener {
                 (activity as ActivityMain).replaceFragment(
-                    FragmentAchivementPostDetail(),
+                    FragmentAchivementPostDetail.newInstance(bean.idx),
                     addToBack = true,
                     isMainRefresh = true
                 )
@@ -393,17 +393,17 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                     val tvBestPostachievement =
                         view.findViewById<TextView>(R.id.tv_best_achievement)
                     tvBestPostachievement.text = bean.title
+
+                    view.setOnClickListener(View.OnClickListener {
+                        // todo : 상세 이동
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentBestPost.newInstance(bean.idx),
+                            addToBack = true,
+                            isMainRefresh = true
+                        )
+                    })
                 }
             }
-
-            view.setOnClickListener(View.OnClickListener {
-                // todo : 상세 이동
-                (activity as ActivityMain).replaceFragment(
-                    FragmentBestPost(),
-                    addToBack = true,
-                    isMainRefresh = true
-                )
-            })
             container.addView(view)
             return view
         }

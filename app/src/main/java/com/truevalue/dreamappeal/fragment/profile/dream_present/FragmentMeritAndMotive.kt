@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
@@ -90,6 +92,17 @@ class FragmentMeritAndMotive : BaseFragment() {
         if (mBean != null) {
             if (!mBean!!.meritNmotive.isNullOrEmpty()) et_merit_and_motive.setText(mBean!!.meritNmotive)
         }
+
+        // 처음 Hint 글자 안보이게 하고 Focus잡기
+        tv_init_merit_and_motive.setOnClickListener(OnClickListener {
+            tv_init_merit_and_motive.isFocusableInTouchMode = true
+            tv_init_merit_and_motive.requestFocus()
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(tv_init_merit_and_motive, 0)
+            tv_init_merit_and_motive.visibility = GONE
+        })
+
+
     }
 
     /**
@@ -97,6 +110,7 @@ class FragmentMeritAndMotive : BaseFragment() {
      */
     private fun initRightBtn() {
         iv_check.isSelected = !isAllInput()
+        if(isAllInput()) tv_init_merit_and_motive.visibility = GONE
     }
 
     private fun isAllInput(): Boolean {
