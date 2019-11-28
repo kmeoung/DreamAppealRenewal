@@ -8,8 +8,10 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -25,6 +27,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanBlueprint
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject
+import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -87,23 +90,22 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * VIew OnClick Listener
      */
     private fun onClickView() {
-        var listener = View.OnClickListener {
+        val listener = View.OnClickListener {
             when (it) {
                 tv_default_ability_opportunity -> {
                     // replace to Dream List
-                    (activity as ActivityMain).replaceFragment(FragmentAnO(), true)
-                }
-                tv_default_object -> {
-                    // replace to Follower
-                    val intent = Intent(context, ActivityFollow::class.java)
-                    intent.putExtra(
-                        ActivityFollow.EXTRA_VIEW_TYPE,
-                        ActivityFollow.VIEW_TYPE_FOLLOWER
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentAnO(),
+                        addToBack = true,
+                        isMainRefresh = true
                     )
-                    startActivity(intent)
                 }
-                iv_add_object->(activity as ActivityMain).replaceFragment(FragmentObjectStep(), true)
-
+                tv_default_object,
+                iv_add_object -> (activity as ActivityMain).replaceFragment(
+                    FragmentAddPage.newInstance(
+                        FragmentAddPage.VIEW_TYPE_ADD_STEP
+                    ), addToBack = true, isMainRefresh = true
+                )
             }
         }
 
@@ -262,13 +264,14 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             for (i in 0 until abilities.length()) {
                                 val ability = abilities.getJSONObject(i)
                                 val idx = ability.getInt("idx")
-                                val profile_idx = ability.getInt("profile_idx")
+                                val profile_index = ability.getInt("profile_idx")
                                 val strAbility = ability.getString("ability")
                                 abilityList.add(
                                     BeanBlueprintAnO(
-                                        profile_idx,
+                                        profile_index,
                                         idx,
-                                        strAbility
+                                        strAbility,
+                                        0
                                     )
                                 )
                             }
@@ -282,13 +285,14 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             for (i in 0 until opportunities.length()) {
                                 val opportunity = opportunities.getJSONObject(i)
                                 val idx = opportunity.getInt("idx")
-                                val profile_idx = opportunity.getInt("profile_idx")
+                                val profile_index = opportunity.getInt("profile_idx")
                                 val strOpportunity = opportunity.getString("opportunity")
                                 opportunityList.add(
                                     BeanBlueprintAnO(
-                                        profile_idx,
+                                        profile_index,
                                         idx,
-                                        strOpportunity
+                                        strOpportunity,
+                                        1
                                     )
                                 )
                             }
@@ -334,7 +338,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         } else {
                             if (abilityList.size > 0) { // 능력만 있을 시
 
-                                var max = 0
+                                var max: Int = 0
 
                                 if (abilityList.size > 2) {
                                     max = 3
@@ -367,13 +371,13 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         var objects: JSONArray? = null
                         try {
                             objects = json.getJSONArray("objects")
-                            if (objects == null || objects!!.length() < 1)
+                            if (objects == null || objects.length() < 1)
                                 tv_default_object.visibility = VISIBLE
                             else tv_default_object.visibility = GONE
 
                             for (i in 0 until objects!!.length()) {
                                 val bean = Gson().fromJson(
-                                    objects!!.getJSONObject(i).toString(),
+                                    objects.getJSONObject(i).toString(),
                                     BeanBlueprintObject::class.java
                                 )
                                 mObjectAdapter!!.add(bean)
@@ -399,11 +403,29 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 if (mAnOAdapter != null) mAnOAdapter!!.mArray.size else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
-            BaseViewHolder.newInstance(R.layout.listitem_dot_text, parent, false)
+            BaseViewHolder.newInstance(R.layout.listitem_dot_ano, parent, false)
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             val bean = mAnOAdapter!!.get(i) as BeanBlueprintAnO
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
+            val ivCircle = h.getItemView<ImageView>(R.id.iv_circle)
+
+            if (bean.view_type == BeanBlueprintAnO.VIEW_TYPE_ABILITY) {
+                ivCircle.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_circle_yellow
+                    )
+                )
+            } else if (bean.view_type == BeanBlueprintAnO.VIEW_TYPE_OPPORTUNITY) {
+                ivCircle.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_circle_orange
+                    )
+                )
+            }
+
             tvContents.text = bean.contents
             tvContents.setOnClickListener(View.OnClickListener {
                 (activity as ActivityMain).replaceFragment(FragmentAnO(), true)
@@ -426,11 +448,15 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             BaseViewHolder.newInstance(R.layout.listitem_object, parent, false)
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            val bean = mAnOAdapter!!.get(i) as BeanBlueprintObject
+            val bean = mObjectAdapter!!.get(i) as BeanBlueprintObject
             val tvObjectTitle = h.getItemView<TextView>(R.id.tv_object_title)
             tvObjectTitle.text = bean.object_name
             tvObjectTitle.setOnClickListener(View.OnClickListener {
-
+                (activity as ActivityMain).replaceFragment(
+                    FragmentObjectStep.newInstance(bean),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
             })
         }
 

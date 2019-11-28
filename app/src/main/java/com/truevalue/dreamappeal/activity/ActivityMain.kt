@@ -148,7 +148,6 @@ class ActivityMain : BaseActivity() {
                     Toast.makeText(this, getString(R.string.str_error), Toast.LENGTH_SHORT).show()
                     MAIN_TYPE_HOME
                 }
-
             }
             initFragment()
             initBottomView()
@@ -267,10 +266,13 @@ class ActivityMain : BaseActivity() {
         super.onBackPressed()
 
         if(isMainRefresh || mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
-            if(mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()) mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
-
             isMainRefresh = false
-            if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
+            if(mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
+                mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
+                if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshAllView()
+            }else{
+                if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
+            }
         }
     }
 
@@ -295,5 +297,6 @@ class ActivityMain : BaseActivity() {
      */
     interface IOMainViewRefresh {
         fun OnRefreshView()
+        fun OnRefreshAllView(){}
     }
 }

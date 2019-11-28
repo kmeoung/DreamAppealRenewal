@@ -411,7 +411,6 @@
                                     android:id="@+id/tv_init_merit_and_motive"
                                     android:layout_width="match_parent"
                                     android:layout_height="60dp"
-                                    android:layout_marginTop="10dp"
                                     android:layout_marginRight="10dp"
                                     android:background="@drawable/bg_default_box"
                                     android:fontFamily="@font/nanum_square_round_b"

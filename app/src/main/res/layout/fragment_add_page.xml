@@ -43,13 +43,12 @@
                 <EditText
                         android:id="@+id/et_contents"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="left"
                         android:background="@null"
                         android:fontFamily="@font/nanum_square_round_r"
                         android:gravity="left|center_vertical"
-                        android:hint="@string/str_input_text_hint"
-                        android:lineSpacingExtra="11dp"
+                        android:lineSpacingExtra="@dimen/text_line_spacing"
                         android:minHeight="76dp"
                         android:paddingLeft="21dp"
                         android:paddingTop="17.7dp"
@@ -59,6 +58,16 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/warm_grey"
                         android:textSize="15.7sp" />
+
+                <TextView
+                        android:id="@+id/tv_default"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:lineSpacingExtra="@dimen/text_line_spacing"
+                        android:minHeight="76dp"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="14.7sp" />
 
             </RelativeLayout>
 

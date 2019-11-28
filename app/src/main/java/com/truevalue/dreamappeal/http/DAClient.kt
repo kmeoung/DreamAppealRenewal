@@ -620,10 +620,10 @@ object DAClient {
     ) {
 
         val params = DAHttpParams()
-        params.put("title",title)
-        params.put("content",content)
-        params.put("register_date",register_date)
-        params.put("tags",tags)
+        params.put("title", title)
+        params.put("content", content)
+        params.put("register_date", register_date)
+        params.put("tags", tags)
 
         BaseOkhttpClient.request(
             HttpType.POST,
@@ -1006,7 +1006,6 @@ object DAClient {
         ability: String,
         callback: DAHttpCallback
     ) {
-
         val params: DAHttpParams = DAHttpParams()
         params.put("ability", ability)
 
@@ -1153,77 +1152,199 @@ object DAClient {
     }
 
     /**
-     * GET
-     * profile 예시 이미지 조회
+     * POST
+     * 실천목표 추가
      */
-    private fun profileExampleImage(ex_idx : Int,
-                                    callback: DAHttpCallback) {
-        val url = Comm_Param.URL_EXAMPLE_PROFILE_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+    fun addObject(
+        object_name: String,
+        callback: DAHttpCallback
+    ) {
+        val params = DAHttpParams()
+        params.put("object_name", object_name)
 
-        BaseOkhttpClient.request(HttpType.GET,
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_OBJECTS,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 실천 목표 조회 (세부단계 목록 조회)
+     */
+    fun getObjects(
+        object_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OBJECTS_OBJECT_IDX.replace(
+            Comm_Param.OBJECT_INDEX,
+            object_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
             url,
             getHttpHeader(),
             null,
-            callback)
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 실천 목표 삭제
+     * complete_date -> YYYY-MM-DD HH:mm:ss
+     */
+    fun updateObject(
+        object_idx: Int,
+        object_name: String?,
+        thumbnail_image: String?,
+        complete: String?,
+        complete_date: String?,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OBJECTS_OBJECT_IDX.replace(
+            Comm_Param.OBJECT_INDEX,
+            object_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        if(!object_name.isNullOrEmpty())params.put("object_name",object_name)
+        if(!thumbnail_image.isNullOrEmpty())params.put("thumbnail_image",thumbnail_image)
+        if(!complete.isNullOrEmpty())params.put("object_name",complete)
+        if(!complete_date.isNullOrEmpty())params.put("object_name",complete_date)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 실천 목표 삭제
+     */
+    fun deleteObject(
+        object_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OBJECTS_OBJECT_IDX.replace(
+            Comm_Param.OBJECT_INDEX,
+            object_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+
+
+    /**
+     * GET
+     * profile 예시 이미지 조회
+     */
+    fun profileExampleImage(
+        ex_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url =
+            Comm_Param.URL_EXAMPLE_PROFILE_EX_IDX.replace(Comm_Param.EX_INDEX, ex_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
     }
 
     /**
      * GET
      * ability 예시 이미지 조회
      */
-    private fun abilityExampleImage(ex_idx : Int,
-                                    callback: DAHttpCallback) {
-        val url = Comm_Param.URL_EXAMPLE_ABILITY_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+    fun abilityExampleImage(
+        ex_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url =
+            Comm_Param.URL_EXAMPLE_ABILITY_EX_IDX.replace(Comm_Param.EX_INDEX, ex_idx.toString())
 
-        BaseOkhttpClient.request(HttpType.GET,
+        BaseOkhttpClient.request(
+            HttpType.GET,
             url,
             getHttpHeader(),
             null,
-            callback)
+            callback
+        )
     }
 
     /**
      * GET
      * opportunity 예시 이미지 조회
      */
-    private fun opportunityExampleImage(ex_idx : Int,
-                                    callback: DAHttpCallback) {
-        val url = Comm_Param.URL_EXAMPLE_OPPORTUNITY_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+    fun opportunityExampleImage(
+        ex_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_EXAMPLE_OPPORTUNITY_EX_IDX.replace(
+            Comm_Param.EX_INDEX,
+            ex_idx.toString()
+        )
 
-        BaseOkhttpClient.request(HttpType.GET,
+        BaseOkhttpClient.request(
+            HttpType.GET,
             url,
             getHttpHeader(),
             null,
-            callback)
+            callback
+        )
     }
 
     /**
      * GET
      * object 예시 이미지 조회
      */
-    private fun objectExampleImage(ex_idx : Int,
-                                    callback: DAHttpCallback) {
-        val url = Comm_Param.URL_EXAMPLE_OBJECT_EX_IDX.replace(Comm_Param.EX_INDEX,ex_idx.toString())
+    fun objectExampleImage(
+        ex_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url =
+            Comm_Param.URL_EXAMPLE_OBJECT_EX_IDX.replace(Comm_Param.EX_INDEX, ex_idx.toString())
 
-        BaseOkhttpClient.request(HttpType.GET,
+        BaseOkhttpClient.request(
+            HttpType.GET,
             url,
             getHttpHeader(),
             null,
-            callback)
+            callback
+        )
     }
 
     /**
      * GET
      * Ad Image
      */
-    private fun getAd(callback: DAHttpCallback) {
-        BaseOkhttpClient.request(HttpType.GET,
+    fun getAd(callback: DAHttpCallback) {
+        BaseOkhttpClient.request(
+            HttpType.GET,
             Comm_Param.URL_AD,
             getHttpHeader(),
             null,
-            callback)
+            callback
+        )
     }
-
 
 
 }

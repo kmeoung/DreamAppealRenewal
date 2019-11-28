@@ -165,5 +165,18 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
             mFragments!![vp_profile.currentItem].OnServerRefresh()
         }
     }
+
+    /**
+     * Refresh All Listener
+     */
+    override fun OnRefreshAllView() {
+        if(mFragments != null) {
+            if (mFragments != null) {
+                for (mFragment in mFragments!!) {
+                    mFragment.OnServerRefresh()
+                }
+            }
+        }
+    }
 }
 

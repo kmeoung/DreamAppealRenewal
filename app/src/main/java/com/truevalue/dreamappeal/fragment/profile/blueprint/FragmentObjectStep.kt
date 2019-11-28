@@ -12,12 +12,21 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanBlueprintObject
 import com.truevalue.dreamappeal.bean.BeanObjectStepHeader
 import kotlinx.android.synthetic.main.fragment_object_step.*
 
 class FragmentObjectStep : BaseFragment() {
-
+    private var mBean : BeanBlueprintObject? = null
     private var mAdapter: BaseRecyclerViewAdapter? = null
+
+    companion object{
+        fun newInstance(bean : BeanBlueprintObject) : FragmentObjectStep{
+            val fragment = FragmentObjectStep()
+            fragment.mBean = bean
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +37,16 @@ class FragmentObjectStep : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 데이터 초기화
+        initData()
         // recyclerview adapter 초기화
         initAdapter()
+    }
+
+    private fun initData(){
+        if(mBean != null){
+
+        }
     }
 
     /**

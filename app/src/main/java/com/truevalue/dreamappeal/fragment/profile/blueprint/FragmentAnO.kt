@@ -113,7 +113,7 @@ class FragmentAnO : BaseFragment() {
                             val idx = ability.getInt("idx")
                             val contents = ability.getString("ability")
 
-                            val bean = BeanBlueprintAnO(profile_idx, idx, contents)
+                            val bean = BeanBlueprintAnO(profile_idx, idx, contents, 0)
                             mAbilityAdapter!!.add(bean)
                         }
                     }
@@ -151,7 +151,7 @@ class FragmentAnO : BaseFragment() {
                             val idx = opportunity.getInt("idx")
                             val contents = opportunity.getString("opportunity")
 
-                            val bean = BeanBlueprintAnO(profile_idx, idx, contents)
+                            val bean = BeanBlueprintAnO(profile_idx, idx, contents, 1)
                             mOpportunityAdapter!!.add(bean)
                         }
                     }

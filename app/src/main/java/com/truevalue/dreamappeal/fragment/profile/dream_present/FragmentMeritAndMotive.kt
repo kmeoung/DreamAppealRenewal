@@ -88,11 +88,6 @@ class FragmentMeritAndMotive : BaseFragment() {
             }
         })
 
-        // 데이터 바인드
-        if (mBean != null) {
-            if (!mBean!!.meritNmotive.isNullOrEmpty()) et_merit_and_motive.setText(mBean!!.meritNmotive)
-        }
-
         // 처음 Hint 글자 안보이게 하고 Focus잡기
         tv_init_merit_and_motive.setOnClickListener(OnClickListener {
             tv_init_merit_and_motive.isFocusableInTouchMode = true
@@ -102,7 +97,11 @@ class FragmentMeritAndMotive : BaseFragment() {
             tv_init_merit_and_motive.visibility = GONE
         })
 
-
+        // 데이터 바인드
+        if (mBean != null) {
+            if (!mBean!!.meritNmotive.isNullOrEmpty()) et_merit_and_motive.setText(mBean!!.meritNmotive)
+            tv_init_merit_and_motive.visibility = GONE
+        }
     }
 
     /**
