@@ -25,7 +25,7 @@ class FragmentSelectStep : BaseFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // RecyclerView 초기화
+        // RecyclerView 초기화Dr
         initAdapter()
     }
 

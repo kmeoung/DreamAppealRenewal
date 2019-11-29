@@ -451,7 +451,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val bean = mObjectAdapter!!.get(i) as BeanBlueprintObject
             val tvObjectTitle = h.getItemView<TextView>(R.id.tv_object_title)
             tvObjectTitle.text = bean.object_name
-            tvObjectTitle.setOnClickListener(View.OnClickListener {
+            h.itemView.setOnClickListener(View.OnClickListener {
                 (activity as ActivityMain).replaceFragment(
                     FragmentObjectStep.newInstance(bean),
                     addToBack = true,

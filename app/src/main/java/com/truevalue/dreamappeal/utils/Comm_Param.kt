@@ -70,6 +70,7 @@ object Comm_Param {
     val BEST_POST_NUMBER = "BEST_POST_NUMBER"
     val URL_BEST_POST = "$URL_API/best_post"
     val URL_BEST_POST_NUMBER = "$URL_BEST_POST/$BEST_POST_NUMBER"
+    val URL_BEST_POST_NUMBER_POST_IDX = "$URL_BEST_POST_NUMBER/$POST_INDEX"
 
     // 발전계획
     val URL_BLUEPRINT = "$URL_API/blueprint"

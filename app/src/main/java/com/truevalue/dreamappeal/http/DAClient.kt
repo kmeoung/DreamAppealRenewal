@@ -720,21 +720,21 @@ object DAClient {
      * POST
      * 대표 성과 등록
      */
-    fun uploadBestPost(
+    fun upBestPost(
         post_idx: Int,
         best_post_number: Int,
         callback: DAHttpCallback
     ) {
 
-        val params = DAHttpParams()
-        params.put("post_idx", post_idx)
-        params.put("best_post_number", best_post_number)
+        val url = Comm_Param.URL_BEST_POST_NUMBER_POST_IDX
+            .replace(Comm_Param.POST_INDEX,post_idx.toString())
+            .replace(Comm_Param.BEST_POST_NUMBER,best_post_number.toString())
 
         BaseOkhttpClient.request(
             HttpType.POST,
-            Comm_Param.URL_BEST_POST,
+            url,
             getHttpHeader(),
-            params,
+            null,
             callback
         )
     }
@@ -743,7 +743,7 @@ object DAClient {
      * PATCH
      * 대표성과 내리기
      */
-    fun uploadBestPost(
+    fun downBestPost(
         best_post_number: Int,
         callback: DAHttpCallback
     ) {

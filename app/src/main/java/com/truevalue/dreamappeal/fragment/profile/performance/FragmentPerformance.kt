@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.performance
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -13,18 +14,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.PopupMenu
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
+import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
 import com.truevalue.dreamappeal.bean.BeanBestPost
 import com.truevalue.dreamappeal.bean.BeanPerformance
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
+import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import kotlinx.android.synthetic.main.fragment_performance.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -285,6 +289,11 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
             val ivThumbnail = h.getItemView<ImageView>(R.id.iv_thumbnail)
             val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
             val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
+            val iBtnMore = h.getItemView<ImageButton>(R.id.ibtn_more)
+
+            iBtnMore.setOnClickListener(View.OnClickListener {
+                showPopupMenu(it,bean)
+            })
 
             tvTitle.text = bean.title
             tvContents.text = bean.content
@@ -320,6 +329,96 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     override fun onRefresh() {
         // 여기다가 서버요청
         getAchievementPostMain()
+    }
+
+    /**
+     * 더보기 PopupMenu 띄우기
+     */
+    private fun showPopupMenu(ivMore : View, bean : BeanAchievementPost) {
+        val popupMenu = PopupMenu(context!!, ivMore)
+        popupMenu.menu.add(getString(R.string.str_sleect_best_post_1))
+        popupMenu.menu.add(getString(R.string.str_sleect_best_post_2))
+        popupMenu.menu.add(getString(R.string.str_sleect_best_post_3))
+        popupMenu.menu.add(getString(R.string.str_edit))
+        popupMenu.menu.add(getString(R.string.str_delete))
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.title) {
+                getString(R.string.str_sleect_best_post_1) -> upBestAchivement(bean,1)
+                getString(R.string.str_sleect_best_post_2) -> upBestAchivement(bean,2)
+                getString(R.string.str_sleect_best_post_3) -> upBestAchivement(bean,3)
+                getString(R.string.str_edit) -> {
+                        // todo : 수정
+                }
+                getString(R.string.str_delete) -> {
+                    val builder =
+                        AlertDialog.Builder(context)
+                            .setTitle(getString(R.string.str_delete_post_title))
+                            .setMessage(getString(R.string.str_delete_post_contents))
+                            .setPositiveButton(
+                                getString(R.string.str_yes)
+                            ) { dialog, which ->
+                                deleteAchivement(bean)
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton(
+                                getString(R.string.str_no)
+                            ) { dialog, which -> dialog.dismiss() }
+                    val dialog = builder.create()
+                    dialog.show()
+                }
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
+    /**
+     * Http
+     * 베스트 포스트 설정
+     */
+    private fun upBestAchivement(bean : BeanAchievementPost, best_idx : Int){
+        DAClient.upBestPost(bean.idx,best_idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        onRefresh()
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * 게시물 삭제
+     */
+    private fun deleteAchivement(bean : BeanAchievementPost){
+        DAClient.deleteachievementPost(bean.idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        onRefresh()
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -397,7 +496,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                     view.setOnClickListener(View.OnClickListener {
                         // todo : 상세 이동
                         (activity as ActivityMain).replaceFragment(
-                            FragmentBestPost.newInstance(bean.idx),
+                            FragmentBestPost.newInstance(bean.idx,position + 1),
                             addToBack = true,
                             isMainRefresh = true
                         )
