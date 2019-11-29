@@ -5,8 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.bean.BeanAchievementPost
+import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
+import com.truevalue.dreamappeal.bean.BeanImages
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
@@ -14,10 +18,12 @@ import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_best_post.*
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentAchivementPostDetail : BaseFragment() {
 
     private var mPostIndx = -1
+    private var mBean : BeanAchivementPostDetail? = null
 
     companion object {
         fun newInstance(idx: Int): FragmentAchivementPostDetail {
@@ -90,13 +96,34 @@ class FragmentAchivementPostDetail : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
+                        val json = JSONObject(body)
+                        val achivementPost = json.getJSONObject("achievement_post")
 
+                        val bean = Gson().fromJson<BeanAchivementPostDetail>(
+                            achivementPost.toString(),
+                            BeanAchivementPostDetail::class.java
+                        )
+
+                        val thumbnail = achivementPost.getJSONArray("images")
+
+                        val images = ArrayList<BeanImages>()
+                        for (i in 0 until thumbnail.length()){
+                            val image = Gson().fromJson<BeanImages>(thumbnail.getJSONObject(i).toString(),BeanImages::class.java)
+                            images.add(image)
+                        }
+                        bean.Images = images
+
+                        mBean = bean
                     }
                 }
             }
         })
+    }
+
+    private fun setData(){
+
     }
 }
