@@ -33,36 +33,51 @@
                         android:gravity="bottom"
                         android:orientation="horizontal">
 
-                    <ImageView
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
-                            android:src="@drawable/ic_puzzle_yellow" />
-
-                    <TextView
+                    <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10.3dp"
-                            android:fontFamily="@font/nanum_pen"
-                            android:text="@string/str_ability"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:orientation="horizontal"
+                            android:id="@+id/ll_ability">
 
-                    <ImageView
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
-                            android:layout_marginLeft="16.7dp"
-                            android:rotation="90"
-                            android:src="@drawable/ic_puzzle_orange" />
+                        <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:src="@drawable/ic_puzzle_yellow" />
 
-                    <TextView
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10.3dp"
+                                android:fontFamily="@font/nanum_pen"
+                                android:text="@string/str_ability"
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10.3dp"
-                            android:layout_marginRight="7dp"
-                            android:fontFamily="@font/nanum_pen"
-                            android:text="@string/str_opportunity"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
+                            android:orientation="horizontal"
+                            android:id="@+id/ll_opportunity">
+
+                        <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_marginLeft="16.7dp"
+                                android:rotation="90"
+                                android:src="@drawable/ic_puzzle_orange" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10.3dp"
+                                android:layout_marginRight="7dp"
+                                android:fontFamily="@font/nanum_pen"
+                                android:text="@string/str_opportunity"
+                                android:textColor="@color/black"
+                                android:textSize="20sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -166,19 +181,20 @@
                 <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_object"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_object"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
                     <TextView
                             android:id="@+id/tv_default_object"
                             android:layout_width="match_parent"
                             android:layout_height="90dp"
                             android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
                             android:background="@drawable/bg_default_box"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:gravity="center"

@@ -1,6 +1,5 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityFollow
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
@@ -106,12 +104,24 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         FragmentAddPage.VIEW_TYPE_ADD_STEP
                     ), addToBack = true, isMainRefresh = true
                 )
+                ll_ability->(activity as ActivityMain).replaceFragment(
+                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_ABILITY),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
+                ll_opportunity->(activity as ActivityMain).replaceFragment(
+                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_OPPORTUNITY),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
             }
         }
 
         tv_default_ability_opportunity.setOnClickListener(listener)
         tv_default_object.setOnClickListener(listener)
         iv_add_object.setOnClickListener(listener)
+        ll_ability.setOnClickListener(listener)
+        ll_opportunity.setOnClickListener(listener)
 
     }
 

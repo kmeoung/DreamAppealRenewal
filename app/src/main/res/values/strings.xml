@@ -80,9 +80,9 @@
     <string name="str_commit">등록</string>
     <string name="str_ability">갖출 능력</string>
     <string name="str_opportunity">만들어갈 기회</string>
-    <string name="str_add_ability">갖출 능력 등록하기</string>
+    <string name="str_add_ability">능력 추가하기</string>
     <string name="str_default_add_ability">수식어에 맞게 어떤 능력이 필요할까?\n직업명에 맞게 어떤 능력이 필요할까?</string>
-    <string name="str_add_opportunity">만들어갈 기회 등록하기</string>
+    <string name="str_add_opportunity">기회 추가하기</string>
     <string name="str_default_add_opportunity">필요한 경험과 실력을 능동적으로 쌓기 위해\n어떤 기회를 만들어볼까?</string>
     <string name="str_edit_ability">갖출 능력 수정</string>
     <string name="str_edit_opportunity">만들어갈 기회 수정</string>

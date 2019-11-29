@@ -31,29 +31,29 @@
                     android:orientation="horizontal">
 
                 <ImageView
-                        android:id="@+id/iv_life"
+                        android:id="@+id/iv_ability"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginRight="7.7dp"
-                        android:src="@drawable/ic_face" />
+                        android:src="@drawable/ic_puzzle_ability" />
 
                 <TextView
-                        android:id="@+id/tv_life"
+                        android:id="@+id/tv_ability"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/str_lifestyle"
+                        android:fontFamily="@font/nanum_pen"
+                        android:text="@string/str_ability"
                         android:textColor="@color/color_dream_note"
-                        android:textSize="14sp" />
+                        android:textSize="20sp" />
 
             </LinearLayout>
 
 
             <ImageView
-                    android:id="@+id/iv_under_life"
+                    android:id="@+id/iv_under_ability"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/asparagus" />
+                    android:background="@color/yellow_orange" />
 
         </LinearLayout>
 
@@ -72,37 +72,80 @@
                     android:orientation="horizontal">
 
                 <ImageView
+                        android:id="@+id/iv_opportunity"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginRight="7.7dp"
-                        android:src="@drawable/ic_bulb"
-                        android:id="@+id/iv_idea"/>
+                        android:rotation="90"
+                        android:src="@drawable/ic_puzzle_opportunity" />
 
 
                 <TextView
+                        android:id="@+id/tv_opportunity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/str_idea"
+                        android:fontFamily="@font/nanum_pen"
+                        android:text="@string/str_opportunity"
                         android:textColor="@color/color_dream_note"
-                        android:textSize="14sp"
-                        android:id="@+id/tv_idea"/>
+                        android:textSize="20sp" />
 
             </LinearLayout>
 
             <ImageView
+                    android:id="@+id/iv_under_opportunity"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/brownish_orange"
-                    android:id="@+id/iv_under_idea"/>
+                    android:background="@color/faded_orange" />
 
         </LinearLayout>
 
 
     </LinearLayout>
 
-    <FrameLayout
-            android:id="@+id/ano_container"
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center_vertical">
+
+        <LinearLayout
+                android:id="@+id/ll_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+
+            <ImageView
+                    android:id="@+id/iv_add"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_marginRight="12dp"
+                    android:scaleType="fitXY"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:src="@drawable/ic_add_yellow" />
+
+            <TextView
+                    android:id="@+id/tv_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_add_ability"
+                    android:textColor="@color/yellow_orange"
+                    android:textSize="14.7sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ano"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />

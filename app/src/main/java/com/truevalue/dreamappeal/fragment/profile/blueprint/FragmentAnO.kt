@@ -22,37 +22,47 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_ability_opportunity.*
+import kotlinx.android.synthetic.main.fragment_ano.*
 import okhttp3.Call
 import org.json.JSONObject
 
 class FragmentAnO : BaseFragment() {
 
+    private var mViewType: Int?
+    private var mAdapter: BaseRecyclerViewAdapter? = null
 
-    private var mAbilityAdapter: BaseRecyclerViewAdapter? = null
-    private var mOpportunityAdapter: BaseRecyclerViewAdapter? = null
+    init {
+        mViewType = VIEW_TYPE_ABILITY
+    }
+
+    companion object {
+        val VIEW_TYPE_ABILITY = 0
+        val VIEW_TYPE_OPPORTUNITY = 1
+
+        fun newInstance(view_type: Int): FragmentAnO {
+            val fragment = FragmentAnO()
+            fragment.mViewType = view_type
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_ability_opportunity, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_ano, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // 뷰 초기화
         initView()
-        // RecyclerView 초기화
-        initAdapter()
         // View Click Listener
         onClickView()
-        // 임시 데이터 바인딩
-//        bindTempData()
-        // 갖출 능력 조회
-        getAbilities()
-        // 민들고픈 기회 조회
-        getOpportunities()
+        // RecyclerView 초기화
+        initAdapter()
+        // init data
+        setTabView(mViewType!!)
     }
 
     /**
@@ -61,26 +71,92 @@ class FragmentAnO : BaseFragment() {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-                iv_add_ability -> {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentAddPage.newInstance(
-                            FragmentAddPage.VIEW_TYPE_ADD_ABILITY
-                        ), true
-                    )
-                }
-                iv_add_opportunity -> {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentAddPage.newInstance(
-                            FragmentAddPage.VIEW_TYPE_ADD_OPPORTUNITY
-                        ), true
-                    )
-                }
                 iv_back_black -> activity!!.onBackPressed()
+                ll_add -> {
+                    val type = when (mViewType) {
+                        VIEW_TYPE_ABILITY -> FragmentAddPage.VIEW_TYPE_ADD_ABILITY
+                        VIEW_TYPE_OPPORTUNITY -> FragmentAddPage.VIEW_TYPE_ADD_OPPORTUNITY
+                        else -> ""
+                    }
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentAddPage.newInstance(
+                            type
+                        ), true
+                    )
+                }
+                ll_ability -> setTabView(VIEW_TYPE_ABILITY)
+                ll_opportunity -> setTabView(VIEW_TYPE_OPPORTUNITY)
             }
         }
-        iv_add_ability.setOnClickListener(listener)
-        iv_add_opportunity.setOnClickListener(listener)
+        ll_add.setOnClickListener(listener)
+        ll_ability.setOnClickListener(listener)
+        ll_opportunity.setOnClickListener(listener)
         iv_back_black.setOnClickListener(listener)
+    }
+
+    /**
+     * 상단 Tab 설정
+     */
+    private fun setTabView(view_type: Int) {
+        mViewType = view_type
+        when (view_type) {
+            VIEW_TYPE_ABILITY -> {
+                iv_ability.isSelected = true
+                tv_ability.isSelected = true
+                iv_under_ability.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.yellow_orange
+                    )
+                )
+                iv_add.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_add_yellow
+                    )
+                )
+                tv_add.text = getString(R.string.str_add_ability)
+                tv_add.setTextColor(ContextCompat.getColor(context!!,R.color.yellow_orange))
+
+                iv_opportunity.isSelected = false
+                tv_opportunity.isSelected = false
+                iv_under_opportunity.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.light_peach
+                    )
+                )
+                getAbilities()
+            }
+            VIEW_TYPE_OPPORTUNITY -> {
+                iv_ability.isSelected = false
+                tv_ability.isSelected = false
+                iv_under_ability.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.light_peach
+                    )
+                )
+                iv_add.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context!!,
+                        R.drawable.ic_add_orange
+                    )
+                )
+                tv_add.text = getString(R.string.str_add_opportunity)
+                tv_add.setTextColor(ContextCompat.getColor(context!!,R.color.faded_orange))
+
+                iv_opportunity.isSelected = true
+                tv_opportunity.isSelected = true
+                iv_under_opportunity.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context!!,
+                        R.color.faded_orange
+                    )
+                )
+                getOpportunities()
+            }
+        }
     }
 
     /**
@@ -105,7 +181,7 @@ class FragmentAnO : BaseFragment() {
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
 
-                        mAbilityAdapter!!.clear()
+                        mAdapter!!.clear()
                         val abilities = json.getJSONArray("abilities")
                         for (i in 0 until abilities.length()) {
                             val ability = abilities.getJSONObject(i)
@@ -114,7 +190,7 @@ class FragmentAnO : BaseFragment() {
                             val contents = ability.getString("ability")
 
                             val bean = BeanBlueprintAnO(profile_idx, idx, contents, 0)
-                            mAbilityAdapter!!.add(bean)
+                            mAdapter!!.add(bean)
                         }
                     }
                 }
@@ -143,7 +219,7 @@ class FragmentAnO : BaseFragment() {
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
-                        mOpportunityAdapter!!.clear()
+                        mAdapter!!.clear()
                         val opportunities = json.getJSONArray("opportunities")
                         for (i in 0 until opportunities.length()) {
                             val opportunity = opportunities.getJSONObject(i)
@@ -152,7 +228,7 @@ class FragmentAnO : BaseFragment() {
                             val contents = opportunity.getString("opportunity")
 
                             val bean = BeanBlueprintAnO(profile_idx, idx, contents, 1)
-                            mOpportunityAdapter!!.add(bean)
+                            mAdapter!!.add(bean)
                         }
                     }
                 }
@@ -222,13 +298,9 @@ class FragmentAnO : BaseFragment() {
      * RecyclerView 초기화
      */
     private fun initAdapter() {
-        mAbilityAdapter = BaseRecyclerViewAdapter(abilityListener)
-        rv_ability.adapter = mAbilityAdapter
-        rv_ability.layoutManager = LinearLayoutManager(context)
-
-        mOpportunityAdapter = BaseRecyclerViewAdapter(opportunityListener)
-        rv_opportunity.adapter = mOpportunityAdapter
-        rv_opportunity.layoutManager = LinearLayoutManager(context)
+        mAdapter = BaseRecyclerViewAdapter(rvListener)
+        rv_ano.adapter = mAdapter
+        rv_ano.layoutManager = LinearLayoutManager(context)
     }
 
     /**
@@ -236,8 +308,7 @@ class FragmentAnO : BaseFragment() {
      */
     private fun bindTempData() {
         for (i in 1..10) {
-            mAbilityAdapter!!.add("")
-            mOpportunityAdapter!!.add("")
+            mAdapter!!.add("")
         }
     }
 
@@ -247,12 +318,12 @@ class FragmentAnO : BaseFragment() {
     /**
      * RecyclerView Ability Adapter
      */
-    private val abilityListener = object : IORecyclerViewListener {
+    private val rvListener = object : IORecyclerViewListener {
 
         /**
          * Ability 팝업 메뉴 띄우기
          */
-        private fun showPopupMenu(view: View, bean: BeanBlueprintAnO) {
+        private fun showPopupMenu(view: View, bean: BeanBlueprintAnO, viewType: Int) {
             val popupMenu = PopupMenu(context!!, view)
             popupMenu.menu.add(getString(R.string.str_edit))
             popupMenu.menu.add(getString(R.string.str_delete))
@@ -260,15 +331,24 @@ class FragmentAnO : BaseFragment() {
             popupMenu.setOnMenuItemClickListener {
                 when (it.title) {
                     getString(R.string.str_edit) -> {
+                        val type = when (viewType) {
+                            VIEW_TYPE_ABILITY -> FragmentAddPage.VIEW_TYPE_EDIT_ABILITY
+                            VIEW_TYPE_OPPORTUNITY -> FragmentAddPage.VIEW_TYPE_EDIT_OPPORTUNITY
+                            else -> ""
+                        }
+
                         (activity as ActivityMain).replaceFragment(
                             FragmentAddPage.newInstance(
-                                FragmentAddPage.VIEW_TYPE_EDIT_ABILITY
+                                type
                                 , bean
                             ), true
                         )
                     }
                     getString(R.string.str_delete) -> {
-                        deleteAbility(bean.idx)
+                        when (viewType) {
+                            VIEW_TYPE_ABILITY -> deleteAbility(bean.idx)
+                            VIEW_TYPE_OPPORTUNITY -> deleteOpportunity(bean.idx)
+                        }
                     }
                 }
                 false
@@ -277,92 +357,39 @@ class FragmentAnO : BaseFragment() {
         }
 
         override val itemCount: Int
-            get() = if (mAbilityAdapter != null) mAbilityAdapter!!.size() else 0
+            get() = if (mAdapter != null) mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             return BaseViewHolder.newInstance(R.layout.listitem_detail_ano, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            val bean = mAbilityAdapter!!.get(i) as BeanBlueprintAnO
+            val bean = mAdapter!!.get(i) as BeanBlueprintAnO
             val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
-            if (LISTITEM_VIEW_TYPE_NONE_COLOR == getItemViewType(i)) {
-                llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-            } else {
-                llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.off_white))
-            }
 
-            tvContents.text = bean.contents
-            tvContents.setOnLongClickListener(View.OnLongClickListener {
-                showPopupMenu(tvContents, bean)
-                false
-            })
-        }
-
-        override fun getItemViewType(i: Int): Int {
-            if (i % 2 == 0) return LISTITEM_VIEW_TYPE_COLOR
-            return LISTITEM_VIEW_TYPE_NONE_COLOR
-        }
-    }
-
-    /**
-     * RecyclerView Opportunity Adapter
-     */
-    private val opportunityListener = object : IORecyclerViewListener {
-
-        /**
-         * Opportunity 팝업 메뉴 띄우기
-         */
-        private fun showPopupMenu(view: View, bean: BeanBlueprintAnO) {
-            val popupMenu = PopupMenu(context!!, view)
-            popupMenu.menu.add(getString(R.string.str_edit))
-            popupMenu.menu.add(getString(R.string.str_delete))
-
-            popupMenu.setOnMenuItemClickListener {
-                when (it.title) {
-                    getString(R.string.str_edit) -> {
-                        (activity as ActivityMain).replaceFragment(
-                            FragmentAddPage.newInstance(
-                                FragmentAddPage.VIEW_TYPE_EDIT_OPPORTUNITY
-                                , bean
-                            ), true
-                        )
-                    }
-                    getString(R.string.str_delete) -> {
-                        deleteOpportunity(bean.idx)
-                    }
+            if (mViewType == VIEW_TYPE_ABILITY) {
+                if (LISTITEM_VIEW_TYPE_NONE_COLOR == getItemViewType(i)) {
+                    llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+                } else {
+                    llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.off_white))
                 }
-                false
-            }
-            popupMenu.show()
-        }
-
-        override val itemCount: Int
-            get() = if (mOpportunityAdapter != null) mOpportunityAdapter!!.size() else 0
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            return BaseViewHolder.newInstance(R.layout.listitem_detail_ano, parent, false)
-        }
-
-        override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            val bean = mOpportunityAdapter!!.get(i) as BeanBlueprintAnO
-            val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
-            val tvContents = h.getItemView<TextView>(R.id.tv_contents)
-            if (LISTITEM_VIEW_TYPE_NONE_COLOR == getItemViewType(i)) {
-                llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-            } else {
-                llItem.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context!!,
-                        R.color.very_light_pink
+            } else if (mViewType == VIEW_TYPE_OPPORTUNITY) {
+                if (LISTITEM_VIEW_TYPE_NONE_COLOR == getItemViewType(i)) {
+                    llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
+                } else {
+                    llItem.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.very_light_pink
+                        )
                     )
-                )
+                }
             }
 
             tvContents.text = bean.contents
             tvContents.setOnLongClickListener(View.OnLongClickListener {
-                showPopupMenu(tvContents, bean)
+                showPopupMenu(tvContents, bean, mViewType!!)
                 false
             })
         }
