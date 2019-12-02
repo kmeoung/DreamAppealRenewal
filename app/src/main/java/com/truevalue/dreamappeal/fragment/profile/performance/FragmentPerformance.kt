@@ -121,6 +121,8 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
             for (i in 0 until mBeanPerformance!!.achievement_posts.size) {
                 mAdapter!!.add(mBeanPerformance!!.achievement_posts[i])
             }
+
+            if(mPagerAdapter != null) mPagerAdapter?.notifyDataSetChanged()
         }
     }
 
@@ -230,6 +232,8 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                                     mBestPostList!!.add(null)
                                 }
                             }
+
+                            if(mPagerAdapter != null) mPagerAdapter?.notifyDataSetChanged()
 
                             val achievementPosts = json.getJSONArray("achievement_posts")
                             mAdapter!!.clear()

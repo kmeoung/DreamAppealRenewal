@@ -14,7 +14,7 @@
             android:paddingRight="11dp">
 
         <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_object_step_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="73dp"

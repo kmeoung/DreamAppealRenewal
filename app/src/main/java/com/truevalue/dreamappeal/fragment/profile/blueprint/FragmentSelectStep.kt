@@ -16,6 +16,13 @@ class FragmentSelectStep : BaseFragment(){
 
     private var mAdapter : BaseRecyclerViewAdapter? = null
 
+    companion object{
+        fun newInstance() : FragmentSelectStep {
+            val fragment = FragmentSelectStep()
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
