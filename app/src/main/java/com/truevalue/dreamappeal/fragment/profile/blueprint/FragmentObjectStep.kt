@@ -41,6 +41,7 @@ import org.json.JSONObject
 class FragmentObjectStep : BaseFragment() {
     private var mBean: BeanBlueprintObject? = null
     private var mAdapter: BaseRecyclerViewAdapter? = null
+    private var mObjectBean : BeanObjectStep? = null
 
     companion object {
         fun newInstance(bean: BeanBlueprintObject): FragmentObjectStep {
@@ -78,11 +79,13 @@ class FragmentObjectStep : BaseFragment() {
                     showMoreDialog()
                 }
                 tv_detail_step -> {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentAddPage.newInstance(
-                            FragmentAddPage.VIEW_TYPE_ADD_STEP_DETAIL
-                        ), addToBack = true
-                    )
+                    if(mObjectBean != null) {
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentAddPage.newInstance(
+                                FragmentAddPage.VIEW_TYPE_ADD_STEP_DETAIL,mObjectBean!!.idx
+                            ), addToBack = true, isMainRefresh = false
+                        )
+                    }
                 }
             }
         }
@@ -147,6 +150,7 @@ class FragmentObjectStep : BaseFragment() {
     }
 
     /**
+     * Http
      * 실천 목표 조회
      */
     private fun getObjects(object_idx: Int) {
@@ -172,6 +176,8 @@ class FragmentObjectStep : BaseFragment() {
                             `object`.toString(),
                             BeanObjectStep::class.java
                         )
+
+                        mObjectBean = bean
 
                         tv_object_step_title.text = bean.object_name
 //                        "total_action_post_count":0, todo : 추후 사용

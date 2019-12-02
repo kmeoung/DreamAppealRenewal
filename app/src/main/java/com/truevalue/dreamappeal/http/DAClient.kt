@@ -727,8 +727,8 @@ object DAClient {
     ) {
 
         val url = Comm_Param.URL_BEST_POST_NUMBER_POST_IDX
-            .replace(Comm_Param.POST_INDEX,post_idx.toString())
-            .replace(Comm_Param.BEST_POST_NUMBER,best_post_number.toString())
+            .replace(Comm_Param.POST_INDEX, post_idx.toString())
+            .replace(Comm_Param.BEST_POST_NUMBER, best_post_number.toString())
 
         BaseOkhttpClient.request(
             HttpType.POST,
@@ -1212,10 +1212,10 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        if(!object_name.isNullOrEmpty())params.put("object_name",object_name)
-        if(!thumbnail_image.isNullOrEmpty())params.put("thumbnail_image",thumbnail_image)
-        if(!complete.isNullOrEmpty())params.put("object_name",complete)
-        if(!complete_date.isNullOrEmpty())params.put("object_name",complete_date)
+        if (!object_name.isNullOrEmpty()) params.put("object_name", object_name)
+        if (!thumbnail_image.isNullOrEmpty()) params.put("thumbnail_image", thumbnail_image)
+        if (!complete.isNullOrEmpty()) params.put("object_name", complete)
+        if (!complete_date.isNullOrEmpty()) params.put("object_name", complete_date)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,
@@ -1248,6 +1248,80 @@ object DAClient {
         )
     }
 
+    /**
+     * POST
+     * 실천 목표 세부단계 등록
+     */
+    fun addObjectStepDetail(
+        object_idx: Int,
+        title: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_OBJECT_STEPS_OBJECT_IDX
+            .replace(
+                Comm_Param.OBJECT_INDEX, object_idx.toString()
+            )
+
+        val params = DAHttpParams()
+        params.put("title", title)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 실천 목표 세부단계 수정
+     */
+    fun updateObjectStepDetail(
+        step_idx: Int,
+        object_idx: Int,
+        title: String,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OBJECT_STEPS_IDX_OBJECT_IDX
+            .replace(Comm_Param.STEP_INDEX, step_idx.toString())
+            .replace(Comm_Param.OBJECT_INDEX, object_idx.toString())
+
+        val params = DAHttpParams()
+        params.put("title", title)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 실천 목표 세부단계 수정
+     */
+    fun updateObjectStepDetail(
+        step_idx: Int,
+        object_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_OBJECT_STEPS_IDX_OBJECT_IDX
+            .replace(Comm_Param.STEP_INDEX, step_idx.toString())
+            .replace(Comm_Param.OBJECT_INDEX, object_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
 
 
     /**

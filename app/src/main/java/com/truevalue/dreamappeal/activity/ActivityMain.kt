@@ -266,7 +266,6 @@ class ActivityMain : BaseActivity() {
         super.onBackPressed()
 
         if(isMainRefresh || mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
-            isMainRefresh = false
             if(mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
                 mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
                 if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshAllView()
@@ -274,6 +273,7 @@ class ActivityMain : BaseActivity() {
                 if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
             }
         }
+        isMainRefresh = false
     }
 
     fun onBackPressed(isMainRefresh: Boolean){

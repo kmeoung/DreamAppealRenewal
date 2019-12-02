@@ -16,6 +16,7 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
+import com.truevalue.dreamappeal.bean.BeanObjectStep
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
@@ -27,6 +28,8 @@ class FragmentAddPage : BaseFragment() {
 
     private var mViewType: String = ""
     private var mBeanAnO: BeanBlueprintAnO? = null
+    private var mObjectIdx: Int = -1
+    private var mStepIdx: Int = -1
 
     companion object {
         val VIEW_TYPE_ADD_ABILITY = "VIEW_TYPE_ADD_ABILITY"
@@ -42,6 +45,28 @@ class FragmentAddPage : BaseFragment() {
             val fragment = FragmentAddPage()
             fragment.mViewType = view_type
             fragment.mBeanAnO = bean
+            return fragment
+        }
+
+        /**
+         * 실현 성과 수정
+         * 상세 추가
+         */
+        fun newInstance(view_type: String, object_idx: Int): FragmentAddPage {
+            val fragment = FragmentAddPage()
+            fragment.mViewType = view_type
+            fragment.mObjectIdx = object_idx
+            return fragment
+        }
+
+        /**
+         * 상세 수정 / 삭제
+         */
+        fun newInstance(view_type: String, object_idx: Int, step_idx: Int): FragmentAddPage {
+            val fragment = FragmentAddPage()
+            fragment.mViewType = view_type
+            fragment.mObjectIdx = object_idx
+            fragment.mStepIdx = step_idx
             return fragment
         }
 
@@ -183,13 +208,13 @@ class FragmentAddPage : BaseFragment() {
                     addObjectStep(contents)
                 }
                 VIEW_TYPE_ADD_STEP_DETAIL -> {
-
+                    addObjectStepDetail(mObjectIdx, contents)
                 }
                 VIEW_TYPE_EDIT_STEP -> {
-
+                    updateObjectStep(mObjectIdx,contents)
                 }
                 VIEW_TYPE_EDIT_STEP_DETAIL -> {
-
+                    updateObjectStepDetail(mStepIdx, mObjectIdx, contents)
                 }
             }
         }
@@ -296,8 +321,8 @@ class FragmentAddPage : BaseFragment() {
      * Http
      * 실천 목표 추가
      */
-    private fun addObjectStep(contents : String){
-        DAClient.addObject(contents,object : DAHttpCallback{
+    private fun addObjectStep(contents: String) {
+        DAClient.addObject(contents, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -320,13 +345,64 @@ class FragmentAddPage : BaseFragment() {
      * Http
      * 실천 목표 수정
      */
-    private fun updateObjectStep(object_idx : Int,contents : String){
+    private fun updateObjectStep(object_idx: Int, contents: String) {
         DAClient.updateObject(object_idx,
             contents,
             null,
             null,
             null,
-            object : DAHttpCallback{
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+
+                        if (code == DAClient.SUCCESS) {
+                            activity!!.onBackPressed()
+                        }
+                    }
+                }
+            })
+    }
+
+    /**
+     * Http
+     * 실천 목표 상세 추가
+     */
+    private fun addObjectStepDetail(object_idx: Int, title: String) {
+
+        DAClient.addObjectStepDetail(object_idx, title, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        activity!!.onBackPressed()
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * 실천 목표 상세 수정
+     */
+    private fun updateObjectStepDetail(step_idx: Int, object_idx: Int, title: String) {
+
+        DAClient.updateObjectStepDetail(step_idx, object_idx, title, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,

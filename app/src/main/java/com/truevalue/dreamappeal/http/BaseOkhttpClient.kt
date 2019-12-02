@@ -34,6 +34,8 @@ object BaseOkhttpClient : OkHttpClient() {
         }
 
         val call = client.newCall(clientRequest)
+        if (!Comm_Param.REAL) Log.d("SERVER REQUEST URL", call.request().url.toString())
+
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 if(callback != null){
