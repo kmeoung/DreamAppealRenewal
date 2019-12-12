@@ -46,9 +46,9 @@
     <color name="bright_blue_two">#1072bd</color>
     <color name="tomato">#e73131</color>
     <color name="white_five">#efefef</color>
-    <color name="brownish_orange">#d09421</color>
+    <color name="brownish_orange">#ffc001</color>
     <color name="rust_orange">#be5108</color>
-    <color name="asparagus">#72ac4d</color>
+    <color name="asparagus">#92cf50</color>
     <color name="white_six">#e6e6e6</color>
     <color name="white_seven">#e9ebee</color>
     <color name="off_white">#fcf5e3</color>
@@ -59,4 +59,5 @@
     <color name="faded_orange">#eb6d57</color>
     <color name="greyish_two">#adadad</color>
     <color name="pale_grey">#dfdde2</color>
+
 </resources>

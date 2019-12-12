@@ -1,16 +1,11 @@
 package com.truevalue.dreamappeal.http
 
-import android.text.TextUtils
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
-import com.truevalue.dreamappeal.utils.Utils
-import okhttp3.Call
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -1414,6 +1409,38 @@ object DAClient {
         BaseOkhttpClient.request(
             HttpType.GET,
             Comm_Param.URL_AD,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 실천목표 가져오기
+     */
+    fun getActionPostCategoty(callback: DAHttpCallback){
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_ACTION_POSTS_CATEGORY,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 실천목표 세부단계 가져오기
+     */
+    fun getActionPostCategotyDetail(object_idx : Int,
+                              callback: DAHttpCallback){
+
+        val url = Comm_Param.URL_ACTION_POSTS_CATEGORY_OBJECT_IDX.replace(Comm_Param.OBJECT_INDEX,object_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
             getHttpHeader(),
             null,
             callback

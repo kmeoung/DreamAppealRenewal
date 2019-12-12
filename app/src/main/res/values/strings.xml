@@ -202,6 +202,10 @@
     <string name="str_abiity_long">내 꿈에 맞게 갖출 능력</string>
     <string name="str_opportunity_long">내 꿈에 맞게 만들고픈 기회</string>
 
+    <string name="str_level_choice_idea">영감 기록</string>
+    <string name="str_level_choice_like">일상/경험 기록</string>
+    <string name="str_level_choice_action_post">실천인증</string>
+
     <string name="str_input_name">이름을 입력해주세요.</string>
     <string name="str_input_email">이메일을 입력해주세요.</string>
     <string name="str_input_email_type">이메일형식으로 입력해주세요.</string>
@@ -240,7 +244,7 @@
     <string name="str_add_object_step_detail">세부단계 +</string>
 
     <string name="str_camera">카메라</string>
-    <string name="str_gallery">갤러리</string>
+    <string name="str_gallery">라이브러리</string>
 
     <string name="str_select_object">목표선택</string>
     <string name="str_select_step">세부단계 선택</string>
@@ -252,4 +256,6 @@
     <string name="str_count">개</string>
     <string name="str_delete_post_title">게시글 삭제</string>
     <string name="str_delete_post_contents">게시글을 삭제하시겠습니까?</string>
+
+    <string name="str_title_level_choice">게시 주제를 선택해주세요</string>
 </resources>

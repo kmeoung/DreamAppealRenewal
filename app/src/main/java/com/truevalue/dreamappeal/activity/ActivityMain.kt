@@ -14,6 +14,7 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentLevelChoice
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -254,7 +255,7 @@ class ActivityMain : BaseActivity() {
         var fragment = when (mMainViewType) {
             MAIN_TYPE_HOME -> FragmentProfile()
             MAIN_TYPE_TIMELINE -> FragmentProfile()
-            MAIN_TYPE_ADD_BOARD -> FragmentProfile()
+            MAIN_TYPE_ADD_BOARD -> FragmentLevelChoice()
             MAIN_TYPE_NOTIFICATION -> FragmentProfile()
             MAIN_TYPE_PROFILE -> FragmentProfile()
             else -> FragmentProfile()
