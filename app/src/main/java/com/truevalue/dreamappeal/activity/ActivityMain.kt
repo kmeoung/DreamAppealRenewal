@@ -252,15 +252,18 @@ class ActivityMain : BaseActivity() {
      */
     fun initFragment() {
         // todo : 처음 페이지 설정 시 변경 필요
-        var fragment = when (mMainViewType) {
-            MAIN_TYPE_HOME -> FragmentProfile()
-            MAIN_TYPE_TIMELINE -> FragmentProfile()
-            MAIN_TYPE_ADD_BOARD -> FragmentLevelChoice()
-            MAIN_TYPE_NOTIFICATION -> FragmentProfile()
-            MAIN_TYPE_PROFILE -> FragmentProfile()
-            else -> FragmentProfile()
+       when (mMainViewType) {
+            MAIN_TYPE_HOME -> replaceFragment(R.id.base_container, FragmentProfile(), false)
+            MAIN_TYPE_TIMELINE -> replaceFragment(R.id.base_container, FragmentProfile(), false)
+            MAIN_TYPE_ADD_BOARD ->{
+                val intent = Intent(this@ActivityMain,ActivityCameraGallery::class.java)
+                intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)
+                startActivity(intent)
+            }
+            MAIN_TYPE_NOTIFICATION -> replaceFragment(R.id.base_container, FragmentProfile(), false)
+            MAIN_TYPE_PROFILE -> replaceFragment(R.id.base_container, FragmentProfile(), false)
         }
-        replaceFragment(R.id.base_container, fragment, false)
+
     }
 
     override fun onBackPressed() {

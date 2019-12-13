@@ -39,6 +39,7 @@ class ActivityCameraGallery : BaseActivity() {
     private var mGridAdapter : GridAdapter? = null
 
     private var mSelectType: String?
+    private var mViewType : String?
 
     val REQUEST_IMAGE_CAPTURE = 1004
 
@@ -46,6 +47,8 @@ class ActivityCameraGallery : BaseActivity() {
         mMultiImage = ArrayList()
         // 기본 싱글
         mSelectType = EXTRA_IMAGE_SINGLE_SELECT
+        // 기본 Achivement Post
+        mViewType = EXTRA_ACHIVEMENT_POST
     }
 
     companion object {
@@ -53,6 +56,8 @@ class ActivityCameraGallery : BaseActivity() {
         val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
         val SELECT_TYPE = "SELECT_TYPE"
         val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
+        val EXTRA_ACTION_POST = "EXTRA_ACTION_POST"
+        val EXTRA_ACHIVEMENT_POST = "EXTRA_ACHIVEMENT_POST"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,23 +101,27 @@ class ActivityCameraGallery : BaseActivity() {
             when (it) {
                 iv_check -> {
                     val array = ArrayList<File>()
-                    if (isMultiMode) {
+                    if(mViewType.equals(EXTRA_ACHIVEMENT_POST)) {
+                        if (isMultiMode) {
 
-                        for (i in 0 until mMultiImage!!.size) {
-                            array.add(File(mMultiImage[i].imagePath))
-                        }
-                        val intent = Intent()
-                        intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        setResult(Activity.RESULT_OK, intent)
-                    } else {
-                        if (mCurrentViewImage != null) {
+                            for (i in 0 until mMultiImage!!.size) {
+                                array.add(File(mMultiImage[i].imagePath))
+                            }
                             val intent = Intent()
-                            array.add(mCurrentViewImage!!)
                             intent.putExtra(REQUEST_IMAGE_FILES, array)
                             setResult(Activity.RESULT_OK, intent)
+                        } else {
+                            if (mCurrentViewImage != null) {
+                                val intent = Intent()
+                                array.add(mCurrentViewImage!!)
+                                intent.putExtra(REQUEST_IMAGE_FILES, array)
+                                setResult(Activity.RESULT_OK, intent)
+                            }
                         }
+                        finish()
+                    }else if(mViewType.equals(EXTRA_ACTION_POST)){
+                        // todo : 여기서 추가 페이지로 이동
                     }
-                    finish()
                 }
                 btn_multi_select -> {
                     isMultiMode = when (isMultiMode) {
