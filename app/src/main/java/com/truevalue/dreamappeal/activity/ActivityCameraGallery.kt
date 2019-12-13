@@ -55,6 +55,7 @@ class ActivityCameraGallery : BaseActivity() {
         val EXTRA_IMAGE_SINGLE_SELECT = "EXTRA_IMAGE_SINGLE_SELECT"
         val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
         val SELECT_TYPE = "SELECT_TYPE"
+        val VIEW_TYPE = "VIEW_TYPE"
         val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
         val EXTRA_ACTION_POST = "EXTRA_ACTION_POST"
         val EXTRA_ACHIVEMENT_POST = "EXTRA_ACHIVEMENT_POST"
@@ -76,8 +77,12 @@ class ActivityCameraGallery : BaseActivity() {
      * View Init
      */
     private fun initView() {
-        if (!intent.getStringExtra("SELECT_TYPE").isNullOrEmpty()) {
-            mSelectType = intent.getStringExtra("SELECT_TYPE")
+        if (!intent.getStringExtra(SELECT_TYPE).isNullOrEmpty()) {
+            mSelectType = intent.getStringExtra(SELECT_TYPE)
+        }
+
+        if (!intent.getStringExtra(VIEW_TYPE).isNullOrEmpty()) {
+            mViewType = intent.getStringExtra(VIEW_TYPE)
         }
 
         when (mSelectType) {
@@ -121,6 +126,7 @@ class ActivityCameraGallery : BaseActivity() {
                         finish()
                     }else if(mViewType.equals(EXTRA_ACTION_POST)){
                         // todo : 여기서 추가 페이지로 이동
+                        // todo : FragmentAddActionPost 로 넘어간다음 LevelChoice로 넘어가야 함 
                     }
                 }
                 btn_multi_select -> {
