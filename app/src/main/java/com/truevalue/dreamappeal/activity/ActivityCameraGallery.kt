@@ -126,7 +126,7 @@ class ActivityCameraGallery : BaseActivity() {
                         finish()
                     }else if(mViewType.equals(EXTRA_ACTION_POST)){
                         // todo : 여기서 추가 페이지로 이동
-                        // todo : FragmentAddActionPost 로 넘어간다음 LevelChoice로 넘어가야 함 
+                        // todo : FragmentAddActionPost 로 넘어간다음 LevelChoice로 넘어가야 함
                     }
                 }
                 btn_multi_select -> {
