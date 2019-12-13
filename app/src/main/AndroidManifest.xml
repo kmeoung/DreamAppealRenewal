@@ -95,6 +95,12 @@
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 
+        <!-- 실천 인증 추가 -->
+        <activity
+                android:name=".activity.ActivityAddActionPost"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

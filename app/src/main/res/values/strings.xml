@@ -77,6 +77,7 @@
     <string name="str_best_performance">대표 성과</string>
     <string name="str_default_best_performance">대표로 지정한 성과가\n여기에 표시됩니다</string>
     <string name="str_comment_hint">댓글 남기기</string>
+    <string name="str_input_comment">코멘트 입력..</string>
     <string name="str_commit">등록</string>
     <string name="str_ability">갖출 능력</string>
     <string name="str_opportunity">만들어갈 기회</string>
@@ -258,4 +259,5 @@
     <string name="str_delete_post_contents">게시글을 삭제하시겠습니까?</string>
 
     <string name="str_title_level_choice">게시 주제를 선택해주세요</string>
+    <string name="str_tag">태그</string>
 </resources>

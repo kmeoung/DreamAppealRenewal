@@ -9,21 +9,12 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility
-import com.amazonaws.services.s3.AmazonS3Client
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
@@ -93,6 +84,8 @@ class ActivityCameraGallery : BaseActivity() {
                 btn_multi_select.visibility = VISIBLE
             }
         }
+        iv_close.visibility = VISIBLE
+        iv_back_black.visibility = GONE
     }
 
     /**
@@ -132,8 +125,10 @@ class ActivityCameraGallery : BaseActivity() {
                     mGridAdapter!!.notifyDataSetChanged()
 
                 }
+                iv_close->{ finish() }
             }
         }
+        iv_close.setOnClickListener(listener)
         iv_check.setOnClickListener(listener)
         btn_multi_select.setOnClickListener(listener)
     }
@@ -153,7 +148,7 @@ class ActivityCameraGallery : BaseActivity() {
         for (i in bucketNameList.indices) {
             val title = bucketNameList[i]
             val id = bucketIdList[i]
-            mBucked!!.add(BeanGalleryInfo(title, id, null,false))
+            mBucked!!.add(BeanGalleryInfo(title, id, null,false,-1))
             strBucketNameList.add(title)
         }
 
@@ -170,8 +165,8 @@ class ActivityCameraGallery : BaseActivity() {
 
         for (i in beanImageInfoList.indices) {
             val (bucketName, bucketId, imagePath) = beanImageInfoList[i]
-            mOldPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false))
-            mItemPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false))
+            mOldPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false,-1))
+            mItemPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false,-1))
 
             if (!firstImage) {
                 Glide.with(applicationContext!!)
@@ -332,31 +327,37 @@ class ActivityCameraGallery : BaseActivity() {
 
             val imageView = convertView!!.findViewById<ImageView>(R.id.iv_image)
             val multiCheck = convertView!!.findViewById<ImageView>(R.id.iv_multi)
+            val tvMulti = convertView!!.findViewById<TextView>(R.id.tv_multi)
+            val rlMulti = convertView!!.findViewById<RelativeLayout>(R.id.rl_multi)
 
             if (isMultiMode) {
-                multiCheck.visibility = VISIBLE
-
+                rlMulti.visibility = VISIBLE
                 multiCheck.isSelected = bean.imageCheck
-
+                if(bean.imageCheck){
+                    tvMulti.text = (mMultiImage!!.indexOf(bean) + 1).toString()
+                }else{
+                    tvMulti.text = ""
+                }
             }else{
-                multiCheck.visibility = GONE
+                rlMulti.visibility = GONE
+                pictureList[position].imageCheck = false
             }
 
-            multiCheck.setOnClickListener(View.OnClickListener {
+            rlMulti.setOnClickListener(View.OnClickListener {
                 // todo : 멀티 버튼 테스트
                 if(bean.imageCheck){
                     pictureList[position].imageCheck = false
                     mMultiImage!!.remove(bean)
-
+//                    pictureList[position].imageSelectedIdx = -1
                 }else {
-                    if (mMultiImage!!.size < 11) {
+                    if (mMultiImage!!.size < 10) {
                         pictureList[position].imageCheck = true
                         mMultiImage!!.add(bean)
+//                        pictureList[position].imageSelectedIdx = mMultiImage!!.indexOf(bean) + 1
                     }
                 }
                 mGridAdapter!!.notifyDataSetChanged()
             })
-
 
             //onCreate에서 정해준 크기로 이미지를 붙인다.
             Glide.with(mContext)

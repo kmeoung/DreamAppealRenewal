@@ -4,7 +4,6 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -22,12 +21,10 @@ import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_add_achivement.*
-import kotlinx.android.synthetic.main.fragment_add_action_post.*
-import kotlinx.android.synthetic.main.fragment_add_action_post.btn_edit
-import kotlinx.android.synthetic.main.fragment_add_action_post.iv_add_img
+import kotlinx.android.synthetic.main.fragment_add_achivement.btn_edit
+import kotlinx.android.synthetic.main.fragment_add_achivement.iv_add_img
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.File

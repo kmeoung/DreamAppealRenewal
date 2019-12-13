@@ -1,86 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/search_box"
+        android:orientation="vertical">
 
     <include
-        layout="@layout/action_bar_other"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:id="@+id/ll_btns">
-
-                <ImageView
-                    android:id="@+id/iv_add_img"
-                    android:layout_width="27dp"
-                    android:layout_height="27dp"
-                    android:layout_marginLeft="14dp"
-                    android:src="@drawable/ic_camera" />
-
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/btn_edit"
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/bg_round_rectangle_blue_2"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:text="삭제"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_action_post_img"
-                android:layout_width="match_parent"
-                android:layout_height="185dp" />
+                    android:id="@+id/rv_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="138dp" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/text_gray" />
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/pale_grey" />
+
 
             <EditText
-                android:id="@+id/et_input_comment"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:minHeight="200dp"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:gravity="left|top"
-                android:hint="코멘트 입력.."
-                android:padding="12dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/warm_grey"
-                android:textSize="16sp" />
+                    android:id="@+id/et_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="202dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:gravity="top|left"
+                    android:hint="@string/str_input_comment"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/brown_grey"
+                    android:textSize="14.7sp" />
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/pale_grey" />
+
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginTop="8.3dp"
+                    android:background="@color/pale_grey" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32.7dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="32.7dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_tag" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_tag"
+                        android:textColor="@color/black"
+                        android:textSize="14.7sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/pale_grey" />
+
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/pale_grey"
+                    android:layout_marginTop="2dp"/>
+
+
+            <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="32.7dp"
+                    android:background="@color/white">
+                <com.google.android.material.chip.ChipGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:singleLine="true">
+
+                    <!-- Chips can be declared here, or added dynamically. -->
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/pale_grey" />
+
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </LinearLayout>
