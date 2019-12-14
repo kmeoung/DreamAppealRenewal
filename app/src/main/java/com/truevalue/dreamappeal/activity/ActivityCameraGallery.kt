@@ -43,6 +43,8 @@ class ActivityCameraGallery : BaseActivity() {
 
     val REQUEST_IMAGE_CAPTURE = 1004
 
+    val REQUEST_ADD_ACTION_POST = 1005
+
     init {
         mMultiImage = ArrayList()
         // 기본 싱글
@@ -125,8 +127,13 @@ class ActivityCameraGallery : BaseActivity() {
                         }
                         finish()
                     }else if(mViewType.equals(EXTRA_ACTION_POST)){
-                        // todo : 여기서 추가 페이지로 이동
-                        // todo : FragmentAddActionPost 로 넘어간다음 LevelChoice로 넘어가야 함
+                        // Action Post 이미지 추가로 이동
+                        for (i in 0 until mMultiImage!!.size) {
+                            array.add(File(mMultiImage[i].imagePath))
+                        }
+                        val intent = Intent(this@ActivityCameraGallery,ActivityAddActionPost::class.java)
+                        intent.putExtra(REQUEST_IMAGE_FILES, array)
+                        startActivityForResult(intent,REQUEST_ADD_ACTION_POST)
                     }
                 }
                 btn_multi_select -> {
@@ -302,6 +309,13 @@ class ActivityCameraGallery : BaseActivity() {
             setResult(Activity.RESULT_OK, intent)
             finish()
 
+        }else{
+            if(resultCode == Activity.RESULT_OK){
+                if(requestCode == REQUEST_ADD_ACTION_POST){
+                    // todo : 여기에는 확인이 필요합니다.
+                    finish()
+                }
+            }
         }
     }
 

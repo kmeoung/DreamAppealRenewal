@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_level_choice.*
 import okhttp3.Call
 import org.json.JSONObject
+import java.io.File
 
 class FragmentLevelChoice : BaseFragment() {
 
@@ -37,6 +38,15 @@ class FragmentLevelChoice : BaseFragment() {
 
     private var mCategoryType = TYPE_IDEA
 
+    private var mImages: ArrayList<File>? = null
+
+    companion object {
+        fun newInstance(images: ArrayList<File>): FragmentLevelChoice {
+            val fragment = FragmentLevelChoice()
+            fragment.mImages = images
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

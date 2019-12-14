@@ -263,7 +263,7 @@ class FragmentObjectStep : BaseFragment() {
         val glm = GridLayoutManager(context, 3, RecyclerView.VERTICAL, false)
         glm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(i: Int): Int {
-                return if (mAdapter!!.get(i) is BeanObjectStepHeader
+                return if (mAdapter!!.get(i) is BeanActionPostHeader
                     || mAdapter!!.get(i) is String
                 )
                     3
@@ -294,7 +294,7 @@ class FragmentObjectStep : BaseFragment() {
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mAdapter!!.get(i) is BeanObjectStepHeader
+            if (mAdapter!!.get(i) is BeanActionPostHeader
                 || mAdapter!!.get(i) is String
             ) return TYPE_HEADER
             return TYPE_ITEM
