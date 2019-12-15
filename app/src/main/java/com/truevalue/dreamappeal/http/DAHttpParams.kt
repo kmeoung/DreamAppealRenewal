@@ -36,9 +36,11 @@ class DAHttpParams {
             var i = 0
             for (key: String in map.keys) {
                 urlParam = when (i) {
-                    0 -> urlParam + "?" + key + "=" + map[key]
-                    else -> {
+                    0 -> {
                         i++
+                        urlParam + "?" + key + "=" + map[key]
+                    }
+                    else -> {
                         urlParam + "&" + key + "=" + map[key]
                     }
                 }
