@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityCameraGallery
+import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityFollow
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
@@ -27,7 +28,6 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_dream_present.*
 import kotlinx.android.synthetic.main.fragment_dream_present.ll_cheering
 import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment
@@ -308,7 +308,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
                     val intent = Intent(context, ActivityCameraGallery::class.java)
-                    intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_SINGLE_SELECT)
+                    intent.putExtra(
+                        ActivityCameraGallery.SELECT_TYPE,
+                        ActivityCameraGallery.EXTRA_IMAGE_SINGLE_SELECT
+                    )
                     startActivityForResult(intent, REQUEST_CODE_PICK_PROFILE_IMAGE)
                 }
                 ll_dream_title,
@@ -344,8 +347,39 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_cheering -> {
 
                 }
+                iv_comment->{
+                    if (context != null) {
+                        val intent = Intent(context!!, ActivityComment::class.java)
+                        // todo : 현재 사용자가 보고있는 페이지의 idx를 보내야 합니다.
+                        intent.putExtra(
+                            ActivityComment.EXTRA_INDEX,
+                            Comm_Prefs.getUserProfileIndex()
+                        )
+                        intent.putExtra(
+                            ActivityComment.EXTRA_VIEW_TYPE,
+                            ActivityComment.EXTRA_TYPE_PROFILE
+                        )
+                        intent.putExtra(
+                            ActivityComment.EXTRA_OFF_KEYBOARD,
+                            "OFF"
+                        )
+                        startActivity(intent)
+                    }
+                }
                 ll_comment, ll_comment_detail -> {
-
+                    if (context != null) {
+                        val intent = Intent(context!!, ActivityComment::class.java)
+                        // todo : 현재 사용자가 보고있는 페이지의 idx를 보내야 합니다.
+                        intent.putExtra(
+                            ActivityComment.EXTRA_INDEX,
+                            Comm_Prefs.getUserProfileIndex()
+                        )
+                        intent.putExtra(
+                            ActivityComment.EXTRA_VIEW_TYPE,
+                            ActivityComment.EXTRA_TYPE_PROFILE
+                        )
+                        startActivity(intent)
+                    }
                 }
                 ll_share -> {
 
@@ -365,6 +399,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         btn_dream_description_more.setOnClickListener(listener)
         btn_merit_and_motive_more.setOnClickListener(listener)
         ll_cheering.setOnClickListener(listener)
+        iv_comment.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
         ll_comment_detail.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
@@ -471,7 +506,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                     state: TransferState,
                                     imageBucketAddress: String
                                 ) {
-                                    updateProfileImage(idx,type,imageBucketAddress)
+                                    updateProfileImage(idx, type, imageBucketAddress)
                                 }
 
                                 override fun onError(id: Int, ex: java.lang.Exception?) {
@@ -494,7 +529,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * Http
      * Profile Image Update
      */
-    private fun updateProfileImage(idx : Int,type : Int,url: String) {
+    private fun updateProfileImage(idx: Int, type: Int, url: String) {
         val list = ArrayList<String>()
         list.add(url)
         DAClient.uploadsImage(idx, type, list, object : DAHttpCallback {

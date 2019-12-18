@@ -60,4 +60,7 @@
     <color name="greyish_two">#adadad</color>
     <color name="pale_grey">#dfdde2</color>
     <color name="search_box">#e9eef0</color>
+    <color name="pale_grey_two">#ebf3f9</color>
+    <color name="dark_indigo">#0f2b5b</color>
+    <color name="warm_grey_two">#999999</color>
 </resources>

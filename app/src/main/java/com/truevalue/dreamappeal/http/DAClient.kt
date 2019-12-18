@@ -1419,7 +1419,7 @@ object DAClient {
      * GET
      * 실천목표 가져오기
      */
-    fun getActionPostCategoty(callback: DAHttpCallback){
+    fun getActionPostCategoty(callback: DAHttpCallback) {
         BaseOkhttpClient.request(
             HttpType.GET,
             Comm_Param.URL_ACTION_POSTS_CATEGORY,
@@ -1433,16 +1433,474 @@ object DAClient {
      * GET
      * 실천목표 세부단계 가져오기
      */
-    fun getActionPostCategotyDetail(object_idx : Int,
-                              callback: DAHttpCallback){
+    fun getActionPostCategotyDetail(
+        object_idx: Int,
+        callback: DAHttpCallback
+    ) {
 
-        val url = Comm_Param.URL_ACTION_POSTS_CATEGORY_OBJECT_IDX.replace(Comm_Param.OBJECT_INDEX,object_idx.toString())
+        val url = Comm_Param.URL_ACTION_POSTS_CATEGORY_OBJECT_IDX.replace(
+            Comm_Param.OBJECT_INDEX,
+            object_idx.toString()
+        )
 
         BaseOkhttpClient.request(
             HttpType.GET,
             url,
             getHttpHeader(),
             null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 내 꿈 소개 댓글 등록
+     * parent_idx > 0 일경우 리플
+     */
+    fun addProfileComment(
+        dst_profile_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_PRESENT_COMMENTS_PROFILE_IDX.replace(
+            Comm_Param.DST_RPOFILE_INDEX,
+            dst_profile_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("writer_idx", writer_idx)
+        if (parent_idx > 0) {
+            params.put("parent_idx", parent_idx)
+        }
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 내 꿈 소개 댓글 조회
+     */
+    fun getProfileComment(
+        dst_profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_PRESENT_COMMENTS_PROFILE_IDX.replace(
+            Comm_Param.DST_RPOFILE_INDEX,
+            dst_profile_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 내 꿈 소개 댓글 수정
+     */
+    fun updateProfileComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_PRESENT_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 내 꿈 소개 댓글 수정
+     */
+    fun deleteProfileComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_PRESENT_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 발전계획 댓글 등록
+     * parent_idx > 0 일경우 리플
+     */
+    fun addBlueprintComment(
+        dst_profile_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BLUEPRINT_COMMENTS_PROFILE_IDX.replace(
+            Comm_Param.DST_RPOFILE_INDEX,
+            dst_profile_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("writer_idx", writer_idx)
+        if (parent_idx > 0) {
+            params.put("parent_idx", parent_idx)
+        }
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 발전계획 댓글 조회
+     */
+    fun getBlueprintComment(
+        dst_profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BLUEPRINT_COMMENTS_PROFILE_IDX.replace(
+            Comm_Param.DST_RPOFILE_INDEX,
+            dst_profile_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 발전계획 댓글 수정
+     */
+    fun updateBlueprintComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BLUEPRINT_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 발전계획 댓글 수정
+     */
+    fun deleteBlueprintComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BLUEPRINT_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+
+    /**
+     * POST
+     * 실현성과 댓글 등록
+     * parent_idx > 0 일경우 리플
+     */
+    fun addAchievementPostComment(
+        post_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("writer_idx", writer_idx)
+        if (parent_idx > 0) {
+            params.put("parent_idx", parent_idx)
+        }
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 실현성과 댓글 조회
+     */
+    fun getAchievementPostComment(
+        post_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 실현성과 댓글 수정
+     */
+    fun updateAchievementPostComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 실현성과 댓글 수정
+     */
+    fun deleteAchievementPostComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 실현성과 댓글 등록
+     * parent_idx > 0 일경우 리플
+     */
+    fun addActionPostComment(
+        post_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACTION_COMMENTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("writer_idx", writer_idx)
+        if (parent_idx > 0) {
+            params.put("parent_idx", parent_idx)
+        }
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 실현성과 댓글 조회
+     */
+    fun getActionPostComment(
+        post_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACTION_COMMENTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 실현성과 댓글 수정
+     */
+    fun updateActionPostComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACTION_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 실현성과 댓글 수정
+     */
+    fun deleteActionPostComment(
+        comment_idx: Int,
+        my_profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACTION_COMMENTS_IDX.replace(
+            Comm_Param.COMMENT_INDEX,
+            comment_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        params.put("my_profile_idx", my_profile_idx)
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            params,
             callback
         )
     }

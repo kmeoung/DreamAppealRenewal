@@ -97,6 +97,8 @@
     <string name="str_edit_object_step_detail">실천목표에 세부단계 수정</string>
 
 
+    <string name="str_add_reply">답글 달기</string>
+
     <string name="str_object">실천목표</string>
     <string name="str_login">로그인</string>
     <string name="str_register">회원가입</string>
@@ -257,6 +259,9 @@
     <string name="str_count">개</string>
     <string name="str_delete_post_title">게시글 삭제</string>
     <string name="str_delete_post_contents">게시글을 삭제하시겠습니까?</string>
+
+    <string name="str_delete_comment_title">댓글 삭제</string>
+    <string name="str_delete_comment_contents">댓글을 삭제하시겠습니까?</string>
 
     <string name="str_title_level_choice">게시 주제를 선택해주세요</string>
     <string name="str_tag">태그</string>
