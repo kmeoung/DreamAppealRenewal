@@ -103,21 +103,23 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/ll_bg_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:layout_marginTop="1px"
+            android:background="@color/yellow_orange"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical">
+            android:paddingBottom="10dp">
 
         <LinearLayout
                 android:id="@+id/ll_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
 
             <ImageView
@@ -128,7 +130,7 @@
                     android:scaleType="fitXY"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
-                    android:src="@drawable/ic_add_yellow" />
+                    android:src="@drawable/ic_add_white" />
 
             <TextView
                     android:id="@+id/tv_add"
@@ -136,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="@string/str_add_ability"
-                    android:textColor="@color/yellow_orange"
+                    android:textColor="@color/white"
                     android:textSize="14.7sp" />
 
         </LinearLayout>
@@ -148,5 +150,7 @@
             android:id="@+id/rv_ano"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_marginTop="1px"
+            android:layout_weight="1"
+            android:background="@color/search_box" />
 </LinearLayout>

@@ -23,7 +23,6 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.BeanAchievementPost
 import com.truevalue.dreamappeal.bean.BeanCommentDetail
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -94,7 +93,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(et_comment, 0)
             bottom_comment.visibility = VISIBLE
-        }else{
+        } else {
             bottom_comment.visibility = GONE
         }
 
@@ -144,15 +143,21 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     /**
      * View Click Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                iv_back_black->finish()
-                btn_commit_comment->if(btn_commit_comment.isSelected) if(mIsEdit) updateComment(mParentIdx) else addComment(mParentIdx)
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_back_black -> finish()
+                btn_commit_comment -> if (btn_commit_comment.isSelected) if (mIsEdit) updateComment(
+                    mParentIdx
+                ) else addComment(mParentIdx)
+                iv_writer_reply_close -> {
+                    initComment()
+                }
             }
         }
         iv_back_black.setOnClickListener(listener)
         btn_commit_comment.setOnClickListener(listener)
+        iv_writer_reply_close.setOnClickListener(listener)
     }
 
     /**
@@ -175,7 +180,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
@@ -204,7 +210,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
@@ -233,7 +240,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
@@ -262,7 +270,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
@@ -270,11 +279,11 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             }
         })
     }
-    
+
     /**
      * 댓글 추가
      */
-    private fun addComment(parent_idx : Int){
+    private fun addComment(parent_idx: Int) {
         when (mViewType) {
             EXTRA_TYPE_PROFILE -> addPresentComment(parent_idx)
             EXTRA_TYPE_BLUEPRINT -> addBlueprintComment(parent_idx)
@@ -287,55 +296,79 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 내 꿈 소개 댓글 추가
      */
-    private fun addPresentComment(parent_idx : Int){
+    private fun addPresentComment(parent_idx: Int) {
         val dst_profile_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.addProfileComment(dst_profile_idx,writer_idx,parent_idx,contents,updateCommentListener)
+        DAClient.addProfileComment(
+            dst_profile_idx,
+            writer_idx,
+            parent_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * Http
      * 발전계획 댓글 추가
      */
-    private fun addBlueprintComment(parent_idx : Int){
+    private fun addBlueprintComment(parent_idx: Int) {
         val dst_profile_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.addBlueprintComment(dst_profile_idx,writer_idx,parent_idx,contents,updateCommentListener)
+        DAClient.addBlueprintComment(
+            dst_profile_idx,
+            writer_idx,
+            parent_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * Http
      * 실현성과 댓글 추가
      */
-    private fun addAchievementPostComment(parent_idx : Int){
+    private fun addAchievementPostComment(parent_idx: Int) {
         val post_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.addAchievementPostComment(post_idx,writer_idx,parent_idx,contents,updateCommentListener)
+        DAClient.addAchievementPostComment(
+            post_idx,
+            writer_idx,
+            parent_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * Http
      * 실천인증 댓글 추가
      */
-    private fun addActionPostComment(parent_idx : Int){
+    private fun addActionPostComment(parent_idx: Int) {
         val post_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.addActionPostComment(post_idx,writer_idx,parent_idx,contents,updateCommentListener)
+        DAClient.addActionPostComment(
+            post_idx,
+            writer_idx,
+            parent_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * 댓글 수정
      */
-    private fun updateComment(parent_idx : Int){
+    private fun updateComment(comment_idx: Int) {
         when (mViewType) {
-            EXTRA_TYPE_PROFILE -> updatePresentComment(parent_idx)
-            EXTRA_TYPE_BLUEPRINT -> updateBlueprintComment(parent_idx)
-            EXTRA_TYPE_ACHIEVEMENT_POST -> updateAchievementPostComment(parent_idx)
-            EXTRA_TYPE_ACTION_POST -> updateActionPostComment(parent_idx)
+            EXTRA_TYPE_PROFILE -> updatePresentComment(comment_idx)
+            EXTRA_TYPE_BLUEPRINT -> updateBlueprintComment(comment_idx)
+            EXTRA_TYPE_ACHIEVEMENT_POST -> updateAchievementPostComment(comment_idx)
+            EXTRA_TYPE_ACTION_POST -> updateActionPostComment(comment_idx)
         }
     }
 
@@ -343,46 +376,61 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 내 꿈 소개 댓글 수정
      */
-    private fun updatePresentComment(comment_idx : Int){
+    private fun updatePresentComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.updateProfileComment(comment_idx,my_profile_idx,contents,updateCommentListener)
+        DAClient.updateProfileComment(comment_idx, my_profile_idx, contents, updateCommentListener)
     }
 
     /**
      * Http
      * 발전계획 댓글 수정
      */
-    private fun updateBlueprintComment(comment_idx : Int){
+    private fun updateBlueprintComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.updateBlueprintComment(comment_idx,my_profile_idx,contents,updateCommentListener)
+        DAClient.updateBlueprintComment(
+            comment_idx,
+            my_profile_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * Http
      * 실현성과 댓글 수정
      */
-    private fun updateAchievementPostComment(comment_idx : Int){
+    private fun updateAchievementPostComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.updateAchievementPostComment(comment_idx,my_profile_idx,contents,updateCommentListener)
+        DAClient.updateAchievementPostComment(
+            comment_idx,
+            my_profile_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * Http
      * 실천인증 댓글 수정
      */
-    private fun updateActionPostComment(comment_idx : Int){
+    private fun updateActionPostComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.updateActionPostComment(comment_idx,my_profile_idx,contents,updateCommentListener)
+        DAClient.updateActionPostComment(
+            comment_idx,
+            my_profile_idx,
+            contents,
+            updateCommentListener
+        )
     }
 
     /**
      * 댓글 삭제
      */
-    private fun deleteComment(comment_idx : Int){
+    private fun deleteComment(comment_idx: Int) {
         when (mViewType) {
             EXTRA_TYPE_PROFILE -> deletePresentComment(comment_idx)
             EXTRA_TYPE_BLUEPRINT -> deleteBlueprintComment(comment_idx)
@@ -395,36 +443,36 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 내 꿈 소개 댓글 삭제
      */
-    private fun deletePresentComment(comment_idx : Int){
+    private fun deletePresentComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteProfileComment(comment_idx,my_profile_idx,updateCommentListener)
+        DAClient.deleteProfileComment(comment_idx, my_profile_idx, updateCommentListener)
     }
 
     /**
      * Http
      * 발전계획 댓글 삭제
      */
-    private fun deleteBlueprintComment(comment_idx : Int){
+    private fun deleteBlueprintComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteBlueprintComment(comment_idx,my_profile_idx,updateCommentListener)
+        DAClient.deleteBlueprintComment(comment_idx, my_profile_idx, updateCommentListener)
     }
 
     /**
      * Http
      * 실현성과 댓글 삭제
      */
-    private fun deleteAchievementPostComment(comment_idx : Int){
+    private fun deleteAchievementPostComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteAchievementPostComment(comment_idx,my_profile_idx,updateCommentListener)
+        DAClient.deleteAchievementPostComment(comment_idx, my_profile_idx, updateCommentListener)
     }
 
     /**
      * Http
      * 실천인증 댓글 삭제
      */
-    private fun deleteActionPostComment(comment_idx : Int){
+    private fun deleteActionPostComment(comment_idx: Int) {
         val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteActionPostComment(comment_idx,my_profile_idx,updateCommentListener)
+        DAClient.deleteActionPostComment(comment_idx, my_profile_idx, updateCommentListener)
     }
 
 
@@ -478,7 +526,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     /**
      * 댓글 변화되었을때 리스너
      */
-    private val updateCommentListener = object : DAHttpCallback{
+    private val updateCommentListener = object : DAHttpCallback {
         override fun onResponse(
             call: Call,
             serverCode: Int,
@@ -486,8 +534,11 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             code: String,
             message: String
         ) {
-            Toast.makeText(this@ActivityComment, message, Toast.LENGTH_SHORT).show()
-            if(code == DAClient.SUCCESS){
+            Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                .show()
+            if (code == DAClient.SUCCESS) {
+                et_comment.setText("")
+                initComment()
                 initData(true)
             }
         }
@@ -496,7 +547,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     /**
      * Show PopupMenu
      */
-    private fun showPopupMenu(ivMore : View, bean : BeanCommentDetail) {
+    private fun showPopupMenu(ivMore: View, bean: BeanCommentDetail) {
         val popupMenu = PopupMenu(this, ivMore)
         popupMenu.menu.add(getString(R.string.str_edit))
         popupMenu.menu.add(getString(R.string.str_delete))
@@ -504,7 +555,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
                 getString(R.string.str_edit) -> {
-                    // todo : 수정 기능 추가 필요
+                    setUpdateComment(bean)
                 }
                 getString(R.string.str_delete) -> {
                     val builder =
@@ -545,7 +596,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            if(mAdapter != null) {
+            if (mAdapter != null) {
                 val bean = mAdapter!!.get(i) as BeanCommentDetail
                 val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
                 val tvComment = h.getItemView<TextView>(R.id.tv_comment)
@@ -572,14 +623,14 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     .into(ivProfile)
 
                 tvTime.text = Utils.convertFromDate(bean.register_date)
-                tvLike.text = String.format("%d개",bean.like_count)
+                tvLike.text = String.format("%d개", bean.like_count)
 
                 tvAddReply.setOnClickListener(View.OnClickListener {
-                    // todo : 댓글 설정 필요
+                    setReplyComment(bean)
                 })
 
                 h.itemView.setOnLongClickListener(View.OnLongClickListener {
-                    showPopupMenu(tvComment,bean)
+                    showPopupMenu(tvComment, bean)
                     true
                 })
             }
@@ -593,6 +644,37 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             }
             return 0
         }
+    }
+
+    /**
+     * Comment Reply 설정
+     */
+    private fun setReplyComment(bean: BeanCommentDetail) {
+        ll_writer.visibility = VISIBLE
+        tv_writer.text = bean.name
+        val idx = if (bean.parent_idx > 0) bean.parent_idx else bean.idx
+        mParentIdx = idx
+    }
+
+    /**
+     * Comment Update 설정
+     */
+    private fun setUpdateComment(bean: BeanCommentDetail) {
+        ll_writer.visibility = VISIBLE
+        tv_writer.text = bean.name
+        et_comment.setText(bean.content)
+        mIsEdit = true
+        mParentIdx = bean.idx
+    }
+
+    /**
+     * Comment 초기화
+     */
+    private fun initComment() {
+        mParentIdx = -1
+        tv_writer.text = ""
+        mIsEdit = false
+        ll_writer.visibility = GONE
     }
 
     override fun onRefresh() {

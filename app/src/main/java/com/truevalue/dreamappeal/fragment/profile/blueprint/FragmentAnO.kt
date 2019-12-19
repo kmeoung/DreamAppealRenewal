@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -109,14 +110,8 @@ class FragmentAnO : BaseFragment() {
                         R.color.yellow_orange
                     )
                 )
-                iv_add.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_add_yellow
-                    )
-                )
                 tv_add.text = getString(R.string.str_add_ability)
-                tv_add.setTextColor(ContextCompat.getColor(context!!,R.color.yellow_orange))
+                ll_bg_add.setBackgroundColor(ContextCompat.getColor(context!!,R.color.yellow_orange))
 
                 iv_opportunity.isSelected = false
                 tv_opportunity.isSelected = false
@@ -137,14 +132,8 @@ class FragmentAnO : BaseFragment() {
                         R.color.light_peach
                     )
                 )
-                iv_add.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context!!,
-                        R.drawable.ic_add_orange
-                    )
-                )
                 tv_add.text = getString(R.string.str_add_opportunity)
-                tv_add.setTextColor(ContextCompat.getColor(context!!,R.color.faded_orange))
+                ll_bg_add.setBackgroundColor(ContextCompat.getColor(context!!,R.color.faded_orange))
 
                 iv_opportunity.isSelected = true
                 tv_opportunity.isSelected = true
@@ -312,9 +301,6 @@ class FragmentAnO : BaseFragment() {
         }
     }
 
-    private val LISTITEM_VIEW_TYPE_COLOR = 0
-    private val LISTITEM_VIEW_TYPE_NONE_COLOR = 1
-
     /**
      * RecyclerView Ability Adapter
      */
@@ -367,36 +353,17 @@ class FragmentAnO : BaseFragment() {
             val bean = mAdapter!!.get(i) as BeanBlueprintAnO
             val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
-
-            if (mViewType == VIEW_TYPE_ABILITY) {
-                if (LISTITEM_VIEW_TYPE_NONE_COLOR == getItemViewType(i)) {
-                    llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-                } else {
-                    llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.off_white))
-                }
-            } else if (mViewType == VIEW_TYPE_OPPORTUNITY) {
-                if (LISTITEM_VIEW_TYPE_NONE_COLOR == getItemViewType(i)) {
-                    llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-                } else {
-                    llItem.setBackgroundColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.very_light_pink
-                        )
-                    )
-                }
-            }
+            val ivMore = h.getItemView<ImageView>(R.id.iv_more)
+            llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
 
             tvContents.text = bean.contents
-            tvContents.setOnLongClickListener(View.OnLongClickListener {
-                showPopupMenu(tvContents, bean, mViewType!!)
-                false
+            ivMore.setOnClickListener(View.OnClickListener {
+                showPopupMenu(ivMore, bean, mViewType!!)
             })
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (i % 2 == 0) return LISTITEM_VIEW_TYPE_COLOR
-            return LISTITEM_VIEW_TYPE_NONE_COLOR
+            return 0
         }
     }
 }

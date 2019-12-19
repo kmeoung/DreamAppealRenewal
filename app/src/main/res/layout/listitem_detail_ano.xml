@@ -3,11 +3,14 @@
         android:id="@+id/ll_item"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:layout_marginBottom="1px"
+        android:gravity="center">
 
     <TextView
             android:id="@+id/tv_contents"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="left|center"
             android:paddingLeft="13.7dp"
@@ -18,5 +21,14 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:lineSpacingExtra="3sp" />
+
+    <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/more_btn"
+            android:layout_marginRight="10dp"
+            android:scaleY="0.5"
+            android:scaleX="0.5"
+            android:id="@+id/iv_more"/>
 
 </LinearLayout>

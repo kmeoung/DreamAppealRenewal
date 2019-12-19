@@ -265,4 +265,8 @@
 
     <string name="str_title_level_choice">게시 주제를 선택해주세요</string>
     <string name="str_tag">태그</string>
+
+    <string name="str_appealer">어필러</string>
+    <string name="str_board">게시물</string>
+    <string name="str_hint_search">검색</string>
 </resources>

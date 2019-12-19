@@ -1,135 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/v_status"/>
+            android:id="@+id/v_status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
     <!--검색 바-->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:paddingTop="12dp"
-        android:paddingRight="8dp"
-        android:background="@color/white"
-        android:id="@+id/ll_search">
+            android:id="@+id/ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="12dp"
+            android:paddingRight="8dp">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_search"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_search_gray" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_search_gray" />
 
             <EditText
-                android:id="@+id/et_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:lines="1"
-                android:paddingLeft="5dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:paddingLeft="5dp"
+                    android:hint="@string/str_hint_search"
+                    android:textColorHint="@color/cool_grey"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="14.7sp" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="50dp"
-            android:layout_height="32dp"
-            android:background="@null"
-            android:fontFamily="@font/nanum_square_round_r"
-            android:text="취소"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+                android:id="@+id/btn_cancel"
+                android:layout_width="40dp"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:text="취소"
+                android:textColor="@color/black"
+                android:textSize="14.7sp" />
 
     </LinearLayout>
     <!--검색 바-->
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="14dp"
-        android:paddingBottom="11dp">
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="5dp">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/bmjua"
-            android:gravity="center"
-            android:text="인기"
-            android:textColor="@color/gray"
-            android:textSize="21sp"
-            android:id="@+id/tv_popular"/>
+                android:id="@+id/tv_appealer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="@string/str_appealer"
+                android:textColor="@color/color_search"
+                android:textSize="17.7sp" />
 
         <TextView
-            android:id="@+id/tv_appealer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/bmjua"
-            android:gravity="center"
-            android:text="어필러"
-            android:textColor="@color/black"
-            android:textSize="21sp" />
-
-
-        <TextView
-            android:id="@+id/tv_performance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/bmjua"
-            android:gravity="center"
-            android:text="실천인증"
-            android:textColor="@color/gray"
-            android:textSize="21sp" />
-
+                android:id="@+id/tv_board"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="@string/str_board"
+                android:textColor="@color/color_search"
+                android:textSize="17.7sp" />
 
         <TextView
-            android:id="@+id/tv_tag"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/bmjua"
-            android:gravity="center"
-            android:text="태그"
-            android:textColor="@color/gray"
-            android:textSize="21sp" />
-
+                android:id="@+id/tv_tag"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/bmjua"
+                android:gravity="center"
+                android:text="@string/str_tag"
+                android:textColor="@color/color_search"
+                android:textSize="17.7sp"  />
 
     </LinearLayout>
-    
+
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#f2f2f2"/>
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/search_box" />
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/search_container"/>
+            android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
 
 </LinearLayout>

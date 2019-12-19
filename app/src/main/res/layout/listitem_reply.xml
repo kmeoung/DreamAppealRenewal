@@ -93,7 +93,7 @@
                 android:layout_height="17dp"
                 android:layout_marginRight="7dp"
                 android:contentDescription="@string/str_content_description"
-                android:src="@drawable/ic_flame" />
+                android:src="@drawable/flame_clicked" />
 
         <TextView
                 android:id="@+id/tv_like"

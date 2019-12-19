@@ -237,7 +237,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }
@@ -261,7 +261,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }
@@ -286,7 +286,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }
@@ -310,7 +310,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }
@@ -334,7 +334,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }
@@ -364,7 +364,7 @@ class FragmentAddPage : BaseFragment() {
                             .show()
 
                         if (code == DAClient.SUCCESS) {
-                            activity!!.onBackPressed()
+                            (activity as ActivityMain).onBackPressed(false)
                         }
                     }
                 }
@@ -389,7 +389,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }
@@ -414,7 +414,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        activity!!.onBackPressed()
+                        (activity as ActivityMain).onBackPressed(false)
                     }
                 }
             }

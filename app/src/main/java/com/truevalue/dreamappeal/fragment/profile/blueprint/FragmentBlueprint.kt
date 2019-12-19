@@ -1,7 +1,11 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -17,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
@@ -114,6 +119,15 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     addToBack = true,
                     isMainRefresh = true
                 )
+                rl_comment->{
+                    val intent = Intent(context!!,ActivityComment::class.java)
+                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_BLUEPRINT)
+                    intent.putExtra(ActivityComment.EXTRA_INDEX,Comm_Prefs.getUserProfileIndex()) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
+                    startActivity(intent)
+                }
+                btn_commit_comment->{
+                    if(btn_commit_comment.isSelected) addBlueprintComment()
+                }
             }
         }
 
@@ -122,7 +136,42 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         iv_add_object.setOnClickListener(listener)
         ll_ability.setOnClickListener(listener)
         ll_opportunity.setOnClickListener(listener)
+        rl_comment.setOnClickListener(listener)
+        btn_commit_comment.setOnClickListener(listener)
 
+    }
+
+    /**
+     * Http
+     * 발전계획 댓글 추가
+     */
+    private fun addBlueprintComment() {
+        val dst_profile_idx = Comm_Prefs.getUserProfileIndex() // todo : 현재 보고있는 profile을 넣어야 함
+        val writer_idx = Comm_Prefs.getUserProfileIndex()
+        val contents = et_comment.text.toString()
+        DAClient.addBlueprintComment(
+            dst_profile_idx,
+            writer_idx,
+            0,
+            contents,
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
+                    if (code == DAClient.SUCCESS) {
+                        et_comment.setText("")
+                        // todo : 여기서 혹시 더 필요한게 있으면 추가바람
+                    }
+                }
+            }
+
+        )
     }
 
     /**
@@ -130,6 +179,34 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun initView() {
         Utils.setSwipeRefreshLayout(srl_refresh, this)
+        // 댓글 설정
+        et_comment.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                charSequence: CharSequence,
+                i: Int,
+                i1: Int,
+                i2: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                charSequence: CharSequence,
+                i: Int,
+                i1: Int,
+                i2: Int
+            ) {
+                if(!et_comment.text.toString().isNullOrEmpty()){
+                    btn_commit_comment.visibility = VISIBLE
+                    rl_comment.visibility = GONE
+                }else{
+                    btn_commit_comment.visibility = GONE
+                    rl_comment.visibility = VISIBLE
+                }
+                btn_commit_comment.isSelected = !et_comment.text.toString().isNullOrEmpty()
+            }
+
+            override fun afterTextChanged(editable: Editable) {}
+        })
     }
 
     /**

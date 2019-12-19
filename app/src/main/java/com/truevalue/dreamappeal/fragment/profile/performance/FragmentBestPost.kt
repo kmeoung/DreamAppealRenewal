@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.performance
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
@@ -93,8 +95,18 @@ class FragmentBestPost : BaseFragment() {
                 ll_cheering -> {
 
                 }
+                iv_comment->{
+                    val intent = Intent(context!!, ActivityComment::class.java)
+                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
+                    intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
+                    intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
+                    startActivity(intent)
+                }
                 ll_comment, ll_comment_detail -> {
-
+                    val intent = Intent(context!!, ActivityComment::class.java)
+                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
+                    intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
+                    startActivity(intent)
                 }
                 ll_share -> {
 
@@ -106,6 +118,7 @@ class FragmentBestPost : BaseFragment() {
         }
         iv_back.setOnClickListener(listener)
         ll_cheering.setOnClickListener(listener)
+        iv_comment.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
         ll_comment_detail.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
@@ -168,7 +181,7 @@ class FragmentBestPost : BaseFragment() {
             )
         val builder =
             AlertDialog.Builder(context)
-        builder.setItems(list) { dialogInterface, i ->
+        builder.setItems(list) { _, i ->
             when (list[i]) {
                 getString(R.string.str_down_best_post) -> downBestAchivement(mBestIdx)
                 getString(R.string.str_edit) -> if (mBean != null) {

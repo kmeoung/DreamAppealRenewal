@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.fragment.profile.performance
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -18,6 +19,7 @@ import androidx.appcompat.widget.PopupMenu
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
@@ -294,6 +296,23 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
             val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
             val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
             val iBtnMore = h.getItemView<ImageButton>(R.id.ibtn_more)
+            val ivComment = h.getItemView<ImageView>(R.id.iv_comment)
+            val llComment = h.getItemView<LinearLayout>(R.id.ll_comment)
+
+            ivComment.setOnClickListener(View.OnClickListener {
+                val intent = Intent(context!!,ActivityComment::class.java)
+                intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
+                intent.putExtra(ActivityComment.EXTRA_INDEX,bean.idx)
+                intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
+                startActivity(intent)
+            })
+
+            llComment.setOnClickListener(View.OnClickListener {
+                val intent = Intent(context!!,ActivityComment::class.java)
+                intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
+                intent.putExtra(ActivityComment.EXTRA_INDEX,bean.idx)
+                startActivity(intent)
+            })
 
             iBtnMore.setOnClickListener(View.OnClickListener {
                 showPopupMenu(it,bean)
