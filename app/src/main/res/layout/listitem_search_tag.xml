@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13.7dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="@string/str_popular_tag"
+            android:textColor="@color/black"
+            android:textSize="13.3sp" />
+
+</LinearLayout>

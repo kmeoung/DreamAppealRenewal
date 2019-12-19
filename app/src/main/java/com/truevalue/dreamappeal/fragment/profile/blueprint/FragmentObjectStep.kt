@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -46,7 +47,7 @@ import org.json.JSONObject
 class FragmentObjectStep : BaseFragment() {
     private var mBean: BeanBlueprintObject? = null
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    private var mObjectBean : BeanObjectStep? = null
+    private var mObjectBean: BeanObjectStep? = null
 
     companion object {
         fun newInstance(bean: BeanBlueprintObject): FragmentObjectStep {
@@ -77,7 +78,7 @@ class FragmentObjectStep : BaseFragment() {
     /**
      * View 초기화
      */
-    private fun initView(){
+    private fun initView() {
         // 댓글 설정
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -94,10 +95,10 @@ class FragmentObjectStep : BaseFragment() {
                 i1: Int,
                 i2: Int
             ) {
-                if(!et_comment.text.toString().isNullOrEmpty()){
+                if (!et_comment.text.toString().isNullOrEmpty()) {
                     btn_commit_comment.visibility = View.VISIBLE
                     rl_comment.visibility = View.GONE
-                }else{
+                } else {
                     btn_commit_comment.visibility = View.GONE
                     rl_comment.visibility = View.VISIBLE
                 }
@@ -119,22 +120,28 @@ class FragmentObjectStep : BaseFragment() {
                     showMoreDialog()
                 }
                 tv_detail_step -> {
-                    if(mObjectBean != null) {
+                    if (mObjectBean != null) {
                         (activity as ActivityMain).replaceFragment(
                             FragmentAddPage.newInstance(
-                                FragmentAddPage.VIEW_TYPE_ADD_STEP_DETAIL,mObjectBean!!.idx
+                                FragmentAddPage.VIEW_TYPE_ADD_STEP_DETAIL, mObjectBean!!.idx
                             ), addToBack = true, isMainRefresh = false
                         )
                     }
                 }
-                rl_comment->{
+                rl_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
-                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_BLUEPRINT)
-                    intent.putExtra(ActivityComment.EXTRA_INDEX, Comm_Prefs.getUserProfileIndex()) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
+                    intent.putExtra(
+                        ActivityComment.EXTRA_VIEW_TYPE,
+                        ActivityComment.EXTRA_TYPE_BLUEPRINT
+                    )
+                    intent.putExtra(
+                        ActivityComment.EXTRA_INDEX,
+                        Comm_Prefs.getUserProfileIndex()
+                    ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
                     startActivity(intent)
                 }
-                btn_commit_comment->{
-                    if(btn_commit_comment.isSelected) addBlueprintComment()
+                btn_commit_comment -> {
+                    if (btn_commit_comment.isSelected) addBlueprintComment()
                 }
             }
         }
@@ -280,6 +287,7 @@ class FragmentObjectStep : BaseFragment() {
                                     objectStep.toString(),
                                     BeanActionPostHeader::class.java
                                 )
+                                beanObjectHeader.position = (i + 1)
                                 mAdapter!!.add(beanObjectHeader)
                                 val actionPosts = objectStep.getJSONArray("action_posts")
                                 for (j in 0 until actionPosts.length()) {
@@ -373,6 +381,29 @@ class FragmentObjectStep : BaseFragment() {
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
 
+            if (getItemViewType(i) == TYPE_HEADER) {
+                val bean = mAdapter!!.get(i) as BeanActionPostHeader
+
+                val tvPosition = h.getItemView<TextView>(R.id.tv_point)
+                val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+                val ivMore = h.getItemView<ImageView>(R.id.iv_more)
+
+                tvPosition.text = bean.position.toString()
+                tvTitle.text = bean.title
+                ivMore.setOnClickListener(View.OnClickListener {
+                    // todo : 여기서는 기능 구현이 필요합니다
+                })
+
+            } else if (getItemViewType(i) == TYPE_ITEM) {
+                val bean = mAdapter!!.get(i) as BeanActionPost
+
+                val ivImage = h.getItemView<ImageView>(R.id.iv_image)
+
+                Glide.with(context!!)
+                    .load(bean.thumbnail_image)
+                    .placeholder(R.drawable.ic_image_black)
+                    .into(ivImage)
+            }
         }
 
         override fun getItemViewType(i: Int): Int {

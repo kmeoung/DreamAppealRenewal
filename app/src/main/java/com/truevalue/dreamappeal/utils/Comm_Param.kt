@@ -169,4 +169,11 @@ object Comm_Param {
     val URL_ACTION_COMMENTS_POST_IDX = "$URL_ACTION_COMMENTS_POST/$POST_INDEX"
     val URL_ACTION_COMMENTS_IDX = "$URL_ACTION_COMMENTS_POST/$COMMENT_INDEX"
 
+    //검색
+    val URL_SEARCH = "$URL_API/search"
+    val URL_SEARCH_POPULAR = "$URL_SEARCH/popular"
+    val URL_SEARCH_APPEALER = "$URL_SEARCH/appealer"
+    val URL_SEARCH_ACTION_POST = "$URL_SEARCH/action-post"
+    val URL_SEARCH_TAG = "$URL_SEARCH/tag"
+
 }

@@ -61,7 +61,7 @@
                 android:background="@null"
                 android:fontFamily="@font/nanum_square_round_r"
                 android:text="취소"
-                android:textColor="@color/black"
+                android:textColor="@color/main_blue"
                 android:textSize="14.7sp" />
 
     </LinearLayout>

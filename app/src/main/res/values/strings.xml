@@ -269,4 +269,10 @@
     <string name="str_appealer">어필러</string>
     <string name="str_board">게시물</string>
     <string name="str_hint_search">검색</string>
+    
+    <string name="str_modifier_based_recommendation">수식어 기반 추천</string>
+    <string name="str_location_based_recommendation">위치 기반 추천</string>
+
+    <string name="str_popular_tag">인기 태그</string>
+    <string name="str_recent_search">검색 기록</string>
 </resources>

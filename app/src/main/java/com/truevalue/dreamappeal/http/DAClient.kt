@@ -1905,5 +1905,27 @@ object DAClient {
         )
     }
 
+    /**
+     * GET
+     * 어필러 검색
+     * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
+     */
+    fun searchAppealer(keyword : String,
+                       callback: DAHttpCallback){
+
+        val params = DAHttpParams()
+        params.put("keyword",keyword)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_SEARCH_APPEALER,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+
+
 
 }
