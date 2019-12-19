@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/v_status"/>
+
+    <!--검색 바-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingTop="12dp"
+        android:paddingRight="8dp"
+        android:background="@color/white"
+        android:id="@+id/ll_search">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_search_gray" />
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:paddingLeft="5dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="50dp"
+            android:layout_height="32dp"
+            android:background="@null"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="취소"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+    <!--검색 바-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="14dp"
+        android:paddingBottom="11dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="인기"
+            android:textColor="@color/gray"
+            android:textSize="21sp"
+            android:id="@+id/tv_popular"/>
+
+        <TextView
+            android:id="@+id/tv_appealer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="어필러"
+            android:textColor="@color/black"
+            android:textSize="21sp" />
+
+
+        <TextView
+            android:id="@+id/tv_performance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="실천인증"
+            android:textColor="@color/gray"
+            android:textSize="21sp" />
+
+
+        <TextView
+            android:id="@+id/tv_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/bmjua"
+            android:gravity="center"
+            android:text="태그"
+            android:textColor="@color/gray"
+            android:textSize="21sp" />
+
+
+    </LinearLayout>
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#f2f2f2"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/search_container"/>
+
+
+</LinearLayout>
