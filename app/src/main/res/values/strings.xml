@@ -275,4 +275,6 @@
 
     <string name="str_popular_tag">인기 태그</string>
     <string name="str_recent_search">검색 기록</string>
+
+    <string name="str_timeline">타임라인</string>
 </resources>

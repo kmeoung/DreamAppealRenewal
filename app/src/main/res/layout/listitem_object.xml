@@ -32,7 +32,8 @@
                     android:lineSpacingExtra="6.7sp"
                     android:maxLines="2"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="21sp"
+                    android:layout_marginRight="10dp"/>
         </LinearLayout>
 
         <RelativeLayout

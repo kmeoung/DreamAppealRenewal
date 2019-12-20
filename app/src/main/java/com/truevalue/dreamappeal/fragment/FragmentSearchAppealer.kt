@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_search_appealer.*
 import okhttp3.Call
 import org.json.JSONObject
 
-class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
+class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
 
     private val TYPE_MODIFIER = 0
     private val TYPE_LOCATION = 1
@@ -42,7 +42,6 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // init Data
         initData()
         // View Click
@@ -51,12 +50,14 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
         initAdapter()
 
         setSearchType(mSearchType)
+
+        getAppealerSearch()
     }
 
     /**
      * Data 초기화
      */
-    private fun initData(){
+    private fun initData() {
         (activity as ActivitySearch).mSearchListener = this
     }
 
@@ -97,14 +98,13 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
 
         when (mSearchType) {
             TYPE_MODIFIER -> {
-                tv_appealer.isSelected = true
-                tv_board.isSelected = false
+                tv_modifier.isSelected = true
+                tv_location.isSelected = false
 
             }
             TYPE_LOCATION -> {
                 tv_modifier.isSelected = false
                 tv_location.isSelected = true
-
             }
         }
     }
@@ -128,19 +128,20 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
             val tvName = h.getItemView<TextView>(R.id.tv_name)
             val ivDelete = h.getItemView<ImageView>(R.id.iv_delete)
 
-            Glide.with(context!!)
-                .load(bean.image)
-                .placeholder(R.drawable.drawer_user)
-                .into(ivProfile)
+            if (!bean.image.isNullOrEmpty()) {
+                Glide.with(context!!)
+                    .load(bean.image)
+                    .placeholder(R.drawable.drawer_user)
+                    .into(ivProfile)
+            }
 
-            tvValueStyle.text = bean.value_style
-            tvJob.text = bean.job
-            tvName.text = bean.name
+            tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
+            tvJob.text = if (bean.job.isNullOrEmpty()) "" else bean.job
+            tvName.text = if (bean.nickname.isNullOrEmpty()) "" else bean.nickname
 
             ivDelete.setOnClickListener(View.OnClickListener {
                 // todo : 여기는 잘 모르겠습니다
             })
-
         }
 
         override fun getItemViewType(i: Int): Int {
@@ -149,11 +150,12 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
     }
 
     /**
-     * 어필러 검색
+     * Http
+     * 어필러 추천
      */
-    private fun getAppealerSearch(keyword : String){
+    private fun getAppealerSearch() {
 
-        DAClient.searchAppealer(keyword,object : DAHttpCallback{
+        DAClient.searchAppealer(object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -161,15 +163,52 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val appealers = json.getJSONArray("appealers")
                     mAdapter!!.clear()
-                    for(i in 0 until appealers.length()){
+                    for (i in 0 until appealers.length()) {
                         val appealer = appealers.getJSONObject(i)
-                        val bean = Gson().fromJson<BeanAppealer>(appealer.toString(),BeanAppealer::class.java)
+                        val bean = Gson().fromJson<BeanAppealer>(
+                            appealer.toString(),
+                            BeanAppealer::class.java
+                        )
+                        if (bean.idx != null)
+                            mAdapter!!.add(bean)
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * 어필러 검색
+     */
+    private fun getAppealerSearch(keyword: String) {
+
+        DAClient.searchAppealer(keyword, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
+                    val appealers = json.getJSONArray("appealers")
+                    mAdapter!!.clear()
+                    for (i in 0 until appealers.length()) {
+                        val appealer = appealers.getJSONObject(i)
+                        val bean = Gson().fromJson<BeanAppealer>(
+                            appealer.toString(),
+                            BeanAppealer::class.java
+                        )
                         mAdapter!!.add(bean)
                     }
                 }
@@ -177,7 +216,14 @@ class FragmentSearchAppealer : BaseFragment(),ActivitySearch.IOSearchListener {
         })
     }
 
+    /**
+     * 검색 Listener
+     */
     override fun onSearch(keyword: String) {
-        getAppealerSearch(keyword)
+        if (keyword.isNullOrEmpty()) {
+            getAppealerSearch()
+        } else {
+            getAppealerSearch(keyword)
+        }
     }
 }

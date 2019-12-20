@@ -176,4 +176,7 @@ object Comm_Param {
     val URL_SEARCH_ACTION_POST = "$URL_SEARCH/action-post"
     val URL_SEARCH_TAG = "$URL_SEARCH/tag"
 
+    //타임라인
+    val URL_TIMELINES = "$URL_API/timelines"
+
 }

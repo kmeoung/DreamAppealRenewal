@@ -1907,7 +1907,23 @@ object DAClient {
 
     /**
      * GET
-     * 어필러 검색
+     * 어필러 추천
+     * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
+     */
+    fun searchAppealer(callback: DAHttpCallback){
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_SEARCH_APPEALER,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 어필러 추천
      * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
      */
     fun searchAppealer(keyword : String,
@@ -1917,10 +1933,25 @@ object DAClient {
         params.put("keyword",keyword)
 
         BaseOkhttpClient.request(
-            HttpType.GET,
+            HttpType.POST,
             Comm_Param.URL_SEARCH_APPEALER,
             getHttpHeader(),
             params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 타임라인 가져오기
+     */
+    fun getTimeLine(callback: DAHttpCallback){
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_TIMELINES,
+            getHttpHeader(),
+            null,
             callback
         )
     }

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10.7dp"
+            android:paddingTop="12.3dp"
+            android:paddingBottom="11.3dp">
         <!--꿈 프로필 이미지-->
         <ImageView
                 android:id="@+id/iv_dream_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginRight="10.3dp"
                 android:src="@drawable/drawer_user" />
         <!--꿈 프로필 이미지-->
 
@@ -32,21 +35,27 @@
                     android:id="@+id/tv_value_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:fontFamily="@font/nanum_pen"
-                    android:text="천만 구독자"
+                    android:lines="1"
+                    android:maxLines="1"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="22.3sp"
+                    tools:text="" />
 
             <TextView
                     android:id="@+id/tv_job"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:fontFamily="@font/bmjua"
+                    android:lines="1"
                     android:maxLength="30"
-                    android:text="크리에이터"
+                    android:maxLines="1"
                     android:textColor="@color/black"
-                    android:textSize="17.5sp" />
+                    android:textSize="22.3sp"
+                    tools:text="" />
 
         </LinearLayout>
         <!--꿈 수식어 및 꿈 명-->
@@ -64,20 +73,21 @@
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/pale_grey"/>
+            android:background="@color/white_six" />
 
+    <!--Contents-->
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-        <!--Contents-->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
             <LinearLayout
+                    android:id="@+id/ll_object_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -93,13 +103,14 @@
                         android:orientation="horizontal">
 
                     <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:id="@+id/iv_circle"
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
                             android:layout_marginRight="8dp"
                             android:src="@drawable/ic_circle_blue" />
 
                     <TextView
-                            android:id="@+id/tv_target"
+                            android:id="@+id/tv_object"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -107,28 +118,31 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:lines="1"
                             android:maxLines="1"
-                            android:text="내 주변 이슈에 관한 시사 영상을 제작해 유튜브 영상을 올리는 것이"
                             android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            android:textSize="15.7sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                        android:id="@+id/ll_step_line"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                    <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                    <TextView
+                            android:id="@+id/tv_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="8dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_side_blue" />
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text=">"
+                            android:textColor="@color/main_blue"
+                            android:textSize="13.3sp" />
 
                     <TextView
-                            android:id="@+id/tv_target_detail"
+                            android:id="@+id/tv_step"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -136,7 +150,6 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:lines="1"
                             android:maxLines="1"
-                            android:text="내 주변 이슈에 관한 시사 영상을 제작해 유튜브 영상을 올리는 것이"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                 </LinearLayout>
@@ -152,7 +165,8 @@
                 <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager_image"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:background="@color/black" />
 
                 <LinearLayout
                         android:id="@+id/ll_indicator"
@@ -211,7 +225,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
         </LinearLayout>
-        <!--Contents-->
 
     </ScrollView>
 

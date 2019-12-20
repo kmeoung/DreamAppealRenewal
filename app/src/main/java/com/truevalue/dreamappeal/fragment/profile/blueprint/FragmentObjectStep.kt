@@ -384,7 +384,7 @@ class FragmentObjectStep : BaseFragment() {
             if (getItemViewType(i) == TYPE_HEADER) {
                 val bean = mAdapter!!.get(i) as BeanActionPostHeader
 
-                val tvPosition = h.getItemView<TextView>(R.id.tv_point)
+                val tvPosition = h.getItemView<TextView>(R.id.tv_position)
                 val tvTitle = h.getItemView<TextView>(R.id.tv_title)
                 val ivMore = h.getItemView<ImageView>(R.id.iv_more)
 
@@ -401,7 +401,7 @@ class FragmentObjectStep : BaseFragment() {
 
                 Glide.with(context!!)
                     .load(bean.thumbnail_image)
-                    .placeholder(R.drawable.ic_image_black)
+                    .placeholder(R.drawable.ic_image_white)
                     .into(ivImage)
             }
         }

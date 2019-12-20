@@ -66,7 +66,6 @@ class FragmentBestPost : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
-        tv_achivement_title.text = "${getString(R.string.str_best_performance)} $mBestIdx"
         // 상단 이미지 정사각형 설정
         Utils.setImageViewSquare(context, rl_images)
     }

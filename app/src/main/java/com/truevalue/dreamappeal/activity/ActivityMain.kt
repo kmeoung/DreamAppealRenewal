@@ -17,6 +17,7 @@ import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentLevelChoice
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
+import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
@@ -254,7 +255,7 @@ class ActivityMain : BaseActivity() {
         // todo : 처음 페이지 설정 시 변경 필요
        when (mMainViewType) {
             MAIN_TYPE_HOME -> replaceFragment(R.id.base_container, FragmentProfile(), false)
-            MAIN_TYPE_TIMELINE -> replaceFragment(R.id.base_container, FragmentProfile(), false)
+            MAIN_TYPE_TIMELINE -> replaceFragment(R.id.base_container, FragmentTimeline(), false)
             MAIN_TYPE_ADD_BOARD ->{
                 val intent = Intent(this@ActivityMain,ActivityCameraGallery::class.java)
                 intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)

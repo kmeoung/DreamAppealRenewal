@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/object_step_header"
+        android:background="@color/main_blue"
         android:orientation="vertical">
 
     <LinearLayout
@@ -10,14 +10,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="11dp"
-            android:paddingTop="13dp"
-            android:paddingRight="11dp">
+            android:paddingTop="13dp">
 
         <TextView
                 android:id="@+id/tv_object_step_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="73dp"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/bmjua"
                 android:shadowColor="@color/black"
@@ -33,9 +32,9 @@
                 android:layout_width="45dp"
                 android:layout_height="37dp"
                 android:layout_gravity="top"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:src="@drawable/btn_more_white" />
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/ic_more_white" />
 
     </LinearLayout>
 

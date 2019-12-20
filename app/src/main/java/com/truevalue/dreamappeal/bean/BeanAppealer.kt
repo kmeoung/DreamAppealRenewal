@@ -1,7 +1,8 @@
 package com.truevalue.dreamappeal.bean
 
-data class BeanAppealer(var idx : Int,
+data class BeanAppealer(var idx : Int?,
                         var image : String?,
-                        var value_style : String,
-                        var job : String,
-                        var name : String)
+                        var value_style : String?,
+                        var job : String?,
+                        var exp : Int,
+                        var nickname : String?)
