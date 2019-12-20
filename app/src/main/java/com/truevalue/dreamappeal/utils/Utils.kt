@@ -320,6 +320,9 @@ object Utils {
     }
 
 
+    /**
+     * 시간 변경
+     */
     fun convertFromDate(strPostDate: String): String {
 
         var strDate = ""

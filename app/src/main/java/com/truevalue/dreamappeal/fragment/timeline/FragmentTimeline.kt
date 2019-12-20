@@ -25,6 +25,7 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
+import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -167,6 +168,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val tvArrow = h.getItemView<TextView>(R.id.tv_arrow)
             val tvStep = h.getItemView<TextView>(R.id.tv_step)
             val rlImages = h.getItemView<RelativeLayout>(R.id.rl_images)
+            // todo : 여기는 썸네일이 아닌 모든 데이터가 나와야 하는게 아닌가 ?
             val pagerImages = h.getItemView<ViewPager>(R.id.pager_image)
             val llIndicator = h.getItemView<LinearLayout>(R.id.ll_indicator)
             val tvIndicator = h.getItemView<TextView>(R.id.tv_indicator)
@@ -175,10 +177,12 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val tvCheering = h.getItemView<TextView>(R.id.tv_cheering)
             val ivComment = h.getItemView<ImageView>(R.id.iv_comment)
             val tvComment = h.getItemView<TextView>(R.id.tv_comment)
+            // todo : 좋아요 및 나머지 추후 연동
             val llCheering = h.getItemView<LinearLayout>(R.id.ll_cheering)
             val ivCheering = h.getItemView<ImageView>(R.id.iv_cheering)
             val llComment = h.getItemView<LinearLayout>(R.id.ll_comment)
             val llShare = h.getItemView<LinearLayout>(R.id.ll_share)
+            val tvTime = h.getItemView<TextView>(R.id.tv_time)
 
             when(bean.post_type){
                 0->{
@@ -197,6 +201,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     ivSideImg.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_side_yellow))
                 }
             }
+
 
             if(!bean.profile_image.isNullOrEmpty()){
                 Glide.with(context!!)
@@ -226,6 +231,23 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             Utils.setImageViewSquare(context!!,rlImages)
+
+            tvTime.text = Utils.convertFromDate(bean.register_date)
+
+            tvContents.text = bean.content
+
+            tvCheering.text = bean.like_count.toString()
+            tvComment.text = bean.comment_count.toString()
+
+            // todo : 여기 bean.post_type 에 맞게 해야함 서버관련 문제 때문에 상의 후 진행
+            ivComment.setOnClickListener(View.OnClickListener {
+
+            })
+            llComment.setOnClickListener(View.OnClickListener {
+
+            })
+
+
         }
     }
 

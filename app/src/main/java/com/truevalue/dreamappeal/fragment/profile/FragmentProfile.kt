@@ -20,6 +20,7 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
+import com.truevalue.dreamappeal.fragment.profile.performance.FragmentNewPerformance
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -95,7 +96,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
     private fun initFragments() {
         mFragments = arrayOf(
             FragmentDreamPresent(),
-            FragmentPerformance(),
+            FragmentNewPerformance(),
             FragmentBlueprint()
         )
     }

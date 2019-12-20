@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -25,7 +24,10 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.*
+import com.truevalue.dreamappeal.bean.BeanActionPost
+import com.truevalue.dreamappeal.bean.BeanActionPostHeader
+import com.truevalue.dreamappeal.bean.BeanBlueprintObject
+import com.truevalue.dreamappeal.bean.BeanObjectStep
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -33,14 +35,9 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.action_bar_other.iv_more
 import kotlinx.android.synthetic.main.bottom_comment_view.*
-import kotlinx.android.synthetic.main.bottom_comment_view.iv_profile
-import kotlinx.android.synthetic.main.fragment_blueprint.*
 import kotlinx.android.synthetic.main.fragment_object_step.*
 import kotlinx.android.synthetic.main.layout_object_step_header.*
-import kotlinx.android.synthetic.main.listitem_dream_list.*
-import kotlinx.android.synthetic.main.listitem_object_step_sub_header.*
 import okhttp3.Call
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -79,6 +76,7 @@ class FragmentObjectStep : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
+        tv_title.text = getString(R.string.str_object_step)
         // 댓글 설정
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -149,6 +147,8 @@ class FragmentObjectStep : BaseFragment() {
         iv_back_black.setOnClickListener(listener)
         iv_more.setOnClickListener(listener)
         tv_detail_step.setOnClickListener(listener)
+        rl_comment.setOnClickListener(listener)
+        btn_commit_comment.setOnClickListener(listener)
 
     }
 
@@ -403,6 +403,14 @@ class FragmentObjectStep : BaseFragment() {
                     .load(bean.thumbnail_image)
                     .placeholder(R.drawable.ic_image_white)
                     .into(ivImage)
+
+                h.itemView.setOnClickListener(View.OnClickListener {
+                    (activity as ActivityMain).replaceFragment(
+                        FagmentActionPost.newInstance(bean.idx),
+                        addToBack = true,
+                        isMainRefresh = false
+                    )
+                })
             }
         }
 

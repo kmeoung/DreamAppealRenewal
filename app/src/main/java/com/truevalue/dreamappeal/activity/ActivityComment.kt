@@ -78,6 +78,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * View 초기화
      */
     private fun initView() {
+        tv_title.text = getString(R.string.str_title_comment_detail)
+        
         if (intent.getStringExtra(EXTRA_VIEW_TYPE) != null) {
             mViewType = intent.getStringExtra(EXTRA_VIEW_TYPE)
             mIndex = intent.getIntExtra(EXTRA_INDEX, -1)

@@ -1907,10 +1907,86 @@ object DAClient {
 
     /**
      * GET
+     * 실천인증 상세 가져오기
+     */
+    fun getActionPostsDetail(
+        post_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url =
+            Comm_Param.URL_ACTION_POSTS_POST_IDX.replace(Comm_Param.POST_INDEX, post_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+    }
+
+    /**
+     * DELETE
+     * 실천인증 삭제
+     */
+    fun deleteActionPostsDetail(
+        post_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url =
+            Comm_Param.URL_ACTION_POSTS_POST_IDX.replace(Comm_Param.POST_INDEX, post_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+    }
+
+    /**
+     * PATCH
+     * 실천인증 수정
+     */
+    fun updateActionPosts(
+        post_idx: Int,
+        object_idx: Int?,
+        step_idx: Int?,
+        thumbnail_image: String?,
+        content: String?,
+        callback: DAHttpCallback
+    ) {
+
+        val url =
+            Comm_Param.URL_ACTION_POSTS_POST_IDX.replace(Comm_Param.POST_INDEX, post_idx.toString())
+
+        val params = DAHttpParams()
+        if(object_idx != null) params.put("object_idx", object_idx)
+        if(step_idx != null) params.put("step_idx", step_idx)
+        if(thumbnail_image != null) params.put("thumbnail_image",thumbnail_image)
+        if(content != null) params.put("content",content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+
+    }
+
+    /**
+     * GET
      * 어필러 추천
      * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
      */
-    fun searchAppealer(callback: DAHttpCallback){
+    fun searchAppealer(callback: DAHttpCallback) {
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -1926,11 +2002,13 @@ object DAClient {
      * 어필러 추천
      * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
      */
-    fun searchAppealer(keyword : String,
-                       callback: DAHttpCallback){
+    fun searchAppealer(
+        keyword: String,
+        callback: DAHttpCallback
+    ) {
 
         val params = DAHttpParams()
-        params.put("keyword",keyword)
+        params.put("keyword", keyword)
 
         BaseOkhttpClient.request(
             HttpType.POST,
@@ -1945,7 +2023,7 @@ object DAClient {
      * GET
      * 타임라인 가져오기
      */
-    fun getTimeLine(callback: DAHttpCallback){
+    fun getTimeLine(callback: DAHttpCallback) {
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -1955,8 +2033,6 @@ object DAClient {
             callback
         )
     }
-
-
 
 
 }
