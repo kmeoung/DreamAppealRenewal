@@ -23,7 +23,7 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_add_achivement.*
+import kotlinx.android.synthetic.main.fragment_add_achievement.*
 import kotlinx.android.synthetic.main.fragment_level_choice.*
 import okhttp3.Call
 import org.json.JSONObject

@@ -1,5 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.performance
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +14,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityCameraGallery
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
 import com.truevalue.dreamappeal.bean.BeanBestPost
+import com.truevalue.dreamappeal.bean.BeanNewPerformance
 import com.truevalue.dreamappeal.bean.BeanPerformance
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -32,7 +37,20 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
     private var mAdapter: BaseRecyclerViewAdapter2<Any?>? = null
     private var mCurrentPage = 0
-    private var mBeanPerformance: BeanPerformance? = null
+    private var mBeanPerformance: BeanNewPerformance? = null
+
+    private var REQUEST_ADD_ACHIEVEMENT = 2005
+
+    private var mViewUserIdx : Int = -1
+
+    companion object{
+        fun newInstance(view_user_idx : Int) : FragmentNewPerformance {
+            val fragment = FragmentNewPerformance()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,8 +93,6 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
             for (i in 0 until mBeanPerformance!!.best_posts.size) {
                 mAdapter!!.add(mBeanPerformance!!.best_posts[i])
             }
-
-
         }
     }
 
@@ -115,7 +131,6 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
         // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
         val profile_idx = Comm_Prefs.getUserProfileIndex()
         DAClient.achievementPostMain(profile_idx,
-            mCurrentPage,
             object : DAHttpCallback {
                 override fun onFailure(call: Call, e: IOException) {
                     super.onFailure(call, e)
@@ -135,18 +150,10 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                             .show()
 
                         if (code == DAClient.SUCCESS) {
-                            mBeanPerformance = BeanPerformance(
-                                null,
-                                ArrayList(), ArrayList()
-                            )
+                            mBeanPerformance = BeanNewPerformance(ArrayList())
 
-                            val json = JSONObject(body)
-                            val profileImage = json.getString("profile_image")
-
-                            mBeanPerformance!!.profile_image = profileImage
                             mBeanPerformance!!.best_posts.clear()
-
-
+                            val json = JSONObject(body)
                             val bestPosts = json.getJSONObject("best_posts")
                             mAdapter!!.clear()
                             for (i in 1..3) {
@@ -205,10 +212,11 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
             if(getItemViewType(i) == TYPE_FULL_ITEM) {
                 val bean = mAdapter!!.get(i) as BeanBestPost
                 val ivPost = h.getItemView<ImageView>(R.id.iv_post)
-//                Glide.with(context!!)
-//                    .load(bean.)
-//                    .placeholder(R.drawable.ic_image_gray)
-//                    .into(ivPost)
+
+                Glide.with(context!!)
+                    .load(bean.thumbnail_image)
+                    .placeholder(R.drawable.ic_image_gray)
+                    .into(ivPost)
 
                 tvPost.text = bean.title
 
@@ -222,7 +230,11 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
             }else{
                 tvPost.text = Utils.replaceTextColor(context,tvPost,getString(R.string.str_best_post))
                 h.itemView.setOnClickListener(View.OnClickListener {
-                    (activity as ActivityMain).replaceFragment(FragmentAddAchivementPost(), true)
+                    val intent = Intent(context!!,ActivityCameraGallery::class.java)
+                    intent.putExtra(ActivityCameraGallery.VIEW_TYPE,ActivityCameraGallery.EXTRA_ACHIVEMENT_POST)
+                    intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)
+                    intent.putExtra(ActivityCameraGallery.ACHIEVEMENT_POST_BEST_IDX,i + 1)
+                    startActivityForResult(intent,REQUEST_ADD_ACHIEVEMENT)
                 })
             }
         }
@@ -244,4 +256,12 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
         getAchievementPostMain()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ADD_ACHIEVEMENT) {
+                getAchievementPostMain()
+            }
+        }
+    }
 }

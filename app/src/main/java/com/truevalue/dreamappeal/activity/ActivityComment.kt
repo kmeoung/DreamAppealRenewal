@@ -604,6 +604,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
                 val tvComment = h.getItemView<TextView>(R.id.tv_comment)
                 val tvTime = h.getItemView<TextView>(R.id.tv_time)
+                val ivLike = h.getItemView<ImageView>(R.id.iv_like)
                 val tvLike = h.getItemView<TextView>(R.id.tv_like)
                 val tvAddReply = h.getItemView<TextView>(R.id.tv_add_reply)
 
@@ -629,6 +630,15 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 tvTime.text = Utils.convertFromDate(bean.register_date)
                 tvLike.text = String.format("%d개", bean.like_count)
 
+                ivLike.isSelected = bean.status
+
+                val likeClickListener = View.OnClickListener{
+                    setLikeComment(bean)
+                }
+
+                ivLike.setOnClickListener(likeClickListener)
+                tvLike.setOnClickListener(likeClickListener)
+
                 tvAddReply.setOnClickListener(View.OnClickListener {
                     setReplyComment(bean)
                 })
@@ -638,7 +648,6 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     true
                 })
             }
-
         }
 
         override fun getItemViewType(i: Int): Int {
@@ -647,6 +656,44 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 return if (bean.parent_idx === 0) RV_TYPE_COMMENT else RV_TYPE_REPLY
             }
             return 0
+        }
+    }
+
+    /**
+     * Http
+     * 댓글 좋아요
+     */
+    private fun setLikeComment(bean : BeanCommentDetail){
+
+        val likeCommentListener = object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                if(code == DAClient.SUCCESS){
+                    val json = JSONObject(body)
+                    val status = json.getBoolean("status")
+                    bean.status = status
+                    if (bean.status) {
+                        bean.like_count += 1
+                    }else{
+                        bean.like_count -= 1
+                    }
+                    mAdapter!!.notifyDataSetChanged()
+                }
+            }
+        }
+
+        when (mViewType) {
+            EXTRA_TYPE_PROFILE -> DAClient.likeDreamPresentComment(bean.idx,likeCommentListener)
+            EXTRA_TYPE_BLUEPRINT -> DAClient.likeBlueprintComment(bean.idx,likeCommentListener)
+            EXTRA_TYPE_ACHIEVEMENT_POST -> DAClient.likeAchievementPostComment(bean.idx,likeCommentListener)
+            EXTRA_TYPE_ACTION_POST -> DAClient.likeActionPostComment(bean.idx,likeCommentListener)
         }
     }
 

@@ -42,7 +42,13 @@ class ActivityMain : BaseActivity() {
         val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
     }
 
-    var mMainViewType = MAIN_TYPE_HOME
+    var mMainViewType = ""
+
+    init {
+        // 회원가입시 PROFILE로 이동
+        mMainViewType = if(Comm_Prefs.getUserProfileIndex() > -1) MAIN_TYPE_TIMELINE else MAIN_TYPE_PROFILE
+    }
+
     private var mActionBarType = ACTION_BAR_TYPE_PROFILE_MAIN
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,24 +141,22 @@ class ActivityMain : BaseActivity() {
      */
     private fun onClickBottomView() {
         val onClickListener = View.OnClickListener {
-            mMainViewType = when (it) {
-                iv_home ->
-                    MAIN_TYPE_HOME
-                iv_timeline ->
-                    MAIN_TYPE_TIMELINE
-                iv_add_board ->
-                    MAIN_TYPE_ADD_BOARD
-                iv_notification ->
-                    MAIN_TYPE_NOTIFICATION
-                iv_profile ->
-                    MAIN_TYPE_PROFILE
-                else -> {
-                    Toast.makeText(this, getString(R.string.str_error), Toast.LENGTH_SHORT).show()
-                    MAIN_TYPE_HOME
+            when (it) {
+                // todo : 지원준비중입니다.
+                iv_home , iv_notification ->{
+                    Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
                 }
+                iv_timeline ->
+                    mMainViewType = MAIN_TYPE_TIMELINE
+                iv_add_board ->
+                    mMainViewType = MAIN_TYPE_ADD_BOARD
+                iv_profile ->
+                    mMainViewType = MAIN_TYPE_PROFILE
             }
-            initFragment()
-            initBottomView()
+            if(it != iv_home || it != iv_notification) {
+                initFragment()
+                initBottomView()
+            }
         }
 
         iv_home.setOnClickListener(onClickListener)
@@ -214,7 +218,6 @@ class ActivityMain : BaseActivity() {
                 iv_timeline.isSelected = false
                 iv_notification.isSelected = false
                 iv_profile.isSelected = false
-                FragmentProfile()
                 dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
             MAIN_TYPE_TIMELINE -> {
@@ -222,18 +225,15 @@ class ActivityMain : BaseActivity() {
                 iv_timeline.isSelected = true
                 iv_notification.isSelected = false
                 iv_profile.isSelected = false
-                FragmentProfile()
                 dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
             MAIN_TYPE_ADD_BOARD -> {
-                FragmentProfile()
             }
             MAIN_TYPE_NOTIFICATION -> {
                 iv_home.isSelected = false
                 iv_timeline.isSelected = false
                 iv_notification.isSelected = true
                 iv_profile.isSelected = false
-                FragmentProfile()
                 dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
             MAIN_TYPE_PROFILE -> {
@@ -241,10 +241,8 @@ class ActivityMain : BaseActivity() {
                 iv_timeline.isSelected = false
                 iv_notification.isSelected = false
                 iv_profile.isSelected = true
-                FragmentProfile()
                 dl_drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
-            else -> FragmentProfile()
         }
     }
 
@@ -254,7 +252,9 @@ class ActivityMain : BaseActivity() {
     private fun initFragment() {
         // todo : 처음 페이지 설정 시 변경 필요
        when (mMainViewType) {
-            MAIN_TYPE_HOME -> replaceFragment(R.id.base_container, FragmentProfile(), false)
+            MAIN_TYPE_HOME -> {
+
+            }
             MAIN_TYPE_TIMELINE -> replaceFragment(R.id.base_container, FragmentTimeline(), false)
             MAIN_TYPE_ADD_BOARD ->{
                 val intent = Intent(this@ActivityMain,ActivityCameraGallery::class.java)
@@ -262,8 +262,10 @@ class ActivityMain : BaseActivity() {
                 intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)
                 startActivity(intent)
             }
-            MAIN_TYPE_NOTIFICATION -> replaceFragment(R.id.base_container, FragmentProfile(), false)
-            MAIN_TYPE_PROFILE -> replaceFragment(R.id.base_container, FragmentProfile(), false)
+            MAIN_TYPE_NOTIFICATION -> {
+
+            }
+            MAIN_TYPE_PROFILE -> replaceFragment(R.id.base_container, FragmentProfile.newInstance(Comm_Prefs.getUserProfileIndex()), false)
         }
 
     }

@@ -11,7 +11,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityAddActionPost
+import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -95,7 +95,7 @@ class FragmentAddActionPost : BaseFragment() {
             when (it) {
                 iv_back_black -> activity!!.onBackPressed()
                 tv_text_btn -> if (tv_text_btn.isSelected)
-                    (activity as ActivityAddActionPost)
+                    (activity as ActivityAddPost)
                         .replaceFragment(
                             FragmentLevelChoice.newInstance(
                                 mImages,

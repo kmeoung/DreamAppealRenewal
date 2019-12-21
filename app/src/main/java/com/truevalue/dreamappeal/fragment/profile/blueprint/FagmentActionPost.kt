@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
@@ -22,11 +24,25 @@ import kotlinx.android.synthetic.main.action_bar_best_post.iv_more
 import kotlinx.android.synthetic.main.action_bar_best_post.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
+import kotlinx.android.synthetic.main.bottom_post_view.iv_cheering
+import kotlinx.android.synthetic.main.bottom_post_view.iv_comment
+import kotlinx.android.synthetic.main.bottom_post_view.ll_cheering
+import kotlinx.android.synthetic.main.bottom_post_view.ll_comment
+import kotlinx.android.synthetic.main.bottom_post_view.ll_comment_detail
+import kotlinx.android.synthetic.main.bottom_post_view.ll_share
+import kotlinx.android.synthetic.main.bottom_post_view.tv_cheering
+import kotlinx.android.synthetic.main.bottom_post_view.tv_comment
 import kotlinx.android.synthetic.main.fragment_action_post.*
+import kotlinx.android.synthetic.main.fragment_action_post.iv_dream_profile
+import kotlinx.android.synthetic.main.fragment_action_post.pager_image
+import kotlinx.android.synthetic.main.fragment_action_post.rl_images
+import kotlinx.android.synthetic.main.fragment_action_post.tv_contents
+import kotlinx.android.synthetic.main.fragment_action_post.tv_indicator
+import kotlinx.android.synthetic.main.fragment_action_post.tv_job
+import kotlinx.android.synthetic.main.fragment_action_post.tv_value_style
+import kotlinx.android.synthetic.main.fragment_dream_present.*
 import kotlinx.android.synthetic.main.fragment_post_detail.*
-import kotlinx.android.synthetic.main.fragment_post_detail.pager_image
-import kotlinx.android.synthetic.main.fragment_post_detail.rl_images
-import kotlinx.android.synthetic.main.fragment_post_detail.tv_indicator
+import kotlinx.android.synthetic.main.layout_object_step_header.*
 import okhttp3.Call
 import org.json.JSONObject
 import java.lang.Exception
@@ -82,7 +98,7 @@ class FagmentActionPost : BaseFragment() {
             when (it) {
                 iv_back_black -> activity!!.onBackPressed()
                 ll_cheering -> {
-
+                    actionLike()
                 }
                 iv_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
@@ -94,7 +110,7 @@ class FagmentActionPost : BaseFragment() {
                     intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
                     startActivity(intent)
                 }
-                ll_comment, ll_comment_detail -> {
+                ll_comment-> {
                     val intent = Intent(context!!, ActivityComment::class.java)
                     intent.putExtra(
                         ActivityComment.EXTRA_VIEW_TYPE,
@@ -115,9 +131,36 @@ class FagmentActionPost : BaseFragment() {
         ll_cheering.setOnClickListener(listener)
         iv_comment.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
-        ll_comment_detail.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_more.setOnClickListener(listener)
+    }
+
+    /**
+     * Http
+     * 인증 좋아요
+     */
+    private fun actionLike(){
+        DAClient.likeActionPost(mPostIdx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                        val json = JSONObject(body)
+                        val status = json.getBoolean("status")
+                        iv_cheering.isSelected = status
+                        val count = json.getInt("count")
+                        tv_comment.text = count.toString()
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -175,13 +218,15 @@ class FagmentActionPost : BaseFragment() {
                                     BeanActionPostImage::class.java
                                 )
                                 mAdapter!!.add(bean.image_url)
+                                tv_indicator.text = "0 / 0"
+                                tv_indicator.text = "1 / " + images.length()
                             }
+                            mAdapter!!.notifyDataSetChanged()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
 
-//                        mBean = bean
-//                        setData(bean)
+                        setData(bean)
                     }
                 }
             }
@@ -191,33 +236,54 @@ class FagmentActionPost : BaseFragment() {
     /**
      * Data binding
      */
-    private fun setData() {
-//        val ivProfile = h.getItemView<ImageView>(R.id.iv_dream_profile)
-//        val ivMore = h.getItemView<ImageView>(R.id.iv_action_more)
-//        val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
-//        val tvJob = h.getItemView<TextView>(R.id.tv_job)
-//        val llObjectStep = h.getItemView<LinearLayout>(R.id.ll_object_step)
-//        val ivCircle = h.getItemView<ImageView>(R.id.iv_circle)
-//        val tvObject = h.getItemView<TextView>(R.id.tv_object)
-//        val llStepLine = h.getItemView<LinearLayout>(R.id.ll_step_line)
-//        val tvArrow = h.getItemView<TextView>(R.id.tv_arrow)
-//        val tvStep = h.getItemView<TextView>(R.id.tv_step)
-//        val rlImages = h.getItemView<RelativeLayout>(R.id.rl_images)
-//        // todo : 여기는 썸네일이 아닌 모든 데이터가 나와야 하는게 아닌가 ?
-//        val pagerImages = h.getItemView<ViewPager>(R.id.pager_image)
-//        val llIndicator = h.getItemView<LinearLayout>(R.id.ll_indicator)
-//        val tvIndicator = h.getItemView<TextView>(R.id.tv_indicator)
-//        val tvContents = h.getItemView<TextView>(R.id.tv_contents)
-//        val ivSideImg = h.getItemView<ImageView>(R.id.iv_side_img)
-//        val tvCheering = h.getItemView<TextView>(R.id.tv_cheering)
-//        val ivComment = h.getItemView<ImageView>(R.id.iv_comment)
-//        val tvComment = h.getItemView<TextView>(R.id.tv_comment)
-//        // todo : 좋아요 및 나머지 추후 연동
-//        val llCheering = h.getItemView<LinearLayout>(R.id.ll_cheering)
-//        val ivCheering = h.getItemView<ImageView>(R.id.iv_cheering)
-//        val llComment = h.getItemView<LinearLayout>(R.id.ll_comment)
-//        val llShare = h.getItemView<LinearLayout>(R.id.ll_share)
-//        val tvTime = h.getItemView<TextView>(R.id.tv_time)
+    private fun setData(bean : BeanActionPostDetail) {
+        Glide.with(context!!)
+            .load(bean.profile_image)
+            .placeholder(R.drawable.drawer_user)
+            .circleCrop()
+            .into(iv_dream_profile)
+
+        iv_cheering.isSelected = bean.status
+
+        iv_circle.setImageDrawable(
+            ContextCompat.getDrawable(
+                context!!,
+                R.drawable.ic_circle_blue
+            )
+        )
+        tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
+        iv_side_img.setImageDrawable(
+            ContextCompat.getDrawable(
+                context!!,
+                R.drawable.ic_side_blue
+            )
+        )
+
+        iv_more.setOnClickListener(View.OnClickListener {
+            // todo : More 기능 추가 필요
+        })
+
+        if (bean.object_name.isNullOrEmpty() && bean.step_name.isNullOrEmpty()) {
+            ll_object_step.visibility = View.GONE
+        } else {
+            ll_object_step.visibility = View.VISIBLE
+            tv_object.text = bean.object_name
+
+            if (bean.step_name.isNullOrEmpty()) {
+                ll_step_line.visibility = View.GONE
+            } else {
+                tv_step.text = bean.step_name
+                ll_step_line.visibility = View.VISIBLE
+            }
+        }
+
+        tv_time.text = Utils.convertFromDate(bean.register_date)
+
+        tv_contents.text = bean.content
+
+        tv_cheering.text = bean.like_count.toString()
+        tv_comment.text = bean.comment_count.toString()
+
     }
 
 

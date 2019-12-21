@@ -40,10 +40,12 @@ class ActivityCameraGallery : BaseActivity() {
 
     private var mSelectType: String?
     private var mViewType: String?
+    private var mBestIdx: Int
 
     val REQUEST_IMAGE_CAPTURE = 1004
 
     val REQUEST_ADD_ACTION_POST = 1005
+    val REQUEST_ADD_ACHIEVEMENT_POST = 1006
 
     init {
         mMultiImage = ArrayList()
@@ -51,16 +53,21 @@ class ActivityCameraGallery : BaseActivity() {
         mSelectType = EXTRA_IMAGE_SINGLE_SELECT
         // 기본 Achivement Post
         mViewType = EXTRA_ACHIVEMENT_POST
+
+        mBestIdx = -1
     }
 
     companion object {
-        val EXTRA_IMAGE_SINGLE_SELECT = "EXTRA_IMAGE_SINGLE_SELECT"
-        val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
         val SELECT_TYPE = "SELECT_TYPE"
         val VIEW_TYPE = "VIEW_TYPE"
-        val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
+        val ACHIEVEMENT_POST_BEST_IDX = "ACHIEVEMENT_POST_BEST_IDX"
+
+        val EXTRA_IMAGE_SINGLE_SELECT = "EXTRA_IMAGE_SINGLE_SELECT"
+        val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
         val EXTRA_ACTION_POST = "EXTRA_ACTION_POST"
         val EXTRA_ACHIVEMENT_POST = "EXTRA_ACHIVEMENT_POST"
+        val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
+        val REQUEST_BEST_IDX = "REQUEST_BEST_IDX"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,31 +118,32 @@ class ActivityCameraGallery : BaseActivity() {
                 iv_check -> {
                     val array = ArrayList<File>()
                     if (mViewType.equals(EXTRA_ACHIVEMENT_POST)) {
-                        val intent = Intent()
                         if (isMultiMode) {
+                            // Achievement Post 이미지 추가로 이동
                             for (i in 0 until mMultiImage!!.size) {
                                 array.add(File(mMultiImage[i].imagePath))
                             }
                         } else {
-                            if (mCurrentViewImage != null) {
-                                val intent = Intent()
-                                array.add(mCurrentViewImage!!)
-                            }
+                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
                         }
+                        val intent =
+                            Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
                         intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+                        intent.putExtra(REQUEST_BEST_IDX,mBestIdx)
+                        intent.putExtra(VIEW_TYPE, EXTRA_ACHIVEMENT_POST)
+                        startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT_POST)
                     } else if (mViewType.equals(EXTRA_ACTION_POST)) {
                         if (isMultiMode) {
                             // Action Post 이미지 추가로 이동
                             for (i in 0 until mMultiImage!!.size) {
                                 array.add(File(mMultiImage[i].imagePath))
                             }
-                        }else{
-                            if(mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                        } else {
+                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
                         }
                         val intent =
-                            Intent(this@ActivityCameraGallery, ActivityAddActionPost::class.java)
+                            Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
+                        intent.putExtra(VIEW_TYPE, EXTRA_ACTION_POST)
                         intent.putExtra(REQUEST_IMAGE_FILES, array)
                         startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
                     }
@@ -279,8 +287,8 @@ class ActivityCameraGallery : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            when(requestCode) {
-                REQUEST_IMAGE_CAPTURE-> {
+            when (requestCode) {
+                REQUEST_IMAGE_CAPTURE -> {
                     var extras: Bundle? = null
                     try {
                         extras = data!!.extras
@@ -317,7 +325,7 @@ class ActivityCameraGallery : BaseActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-                REQUEST_ADD_ACTION_POST-> {
+                REQUEST_ADD_ACTION_POST , REQUEST_ADD_ACHIEVEMENT_POST-> {
                     // todo : 여기에는 확인이 필요합니다.
                     finish()
                 }

@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.FragmentSearchAppealer
@@ -111,9 +112,8 @@ class ActivitySearch : BaseActivity() {
      * Set Search View Type
      */
     private fun setSearchType(search_type: Int) {
-        mSearchType = search_type
 
-        when (mSearchType) {
+        when (search_type) {
             TYPE_APPEALER -> {
                 tv_appealer.isSelected = true
                 tv_board.isSelected = false
@@ -121,20 +121,24 @@ class ActivitySearch : BaseActivity() {
                 replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
             }
             TYPE_BOARD -> {
-                tv_appealer.isSelected = false
-                tv_board.isSelected = true
-                tv_tag.isSelected = false
-                // todo : 각자 위치로 이동 필요
-                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
+                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
+//                tv_appealer.isSelected = false
+//                tv_board.isSelected = true
+//                tv_tag.isSelected = false
+//                // todo : 각자 위치로 이동 필요
+//                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
             }
             TYPE_TAG -> {
-                tv_appealer.isSelected = false
-                tv_board.isSelected = false
-                tv_tag.isSelected = true
-                // todo : 각자 위치로 이동 필요
-                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
+                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
+//                tv_appealer.isSelected = false
+//                tv_board.isSelected = false
+//                tv_tag.isSelected = true
+//                // todo : 각자 위치로 이동 필요
+//                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
             }
         }
+
+        if(search_type == TYPE_APPEALER) mSearchType = search_type
     }
 
 

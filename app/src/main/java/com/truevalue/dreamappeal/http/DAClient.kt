@@ -60,11 +60,11 @@ object DAClient {
     ) {
         val params = DAHttpParams()
         val jsonObject = JSONObject()
-        val numType = when(type){
-            IMAGE_TYPE_ACHIVEMENT_POST->2
-            IMAGE_TYPE_ACTION_POST->1
-            IMAGE_TYPE_PROFILE->0
-            else->0
+        val numType = when (type) {
+            IMAGE_TYPE_ACHIVEMENT_POST -> 2
+            IMAGE_TYPE_ACTION_POST -> 1
+            IMAGE_TYPE_PROFILE -> 0
+            else -> 0
         }
 
         jsonObject.put("idx", idx)
@@ -594,14 +594,12 @@ object DAClient {
      */
     fun achievementPostMain(
         cur_profile_index: Int,
-        cur_view_page: Int,
         callback: DAHttpCallback
     ) {
-        var url = Comm_Param.URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX_POST_SIZE.replace(
-            Comm_Param.POST_SIZE,
-            cur_view_page.toString()
+        var url = Comm_Param.URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX.replace(
+            Comm_Param.PROFILE_INDEX,
+            cur_profile_index.toString()
         )
-        url = url.replace(Comm_Param.PROFILE_INDEX, cur_profile_index.toString())
         val header = getHttpHeader()
 
         BaseOkhttpClient.request(
@@ -615,8 +613,38 @@ object DAClient {
 
     /**
      * POST
+     * 성과 등록
+     */
+    fun addAchievementPost(
+        title: String,
+        content: String,
+        best_post_number: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACHIEVEMENT_POSTS_BEST_POST_NUMBER.replace(
+            Comm_Param.BEST_POST_NUMBER,
+            best_post_number.toString()
+        )
+        val params = DAHttpParams()
+        params.put("title", title)
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+
+    }
+
+    /**
+     * POST
      * 주요 성과 페이지 등록
      */
+    @Deprecated("Not Used")
     fun addAchivementPost(
         title: String,
         content: String,
@@ -1970,18 +1998,18 @@ object DAClient {
     fun addActionPost(
         content: String?,
         post_type: Int,
-        tags : String,
-        object_idx : Int?,
-        step_idx : Int?,
+        tags: String,
+        object_idx: Int?,
+        step_idx: Int?,
         callback: DAHttpCallback
     ) {
 
         val params = DAHttpParams()
-        if(content != null) params.put("content", content)
+        if (content != null) params.put("content", content)
         params.put("post_type", post_type)
-        params.put("tags",tags)
-        if(object_idx != null) params.put("object_idx",object_idx)
-        if(step_idx != null) params.put("step_idx",step_idx)
+        params.put("tags", tags)
+        if (object_idx != null) params.put("object_idx", object_idx)
+        if (step_idx != null) params.put("step_idx", step_idx)
         BaseOkhttpClient.request(
             HttpType.POST,
             Comm_Param.URL_ACTION_POSTS,
@@ -2076,5 +2104,145 @@ object DAClient {
         )
     }
 
+
+    /**
+     * PATCH
+     * 프로필 좋아요
+     */
+    fun likeDreamPresent(
+        profile_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_PROFILE_IDX.replace(
+                Comm_Param.PROFILE_INDEX,
+                profile_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * Achievement Post 좋아요
+     */
+    fun likeAchievementPost(
+        post_idx : Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_ACHIEVEMENT_IDX.replace(
+                Comm_Param.POST_INDEX,
+                post_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * Action Post 좋아요
+     */
+    fun likeActionPost(
+        post_idx : Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_ACTION_IDX.replace(
+                Comm_Param.POST_INDEX,
+                post_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 발전계획 댓글 좋아요
+     */
+    fun likeBlueprintComment(
+        comment_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_BLUEPRINT_COMMENT_IDX.replace(
+                Comm_Param.COMMENT_INDEX,
+                comment_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 프로필 댓글 좋아요
+     */
+    fun likeDreamPresentComment(
+        comment_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_PROFILE_COMMENT_IDX.replace(
+                Comm_Param.COMMENT_INDEX,
+                comment_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 성과 댓글 좋아요
+     */
+    fun likeAchievementPostComment(
+        comment_idx : Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_ACHIEVEMENT_COMMENT_IDX.replace(
+                Comm_Param.COMMENT_INDEX,
+                comment_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 인증 댓글 좋아요
+     */
+    fun likeActionPostComment(
+        comment_idx : Int,
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            Comm_Param.URL_LIKES_ACTION_COMMENT_IDX.replace(
+                Comm_Param.COMMENT_INDEX,
+                comment_idx.toString()
+            ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
 
 }

@@ -3,6 +3,8 @@
 
     <string name="str_dream_profile">드림프로필</string>
 
+    <string name="str_not_ready_yet">준비중입니다.</string>
+
     <string name="str_menu_normal_profile">일반 프로필</string>
     <string name="str_menu_following">팔로잉</string>
     <string name="str_menu_dreampoint">드림 포인트</string>

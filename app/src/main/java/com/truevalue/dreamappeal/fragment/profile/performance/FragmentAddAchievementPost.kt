@@ -22,9 +22,9 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_add_achivement.*
-import kotlinx.android.synthetic.main.fragment_add_achivement.btn_edit
-import kotlinx.android.synthetic.main.fragment_add_achivement.iv_add_img
+import kotlinx.android.synthetic.main.fragment_add_achievement.*
+import kotlinx.android.synthetic.main.fragment_add_achievement.btn_edit
+import kotlinx.android.synthetic.main.fragment_add_achievement.iv_add_img
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.File
@@ -32,7 +32,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FragmentAddAchivementPost : BaseFragment() {
+@Deprecated("Not Used")
+class FragmentAddAchievementPost : BaseFragment() {
 
     val REQUEST_ADD_IMAGES = 1003
     private var mAdapter: BaseRecyclerViewAdapter? = null
@@ -42,7 +43,7 @@ class FragmentAddAchivementPost : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_add_achivement, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_add_achievement, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

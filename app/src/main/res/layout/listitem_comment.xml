@@ -85,11 +85,12 @@
                 android:textSize="11.7sp" />
 
         <ImageView
+                android:id="@+id/iv_like"
                 android:layout_width="12.7dp"
                 android:layout_height="17dp"
                 android:layout_marginRight="7dp"
                 android:contentDescription="@string/str_content_description"
-                android:src="@drawable/flame_clicked" />
+                android:src="@drawable/ic_flame" />
 
         <TextView
                 android:id="@+id/tv_like"

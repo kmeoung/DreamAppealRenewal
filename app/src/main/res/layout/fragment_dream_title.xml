@@ -186,46 +186,6 @@
             </RelativeLayout>
             <!--예시 화면-->
 
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="9dp"
-                    android:background="@color/white_seven" />
-
-            <RelativeLayout
-                    android:id="@+id/rl_ad"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp">
-
-                <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/pager_ad"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/colorAccent" />
-
-                <LinearLayout
-                        android:id="@+id/ll_ad_indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/bg_round_rectangle_black"
-                        android:gravity="center"
-                        android:padding="5dp">
-
-                    <TextView
-                            android:id="@+id/tv_ad_indicator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_round_b"
-                            android:textColor="@color/white" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-
         </LinearLayout>
 
     </ScrollView>

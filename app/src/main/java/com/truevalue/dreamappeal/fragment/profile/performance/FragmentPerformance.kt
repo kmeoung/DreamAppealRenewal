@@ -96,7 +96,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         val listener = View.OnClickListener {
             when (it) {
                 iv_add_achievement -> {
-                    (activity as ActivityMain).replaceFragment(FragmentAddAchivementPost(), true)
+                    (activity as ActivityMain).replaceFragment(FragmentAddAchievementPost(), true)
                 }
             }
         }
@@ -187,7 +187,6 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
         // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
         val profile_idx = Comm_Prefs.getUserProfileIndex()
         DAClient.achievementPostMain(profile_idx,
-            mCurrentPage,
             object : DAHttpCallback {
                 override fun onFailure(call: Call, e: IOException) {
                     super.onFailure(call, e)

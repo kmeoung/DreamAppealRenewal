@@ -18,11 +18,21 @@ import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
 import com.truevalue.dreamappeal.bean.BeanImages
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import com.truevalue.dreamappeal.utils.Utils.convertFromDate
 import com.truevalue.dreamappeal.utils.Utils.setReadMore
 import kotlinx.android.synthetic.main.action_bar_best_post.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
+import kotlinx.android.synthetic.main.bottom_post_view.iv_cheering
+import kotlinx.android.synthetic.main.bottom_post_view.iv_comment
+import kotlinx.android.synthetic.main.bottom_post_view.ll_cheering
+import kotlinx.android.synthetic.main.bottom_post_view.ll_comment
+import kotlinx.android.synthetic.main.bottom_post_view.ll_comment_detail
+import kotlinx.android.synthetic.main.bottom_post_view.ll_share
+import kotlinx.android.synthetic.main.bottom_post_view.tv_cheering
+import kotlinx.android.synthetic.main.bottom_post_view.tv_comment
+import kotlinx.android.synthetic.main.fragment_dream_present.*
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -92,7 +102,7 @@ class FragmentBestPost : BaseFragment() {
             when (it) {
                 iv_back -> activity!!.onBackPressed()
                 ll_cheering -> {
-
+                    achievementLike()
                 }
                 iv_comment->{
                     val intent = Intent(context!!, ActivityComment::class.java)
@@ -101,7 +111,7 @@ class FragmentBestPost : BaseFragment() {
                     intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
                     startActivity(intent)
                 }
-                ll_comment, ll_comment_detail -> {
+                ll_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
                     intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                     intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
@@ -119,9 +129,36 @@ class FragmentBestPost : BaseFragment() {
         ll_cheering.setOnClickListener(listener)
         iv_comment.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
-        ll_comment_detail.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_more.setOnClickListener(listener)
+    }
+
+    /**
+     * Http
+     * 성과 좋아요
+     */
+    private fun achievementLike(){
+        DAClient.likeAchievementPost(mPostIdx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                        val json = JSONObject(body)
+                        val status = json.getBoolean("status")
+                        iv_cheering.isSelected = status
+                        val count = json.getInt("count")
+                        tv_comment.text = count.toString()
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -235,6 +272,7 @@ class FragmentBestPost : BaseFragment() {
      */
     private fun setData(bean: BeanAchivementPostDetail) {
         tv_title.text = bean.title
+        iv_cheering.isSelected = bean.status
         // todo : 아직 검증이 필요함
         setReadMore(tv_contents, bean.content, 3)
         tv_cheering.text = String.format("%d${getString(R.string.str_count)}", bean.like_count)

@@ -36,6 +36,17 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
     private var mTabs: Array<String>?
     private var pagerAdapter: ViewPagerAdapter?
 
+    private var mViewUserIdx : Int = -1
+
+    companion object{
+        fun newInstance(view_user_idx : Int) : FragmentProfile{
+            val fragment = FragmentProfile()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+    }
+
+
     init {
         mFragments = null
         mTabs = null
@@ -95,9 +106,9 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
      */
     private fun initFragments() {
         mFragments = arrayOf(
-            FragmentDreamPresent(),
-            FragmentNewPerformance(),
-            FragmentBlueprint()
+            FragmentDreamPresent.newInstance(mViewUserIdx),
+            FragmentNewPerformance.newInstance(mViewUserIdx),
+            FragmentBlueprint.newInstance(mViewUserIdx)
         )
     }
 

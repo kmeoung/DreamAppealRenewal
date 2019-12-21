@@ -31,6 +31,7 @@ import com.truevalue.dreamappeal.bean.BeanBlueprint
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -48,6 +49,17 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mAnOAdapter: BaseRecyclerViewAdapter? = null // Ability & Opportunity Adapter
     private var mObjectAdapter: BaseRecyclerViewAdapter? = null // Object Adapter
     private var mBean: BeanBlueprint? = null
+
+    private var mViewUserIdx : Int = -1
+
+    companion object{
+        fun newInstance(view_user_idx : Int) : FragmentBlueprint {
+            val fragment = FragmentBlueprint()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

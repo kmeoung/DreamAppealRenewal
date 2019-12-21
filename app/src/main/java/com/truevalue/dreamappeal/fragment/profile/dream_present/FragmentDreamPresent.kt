@@ -24,11 +24,15 @@ import com.truevalue.dreamappeal.activity.ActivityFollow
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
+import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_dream_present.*
+import kotlinx.android.synthetic.main.fragment_dream_present.iv_cheering
+import kotlinx.android.synthetic.main.fragment_dream_present.iv_comment
 import kotlinx.android.synthetic.main.fragment_dream_present.ll_cheering
 import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment
 import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment_detail
@@ -47,6 +51,17 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     private var mBean: BeanDreamPresent? = null
 
     private val REQUEST_CODE_PICK_PROFILE_IMAGE = 1000
+
+    private var mViewUserIdx : Int = -1
+
+    companion object{
+        fun newInstance(view_user_idx : Int) : FragmentDreamPresent {
+            val fragment = FragmentDreamPresent()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -225,7 +240,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             tv_comment.text = bean.comment_count.toString()
             tv_achievement_post_count.text = bean.achievement_post_count.toString()
             tv_action_post_count.text = bean.action_post_count.toString()
-
+            iv_cheering.isSelected = bean.status
             tv_dream_level.text = String.format("Lv.%02d", bean.level)
             tv_dream_name.text = when (bean.profile_order) {
                 1 -> getString(R.string.str_first_dream)
@@ -345,7 +360,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                     // Expend Merit Motive View
                 }
                 ll_cheering -> {
-
+                    profileLike()
                 }
                 iv_comment->{
                     if (context != null) {
@@ -366,7 +381,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         startActivity(intent)
                     }
                 }
-                ll_comment, ll_comment_detail -> {
+                ll_comment -> {
                     if (context != null) {
                         val intent = Intent(context!!, ActivityComment::class.java)
                         // todo : 현재 사용자가 보고있는 페이지의 idx를 보내야 합니다.
@@ -401,7 +416,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         ll_cheering.setOnClickListener(listener)
         iv_comment.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
-        ll_comment_detail.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
     }
 
@@ -441,6 +455,36 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 )
             })
         }
+    }
+
+    /**
+     * Http
+     * 프로필 좋아요
+     */
+    private fun profileLike(){
+        // todo : 현재 조회중인 프로필 idx를 넣어야 합니다
+        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        DAClient.likeDreamPresent(profile_idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                        val json = JSONObject(body)
+                        val status = json.getBoolean("status")
+                        iv_cheering.isSelected = status
+                        val count = json.getInt("count")
+                        tv_comment.text = count.toString()
+                    }
+                }
+            }
+        })
     }
 
     /**

@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanTimeline
@@ -98,8 +99,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                srl_refresh.isRefreshing = false
                 if (context != null) {
+                    srl_refresh.isRefreshing = false
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
@@ -202,7 +203,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             pagerImages.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    tvIndicator.text = ((position + 1).toString() + " / " + pagerAdapter!!.getCount())
+                    tvIndicator.text =
+                        ((position + 1).toString() + " / " + pagerAdapter!!.getCount())
                 }
             })
 
@@ -300,14 +302,61 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             // todo : 여기 bean.post_type 에 맞게 해야함 서버관련 문제 때문에 상의 후 진행
             ivComment.setOnClickListener(View.OnClickListener {
-
+                val intent = Intent(context!!, ActivityComment::class.java)
+                intent.putExtra(
+                    ActivityComment.EXTRA_VIEW_TYPE,
+                    ActivityComment.EXTRA_TYPE_ACTION_POST
+                )
+                intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
+                intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
+                startActivity(intent)
             })
             llComment.setOnClickListener(View.OnClickListener {
-
+                val intent = Intent(context!!, ActivityComment::class.java)
+                intent.putExtra(
+                    ActivityComment.EXTRA_VIEW_TYPE,
+                    ActivityComment.EXTRA_TYPE_ACTION_POST
+                )
+                intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
+                startActivity(intent)
             })
 
+            llCheering.setOnClickListener(View.OnClickListener {
+                actionLike(bean)
+            })
+
+            ivCheering.isSelected = bean.status
 
         }
+    }
+
+    /**
+     * Http
+     * 인증 좋아요
+     */
+    private fun actionLike(bean : BeanTimeline){
+        DAClient.likeActionPost(bean.idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                        val json = JSONObject(body)
+                        val status = json.getBoolean("status")
+                        bean.status = status
+                        val count = json.getInt("count")
+                        bean.comment_count = count
+                        mAdatper!!.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
     }
 
     /**

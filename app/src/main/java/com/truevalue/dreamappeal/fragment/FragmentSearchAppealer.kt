@@ -81,8 +81,9 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                         setSearchType(TYPE_MODIFIER)
                 }
                 tv_location -> {
-                    if (mSearchType != TYPE_LOCATION)
-                        setSearchType(TYPE_LOCATION)
+                    Toast.makeText(context!!.applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
+//                    if (mSearchType != TYPE_LOCATION)
+//                        setSearchType(TYPE_LOCATION)
                 }
             }
         }
