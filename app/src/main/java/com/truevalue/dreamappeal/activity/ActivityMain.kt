@@ -251,13 +251,14 @@ class ActivityMain : BaseActivity() {
     /**
      * Init Fragment
      */
-    fun initFragment() {
+    private fun initFragment() {
         // todo : 처음 페이지 설정 시 변경 필요
        when (mMainViewType) {
             MAIN_TYPE_HOME -> replaceFragment(R.id.base_container, FragmentProfile(), false)
             MAIN_TYPE_TIMELINE -> replaceFragment(R.id.base_container, FragmentTimeline(), false)
             MAIN_TYPE_ADD_BOARD ->{
                 val intent = Intent(this@ActivityMain,ActivityCameraGallery::class.java)
+                intent.putExtra(ActivityCameraGallery.VIEW_TYPE,ActivityCameraGallery.EXTRA_ACTION_POST)
                 intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)
                 startActivity(intent)
             }

@@ -132,9 +132,9 @@ class FragmentDreamNoteIdea : BaseFragment() {
                 val bean = mAdapter!!.get(i) as BeanDreamNoteIdea
                 val ivIdea = h.getItemView<ImageView>(R.id.iv_idea)
 
-                if(bean.image.isNullOrEmpty()){
+                if(bean.thumbnail_image.isNullOrEmpty()){
                     Glide.with(context!!).load(R.drawable.ic_image_white).load(ivIdea)
-                }else Glide.with(context!!).load(bean.image).placeholder(R.drawable.ic_image_white).load(ivIdea)
+                }else Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).load(ivIdea)
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     // todo : 여기에 상세페이지 달아야 합니다

@@ -47,6 +47,7 @@ class ActivitySearch : BaseActivity() {
      * Init View
      */
     private fun initView() {
+        iv_cancel.visibility = GONE
         setSearchType(TYPE_APPEALER)
 
         et_search.addTextChangedListener(object : TextWatcher {

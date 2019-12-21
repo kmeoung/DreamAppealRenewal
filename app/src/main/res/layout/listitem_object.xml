@@ -76,7 +76,7 @@
                         android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="17.7sp"
-                        android:text="1회"/>
+                        android:text="1"/>
 
             </LinearLayout>
 

@@ -3,13 +3,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/pale_grey"/>
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:background="@color/white">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -158,6 +154,11 @@
         </LinearLayout>
 
 
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/white_two"/>
+
         <RelativeLayout
                 android:id="@+id/rl_images"
                 android:layout_width="match_parent"
@@ -192,6 +193,11 @@
             </LinearLayout>
 
         </RelativeLayout>
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/white_two"/>
 
         <RelativeLayout
                 android:layout_width="match_parent"

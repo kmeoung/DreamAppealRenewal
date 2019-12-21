@@ -537,7 +537,18 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             val bean = mObjectAdapter!!.get(i) as BeanBlueprintObject
             val tvObjectTitle = h.getItemView<TextView>(R.id.tv_object_title)
+            val ivObject = h.getItemView<ImageView>(R.id.iv_object)
+            val tvObjectCount = h.getItemView<TextView>(R.id.tv_object_count)
             tvObjectTitle.text = bean.object_name
+
+            Glide.with(context!!)
+                .load(bean.thumbnail_image)
+                .placeholder(R.drawable.ic_image_white)
+                .centerCrop()
+                .into(ivObject)
+
+            tvObjectCount.text = "${bean.total_action_post_count}개"
+
             h.itemView.setOnClickListener(View.OnClickListener {
                 (activity as ActivityMain).replaceFragment(
                     FragmentObjectStep.newInstance(bean),

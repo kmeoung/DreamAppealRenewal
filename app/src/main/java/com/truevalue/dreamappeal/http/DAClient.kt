@@ -38,9 +38,13 @@ object DAClient {
         return header
     }
 
-    val IMAGE_TYPE_PROFILE = 0
-    val IMAGE_TYPE_ACTION_POST = 1
-    val IMAGE_TYPE_ACHIVEMENT_POST = 2
+    val IMAGE_TYPE_PROFILE = "profiles"
+    val IMAGE_TYPE_ACTION_POST = "action_posts"
+    val IMAGE_TYPE_ACHIVEMENT_POST = "achievement_posts"
+
+    val POST_TYPE_ACTION = 0
+    val POST_TYPE_LIFE = 1
+    val POST_TYPE_IDEA = 2
 
     /**
      * PATCH
@@ -50,14 +54,21 @@ object DAClient {
      */
     fun uploadsImage(
         idx: Int,
-        type: Int,
+        type: String,
         url: ArrayList<String>,
         callback: DAHttpCallback
     ) {
         val params = DAHttpParams()
         val jsonObject = JSONObject()
+        val numType = when(type){
+            IMAGE_TYPE_ACHIVEMENT_POST->2
+            IMAGE_TYPE_ACTION_POST->1
+            IMAGE_TYPE_PROFILE->0
+            else->0
+        }
+
         jsonObject.put("idx", idx)
-        jsonObject.put("type", type)
+        jsonObject.put("upload_type", numType)
         val path = JSONArray()
         for (i in 0 until url.size) {
             val jsonUrl = JSONObject()
@@ -1950,6 +1961,37 @@ object DAClient {
     }
 
     /**
+     * Post
+     * 실천인증 및 여러가지 추가
+     * 0 : Action Post
+     * 1 : Life Post
+     * 2 : Idea Post
+     */
+    fun addActionPost(
+        content: String?,
+        post_type: Int,
+        tags : String,
+        object_idx : Int?,
+        step_idx : Int?,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        if(content != null) params.put("content", content)
+        params.put("post_type", post_type)
+        params.put("tags",tags)
+        if(object_idx != null) params.put("object_idx",object_idx)
+        if(step_idx != null) params.put("step_idx",step_idx)
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_ACTION_POSTS,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
      * PATCH
      * 실천인증 수정
      */
@@ -1966,10 +2008,10 @@ object DAClient {
             Comm_Param.URL_ACTION_POSTS_POST_IDX.replace(Comm_Param.POST_INDEX, post_idx.toString())
 
         val params = DAHttpParams()
-        if(object_idx != null) params.put("object_idx", object_idx)
-        if(step_idx != null) params.put("step_idx", step_idx)
-        if(thumbnail_image != null) params.put("thumbnail_image",thumbnail_image)
-        if(content != null) params.put("content",content)
+        if (object_idx != null) params.put("object_idx", object_idx)
+        if (step_idx != null) params.put("step_idx", step_idx)
+        if (thumbnail_image != null) params.put("thumbnail_image", thumbnail_image)
+        if (content != null) params.put("content", content)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,

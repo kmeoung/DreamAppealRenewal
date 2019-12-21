@@ -63,7 +63,6 @@ class FragmentDreamDescription : BaseFragment() {
         tv_text_btn.visibility = GONE
         iv_close.visibility = VISIBLE
         iv_check.visibility = VISIBLE
-        tv_text_btn.text = getString(R.string.str_commit)
 
         // Default View 키워드 색상 변경
         val default_dream_description = getString(R.string.str_default_dream_description)

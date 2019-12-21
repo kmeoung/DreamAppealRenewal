@@ -489,6 +489,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         Glide.with(this@ActivityComment)
             .load(image)
             .placeholder(R.drawable.drawer_user)
+            .circleCrop()
             .into(iv_profile)
         mAdapter!!.clear()
         val gson = Gson()
@@ -622,6 +623,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 Glide.with(this@ActivityComment)
                     .load(bean.image)
                     .placeholder(R.drawable.drawer_user)
+                    .circleCrop()
                     .into(ivProfile)
 
                 tvTime.text = Utils.convertFromDate(bean.register_date)

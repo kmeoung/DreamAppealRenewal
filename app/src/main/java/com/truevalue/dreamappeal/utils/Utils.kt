@@ -396,7 +396,7 @@ object Utils {
             .build()
 
         val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
-        val KEY = "public/$other"
+        val KEY = "public/images/$other"
 
         val date = Date()
         val pos = file.name.lastIndexOf(".")
@@ -449,7 +449,7 @@ object Utils {
             .build()
 
         val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
-        val KEY = "public/$other"
+        val KEY = "public/images/$other"
         var completeFile = 1
         var addressList = ArrayList<String>()
 

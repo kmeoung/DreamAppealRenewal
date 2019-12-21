@@ -12,12 +12,17 @@ import java.util.*
 class BasePagerAdapter<String>(private val mContext: Context) :
     PagerAdapter() {
     private val mArray: ArrayList<String>
+
     override fun getCount(): Int {
         return mArray.size
     }
 
     fun add(item: String) {
         mArray.add(item)
+    }
+
+    fun clear(){
+        mArray.clear()
     }
 
     operator fun get(i: Int): String {

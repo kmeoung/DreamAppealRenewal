@@ -21,6 +21,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_two"/>
+
+
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
@@ -55,6 +61,12 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_two"/>
+
 
             <TextView
                     android:id="@+id/tv_contents"

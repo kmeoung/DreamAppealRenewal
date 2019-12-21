@@ -6,36 +6,38 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import androidx.annotation.NonNull
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.NonNull
 import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
+import com.truevalue.dreamappeal.base.BaseViewHolder
+import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
-import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
 import com.truevalue.dreamappeal.bean.BeanBestPost
 import com.truevalue.dreamappeal.bean.BeanPerformance
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import kotlinx.android.synthetic.main.fragment_performance.*
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.IOException
 
+@Deprecated("Not Used")
 class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
 
@@ -451,12 +453,12 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
     private val handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
-            val position = vp_pager.getCurrentItem()
+            val position = vp_pager.currentItem
             if (mPagerAdapter != null) {
-                if (position >= mPagerAdapter!!.getCount() - 1) {
-                    vp_pager.setCurrentItem(0)
+                if (position >= mPagerAdapter!!.count - 1) {
+                    vp_pager.currentItem = 0
                 } else {
-                    vp_pager.setCurrentItem(position + 1)
+                    vp_pager.currentItem = position + 1
                 }
             }
         }

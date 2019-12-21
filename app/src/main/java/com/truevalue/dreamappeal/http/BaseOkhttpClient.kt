@@ -6,6 +6,7 @@ import com.truevalue.dreamappeal.utils.Comm_Param
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
+import java.util.*
 
 
 object BaseOkhttpClient : OkHttpClient() {
@@ -35,7 +36,6 @@ object BaseOkhttpClient : OkHttpClient() {
 
         val call = client.newCall(clientRequest)
         if (!Comm_Param.REAL) Log.d("SERVER REQUEST URL", call.request().url.toString())
-
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 if(callback != null){
@@ -44,15 +44,24 @@ object BaseOkhttpClient : OkHttpClient() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-
-                val strBody = response.body!!.string()
-                if (!Comm_Param.REAL) Log.d("SERVER BODY", strBody)
-                var json = JSONObject(strBody)
-                val code: String? = json.getString("code")
-                val message: String? = json.getString("message")
-                if (callback != null) {
-                    if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                        handler.post(Runnable { callback.onResponse(call, response.code, strBody, code, message) })
+                if(call.request().url.toUrl().toString() == url) {
+                    val strBody = response.body!!.string()
+                    if (!Comm_Param.REAL) Log.d("SERVER BODY", strBody)
+                    var json = JSONObject(strBody)
+                    val code: String? = json.getString("code")
+                    val message: String? = json.getString("message")
+                    if (callback != null) {
+                        if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
+                            handler.post(Runnable {
+                                callback.onResponse(
+                                    call,
+                                    response.code,
+                                    strBody,
+                                    code,
+                                    message
+                                )
+                            })
+                        }
                     }
                 }
 

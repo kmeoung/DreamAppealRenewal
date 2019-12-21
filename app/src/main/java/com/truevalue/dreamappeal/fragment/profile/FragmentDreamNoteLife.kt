@@ -143,9 +143,9 @@ class FragmentDreamNoteLife : BaseFragment() {
                 val tvDate = h.getItemView<TextView>(R.id.tv_date)
 
                 tvTitle.text = bean.content
-                if (bean.image.isNullOrEmpty()) {
+                if (bean.thumbnail_image.isNullOrEmpty()) {
                     Glide.with(context!!).load(R.drawable.ic_image_white).load(ivThumbnail)
-                } else Glide.with(context!!).load(bean.image).placeholder(R.drawable.ic_image_white).load(
+                } else Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).load(
                     ivThumbnail
                 )
                 // todo : Date 형식 맞춰야 합니다

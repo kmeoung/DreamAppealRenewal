@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.bean.BeanActionPostDetail
+import com.truevalue.dreamappeal.bean.BeanActionPostImage
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
@@ -19,12 +22,18 @@ import kotlinx.android.synthetic.main.action_bar_best_post.iv_more
 import kotlinx.android.synthetic.main.action_bar_best_post.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
+import kotlinx.android.synthetic.main.fragment_action_post.*
 import kotlinx.android.synthetic.main.fragment_post_detail.*
+import kotlinx.android.synthetic.main.fragment_post_detail.pager_image
+import kotlinx.android.synthetic.main.fragment_post_detail.rl_images
+import kotlinx.android.synthetic.main.fragment_post_detail.tv_indicator
 import okhttp3.Call
+import org.json.JSONObject
+import java.lang.Exception
 
 class FagmentActionPost : BaseFragment() {
 
-    private var mAdapter : BasePagerAdapter<String>? = null
+    private var mAdapter: BasePagerAdapter<String>? = null
 
     private var mPostIdx = -1
 
@@ -75,17 +84,23 @@ class FagmentActionPost : BaseFragment() {
                 ll_cheering -> {
 
                 }
-                iv_comment->{
+                iv_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
-                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACTION_POST)
-                    intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
-                    intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
+                    intent.putExtra(
+                        ActivityComment.EXTRA_VIEW_TYPE,
+                        ActivityComment.EXTRA_TYPE_ACTION_POST
+                    )
+                    intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
+                    intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
                     startActivity(intent)
                 }
                 ll_comment, ll_comment_detail -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
-                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACTION_POST)
-                    intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
+                    intent.putExtra(
+                        ActivityComment.EXTRA_VIEW_TYPE,
+                        ActivityComment.EXTRA_TYPE_ACTION_POST
+                    )
+                    intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
                     startActivity(intent)
                 }
                 ll_share -> {
@@ -123,8 +138,8 @@ class FagmentActionPost : BaseFragment() {
      * Http
      * Action Post 상세 조회
      */
-    private fun getActionPost(){
-        DAClient.getActionPostsDetail(mPostIdx,object : DAHttpCallback{
+    private fun getActionPost() {
+        DAClient.getActionPostsDetail(mPostIdx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -132,30 +147,39 @@ class FagmentActionPost : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(context != null){
-                    Toast.makeText(context!!,message,Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if(code == DAClient.SUCCESS){
-//                        val json = JSONObject(body)
-//                        val achivementPost = json.getJSONObject("achievement_post")
-//
-//                        val bean = Gson().fromJson<BeanAchivementPostDetail>(
-//                            achivementPost.toString(),
-//                            BeanAchivementPostDetail::class.java
-//                        )
-//
-//                        val thumbnail = achivementPost.getJSONArray("images")
-//
-//                        val images = ArrayList<BeanImages>()
-//                        for (i in 0 until thumbnail.length()) {
-//                            val image = Gson().fromJson<BeanImages>(
-//                                thumbnail.getJSONObject(i).toString(),
-//                                BeanImages::class.java
-//                            )
-//                            images.add(image)
-//                        }
-//                        bean.Images = images
-//
+                    if (code == DAClient.SUCCESS) {
+                        val json = JSONObject(body)
+                        val profile = json.getJSONObject("profile")
+                        val value_style = profile.getString("value_style")
+                        val job = profile.getString("job")
+
+                        tv_value_style.text = value_style
+                        tv_job.text = job
+
+                        val actionPost = json.getJSONObject("action_post")
+                        val bean = Gson().fromJson<BeanActionPostDetail>(
+                            actionPost.toString(),
+                            BeanActionPostDetail::class.java
+                        )
+
+                        try {
+                            mAdapter!!.clear()
+                            val images = actionPost.getJSONArray("images")
+                            for (i in 0 until images.length()) {
+                                val image = images.getJSONObject(i)
+                                val bean = Gson().fromJson<BeanActionPostImage>(
+                                    image.toString(),
+                                    BeanActionPostImage::class.java
+                                )
+                                mAdapter!!.add(bean.image_url)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
 //                        mBean = bean
 //                        setData(bean)
                     }
@@ -167,7 +191,7 @@ class FagmentActionPost : BaseFragment() {
     /**
      * Data binding
      */
-    private fun setData(){
+    private fun setData() {
 //        val ivProfile = h.getItemView<ImageView>(R.id.iv_dream_profile)
 //        val ivMore = h.getItemView<ImageView>(R.id.iv_action_more)
 //        val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)

@@ -498,7 +498,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         Utils.uploadWithTransferUtility(
                             context!!.applicationContext,
                             fileArray[0],
-                            "$idx/$type",
+                            "$type/$idx",
                             object :
                                 IOS3ImageUploaderListener {
                                 override fun onStateCompleted(
@@ -529,7 +529,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * Http
      * Profile Image Update
      */
-    private fun updateProfileImage(idx: Int, type: Int, url: String) {
+    private fun updateProfileImage(idx: Int, type: String, url: String) {
         val list = ArrayList<String>()
         list.add(url)
         DAClient.uploadsImage(idx, type, list, object : DAHttpCallback {

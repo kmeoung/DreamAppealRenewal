@@ -162,6 +162,12 @@
             </LinearLayout>
 
 
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_two"/>
+
+
             <RelativeLayout
                     android:id="@+id/rl_images"
                     android:layout_width="match_parent"
@@ -196,6 +202,12 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_two"/>
+
 
             <RelativeLayout
                     android:layout_width="match_parent"

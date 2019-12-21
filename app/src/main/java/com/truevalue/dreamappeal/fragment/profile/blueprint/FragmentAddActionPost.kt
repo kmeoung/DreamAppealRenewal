@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -52,8 +54,17 @@ class FragmentAddActionPost : BaseFragment() {
     /**
      * View 초기화
      */
-    private fun initView(){
+    private fun initView() {
         tv_text_btn.visibility = VISIBLE
+        tv_title.text = getString(R.string.str_new_post)
+
+        et_comment.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                tv_text_btn.isSelected = !et_comment.text.toString().isNullOrEmpty()
+            }
+        })
     }
 
     /**
@@ -79,13 +90,22 @@ class FragmentAddActionPost : BaseFragment() {
     /**
      * View Click Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                tv_text_btn->(activity as ActivityAddActionPost).replaceFragment(FragmentLevelChoice(),true)
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_back_black -> activity!!.onBackPressed()
+                tv_text_btn -> if (tv_text_btn.isSelected)
+                    (activity as ActivityAddActionPost)
+                        .replaceFragment(
+                            FragmentLevelChoice.newInstance(
+                                mImages,
+                                et_comment.text.toString()
+                            ), true
+                        )
             }
         }
         tv_text_btn.setOnClickListener(listener)
+        iv_back_black.setOnClickListener(listener)
     }
 
     /**
@@ -107,6 +127,7 @@ class FragmentAddActionPost : BaseFragment() {
                 Glide.with(context!!)
                     .load(file)
                     .placeholder(R.drawable.ic_image_black)
+                    .centerCrop()
                     .into(ivImage)
 
             }

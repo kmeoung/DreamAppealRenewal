@@ -30,7 +30,7 @@ import org.json.JSONObject
 class FragmentBestPost : BaseFragment() {
 
     private var mPostIdx = -1
-    private var mBestIdx = -1;
+    private var mBestIdx = -1
     private var mBean: BeanAchivementPostDetail? = null
     private var mAdapter: BasePagerAdapter<String>? = null
 
@@ -174,7 +174,6 @@ class FragmentBestPost : BaseFragment() {
     private fun showMoreDialog() {
         val list =
             arrayOf(
-                getString(R.string.str_down_best_post),
                 getString(R.string.str_edit),
                 getString(R.string.str_delete)
             )
@@ -182,7 +181,6 @@ class FragmentBestPost : BaseFragment() {
             AlertDialog.Builder(context)
         builder.setItems(list) { _, i ->
             when (list[i]) {
-                getString(R.string.str_down_best_post) -> downBestAchivement(mBestIdx)
                 getString(R.string.str_edit) -> if (mBean != null) {
                     // todo : 수정
                 }
@@ -206,30 +204,6 @@ class FragmentBestPost : BaseFragment() {
             }
         }
         builder.create().show()
-    }
-
-    /**
-     * Http
-     * 베스트 포스트 내리기
-     */
-    private fun downBestAchivement(best_idx: Int) {
-        DAClient.downBestPost(best_idx, object : DAHttpCallback {
-            override fun onResponse(
-                call: Call,
-                serverCode: Int,
-                body: String,
-                code: String,
-                message: String
-            ) {
-                if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
-                    if (code == DAClient.SUCCESS) {
-                        (activity as ActivityMain).onBackPressed(true)
-                    }
-                }
-            }
-        })
     }
 
     /**
@@ -267,8 +241,8 @@ class FragmentBestPost : BaseFragment() {
         tv_comment.text = String.format("%d${getString(R.string.str_count)}", bean.comment_count)
         ll_cheering.isSelected = bean.status
         tv_time.text = convertFromDate(bean.register_date)
-        tv_indicator.setText("0 / 0")
-        tv_indicator.setText("1 / " + bean.Images.size)
+        tv_indicator.text = "0 / 0"
+        tv_indicator.text = "1 / " + bean.Images.size
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
             mAdapter!!.add(image.image_url)

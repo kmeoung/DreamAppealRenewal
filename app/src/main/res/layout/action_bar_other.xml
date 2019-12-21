@@ -4,12 +4,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:background="@color/white"
-        android:elevation="5dp"
-        android:layout_marginBottom="5dp">
+        android:elevation="5dp">
 
     <!--툴바-->
-
     <ImageView
             android:id="@+id/iv_close"
             android:layout_width="45dp"
@@ -22,7 +21,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
             android:id="@+id/iv_back_blue"
@@ -93,7 +91,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <TextView
             android:id="@+id/tv_text_btn"
             android:layout_width="45dp"
@@ -101,7 +98,7 @@
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
             android:text="@string/str_next"
-            android:textColor="@color/azure"
+            android:textColor="@color/color_add_dream"
             android:textSize="17.2sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

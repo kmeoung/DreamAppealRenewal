@@ -6,36 +6,28 @@
         android:layout_marginTop="6dp"
         android:layout_marginBottom="8dp"
         android:elevation="5dp"
-        android:background="@color/white_three">
+        android:background="@color/white">
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="160dp">
-
-        <ImageView
-                android:id="@+id/iv_post"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#eaeff1"
-                android:src="@drawable/ic_image_gray" />
-
 
         <TextView
                 android:id="@+id/tv_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="#CC1072BD"
                 android:ellipsize="end"
-                android:fontFamily="@font/jalnan"
+                android:fontFamily="@font/nanum_square_round_r"
                 android:lineSpacingExtra="@dimen/text_line_spacing"
                 android:maxLines="2"
                 android:paddingLeft="26dp"
                 android:paddingTop="13.3dp"
                 android:paddingRight="26dp"
+                android:text="@string/str_add_achivement_post"
                 android:paddingBottom="13.3dp"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textSize="17.2sp"
                 android:gravity="center"/>
 
     </RelativeLayout>

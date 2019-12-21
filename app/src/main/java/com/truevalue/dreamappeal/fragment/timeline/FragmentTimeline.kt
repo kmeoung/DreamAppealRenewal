@@ -16,16 +16,14 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivitySearch
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
+import kotlinx.android.synthetic.main.fragment_post_detail.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -109,16 +107,31 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         mAdatper!!.clear()
                         try {
                             val posts = json.getJSONArray("posts")
+
                             for (i in 0 until posts.length()) {
+
                                 val post = posts.getJSONObject(i)
+                                val images = post.getJSONArray("images")
+
                                 val bean = Gson().fromJson<BeanTimeline>(
                                     post.toString(),
                                     BeanTimeline::class.java
                                 )
+
+                                var imageList = ArrayList<String>()
+
+                                for (j in 0 until images.length()) {
+
+                                    val image = images.getJSONObject(j)
+
+                                    val url = image.getString("url")
+                                    imageList.add(url)
+                                }
+                                bean.imageList = imageList
                                 mAdatper!!.add(bean)
                             }
                         } catch (e: Exception) {
-
+                            e.printStackTrace()
                         }
 
                     }
@@ -184,29 +197,75 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llShare = h.getItemView<LinearLayout>(R.id.ll_share)
             val tvTime = h.getItemView<TextView>(R.id.tv_time)
 
-            when(bean.post_type){
-                0->{
-                    ivCircle.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_circle_blue))
-                    tvArrow.setTextColor(ContextCompat.getColor(context!!,R.color.main_blue))
-                    ivSideImg.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_side_blue))
+            val pagerAdapter = BasePagerAdapter<String>(context!!)
+            pagerImages.adapter = pagerAdapter
+            pagerImages.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    tvIndicator.text = ((position + 1).toString() + " / " + pagerAdapter!!.getCount())
                 }
-                1->{
-                    ivCircle.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_circle_green))
-                    tvArrow.setTextColor(ContextCompat.getColor(context!!,R.color.asparagus))
-                    ivSideImg.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_side_green))
+            })
+
+            tvIndicator.text = ((1).toString() + " / " + bean.imageList.size)
+            for (j in 0 until bean.imageList.size) {
+                pagerAdapter.add(bean.imageList[j])
+            }
+            pagerAdapter.notifyDataSetChanged()
+
+            when (bean.post_type) {
+                0 -> {
+                    ivCircle.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_circle_blue
+                        )
+                    )
+                    tvArrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
+                    ivSideImg.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_side_blue
+                        )
+                    )
                 }
-                2->{
-                    ivCircle.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_circle_yellow))
-                    tvArrow.setTextColor(ContextCompat.getColor(context!!,R.color.yellow_orange))
-                    ivSideImg.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.ic_side_yellow))
+                1 -> {
+                    ivCircle.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_circle_green
+                        )
+                    )
+                    tvArrow.setTextColor(ContextCompat.getColor(context!!, R.color.asparagus))
+                    ivSideImg.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_side_green
+                        )
+                    )
+                }
+                2 -> {
+                    ivCircle.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_circle_yellow
+                        )
+                    )
+                    tvArrow.setTextColor(ContextCompat.getColor(context!!, R.color.yellow_orange))
+                    ivSideImg.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_side_yellow
+                        )
+                    )
                 }
             }
 
 
-            if(!bean.profile_image.isNullOrEmpty()){
+            if (!bean.profile_image.isNullOrEmpty()) {
                 Glide.with(context!!)
                     .load(bean.profile_image)
                     .placeholder(R.drawable.drawer_user)
+                    .circleCrop()
                     .into(ivProfile)
             }
 
@@ -214,23 +273,23 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 // todo : More 기능 추가 필요
             })
 
-            tvValueStyle.text = if(bean.value_style.isNullOrEmpty()) "" else bean.value_style
-            tvJob.text = if(bean.job.isNullOrEmpty()) "" else bean.job
-            if(bean.object_title.isNullOrEmpty() && bean.step_title.isNullOrEmpty()){
-                tvObject.text = bean.object_title
+            tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
+            tvJob.text = if (bean.job.isNullOrEmpty()) "" else bean.job
+            if (bean.object_title.isNullOrEmpty() && bean.step_title.isNullOrEmpty()) {
                 llObjectStep.visibility = GONE
-            }else{
+            } else {
                 llObjectStep.visibility = VISIBLE
+                tvObject.text = bean.object_title
 
-                if(bean.step_title.isNullOrEmpty()){
+                if (bean.step_title.isNullOrEmpty()) {
                     llStepLine.visibility = GONE
-                }else{
+                } else {
                     tvStep.text = bean.step_title
                     llStepLine.visibility = VISIBLE
                 }
             }
 
-            Utils.setImageViewSquare(context!!,rlImages)
+            Utils.setImageViewSquare(context!!, rlImages)
 
             tvTime.text = Utils.convertFromDate(bean.register_date)
 
@@ -255,6 +314,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * On Refresh
      */
     override fun onRefresh() {
-
+        getTimeLineData()
     }
 }

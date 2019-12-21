@@ -36,10 +36,10 @@ class ActivityCameraGallery : BaseActivity() {
     private var isMultiMode = false
     private val mMultiImage: ArrayList<BeanGalleryInfo>?
     private var mCurrentViewImage: File? = null
-    private var mGridAdapter : GridAdapter? = null
+    private var mGridAdapter: GridAdapter? = null
 
     private var mSelectType: String?
-    private var mViewType : String?
+    private var mViewType: String?
 
     val REQUEST_IMAGE_CAPTURE = 1004
 
@@ -79,6 +79,8 @@ class ActivityCameraGallery : BaseActivity() {
      * View Init
      */
     private fun initView() {
+        iv_check.isSelected = true
+
         if (!intent.getStringExtra(SELECT_TYPE).isNullOrEmpty()) {
             mSelectType = intent.getStringExtra(SELECT_TYPE)
         }
@@ -108,32 +110,34 @@ class ActivityCameraGallery : BaseActivity() {
             when (it) {
                 iv_check -> {
                     val array = ArrayList<File>()
-                    if(mViewType.equals(EXTRA_ACHIVEMENT_POST)) {
+                    if (mViewType.equals(EXTRA_ACHIVEMENT_POST)) {
+                        val intent = Intent()
                         if (isMultiMode) {
-
                             for (i in 0 until mMultiImage!!.size) {
                                 array.add(File(mMultiImage[i].imagePath))
                             }
-                            val intent = Intent()
-                            intent.putExtra(REQUEST_IMAGE_FILES, array)
-                            setResult(Activity.RESULT_OK, intent)
                         } else {
                             if (mCurrentViewImage != null) {
                                 val intent = Intent()
                                 array.add(mCurrentViewImage!!)
-                                intent.putExtra(REQUEST_IMAGE_FILES, array)
-                                setResult(Activity.RESULT_OK, intent)
                             }
                         }
-                        finish()
-                    }else if(mViewType.equals(EXTRA_ACTION_POST)){
-                        // Action Post 이미지 추가로 이동
-                        for (i in 0 until mMultiImage!!.size) {
-                            array.add(File(mMultiImage[i].imagePath))
-                        }
-                        val intent = Intent(this@ActivityCameraGallery,ActivityAddActionPost::class.java)
                         intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        startActivityForResult(intent,REQUEST_ADD_ACTION_POST)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    } else if (mViewType.equals(EXTRA_ACTION_POST)) {
+                        if (isMultiMode) {
+                            // Action Post 이미지 추가로 이동
+                            for (i in 0 until mMultiImage!!.size) {
+                                array.add(File(mMultiImage[i].imagePath))
+                            }
+                        }else{
+                            if(mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                        }
+                        val intent =
+                            Intent(this@ActivityCameraGallery, ActivityAddActionPost::class.java)
+                        intent.putExtra(REQUEST_IMAGE_FILES, array)
+                        startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
                     }
                 }
                 btn_multi_select -> {
@@ -147,7 +151,9 @@ class ActivityCameraGallery : BaseActivity() {
                     mGridAdapter!!.notifyDataSetChanged()
 
                 }
-                iv_close->{ finish() }
+                iv_close -> {
+                    finish()
+                }
             }
         }
         iv_close.setOnClickListener(listener)
@@ -170,7 +176,7 @@ class ActivityCameraGallery : BaseActivity() {
         for (i in bucketNameList.indices) {
             val title = bucketNameList[i]
             val id = bucketIdList[i]
-            mBucked!!.add(BeanGalleryInfo(title, id, null,false,-1))
+            mBucked!!.add(BeanGalleryInfo(title, id, null, false, -1))
             strBucketNameList.add(title)
         }
 
@@ -178,7 +184,7 @@ class ActivityCameraGallery : BaseActivity() {
 
         val arrayAdapter = ArrayAdapter(
             applicationContext,
-            R.layout.support_simple_spinner_dropdown_item,
+            R.layout.spinner_text,
             strBucketNameList
         )
 
@@ -187,8 +193,8 @@ class ActivityCameraGallery : BaseActivity() {
 
         for (i in beanImageInfoList.indices) {
             val (bucketName, bucketId, imagePath) = beanImageInfoList[i]
-            mOldPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false,-1))
-            mItemPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath,false,-1))
+            mOldPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath, false, -1))
+            mItemPath!!.add(BeanGalleryInfo(bucketName, bucketId, imagePath, false, -1))
 
             if (!firstImage) {
                 Glide.with(applicationContext!!)
@@ -272,50 +278,52 @@ class ActivityCameraGallery : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            var extras: Bundle? = null
-            try {
-                extras = data!!.extras
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        if (resultCode == Activity.RESULT_OK) {
+            when(requestCode) {
+                REQUEST_IMAGE_CAPTURE-> {
+                    var extras: Bundle? = null
+                    try {
+                        extras = data!!.extras
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
 
-            var uri: Uri? = null
-            try {
-                uri = data!!.data
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+                    var uri: Uri? = null
+                    try {
+                        uri = data!!.data
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
 
-            var file: File? = null
-            if (extras != null) {
-                val photo = extras.getParcelable<Bitmap>("data")
-                val filePath = Environment.getExternalStorageDirectory().path + "/"
-                val fileName: String
-                fileName = Date().time.toString() + ".jpeg"
-                Utils.SaveBitmapToFileCache(photo!!, filePath, fileName)
-                file = File(filePath + fileName)
-            }
-            if (uri != null) {
-                uri = data!!.data
-                file = File(Utils.getRealPathFromURI(this@ActivityCameraGallery, uri!!))
-            }
+                    var file: File? = null
+                    if (extras != null) {
+                        val photo = extras.getParcelable<Bitmap>("data")
+                        val filePath = Environment.getExternalStorageDirectory().path + "/"
+                        val fileName: String
+                        fileName = Date().time.toString() + ".jpeg"
+                        Utils.SaveBitmapToFileCache(photo!!, filePath, fileName)
+                        file = File(filePath + fileName)
+                    }
+                    if (uri != null) {
+                        uri = data!!.data
+                        file = File(Utils.getRealPathFromURI(this@ActivityCameraGallery, uri!!))
+                    }
 
-            val array = ArrayList<File>()
-            array.add(file!!)
-            // todo : 이미지
-            val intent = Intent()
-            intent.putExtra(REQUEST_IMAGE_FILES, array)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
-
-        }else{
-            if(resultCode == Activity.RESULT_OK){
-                if(requestCode == REQUEST_ADD_ACTION_POST){
+                    val array = ArrayList<File>()
+                    array.add(file!!)
+                    // todo : 이미지
+                    val intent = Intent()
+                    intent.putExtra(REQUEST_IMAGE_FILES, array)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+                REQUEST_ADD_ACTION_POST-> {
                     // todo : 여기에는 확인이 필요합니다.
                     finish()
                 }
+
             }
+
         }
     }
 
@@ -362,23 +370,23 @@ class ActivityCameraGallery : BaseActivity() {
             if (isMultiMode) {
                 rlMulti.visibility = VISIBLE
                 multiCheck.isSelected = bean.imageCheck
-                if(bean.imageCheck){
+                if (bean.imageCheck) {
                     tvMulti.text = (mMultiImage!!.indexOf(bean) + 1).toString()
-                }else{
+                } else {
                     tvMulti.text = ""
                 }
-            }else{
+            } else {
                 rlMulti.visibility = GONE
                 pictureList[position].imageCheck = false
             }
 
             rlMulti.setOnClickListener(View.OnClickListener {
                 // todo : 멀티 버튼 테스트
-                if(bean.imageCheck){
+                if (bean.imageCheck) {
                     pictureList[position].imageCheck = false
                     mMultiImage!!.remove(bean)
 //                    pictureList[position].imageSelectedIdx = -1
-                }else {
+                } else {
                     if (mMultiImage!!.size < 10) {
                         pictureList[position].imageCheck = true
                         mMultiImage!!.add(bean)

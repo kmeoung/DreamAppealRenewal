@@ -38,7 +38,6 @@ class FragmentAddAchivementPost : BaseFragment() {
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var isEdit = false
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -173,12 +172,11 @@ class FragmentAddAchivementPost : BaseFragment() {
             Utils.multiUploadWithTransferUtility(
                 context!!.applicationContext,
                 mAdapter!!.mArray as ArrayList<File>,
-                "$idx/$type",
+                "$type/$idx",
                 object :
                     IOS3ImageUploaderListener {
                     override fun onMutiStateCompleted(adressList: ArrayList<String>) {
                         super.onMutiStateCompleted(adressList)
-                        // todo :
                         updateProfileImage(idx, type, adressList)
                     }
 
@@ -201,7 +199,7 @@ class FragmentAddAchivementPost : BaseFragment() {
      * Http
      * Profile Image Update
      */
-    private fun updateProfileImage(idx: Int, type: Int, url: ArrayList<String>) {
+    private fun updateProfileImage(idx: Int, type: String, url: ArrayList<String>) {
         val list = ArrayList<String>()
         for (s in url) {
             list.add(s)

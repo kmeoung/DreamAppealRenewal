@@ -13,10 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
 import com.truevalue.dreamappeal.bean.BeanBestPost
 import com.truevalue.dreamappeal.bean.BeanPerformance
@@ -33,8 +30,7 @@ import java.io.IOException
 class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
     SwipeRefreshLayout.OnRefreshListener {
 
-    private var mAdapter: BaseRecyclerViewAdapter? = null
-    private var mBestPostList: ArrayList<BeanBestPost?>? = null
+    private var mAdapter: BaseRecyclerViewAdapter2<Any?>? = null
     private var mCurrentPage = 0
     private var mBeanPerformance: BeanPerformance? = null
 
@@ -75,15 +71,12 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
      */
     private fun bindData() {
         if (mBeanPerformance != null) {
-            mBestPostList!!.clear()
+            mAdapter!!.clear()
             for (i in 0 until mBeanPerformance!!.best_posts.size) {
-                mBestPostList!!.add(mBeanPerformance!!.best_posts[i])
+                mAdapter!!.add(mBeanPerformance!!.best_posts[i])
             }
 
-            mAdapter!!.clear()
-            for (i in 0 until mBeanPerformance!!.achievement_posts.size) {
-                mAdapter!!.add(mBeanPerformance!!.achievement_posts[i])
-            }
+
         }
     }
 
@@ -91,9 +84,6 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
      * Data 초기화
      */
     private fun initData() {
-        if (mBestPostList == null) {
-            mBestPostList = ArrayList<BeanBestPost?>()
-        }
     }
 
     /**
@@ -110,7 +100,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
      */
     private fun initAdapter() {
         if (context != null) {
-            mAdapter = BaseRecyclerViewAdapter(this)
+            mAdapter = BaseRecyclerViewAdapter2(this)
             rv_recycle.adapter = mAdapter
             rv_recycle.layoutManager =
                 LinearLayoutManager(context)
@@ -158,8 +148,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
 
                             val bestPosts = json.getJSONObject("best_posts")
-                            mBestPostList!!.clear()
-
+                            mAdapter!!.clear()
                             for (i in 1..3) {
                                 try {
                                     val bestPost = bestPosts.getJSONObject("best_post_$i")
@@ -168,10 +157,10 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                                         BeanBestPost::class.java
                                     )
                                     mBeanPerformance!!.best_posts.add(bean)
-                                    mBestPostList!!.add(bean)
+                                    mAdapter!!.add(bean)
                                 } catch (e: Exception) {
                                     mBeanPerformance!!.best_posts.add(null)
-                                    mBestPostList!!.add(null)
+                                    mAdapter!!.add(null)
                                 }
                             }
                         }
@@ -187,6 +176,9 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
         Utils.setSwipeRefreshLayout(srl_refresh, this)
     }
 
+    private val TYPE_FULL_ITEM = 0
+    private val TYPE_EMPTY_ITEM = 1
+
     /**
      * RecyclerView Item Count
      */
@@ -196,39 +188,53 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * RecyclerView Create View Holder
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
-        BaseViewHolder.newInstance(R.layout.listitem_best_post, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder{
+        if(TYPE_FULL_ITEM == viewType){
+            return BaseViewHolder.newInstance(R.layout.listitem_best_post, parent, false)
+        }
+        return BaseViewHolder.newInstance(R.layout.listitem_best_post_default, parent, false)
+    }
+
 
     /**
      * RecyclerView Bind View Holder
      */
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
         if (mAdapter != null) {
-            // todo : Data Class 파일
-            val bean = mAdapter!!.get(i) as BeanAchievementPost
-            val ivPost = h.getItemView<ImageView>(R.id.iv_post)
             val tvPost = h.getItemView<TextView>(R.id.tv_post)
-            Glide.with(context!!)
-                .load(bean.thumbnailImage)
-                .placeholder(R.drawable.ic_image_gray)
-                .into(ivPost)
+            if(getItemViewType(i) == TYPE_FULL_ITEM) {
+                val bean = mAdapter!!.get(i) as BeanBestPost
+                val ivPost = h.getItemView<ImageView>(R.id.iv_post)
+//                Glide.with(context!!)
+//                    .load(bean.)
+//                    .placeholder(R.drawable.ic_image_gray)
+//                    .into(ivPost)
 
-            tvPost.text = bean.title
+                tvPost.text = bean.title
 
-            h.itemView.setOnClickListener(View.OnClickListener {
-                (activity as ActivityMain).replaceFragment(
-                    FragmentBestPost.newInstance(bean.idx, i + 1),
-                    addToBack = true,
-                    isMainRefresh = true
-                )
-            })
+                h.itemView.setOnClickListener(View.OnClickListener {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentBestPost.newInstance(bean.idx, i + 1),
+                        addToBack = true,
+                        isMainRefresh = true
+                    )
+                })
+            }else{
+                tvPost.text = Utils.replaceTextColor(context,tvPost,getString(R.string.str_best_post))
+                h.itemView.setOnClickListener(View.OnClickListener {
+                    (activity as ActivityMain).replaceFragment(FragmentAddAchivementPost(), true)
+                })
+            }
         }
     }
 
     /**
      * RecyclerView Item View Type
      */
-    override fun getItemViewType(i: Int): Int = 0
+    override fun getItemViewType(i: Int): Int{
+        if(mAdapter!!.get(i) == null) return TYPE_EMPTY_ITEM
+        return TYPE_FULL_ITEM
+    }
 
     /**
      * 위에서 아래로 스와이프 시 Refresh

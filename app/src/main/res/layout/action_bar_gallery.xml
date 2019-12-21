@@ -109,7 +109,7 @@
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
             android:text="@string/str_next"
-            android:textColor="@color/azure"
+            android:textColor="@color/color_add_dream"
             android:textSize="17.2sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
