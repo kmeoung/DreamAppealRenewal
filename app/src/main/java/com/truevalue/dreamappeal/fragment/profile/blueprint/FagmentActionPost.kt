@@ -1,62 +1,50 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail
 import com.truevalue.dreamappeal.bean.BeanActionPostImage
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_best_post.*
 import kotlinx.android.synthetic.main.action_bar_best_post.iv_more
 import kotlinx.android.synthetic.main.action_bar_best_post.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
-import kotlinx.android.synthetic.main.bottom_post_view.iv_cheering
-import kotlinx.android.synthetic.main.bottom_post_view.iv_comment
-import kotlinx.android.synthetic.main.bottom_post_view.ll_cheering
-import kotlinx.android.synthetic.main.bottom_post_view.ll_comment
-import kotlinx.android.synthetic.main.bottom_post_view.ll_comment_detail
-import kotlinx.android.synthetic.main.bottom_post_view.ll_share
-import kotlinx.android.synthetic.main.bottom_post_view.tv_cheering
-import kotlinx.android.synthetic.main.bottom_post_view.tv_comment
 import kotlinx.android.synthetic.main.fragment_action_post.*
-import kotlinx.android.synthetic.main.fragment_action_post.iv_dream_profile
-import kotlinx.android.synthetic.main.fragment_action_post.pager_image
-import kotlinx.android.synthetic.main.fragment_action_post.rl_images
-import kotlinx.android.synthetic.main.fragment_action_post.tv_contents
-import kotlinx.android.synthetic.main.fragment_action_post.tv_indicator
-import kotlinx.android.synthetic.main.fragment_action_post.tv_job
-import kotlinx.android.synthetic.main.fragment_action_post.tv_value_style
-import kotlinx.android.synthetic.main.fragment_dream_present.*
-import kotlinx.android.synthetic.main.fragment_post_detail.*
-import kotlinx.android.synthetic.main.layout_object_step_header.*
 import okhttp3.Call
 import org.json.JSONObject
-import java.lang.Exception
 
 class FagmentActionPost : BaseFragment() {
 
     private var mAdapter: BasePagerAdapter<String>? = null
 
     private var mPostIdx = -1
-
+    private var mViewUserIdx = -1
     companion object {
-        fun newInstance(post_idx: Int): FagmentActionPost {
+        fun newInstance(post_idx: Int, view_user_idx : Int): FagmentActionPost {
             val fragment = FagmentActionPost()
             fragment.mPostIdx = post_idx
+            fragment.mViewUserIdx = view_user_idx
             return fragment
         }
     }
@@ -88,6 +76,10 @@ class FagmentActionPost : BaseFragment() {
         Utils.setImageViewSquare(context, rl_images)
         // text 설정
         tv_title.text = getString(R.string.str_level_choice_action_post)
+
+        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+            iv_action_more.visibility = VISIBLE
+        }else iv_action_more.visibility = GONE
     }
 
     /**
@@ -108,7 +100,7 @@ class FagmentActionPost : BaseFragment() {
                     )
                     intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
                     intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_comment-> {
                     val intent = Intent(context!!, ActivityComment::class.java)
@@ -117,12 +109,12 @@ class FagmentActionPost : BaseFragment() {
                         ActivityComment.EXTRA_TYPE_ACTION_POST
                     )
                     intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_share -> {
 
                 }
-                iv_more -> {
+                iv_action_more -> {
 
                 }
             }
@@ -132,7 +124,17 @@ class FagmentActionPost : BaseFragment() {
         iv_comment.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
-        iv_more.setOnClickListener(listener)
+        iv_action_more.setOnClickListener(listener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
+        }
     }
 
     /**
@@ -156,7 +158,7 @@ class FagmentActionPost : BaseFragment() {
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
-                        tv_comment.text = count.toString()
+                        tv_cheering.text = "${count}개"
                     }
                 }
             }
@@ -213,11 +215,11 @@ class FagmentActionPost : BaseFragment() {
                             val images = actionPost.getJSONArray("images")
                             for (i in 0 until images.length()) {
                                 val image = images.getJSONObject(i)
-                                val bean = Gson().fromJson<BeanActionPostImage>(
+                                val beanImage = Gson().fromJson<BeanActionPostImage>(
                                     image.toString(),
                                     BeanActionPostImage::class.java
                                 )
-                                mAdapter!!.add(bean.image_url)
+                                mAdapter!!.add(beanImage.image_url)
                                 tv_indicator.text = "0 / 0"
                                 tv_indicator.text = "1 / " + images.length()
                             }
@@ -281,8 +283,8 @@ class FagmentActionPost : BaseFragment() {
 
         tv_contents.text = bean.content
 
-        tv_cheering.text = bean.like_count.toString()
-        tv_comment.text = bean.comment_count.toString()
+        tv_cheering.text = "${bean.like_count}개"
+        tv_comment.text =  "${bean.comment_count}개"
 
     }
 

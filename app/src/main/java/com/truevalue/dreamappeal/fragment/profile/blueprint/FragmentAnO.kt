@@ -3,6 +3,8 @@ package com.truevalue.dreamappeal.fragment.profile.blueprint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -11,12 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.http.DAClient
@@ -24,6 +24,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_ano.*
+import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -31,18 +32,21 @@ class FragmentAnO : BaseFragment() {
 
     private var mViewType: Int?
     private var mAdapter: BaseRecyclerViewAdapter? = null
-
+    private var mPagerAdapter : BasePagerAdapter<String>? = null
     init {
         mViewType = VIEW_TYPE_ABILITY
     }
+
+    private var mViewUserIdx: Int = -1
 
     companion object {
         val VIEW_TYPE_ABILITY = 0
         val VIEW_TYPE_OPPORTUNITY = 1
 
-        fun newInstance(view_type: Int): FragmentAnO {
+        fun newInstance(view_type: Int, view_user_idx: Int): FragmentAnO {
             val fragment = FragmentAnO()
             fragment.mViewType = view_type
+            fragment.mViewUserIdx = view_user_idx
             return fragment
         }
     }
@@ -74,16 +78,18 @@ class FragmentAnO : BaseFragment() {
             when (it) {
                 iv_back_black -> activity!!.onBackPressed()
                 ll_add -> {
-                    val type = when (mViewType) {
-                        VIEW_TYPE_ABILITY -> FragmentAddPage.VIEW_TYPE_ADD_ABILITY
-                        VIEW_TYPE_OPPORTUNITY -> FragmentAddPage.VIEW_TYPE_ADD_OPPORTUNITY
-                        else -> ""
+                    if (Comm_Prefs.getUserProfileIndex() == mViewUserIdx) {
+                        val type = when (mViewType) {
+                            VIEW_TYPE_ABILITY -> FragmentAddPage.VIEW_TYPE_ADD_ABILITY
+                            VIEW_TYPE_OPPORTUNITY -> FragmentAddPage.VIEW_TYPE_ADD_OPPORTUNITY
+                            else -> ""
+                        }
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentAddPage.newInstance(
+                                type
+                            ), true
+                        )
                     }
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentAddPage.newInstance(
-                            type
-                        ), true
-                    )
                 }
                 ll_ability -> setTabView(VIEW_TYPE_ABILITY)
                 ll_opportunity -> setTabView(VIEW_TYPE_OPPORTUNITY)
@@ -100,50 +106,124 @@ class FragmentAnO : BaseFragment() {
      */
     private fun setTabView(view_type: Int) {
         mViewType = view_type
-        when (view_type) {
-            VIEW_TYPE_ABILITY -> {
-                iv_ability.isSelected = true
-                tv_ability.isSelected = true
-                iv_under_ability.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context!!,
-                        R.color.yellow_orange
-                    )
-                )
-                tv_add.text = getString(R.string.str_add_ability)
-                ll_bg_add.setBackgroundColor(ContextCompat.getColor(context!!,R.color.yellow_orange))
 
-                iv_opportunity.isSelected = false
-                tv_opportunity.isSelected = false
-                iv_under_opportunity.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context!!,
-                        R.color.light_peach
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+            iv_add.visibility = VISIBLE
+            when (view_type) {
+                VIEW_TYPE_ABILITY -> {
+                    iv_ability.isSelected = true
+                    tv_ability.isSelected = true
+                    iv_under_ability.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.yellow_orange
+                        )
                     )
-                )
-                getAbilities()
+                    tv_add.text = getString(R.string.str_add_ability)
+                    ll_bg_add.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.yellow_orange
+                        )
+                    )
+
+                    iv_opportunity.isSelected = false
+                    tv_opportunity.isSelected = false
+                    iv_under_opportunity.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.light_peach
+                        )
+                    )
+                    getAbilities()
+                    getExampleAbility()
+                }
+                VIEW_TYPE_OPPORTUNITY -> {
+                    iv_ability.isSelected = false
+                    tv_ability.isSelected = false
+                    iv_under_ability.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.light_peach
+                        )
+                    )
+                    tv_add.text = getString(R.string.str_add_opportunity)
+                    ll_bg_add.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.faded_orange
+                        )
+                    )
+
+                    iv_opportunity.isSelected = true
+                    tv_opportunity.isSelected = true
+                    iv_under_opportunity.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.faded_orange
+                        )
+                    )
+                    getOpportunities()
+                    getExampleOpportunity()
+                }
             }
-            VIEW_TYPE_OPPORTUNITY -> {
-                iv_ability.isSelected = false
-                tv_ability.isSelected = false
-                iv_under_ability.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context!!,
-                        R.color.light_peach
+        } else {
+            iv_add.visibility = GONE
+            when (view_type) {
+                VIEW_TYPE_ABILITY -> {
+                    iv_ability.isSelected = true
+                    tv_ability.isSelected = true
+                    iv_under_ability.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.yellow_orange
+                        )
                     )
-                )
-                tv_add.text = getString(R.string.str_add_opportunity)
-                ll_bg_add.setBackgroundColor(ContextCompat.getColor(context!!,R.color.faded_orange))
+                    tv_add.text = getString(R.string.str_ability)
+                    ll_bg_add.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.yellow_orange
+                        )
+                    )
 
-                iv_opportunity.isSelected = true
-                tv_opportunity.isSelected = true
-                iv_under_opportunity.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context!!,
-                        R.color.faded_orange
+                    iv_opportunity.isSelected = false
+                    tv_opportunity.isSelected = false
+                    iv_under_opportunity.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.light_peach
+                        )
                     )
-                )
-                getOpportunities()
+                    getAbilities()
+                }
+                VIEW_TYPE_OPPORTUNITY -> {
+                    iv_ability.isSelected = false
+                    tv_ability.isSelected = false
+                    iv_under_ability.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.light_peach
+                        )
+                    )
+                    tv_add.text = getString(R.string.str_opportunity)
+                    ll_bg_add.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.faded_orange
+                        )
+                    )
+
+                    iv_opportunity.isSelected = true
+                    tv_opportunity.isSelected = true
+                    iv_under_opportunity.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context!!,
+                            R.color.faded_orange
+                        )
+                    )
+                    getOpportunities()
+                }
             }
         }
     }
@@ -153,8 +233,7 @@ class FragmentAnO : BaseFragment() {
      * 갖출 능력 조회
      */
     private fun getAbilities() {
-        val profile_idx: Int =
-            Comm_Prefs.getUserProfileIndex() // todo : 여기에는 현재 사용중인 프로필의 idx를 넣어야 합니다
+        val profile_idx: Int = mViewUserIdx // todo : 여기에는 현재 사용중인 프로필의 idx를 넣어야 합니다
 
         DAClient.getAbilities(profile_idx, object : DAHttpCallback {
             override fun onResponse(
@@ -193,7 +272,7 @@ class FragmentAnO : BaseFragment() {
      */
     private fun getOpportunities() {
         val profile_idx: Int =
-            Comm_Prefs.getUserProfileIndex() // todo : 여기에는 현재 사용중인 프로필의 idx를 넣어야 합니다
+            mViewUserIdx // todo : 여기에는 현재 사용중인 프로필의 idx를 넣어야 합니다
 
         DAClient.getOpportunity(profile_idx, object : DAHttpCallback {
             override fun onResponse(
@@ -290,6 +369,77 @@ class FragmentAnO : BaseFragment() {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
         rv_ano.adapter = mAdapter
         rv_ano.layoutManager = LinearLayoutManager(context)
+
+        mPagerAdapter = BasePagerAdapter(context!!)
+        pager_image.adapter = mPagerAdapter
+        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tv_indicator.text = ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
+            }
+        })
+    }
+
+    /**
+     * Http
+     * 예시 이미지 가져오기
+     */
+    private fun getExampleAbility(){
+        DAClient.abilityExampleImage(1,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(code == DAClient.SUCCESS){
+                    val json = JSONObject(body)
+                    val exUrl = json.getJSONArray("ex_url")
+
+                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
+
+                    mPagerAdapter!!.clear()
+                    for(i in 0 until exUrl.length()){
+                        val image = exUrl.getJSONObject(i)
+                        val url = image.getString("url")
+                        mPagerAdapter!!.add(url)
+                    }
+                    mPagerAdapter!!.notifyDataSetChanged()
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * 예시 이미지 가져오기
+     */
+    private fun getExampleOpportunity(){
+        DAClient.opportunityExampleImage(1,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(code == DAClient.SUCCESS){
+                    val json = JSONObject(body)
+                    val exUrl = json.getJSONArray("ex_url")
+
+                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
+
+                    mPagerAdapter!!.clear()
+                    for(i in 0 until exUrl.length()){
+                        val image = exUrl.getJSONObject(i)
+                        val url = image.getString("url")
+                        mPagerAdapter!!.add(url)
+                    }
+                    mPagerAdapter!!.notifyDataSetChanged()
+                }
+            }
+        })
     }
 
     /**
@@ -357,6 +507,10 @@ class FragmentAnO : BaseFragment() {
             llItem.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
 
             tvContents.text = bean.contents
+
+            if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) ivMore.visibility = VISIBLE
+            else ivMore.visibility = GONE
+
             ivMore.setOnClickListener(View.OnClickListener {
                 showPopupMenu(ivMore, bean, mViewType!!)
             })

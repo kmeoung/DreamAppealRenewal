@@ -13,12 +13,22 @@ import kotlinx.android.synthetic.main.activity_dream_note.*
 
 class ActivityDreamNote : BaseActivity(){
 
+    private var mViewUserIdx = -1;
+    companion object{
+        val EXTRA_VIEW_USER_IDX = "EXTRA_VIEW_USER_IDX"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dream_note)
-
+        // init View
+        initView()
         // Action
         onAction()
+    }
+
+    private fun initView(){
+        mViewUserIdx = intent.getIntExtra(EXTRA_VIEW_USER_IDX,-1)
     }
 
     /**
@@ -30,7 +40,7 @@ class ActivityDreamNote : BaseActivity(){
         // 일상 / 경험 설정
         setActionBar(true)
         replaceFragment(R.id.dream_note_container,
-            FragmentDreamNoteLife(),false)
+            FragmentDreamNoteLife.newInstance(mViewUserIdx),false)
 
     }
 
@@ -50,12 +60,12 @@ class ActivityDreamNote : BaseActivity(){
                 ll_life->{
                     setActionBar(true)
                     replaceFragment(R.id.dream_note_container,
-                        FragmentDreamNoteLife(),false)
+                        FragmentDreamNoteLife.newInstance(mViewUserIdx),false)
                 }
                 ll_idea->{
                     setActionBar(false)
                     replaceFragment(R.id.dream_note_container,
-                        FragmentDreamNoteIdea(),false)
+                        FragmentDreamNoteIdea.newInstance(mViewUserIdx),false)
                 }
             }
         }

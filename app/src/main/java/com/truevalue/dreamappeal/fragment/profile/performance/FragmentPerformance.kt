@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.performance
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -28,6 +29,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAchievementPost
 import com.truevalue.dreamappeal.bean.BeanBestPost
 import com.truevalue.dreamappeal.bean.BeanPerformance
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -305,14 +307,14 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                 intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                 intent.putExtra(ActivityComment.EXTRA_INDEX,bean.idx)
                 intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
-                startActivity(intent)
+                startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
 
             llComment.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context!!,ActivityComment::class.java)
                 intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                 intent.putExtra(ActivityComment.EXTRA_INDEX,bean.idx)
-                startActivity(intent)
+                startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
 
             iBtnMore.setOnClickListener(View.OnClickListener {
@@ -339,6 +341,16 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                     isMainRefresh = true
                 )
             })
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
         }
     }
 
@@ -519,11 +531,11 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
                     view.setOnClickListener(View.OnClickListener {
                         // todo : 상세 이동
-                        (activity as ActivityMain).replaceFragment(
-                            FragmentBestPost.newInstance(bean.idx,position + 1),
+                        /*(activity as ActivityMain).replaceFragment(
+                            FragmentBestPost.newInstance(bean.idx,position + 1,mV),
                             addToBack = true,
                             isMainRefresh = true
-                        )
+                        )*/
                     })
                 }
             }

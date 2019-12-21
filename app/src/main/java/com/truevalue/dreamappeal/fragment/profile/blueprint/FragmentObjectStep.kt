@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -29,11 +32,11 @@ import com.truevalue.dreamappeal.bean.BeanActionPostHeader
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject
 import com.truevalue.dreamappeal.bean.BeanObjectStep
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.action_bar_other.iv_more
 import kotlinx.android.synthetic.main.bottom_comment_view.*
 import kotlinx.android.synthetic.main.fragment_object_step.*
 import kotlinx.android.synthetic.main.layout_object_step_header.*
@@ -46,9 +49,12 @@ class FragmentObjectStep : BaseFragment() {
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mObjectBean: BeanObjectStep? = null
 
+    private var mViewUserIdx: Int = -1
+
     companion object {
-        fun newInstance(bean: BeanBlueprintObject): FragmentObjectStep {
+        fun newInstance(bean: BeanBlueprintObject,view_user_idx: Int): FragmentObjectStep {
             val fragment = FragmentObjectStep()
+            fragment.mViewUserIdx = view_user_idx
             fragment.mBean = bean
             return fragment
         }
@@ -77,6 +83,15 @@ class FragmentObjectStep : BaseFragment() {
      */
     private fun initView() {
         tv_title.text = getString(R.string.str_object_step)
+
+        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+            iv_object_step_more.visibility = VISIBLE
+            tv_detail_step.visibility = VISIBLE
+        }else{
+            iv_object_step_more.visibility = GONE
+            tv_detail_step.visibility = GONE
+        }
+
         // 댓글 설정
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -114,7 +129,7 @@ class FragmentObjectStep : BaseFragment() {
         val listener = View.OnClickListener {
             when (it) {
                 iv_back_black -> (activity as ActivityMain).onBackPressed()
-                iv_more -> {
+                iv_object_step_more -> {
                     showMoreDialog()
                 }
                 tv_detail_step -> {
@@ -134,9 +149,9 @@ class FragmentObjectStep : BaseFragment() {
                     )
                     intent.putExtra(
                         ActivityComment.EXTRA_INDEX,
-                        Comm_Prefs.getUserProfileIndex()
+                        mViewUserIdx
                     ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 btn_commit_comment -> {
                     if (btn_commit_comment.isSelected) addBlueprintComment()
@@ -145,11 +160,21 @@ class FragmentObjectStep : BaseFragment() {
         }
 
         iv_back_black.setOnClickListener(listener)
-        iv_more.setOnClickListener(listener)
+        iv_object_step_more.setOnClickListener(listener)
         tv_detail_step.setOnClickListener(listener)
         rl_comment.setOnClickListener(listener)
         btn_commit_comment.setOnClickListener(listener)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
+        }
     }
 
     /**
@@ -315,7 +340,7 @@ class FragmentObjectStep : BaseFragment() {
      * 발전계획 댓글 추가
      */
     private fun addBlueprintComment() {
-        val dst_profile_idx = Comm_Prefs.getUserProfileIndex() // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mViewUserIdx // todo : 현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addBlueprintComment(
@@ -390,6 +415,10 @@ class FragmentObjectStep : BaseFragment() {
 
                 tvPosition.text = bean.position.toString()
                 tvTitle.text = bean.title
+                if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+                    ivMore.visibility = VISIBLE
+                }else ivMore.visibility = GONE
+
                 ivMore.setOnClickListener(View.OnClickListener {
                     // todo : 여기서는 기능 구현이 필요합니다
                 })
@@ -406,7 +435,7 @@ class FragmentObjectStep : BaseFragment() {
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FagmentActionPost.newInstance(bean.idx),
+                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = false
                     )

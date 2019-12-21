@@ -130,7 +130,8 @@
                     android:scaleType="fitXY"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
-                    android:src="@drawable/ic_add_white" />
+                    android:src="@drawable/ic_add_white"
+                    android:visibility="gone"/>
 
             <TextView
                     android:id="@+id/tv_add"

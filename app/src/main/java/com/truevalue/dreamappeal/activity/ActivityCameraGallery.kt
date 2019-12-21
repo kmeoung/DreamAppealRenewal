@@ -66,6 +66,7 @@ class ActivityCameraGallery : BaseActivity() {
         val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
         val EXTRA_ACTION_POST = "EXTRA_ACTION_POST"
         val EXTRA_ACHIVEMENT_POST = "EXTRA_ACHIVEMENT_POST"
+        val EXTRA_DREAM_PROFILE = "EXTRA_DREAM_PROFILE"
         val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
         val REQUEST_BEST_IDX = "REQUEST_BEST_IDX"
     }
@@ -94,6 +95,10 @@ class ActivityCameraGallery : BaseActivity() {
 
         if (!intent.getStringExtra(VIEW_TYPE).isNullOrEmpty()) {
             mViewType = intent.getStringExtra(VIEW_TYPE)
+        }
+
+        if(mViewType == EXTRA_ACHIVEMENT_POST){
+            mBestIdx = intent.getIntExtra(ACHIEVEMENT_POST_BEST_IDX,-1)
         }
 
         when (mSelectType) {
@@ -146,6 +151,20 @@ class ActivityCameraGallery : BaseActivity() {
                         intent.putExtra(VIEW_TYPE, EXTRA_ACTION_POST)
                         intent.putExtra(REQUEST_IMAGE_FILES, array)
                         startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
+                    }else if(mViewType.equals(EXTRA_DREAM_PROFILE)){
+                        if (isMultiMode) {
+                            // Action Post 이미지 추가로 이동
+                            for (i in 0 until mMultiImage!!.size) {
+                                array.add(File(mMultiImage[i].imagePath))
+                            }
+                        } else {
+                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                        }
+
+                        val intent = Intent()
+                        intent.putExtra(REQUEST_IMAGE_FILES,array)
+                        setResult(Activity.RESULT_OK,intent)
+                        finish()
                     }
                 }
                 btn_multi_select -> {

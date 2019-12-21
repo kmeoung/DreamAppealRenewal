@@ -129,7 +129,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
      */
     private fun getAchievementPostMain() {
         // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
-        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        val profile_idx = mViewUserIdx
         DAClient.achievementPostMain(profile_idx,
             object : DAHttpCallback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -216,13 +216,14 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                 Glide.with(context!!)
                     .load(bean.thumbnail_image)
                     .placeholder(R.drawable.ic_image_gray)
+                    .centerCrop()
                     .into(ivPost)
 
                 tvPost.text = bean.title
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FragmentBestPost.newInstance(bean.idx, i + 1),
+                        FragmentBestPost.newInstance(bean.idx, i + 1,mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = true
                     )

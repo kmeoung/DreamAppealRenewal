@@ -50,6 +50,7 @@ class BasePagerAdapter<String>(private val mContext: Context) :
         Glide.with(mContext)
             .load(url)
             .placeholder(R.drawable.ic_image_black)
+            .centerCrop()
             .into(imageView)
         container.addView(imageView, 0)
         return imageView

@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_post_detail.*
 import okhttp3.Call
 import org.json.JSONObject
 
+@Deprecated ("Not Used")
 class FragmentAchivementPostDetail : BaseFragment() {
 
     private var mPostIndx = -1
@@ -142,7 +143,7 @@ class FragmentAchivementPostDetail : BaseFragment() {
                             val image = Gson().fromJson<BeanImages>(thumbnail.getJSONObject(i).toString(),BeanImages::class.java)
                             images.add(image)
                         }
-                        bean.Images = images
+                        //bean.Images = images
 
                         mBean = bean
                         setData(bean)
@@ -167,7 +168,7 @@ class FragmentAchivementPostDetail : BaseFragment() {
         tv_indicator.setText("1 / " + bean.Images.size)
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
-            mAdapter!!.add(image.image_url)
+            //mAdapter!!.add(image.image_url)
         }
         mAdapter!!.notifyDataSetChanged()
     }

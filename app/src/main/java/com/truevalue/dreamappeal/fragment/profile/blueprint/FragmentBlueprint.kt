@@ -50,10 +50,10 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mObjectAdapter: BaseRecyclerViewAdapter? = null // Object Adapter
     private var mBean: BeanBlueprint? = null
 
-    private var mViewUserIdx : Int = -1
+    private var mViewUserIdx: Int = -1
 
-    companion object{
-        fun newInstance(view_user_idx : Int) : FragmentBlueprint {
+    companion object {
+        fun newInstance(view_user_idx: Int): FragmentBlueprint {
             val fragment = FragmentBlueprint()
             fragment.mViewUserIdx = view_user_idx
             return fragment
@@ -110,35 +110,43 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 tv_default_ability_opportunity -> {
                     // replace to Dream List
                     (activity as ActivityMain).replaceFragment(
-                        FragmentAnO(),
+                        FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_ABILITY, mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = true
                     )
                 }
                 tv_default_object,
-                iv_add_object -> (activity as ActivityMain).replaceFragment(
-                    FragmentAddPage.newInstance(
-                        FragmentAddPage.VIEW_TYPE_ADD_STEP
-                    ), addToBack = true, isMainRefresh = true
-                )
-                ll_ability->(activity as ActivityMain).replaceFragment(
-                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_ABILITY),
-                    addToBack = true,
-                    isMainRefresh = true
-                )
-                ll_opportunity->(activity as ActivityMain).replaceFragment(
-                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_OPPORTUNITY),
-                    addToBack = true,
-                    isMainRefresh = true
-                )
-                rl_comment->{
-                    val intent = Intent(context!!,ActivityComment::class.java)
-                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_BLUEPRINT)
-                    intent.putExtra(ActivityComment.EXTRA_INDEX,Comm_Prefs.getUserProfileIndex()) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
-                    startActivity(intent)
+                iv_add_object -> {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentAddPage.newInstance(
+                            FragmentAddPage.VIEW_TYPE_ADD_STEP
+                        ), addToBack = true, isMainRefresh = true
+                    )
                 }
-                btn_commit_comment->{
-                    if(btn_commit_comment.isSelected) addBlueprintComment()
+                ll_ability -> (activity as ActivityMain).replaceFragment(
+                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_ABILITY, mViewUserIdx),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
+                ll_opportunity -> (activity as ActivityMain).replaceFragment(
+                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_OPPORTUNITY, mViewUserIdx),
+                    addToBack = true,
+                    isMainRefresh = true
+                )
+                rl_comment -> {
+                    val intent = Intent(context!!, ActivityComment::class.java)
+                    intent.putExtra(
+                        ActivityComment.EXTRA_VIEW_TYPE,
+                        ActivityComment.EXTRA_TYPE_BLUEPRINT
+                    )
+                    intent.putExtra(
+                        ActivityComment.EXTRA_INDEX,
+                        mViewUserIdx
+                    ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
+                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                }
+                btn_commit_comment -> {
+                    if (btn_commit_comment.isSelected) addBlueprintComment()
                 }
             }
         }
@@ -153,12 +161,22 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
+        }
+    }
+
     /**
      * Http
      * 발전계획 댓글 추가
      */
     private fun addBlueprintComment() {
-        val dst_profile_idx = Comm_Prefs.getUserProfileIndex() // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mViewUserIdx // todo : 현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addBlueprintComment(
@@ -191,6 +209,12 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun initView() {
         Utils.setSwipeRefreshLayout(srl_refresh, this)
+        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+            iv_add_object.visibility = VISIBLE
+        }else{
+            iv_add_object.visibility = GONE
+        }
+
         // 댓글 설정
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -207,10 +231,10 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 i1: Int,
                 i2: Int
             ) {
-                if(!et_comment.text.toString().isNullOrEmpty()){
+                if (!et_comment.text.toString().isNullOrEmpty()) {
                     btn_commit_comment.visibility = VISIBLE
                     rl_comment.visibility = GONE
-                }else{
+                } else {
                     btn_commit_comment.visibility = GONE
                     rl_comment.visibility = VISIBLE
                 }
@@ -301,7 +325,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun getBlueprint() {
         // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
-        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        val profile_idx = mViewUserIdx
         DAClient.getBlueprint(profile_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
@@ -527,7 +551,10 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             tvContents.text = bean.contents
             tvContents.setOnClickListener(View.OnClickListener {
-                (activity as ActivityMain).replaceFragment(FragmentAnO(), true)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_ABILITY, mViewUserIdx),
+                    true
+                )
             })
         }
 
@@ -563,7 +590,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             h.itemView.setOnClickListener(View.OnClickListener {
                 (activity as ActivityMain).replaceFragment(
-                    FragmentObjectStep.newInstance(bean),
+                    FragmentObjectStep.newInstance(bean, mViewUserIdx),
                     addToBack = true,
                     isMainRefresh = true
                 )

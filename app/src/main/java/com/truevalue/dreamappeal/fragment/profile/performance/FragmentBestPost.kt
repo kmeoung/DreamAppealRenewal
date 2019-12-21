@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.performance
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
+import androidx.viewpager.widget.ViewPager.*
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
@@ -16,6 +17,7 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
 import com.truevalue.dreamappeal.bean.BeanImages
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -24,15 +26,6 @@ import com.truevalue.dreamappeal.utils.Utils.convertFromDate
 import com.truevalue.dreamappeal.utils.Utils.setReadMore
 import kotlinx.android.synthetic.main.action_bar_best_post.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
-import kotlinx.android.synthetic.main.bottom_post_view.iv_cheering
-import kotlinx.android.synthetic.main.bottom_post_view.iv_comment
-import kotlinx.android.synthetic.main.bottom_post_view.ll_cheering
-import kotlinx.android.synthetic.main.bottom_post_view.ll_comment
-import kotlinx.android.synthetic.main.bottom_post_view.ll_comment_detail
-import kotlinx.android.synthetic.main.bottom_post_view.ll_share
-import kotlinx.android.synthetic.main.bottom_post_view.tv_cheering
-import kotlinx.android.synthetic.main.bottom_post_view.tv_comment
-import kotlinx.android.synthetic.main.fragment_dream_present.*
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -43,12 +36,13 @@ class FragmentBestPost : BaseFragment() {
     private var mBestIdx = -1
     private var mBean: BeanAchivementPostDetail? = null
     private var mAdapter: BasePagerAdapter<String>? = null
-
+    private var mViewUserIdx = -1
     companion object {
-        fun newInstance(post_idx: Int, best_idx: Int): FragmentBestPost {
+        fun newInstance(post_idx: Int, best_idx: Int,view_user_idx : Int): FragmentBestPost {
             val fragment = FragmentBestPost()
             fragment.mPostIdx = post_idx
             fragment.mBestIdx = best_idx
+            fragment.mViewUserIdx = view_user_idx
             return fragment
         }
     }
@@ -78,6 +72,10 @@ class FragmentBestPost : BaseFragment() {
     private fun initView() {
         // 상단 이미지 정사각형 설정
         Utils.setImageViewSquare(context, rl_images)
+
+        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+            iv_more.visibility = View.VISIBLE
+        }else iv_more.visibility = View.GONE
     }
 
     /**
@@ -109,13 +107,13 @@ class FragmentBestPost : BaseFragment() {
                     intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                     intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
                     intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
                     intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                     intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_share -> {
 
@@ -131,6 +129,16 @@ class FragmentBestPost : BaseFragment() {
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_more.setOnClickListener(listener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
+        }
     }
 
     /**
@@ -154,7 +162,7 @@ class FragmentBestPost : BaseFragment() {
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
-                        tv_comment.text = count.toString()
+                        tv_cheering.text = "${count}개"
                     }
                 }
             }
@@ -187,13 +195,11 @@ class FragmentBestPost : BaseFragment() {
 
                         val thumbnail = achivementPost.getJSONArray("images")
 
-                        val images = ArrayList<BeanImages>()
+                        val images = ArrayList<String>()
                         for (i in 0 until thumbnail.length()) {
-                            val image = Gson().fromJson<BeanImages>(
-                                thumbnail.getJSONObject(i).toString(),
-                                BeanImages::class.java
-                            )
-                            images.add(image)
+                            val image = thumbnail.getJSONObject(i)
+                            val url = image.getString("url")
+                            images.add(url)
                         }
                         bean.Images = images
 
@@ -283,7 +289,7 @@ class FragmentBestPost : BaseFragment() {
         tv_indicator.text = "1 / " + bean.Images.size
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
-            mAdapter!!.add(image.image_url)
+            mAdapter!!.add(image)
         }
         mAdapter!!.notifyDataSetChanged()
     }

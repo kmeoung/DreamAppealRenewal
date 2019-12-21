@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityDreamNote
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FagmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
-import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_recyclerview.*
 import okhttp3.Call
@@ -25,6 +26,16 @@ import java.text.SimpleDateFormat
 class FragmentDreamNoteLife : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
+
+    private var mViewUserIdx : Int = -1
+
+    companion object {
+        fun newInstance(view_user_idx: Int): FragmentDreamNoteLife {
+            val fragment = FragmentDreamNoteLife()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,7 +91,7 @@ class FragmentDreamNoteLife : BaseFragment() {
      */
     private fun getDreamNoteLife() {
         // todo : 현재 보고있는 프로필의 idx 를 넣어야 합니다
-        val cur_profile_idx = Comm_Prefs.getUserProfileIndex()
+        val cur_profile_idx = mViewUserIdx
 
         DAClient.getDreamNoteLife(cur_profile_idx,
             object : DAHttpCallback {
@@ -156,7 +167,10 @@ class FragmentDreamNoteLife : BaseFragment() {
                 tvDate.text = sdf2.format(date)
 
                 h.itemView.setOnClickListener(View.OnClickListener {
-                    // todo : 여기에 상세페이지 달아야 합니다
+                    (activity as ActivityDreamNote).replaceFragment(
+                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx),
+                        addToBack = true
+                    )
                 })
             }
         }

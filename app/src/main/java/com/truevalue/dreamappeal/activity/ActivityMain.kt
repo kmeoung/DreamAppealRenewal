@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -63,6 +64,18 @@ class ActivityMain : BaseActivity() {
         AWSMobileClient.getInstance().initialize(this) {
             Log.d("AWS_LOG", "AWS INITIALIZED")
         }.execute()
+    }
+
+    fun initAllView(){
+        val fm = supportFragmentManager
+        for (i in 0..fm.backStackEntryCount) {
+            fm.popBackStack()
+        }
+        // Action
+        onAction()
+
+        mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
+
     }
 
     /**
@@ -191,7 +204,7 @@ class ActivityMain : BaseActivity() {
                         ActivityFollow.EXTRA_VIEW_TYPE,
                         ActivityFollow.VIEW_TYPE_FOLLOWING
                     )
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivityFollow.REQUEST_REPLACE_USER_IDX)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
                 ll_dream_point -> {
@@ -205,6 +218,16 @@ class ActivityMain : BaseActivity() {
         ll_profile.setOnClickListener(listener)
         ll_following.setOnClickListener(listener)
         ll_dream_point.setOnClickListener(listener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            if (requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
+        }
     }
 
     /**

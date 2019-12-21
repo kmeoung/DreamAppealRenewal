@@ -45,8 +45,6 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
             return fragment
         }
     }
-
-
     init {
         mFragments = null
         mTabs = null
@@ -149,6 +147,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
                 }
                 iv_dream_note->{
                     val intent = Intent(context!!,ActivityDreamNote::class.java)
+                    intent.putExtra(ActivityDreamNote.EXTRA_VIEW_USER_IDX,mViewUserIdx)
                     startActivity(intent)
                 }
             }

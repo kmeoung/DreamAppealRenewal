@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.timeline
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,11 +17,14 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanTimeline
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
@@ -79,7 +83,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             when (it) {
                 iv_search -> {
                     val intent = Intent(context!!, ActivitySearch::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent,ActivitySearch.REQUEST_REPLACE_USER_IDX)
                 }
             }
         }
@@ -262,13 +266,18 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             }
 
-
             if (!bean.profile_image.isNullOrEmpty()) {
                 Glide.with(context!!)
                     .load(bean.profile_image)
                     .placeholder(R.drawable.drawer_user)
                     .circleCrop()
                     .into(ivProfile)
+            }
+
+            if(bean.profile_idx != Comm_Prefs.getUserProfileIndex()){
+                ivProfile.setOnClickListener(View.OnClickListener {
+                    (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(bean.profile_idx),true)
+                })
             }
 
             ivMore.setOnClickListener(View.OnClickListener {
@@ -297,8 +306,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             tvContents.text = bean.content
 
-            tvCheering.text = bean.like_count.toString()
-            tvComment.text = bean.comment_count.toString()
+            tvCheering.text = "${bean.like_count}개"
+            tvComment.text = "${bean.comment_count}개"
 
             // todo : 여기 bean.post_type 에 맞게 해야함 서버관련 문제 때문에 상의 후 진행
             ivComment.setOnClickListener(View.OnClickListener {
@@ -309,7 +318,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 )
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
                 intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
-                startActivity(intent)
+                startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
             llComment.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context!!, ActivityComment::class.java)
@@ -318,7 +327,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     ActivityComment.EXTRA_TYPE_ACTION_POST
                 )
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
-                startActivity(intent)
+                startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
 
             llCheering.setOnClickListener(View.OnClickListener {
@@ -327,6 +336,16 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             ivCheering.isSelected = bean.status
 
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX || requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
+                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }
         }
     }
 
@@ -351,7 +370,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         val status = json.getBoolean("status")
                         bean.status = status
                         val count = json.getInt("count")
-                        bean.comment_count = count
+                        bean.like_count = count
                         mAdatper!!.notifyDataSetChanged()
                     }
                 }

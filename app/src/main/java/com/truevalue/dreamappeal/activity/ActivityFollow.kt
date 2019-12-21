@@ -1,23 +1,34 @@
 package com.truevalue.dreamappeal.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanFollow
+import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_follow.*
+import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
+import org.json.JSONArray
+import org.json.JSONObject
 
 class ActivityFollow : BaseActivity() {
 
@@ -27,6 +38,9 @@ class ActivityFollow : BaseActivity() {
         val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
         val VIEW_TYPE_FOLLOWING = "VIEW_TYPE_FOLLOWING"
         val VIEW_TYPE_FOLLOWER = "VIEW_TYPE_FOLLOWER"
+
+        val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+        val REQUEST_REPLACE_USER_IDX = 4000
     }
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
@@ -124,7 +138,15 @@ class ActivityFollow : BaseActivity() {
                 Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
                 if (code == DAClient.SUCCESS) {
-
+                    val json = JSONObject(body)
+                    val followers = json.getJSONArray("followers")
+                    mAdapter!!.clear()
+                    for (i in 0 until followers.length()) {
+                        val follower = followers.getJSONObject(i)
+                        val bean =
+                            Gson().fromJson<BeanFollow>(follower.toString(), BeanFollow::class.java)
+                        mAdapter!!.add(bean)
+                    }
                 }
             }
         })
@@ -146,7 +168,15 @@ class ActivityFollow : BaseActivity() {
                 Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
                 if (code == DAClient.SUCCESS) {
-
+                    val json = JSONObject(body)
+                    val following = json.getJSONArray("following")
+                    mAdapter!!.clear()
+                    for (i in 0 until following.length()) {
+                        val follow = following.getJSONObject(i)
+                        val bean =
+                            Gson().fromJson<BeanFollow>(follow.toString(), BeanFollow::class.java)
+                        mAdapter!!.add(bean)
+                    }
                 }
             }
         })
@@ -164,7 +194,90 @@ class ActivityFollow : BaseActivity() {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
+            val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
+            val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
+            val tvJob = h.getItemView<TextView>(R.id.tv_job)
+            val tvName = h.getItemView<TextView>(R.id.tv_name)
+            val tvAddFollow = h.getItemView<TextView>(R.id.tv_add_follow)
 
+            val bean = mAdapter!!.get(i) as BeanFollow
+
+            if (bean.status == 1) {
+                tv_add_follow.setTextColor(
+                    ContextCompat.getColor(
+                        this@ActivityFollow,
+                        R.color.black
+                    )
+                )
+                tv_add_follow.background = ContextCompat.getDrawable(
+                    this@ActivityFollow,
+                    R.drawable.bg_round_rectangle_gray2
+                )
+                tv_add_follow.text = getString(R.string.str_following)
+            } else {
+                tv_add_follow.setTextColor(
+                    ContextCompat.getColor(
+                        this@ActivityFollow,
+                        R.color.white
+                    )
+                )
+                tv_add_follow.background = ContextCompat.getDrawable(
+                    this@ActivityFollow,
+                    R.drawable.bg_round_rectangle_blue_2
+                )
+                tv_add_follow.text = getString(R.string.str_add_follow)
+            }
+
+            ivProfile.setOnClickListener(View.OnClickListener {
+                val intent = Intent()
+                intent.putExtra(ActivityFollow.RESULT_REPLACE_USER_IDX, bean.idx)
+                setResult(RESULT_OK, intent)
+                finish()
+            })
+
+
+            Glide.with(this@ActivityFollow)
+                .load(bean.image)
+                .placeholder(R.drawable.drawer_user)
+                .circleCrop()
+                .into(ivProfile)
+
+            tvValueStyle.text = bean.value_style
+            tvJob.text = bean.job
+            tvName.text = bean.nickname
+
+            tvAddFollow.setOnClickListener(View.OnClickListener {
+                follow(bean.idx, bean)
+            })
+        }
+
+        /**
+         * Http
+         * 팔로우 / 언팔로우
+         */
+        private fun follow(profile_idx: Int, bean: BeanFollow) {
+            // todo : 보고있는 profile index 를 여기다가 넣어야 합니다
+            DAClient.follow(profile_idx, object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (this@ActivityFollow != null) {
+                        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                        if (code == DAClient.SUCCESS) {
+                            // todo : 여기서 팔로우 설정
+                            val json = JSONObject(body)
+                            val status = json.getInt("status")
+                            bean!!.status = status
+                            mAdapter!!.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
         }
 
         override fun getItemViewType(i: Int): Int {

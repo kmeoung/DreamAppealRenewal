@@ -8,5 +8,5 @@ data class BeanAchivementPostDetail(var idx : Int,
                                     var register_date : String,
                                     var comment_count : Int,
                                     var like_count : Int,
-                                    var Images : ArrayList<BeanImages>,
+                                    var Images : ArrayList<String>,
                                     var status : Boolean)

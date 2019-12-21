@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.activity
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -58,6 +59,9 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         val EXTRA_INDEX = "EXTRA_INDEX"
         val EXTRA_OFF_KEYBOARD = "EXTRA_OFF_KEYBOARD"
+
+        val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+        val REQUEST_REPLACE_USER_IDX = 2000
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +83,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun initView() {
         tv_title.text = getString(R.string.str_title_comment_detail)
-        
+
         if (intent.getStringExtra(EXTRA_VIEW_TYPE) != null) {
             mViewType = intent.getStringExtra(EXTRA_VIEW_TYPE)
             mIndex = intent.getIntExtra(EXTRA_INDEX, -1)
@@ -627,12 +631,21 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     .circleCrop()
                     .into(ivProfile)
 
+                if (mIndex != Comm_Prefs.getUserProfileIndex()) {
+                    ivProfile.setOnClickListener(View.OnClickListener {
+                        val intent = Intent()
+                        intent.putExtra(RESULT_REPLACE_USER_IDX, bean.writer_idx)
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    })
+                }
+
                 tvTime.text = Utils.convertFromDate(bean.register_date)
                 tvLike.text = String.format("%d개", bean.like_count)
 
                 ivLike.isSelected = bean.status
 
-                val likeClickListener = View.OnClickListener{
+                val likeClickListener = View.OnClickListener {
                     setLikeComment(bean)
                 }
 
@@ -663,9 +676,9 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 댓글 좋아요
      */
-    private fun setLikeComment(bean : BeanCommentDetail){
+    private fun setLikeComment(bean: BeanCommentDetail) {
 
-        val likeCommentListener = object : DAHttpCallback{
+        val likeCommentListener = object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -673,15 +686,15 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val status = json.getBoolean("status")
                     bean.status = status
                     if (bean.status) {
                         bean.like_count += 1
-                    }else{
+                    } else {
                         bean.like_count -= 1
                     }
                     mAdapter!!.notifyDataSetChanged()
@@ -690,10 +703,13 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         when (mViewType) {
-            EXTRA_TYPE_PROFILE -> DAClient.likeDreamPresentComment(bean.idx,likeCommentListener)
-            EXTRA_TYPE_BLUEPRINT -> DAClient.likeBlueprintComment(bean.idx,likeCommentListener)
-            EXTRA_TYPE_ACHIEVEMENT_POST -> DAClient.likeAchievementPostComment(bean.idx,likeCommentListener)
-            EXTRA_TYPE_ACTION_POST -> DAClient.likeActionPostComment(bean.idx,likeCommentListener)
+            EXTRA_TYPE_PROFILE -> DAClient.likeDreamPresentComment(bean.idx, likeCommentListener)
+            EXTRA_TYPE_BLUEPRINT -> DAClient.likeBlueprintComment(bean.idx, likeCommentListener)
+            EXTRA_TYPE_ACHIEVEMENT_POST -> DAClient.likeAchievementPostComment(
+                bean.idx,
+                likeCommentListener
+            )
+            EXTRA_TYPE_ACTION_POST -> DAClient.likeActionPostComment(bean.idx, likeCommentListener)
         }
     }
 

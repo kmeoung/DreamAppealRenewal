@@ -11,23 +11,29 @@ import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.viewpager.widget.ViewPager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.fragment_dream_title.*
 import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
+import kotlinx.android.synthetic.main.fragment_merit_and_motive.pager_image
+import kotlinx.android.synthetic.main.fragment_merit_and_motive.tv_indicator
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentMeritAndMotive : BaseFragment() {
 
     private var mBean: BeanDreamPresent? = null
-
+    private var mAdapter : BasePagerAdapter<String>? = null
     companion object {
 
         /**
@@ -52,6 +58,55 @@ class FragmentMeritAndMotive : BaseFragment() {
         initView()
         // View 클릭 리스너
         onClickView()
+        // Pager Adapter 초기화
+        initAdapter()
+    }
+
+    /**
+     * Pager Adapter 초기화
+     */
+    private fun initAdapter() {
+        mAdapter = BasePagerAdapter(context!!)
+        pager_image.adapter = mAdapter
+        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+            }
+        })
+
+        getExampleIamges()
+    }
+
+    /**
+     * Http
+     * 예시 이미지 가져오기
+     */
+    private fun getExampleIamges(){
+        DAClient.profileExampleImage(3,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(code == DAClient.SUCCESS){
+                    val json = JSONObject(body)
+                    val exUrl = json.getJSONArray("ex_url")
+
+                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
+
+                    mAdapter!!.clear()
+                    for(i in 0 until exUrl.length()){
+                        val image = exUrl.getJSONObject(i)
+                        val url = image.getString("url")
+                        mAdapter!!.add(url)
+                    }
+                    mAdapter!!.notifyDataSetChanged()
+                }
+            }
+        })
     }
 
     /**

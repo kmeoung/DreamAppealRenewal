@@ -24,6 +24,11 @@ class ActivitySearch : BaseActivity() {
 
     private val SEARCH_DELAY = 1000L
 
+    companion object{
+        var RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+        var REQUEST_REPLACE_USER_IDX = 3000
+    }
+
     interface IOSearchListener {
         fun onSearch(keyword: String)
     }

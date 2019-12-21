@@ -13,10 +13,12 @@ import com.truevalue.dreamappeal.bean.BeanFindPassword
 import com.truevalue.dreamappeal.bean.BeanRegister
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_login.*
 import kotlinx.android.synthetic.main.fragment_check_email.*
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentCheckEmail : BaseFragment() {
 
@@ -268,6 +270,43 @@ class FragmentCheckEmail : BaseFragment() {
                             .show()
 
                         if (code == DAClient.SUCCESS) {
+                            addDreamProfile()
+                        }
+                    }
+                }
+            })
+    }
+
+    /**
+     * Http
+     * 내 꿈 소개 등록
+     */
+    private fun addDreamProfile() {
+        DAClient.addProfiles("",
+            "",
+            "",
+            JSONObject(),
+            "",
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+
+                        if (code == DAClient.SUCCESS) {
+                            val json = JSONObject(body)
+                            val token = json.getString("token")
+                            val result = json.getJSONObject("result")
+                            val profile_idx = result.getInt("insertId")
+                            Comm_Prefs.setToken(token)
+                            Comm_Prefs.setUserProfileIndex(profile_idx)
+
                             (activity as ActivityLoginContainer).initFragment()
                         }
                     }

@@ -28,7 +28,7 @@
                 android:textSize="24sp" />
 
         <ImageView
-                android:id="@+id/iv_more"
+                android:id="@+id/iv_object_step_more"
                 android:layout_width="45dp"
                 android:layout_height="37dp"
                 android:layout_gravity="top"

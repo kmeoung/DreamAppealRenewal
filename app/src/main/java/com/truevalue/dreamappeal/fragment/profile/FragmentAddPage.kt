@@ -12,17 +12,18 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.viewpager.widget.ViewPager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
-import com.truevalue.dreamappeal.bean.BeanObjectStep
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_add_page.*
-import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentAddPage : BaseFragment() {
 
@@ -30,6 +31,7 @@ class FragmentAddPage : BaseFragment() {
     private var mBeanAnO: BeanBlueprintAnO? = null
     private var mObjectIdx: Int = -1
     private var mStepIdx: Int = -1
+    private var mAdapter : BasePagerAdapter<String>? = null
 
     companion object {
         val VIEW_TYPE_ADD_ABILITY = "VIEW_TYPE_ADD_ABILITY"
@@ -90,6 +92,83 @@ class FragmentAddPage : BaseFragment() {
         initView()
         // View Click Listener
         onClickView()
+        // Pager Adapter 초기화
+        initAdapter()
+    }
+
+    /**
+     * Pager Adapter 초기화
+     */
+    private fun initAdapter() {
+        mAdapter = BasePagerAdapter(context!!)
+        pager_image.adapter = mAdapter
+        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+            }
+        })
+
+        getExampleIamges()
+    }
+
+    /**
+     * Http
+     * 예시 이미지 가져오기
+     */
+    private fun getExampleIamges(){
+        val exListener =  object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
+                    val exUrl = json.getJSONArray("ex_url")
+
+                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
+
+                    mAdapter!!.clear()
+                    for (i in 0 until exUrl.length()) {
+                        val image = exUrl.getJSONObject(i)
+                        val url = image.getString("url")
+                        mAdapter!!.add(url)
+                    }
+                    mAdapter!!.notifyDataSetChanged()
+                }
+            }
+        }
+
+       val ex_idx : Int = when(mViewType){
+                VIEW_TYPE_ADD_ABILITY->1
+                VIEW_TYPE_ADD_OPPORTUNITY->1
+                VIEW_TYPE_EDIT_ABILITY->1
+                VIEW_TYPE_EDIT_OPPORTUNITY->1
+                VIEW_TYPE_ADD_STEP->1
+                VIEW_TYPE_EDIT_STEP->1
+                VIEW_TYPE_ADD_STEP_DETAIL->2
+                VIEW_TYPE_EDIT_STEP_DETAIL->2
+           else->1
+       }
+
+        if(mViewType == VIEW_TYPE_ADD_ABILITY ||
+            mViewType == VIEW_TYPE_EDIT_ABILITY ||
+            mViewType == VIEW_TYPE_ADD_OPPORTUNITY ||
+            mViewType == VIEW_TYPE_EDIT_OPPORTUNITY){
+
+            if(mViewType == VIEW_TYPE_ADD_OPPORTUNITY ||
+                mViewType == VIEW_TYPE_EDIT_OPPORTUNITY) {
+                DAClient.abilityExampleImage(ex_idx,exListener)
+            }else{
+                DAClient.opportunityExampleImage(ex_idx,exListener)
+            }
+        }else{
+            DAClient.objectExampleImage(ex_idx,exListener)
+        }
+
     }
 
     /**
@@ -149,7 +228,7 @@ class FragmentAddPage : BaseFragment() {
             et_contents.isFocusableInTouchMode = true
             et_contents.requestFocus()
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(tv_init_merit_and_motive, 0)
+            imm.showSoftInput(tv_default, 0)
             tv_default.visibility = GONE
         })
 

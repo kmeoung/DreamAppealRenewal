@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
@@ -19,6 +22,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAppealer
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.fragment_search_appealer.*
 import okhttp3.Call
@@ -143,6 +147,15 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
             ivDelete.setOnClickListener(View.OnClickListener {
                 // todo : 여기는 잘 모르겠습니다
             })
+
+            if(bean.idx != Comm_Prefs.getUserProfileIndex()) {
+                h.itemView.setOnClickListener(View.OnClickListener {
+                    val intent = Intent()
+                    intent.putExtra(ActivitySearch.RESULT_REPLACE_USER_IDX, bean.idx)
+                    activity!!.setResult(AppCompatActivity.RESULT_OK, intent)
+                    activity!!.finish()
+                })
+            }
         }
 
         override fun getItemViewType(i: Int): Int {

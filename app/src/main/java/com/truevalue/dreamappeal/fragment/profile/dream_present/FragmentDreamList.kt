@@ -27,6 +27,16 @@ class FragmentDreamList : BaseFragment() {
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var isEdit = false
 
+    private var mViewUserIdx: Int = -1
+
+    companion object {
+        fun newInstance(view_user_idx: Int): FragmentDreamList {
+            val fragment = FragmentDreamList()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +64,9 @@ class FragmentDreamList : BaseFragment() {
         tv_title.text = getString(R.string.str_title_dream_list)
         iv_back_black.visibility = GONE
         iv_back_blue.visibility = VISIBLE
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+            ll_edit_list.visibility = VISIBLE
+        } else ll_edit_list.visibility = GONE
     }
 
     /**
@@ -159,7 +172,8 @@ class FragmentDreamList : BaseFragment() {
                             val profile_idx = json.getInt("profile_idx")
                             Comm_Prefs.setUserProfileIndex(profile_idx)
                             Comm_Prefs.setToken(token)
-                            mAdapter!!.notifyDataSetChanged()
+
+                            (activity as ActivityMain).initAllView()
                         }
                     }
                 }
@@ -201,7 +215,7 @@ class FragmentDreamList : BaseFragment() {
             .setPositiveButton(getString(R.string.str_yes)) { dialog, which ->
                 if (mAdapter != null) {
                     if (mAdapter!!.size() > 1) {
-                        if (idx == Comm_Prefs.getUserProfileIndex()) {
+                        if (idx == mViewUserIdx) {
                             Toast.makeText(
                                 context!!.applicationContext,
                                 getString(R.string.str_error_delete_using_profile),
@@ -269,7 +283,7 @@ class FragmentDreamList : BaseFragment() {
                 val tvExp = h.getItemView<TextView>(R.id.tv_exp)
 
                 // todo : 상대방 프로필에 들어갈 경우는 다르게 설정해줘야 합니다
-                if (bean.idx == Comm_Prefs.getUserProfileIndex()) {
+                if (bean.idx == mViewUserIdx) {
                     ctlDreamListItem.background =
                         resources.getDrawable(R.drawable.bg_empty_rectangle_blue_2)
                     ivDelete.visibility = GONE
@@ -280,10 +294,15 @@ class FragmentDreamList : BaseFragment() {
                     ctlDreamListItem.background =
                         resources.getDrawable(R.drawable.bg_dream_list)
 
-                    h.itemView.setOnClickListener(OnClickListener {
-                        showChangeProfileDialog(bean.profile_order)
-                    })
+                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                        h.itemView.setOnClickListener(OnClickListener {
+                            showChangeProfileDialog(bean.profile_order)
+                        })
+                    }
                 }
+
+                if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) ivDelete.visibility = VISIBLE
+                else ivDelete.visibility = GONE
 
                 ivDelete.setOnClickListener(OnClickListener {
                     showDeleteProfileDialog(bean.idx)

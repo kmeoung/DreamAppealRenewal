@@ -20,7 +20,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:background="@color/white"
-            android:elevation="3dp">
+            android:elevation="3dp"
+            android:visibility="gone">
 
         <!--새 꿈 추가하기-->
         <LinearLayout
