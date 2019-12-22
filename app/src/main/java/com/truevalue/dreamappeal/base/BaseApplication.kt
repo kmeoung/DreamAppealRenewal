@@ -1,10 +1,9 @@
 package com.truevalue.dreamappeal.base
 
 import android.app.Application
-import android.content.ContentValues.TAG
-import android.util.Log
-import com.amazonaws.mobile.client.AWSMobileClient
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 class BaseApplication :Application(){
 
@@ -13,6 +12,6 @@ class BaseApplication :Application(){
         val prefs = Comm_Prefs
         prefs.init(applicationContext)
 
-
+        Fabric.with(this, Crashlytics())
     }
 }

@@ -177,7 +177,6 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
@@ -192,6 +191,8 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                         if (bean.idx != null)
                             mAdapter!!.add(bean)
                     }
+                }else{
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         })

@@ -110,38 +110,6 @@
                     </LinearLayout>
                     <!--팔로워-->
 
-                    <!--실천인증-->
-                    <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.7"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                        <TextView
-                                android:id="@+id/tv_achievement_post_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/bmjua"
-                                android:gravity="center"
-                                android:text="0"
-                                android:textColor="@color/black"
-                                android:textSize="15.7sp" />
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:fontFamily="@font/nanum_square_round_r"
-                                android:gravity="center"
-                                android:text="@string/str_achievement_post"
-                                android:textColor="@color/brown_grey"
-                                android:textSize="14.3sp" />
-
-
-                    </LinearLayout>
-                    <!--실천인증-->
-
                     <!--실현성과-->
                     <LinearLayout
                             android:layout_width="0dp"
@@ -173,6 +141,38 @@
 
                     </LinearLayout>
                     <!--실현성과-->
+
+                    <!--실천인증-->
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/tv_achievement_post_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/bmjua"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="15.7sp" />
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/nanum_square_round_r"
+                                android:gravity="center"
+                                android:text="@string/str_achievement_post"
+                                android:textColor="@color/brown_grey"
+                                android:textSize="14.3sp" />
+
+
+                    </LinearLayout>
+                    <!--실천인증-->
                 </LinearLayout>
                 <!--상단 버튼 및 정보들-->
 

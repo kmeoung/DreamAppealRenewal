@@ -153,8 +153,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             ) {
                 srl_refresh.isRefreshing = false
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                        .show()
+
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val profile = json.getJSONObject("profile")
@@ -178,6 +177,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                 bindData()
                             }
                         }
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -209,7 +211,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             tv_follwer.text = bean.follow_count.toString()
             tv_cheering.text = "${bean.like_count}개"
             tv_comment.text = "${bean.comment_count}개"
-            tv_achievement_post_count.text = bean.achievement_post_count.toString()
+            tv_achievement_post_count.text = "${bean.achievement_post_count} / 3"
             tv_action_post_count.text = bean.action_post_count.toString()
             iv_cheering.isSelected = bean.status
             tv_dream_level.text = String.format("Lv.%02d", bean.level)

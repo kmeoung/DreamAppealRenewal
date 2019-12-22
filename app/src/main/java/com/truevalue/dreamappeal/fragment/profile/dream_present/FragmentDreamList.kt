@@ -123,8 +123,6 @@ class FragmentDreamList : BaseFragment() {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
 
@@ -140,6 +138,9 @@ class FragmentDreamList : BaseFragment() {
                                 )
                                 mAdapter!!.add(bean)
                             }
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

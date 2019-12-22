@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.performance
 
 import android.app.Activity.RESULT_OK
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_add_new_achievement_post.*
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.File
+import java.io.IOException
 
 class FragmentNewAddAchievementPost : BaseFragment() {
 
@@ -36,6 +38,7 @@ class FragmentNewAddAchievementPost : BaseFragment() {
     private var postIdx : Int = -1
     private var mTitle : String? = null
     private var mContents : String? = null
+    private var mDialog : ProgressDialog? = null
 
     companion object {
         fun newInstance(images: ArrayList<File>, best_idx: Int): FragmentNewAddAchievementPost {
@@ -79,6 +82,9 @@ class FragmentNewAddAchievementPost : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
+        mDialog = ProgressDialog(context!!)
+        mDialog!!.setCancelable(false)
+
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -157,9 +163,15 @@ class FragmentNewAddAchievementPost : BaseFragment() {
      * Achievement Post 등록
      */
     private fun addAchievementPost(){
+        if (mDialog != null && !mDialog!!.isShowing) mDialog!!.show()
         val title = et_title.text.toString()
         val contents = et_comment.text.toString()
         DAClient.addAchievementPost(title,contents,mBestIdx,object : DAHttpCallback{
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+            }
+
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -175,8 +187,8 @@ class FragmentNewAddAchievementPost : BaseFragment() {
                         val result = json.getJSONObject("result")
                         val insertId = result.getInt("insertId")
                         uploadImage(insertId)
-                    }
-                }
+                    }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+                }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
             }
         })
     }
@@ -237,10 +249,10 @@ class FragmentNewAddAchievementPost : BaseFragment() {
                     }
 
                     override fun onError(id: Int, ex: java.lang.Exception?) {
-
+                        if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                     }
                 })
-        }
+        }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
     }
 
     /**
@@ -253,6 +265,11 @@ class FragmentNewAddAchievementPost : BaseFragment() {
             list.add(s)
         }
         DAClient.uploadsImage(idx, type, list, object : DAHttpCallback {
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+            }
+
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -260,6 +277,7 @@ class FragmentNewAddAchievementPost : BaseFragment() {
                 code: String,
                 message: String
             ) {
+                if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                 if (context != null) {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
@@ -303,4 +321,8 @@ class FragmentNewAddAchievementPost : BaseFragment() {
     }
 
 
+    override fun onDestroy() {
+        if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+        super.onDestroy()
+    }
 }

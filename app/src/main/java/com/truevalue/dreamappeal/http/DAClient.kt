@@ -442,7 +442,6 @@ object DAClient {
         params.put("description", description)
         params.put("description_spec", description_spec)
         params.put("meritNmotive", meritNmotive)
-
         BaseOkhttpClient.request(
             HttpType.POST,
             Comm_Param.URL_PROFILES,
@@ -2121,13 +2120,16 @@ object DAClient {
      * GET
      * 타임라인 가져오기
      */
-    fun getTimeLine(callback: DAHttpCallback) {
+    fun getTimeLine(refresh : Boolean,last_idx : Int,callback: DAHttpCallback) {
 
+        val params = DAHttpParams()
+        if(refresh) params.put("refresh",refresh)
+        if(last_idx > -1) params.put("last_idx",last_idx)
         BaseOkhttpClient.request(
             HttpType.GET,
             Comm_Param.URL_TIMELINES,
             getHttpHeader(),
-            null,
+            params,
             callback
         )
     }

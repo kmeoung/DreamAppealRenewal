@@ -251,7 +251,6 @@ class FragmentAnO : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
@@ -267,6 +266,8 @@ class FragmentAnO : BaseFragment() {
                             val bean = BeanBlueprintAnO(profile_idx, idx, contents, 0)
                             mAdapter!!.add(bean)
                         }
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -290,7 +291,6 @@ class FragmentAnO : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
@@ -306,6 +306,8 @@ class FragmentAnO : BaseFragment() {
                             mAdapter!!.add(bean)
                         }
                     }
+                }else{
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         })

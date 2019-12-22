@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -23,7 +24,6 @@ import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.bean.BeanCommentDetail
 import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
@@ -31,18 +31,20 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
-import kotlinx.android.synthetic.main.bottom_post_view.*
-import kotlinx.android.synthetic.main.fragment_post_detail.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
 import org.json.JSONObject
-import java.lang.Exception
+import java.io.IOException
+
 
 class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdatper: BaseRecyclerViewAdapter? = null
 
     private val RV_TYPE_TIMELINE = 0
+    private val RV_TYPE_TIMELINE_MORE = 1
+
+    private var isLast = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +62,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         // View OnClick Listener
         onClickView()
         // init Data
-        getTimeLineData()
+        isLast = false
+        getTimeLineData(false, -1, true)
     }
 
     /**
@@ -77,6 +80,23 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mAdatper = BaseRecyclerViewAdapter(rvListener)
         rv_timeline.adapter = mAdatper
         rv_timeline.layoutManager = LinearLayoutManager(context!!)
+
+        /*rv_timeline.setOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!rv_timeline.canScrollVertically(-1)) {
+                } else if (!rv_timeline.canScrollVertically(1)) {
+                    if(!isLast){
+                        getTimeLineData(
+                            true,
+                            (mAdatper!!.get(mAdatper!!.size() - 1) as BeanTimeline).idx,
+                            false
+                        )
+                    }
+                } else {
+
+                }
+            }
+        })*/
     }
 
     /**
@@ -89,17 +109,26 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     val intent = Intent(context!!, ActivitySearch::class.java)
                     startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
                 }
+                ll_timeline -> {
+                    rv_timeline.smoothScrollToPosition(0)
+                }
             }
         }
         iv_search.setOnClickListener(listener)
+        ll_timeline.setOnClickListener(listener)
     }
 
     /**
      * Http
      * TimeLine
      */
-    private fun getTimeLineData() {
-        DAClient.getTimeLine(object : DAHttpCallback {
+    private fun getTimeLineData(refresh: Boolean, last_idx: Int, isClear: Boolean) {
+        DAClient.getTimeLine(refresh, last_idx, object : DAHttpCallback {
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                srl_refresh.isRefreshing = false
+            }
+
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -109,14 +138,17 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             ) {
                 if (context != null) {
                     srl_refresh.isRefreshing = false
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
-                        mAdatper!!.clear()
+                        if (isClear) mAdatper!!.clear()
                         try {
                             val posts = json.getJSONArray("posts")
 
+                            if (posts.length() < 1) {
+                                isLast = true
+                                mAdatper!!.notifyDataSetChanged()
+                            }
                             for (i in 0 until posts.length()) {
 
                                 val post = posts.getJSONObject(i)
@@ -143,6 +175,12 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             e.printStackTrace()
                         }
 
+                    }else{
+                        if(code == "NO_MORE_POST"){
+                            isLast = true
+                            mAdatper!!.notifyDataSetChanged()
+                        }
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -154,23 +192,33 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdatper != null) mAdatper!!.size() else 0
+            get() = if (mAdatper != null) if(mAdatper!!.size() > 4 && !isLast) mAdatper!!.size() + 1 else mAdatper!!.size()  else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             if (RV_TYPE_TIMELINE == viewType) {
                 return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
+            } else if (RV_TYPE_TIMELINE_MORE == viewType) {
+                return BaseViewHolder.newInstance(R.layout.listitem_timeline_more, parent, false)
             }
             return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-
             if (RV_TYPE_TIMELINE == getItemViewType(i)) {
                 onTimelineBindViewHolder(h, i)
+            } else if (RV_TYPE_TIMELINE_MORE == getItemViewType(i)) {
+                getTimeLineData(
+                    true,
+                    (mAdatper!!.get(mAdatper!!.size() - 1) as BeanTimeline).idx,
+                    false
+                )
             }
         }
 
         override fun getItemViewType(i: Int): Int {
+            if (mAdatper!!.size() > 4 && mAdatper!!.size() == i && !isLast) {
+                return RV_TYPE_TIMELINE_MORE
+            }
             return RV_TYPE_TIMELINE
         }
 
@@ -288,7 +336,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             ivMore.setOnClickListener(View.OnClickListener {
-                showPopupMenu(ivMore,bean)
+                showPopupMenu(ivMore, bean)
             })
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
@@ -357,11 +405,14 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
                 getString(R.string.str_edit) -> {
-                    val intent = Intent(context!!,ActivityAddPost::class.java)
-                    intent.putExtra(ActivityAddPost.EDIT_VIEW_TYPE,ActivityAddPost.EDIT_ACTION_POST)
-                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX,bean.idx)
-                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES,bean.imageList)
-                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS,bean!!.content)
+                    val intent = Intent(context!!, ActivityAddPost::class.java)
+                    intent.putExtra(
+                        ActivityAddPost.EDIT_VIEW_TYPE,
+                        ActivityAddPost.EDIT_ACTION_POST
+                    )
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, bean.imageList)
+                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, bean!!.content)
                     startActivity(intent)
                 }
                 getString(R.string.str_delete) -> {
@@ -457,6 +508,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * On Refresh
      */
     override fun onRefresh() {
-        getTimeLineData()
+        isLast = false
+        getTimeLineData(false, -1, true)
     }
 }

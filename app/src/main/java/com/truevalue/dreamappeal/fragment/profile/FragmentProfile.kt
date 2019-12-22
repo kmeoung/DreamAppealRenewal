@@ -1,6 +1,5 @@
 package com.truevalue.dreamappeal.fragment.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import androidx.annotation.Nullable
@@ -14,14 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityDreamNote
+import com.truevalue.dreamappeal.fragment.FragmentDreamNote
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentNewPerformance
-import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -146,7 +143,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
                     showDialog()
                 }
                 iv_dream_note->{
-                    (activity as ActivityMain).replaceFragment(ActivityDreamNote.newInstance(mViewUserIdx),addToBack = true,isMainRefresh = false)
+                    (activity as ActivityMain).replaceFragment(FragmentDreamNote.newInstance(mViewUserIdx),addToBack = true,isMainRefresh = false)
                 }
             }
         }

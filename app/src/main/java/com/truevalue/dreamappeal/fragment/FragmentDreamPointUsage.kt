@@ -175,12 +175,9 @@ class FragmentDreamPointUsage : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
-
-
                         mAdapter!!.clear()
                         try {
                             val missionPointList = json.getJSONArray("get_point_list")
@@ -193,6 +190,8 @@ class FragmentDreamPointUsage : BaseFragment() {
                             }
                         } catch (e: Exception) { }
 
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

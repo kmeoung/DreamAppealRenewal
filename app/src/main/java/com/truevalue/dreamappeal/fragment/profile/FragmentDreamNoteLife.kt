@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityDreamNote
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FagmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
-import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_recyclerview.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -79,8 +77,6 @@ class FragmentDreamNoteLife : BaseFragment() {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
                             if (mAdapter == null) return
@@ -97,6 +93,9 @@ class FragmentDreamNoteLife : BaseFragment() {
                                 }
                             } catch (e: Exception) {
                             }
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

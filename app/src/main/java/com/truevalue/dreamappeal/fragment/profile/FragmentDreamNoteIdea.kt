@@ -73,8 +73,6 @@ class FragmentDreamNoteIdea : BaseFragment() {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
                             if (mAdapter == null) return
@@ -91,6 +89,9 @@ class FragmentDreamNoteIdea : BaseFragment() {
                                 }
                             } catch (e: Exception) {
                             }
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

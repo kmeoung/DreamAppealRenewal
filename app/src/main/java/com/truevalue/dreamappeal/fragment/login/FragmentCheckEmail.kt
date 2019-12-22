@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanFindPassword
@@ -17,6 +19,7 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_login.*
 import kotlinx.android.synthetic.main.fragment_check_email.*
+import kotlinx.android.synthetic.main.fragment_normal_login.*
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -232,7 +235,7 @@ class FragmentCheckEmail : BaseFragment() {
                                     code: String,
                                     message: String
                                 ) {
-                                    if(code == DAClient.SUCCESS) {
+                                    if (code == DAClient.SUCCESS) {
                                         (activity as ActivityLoginContainer).replaceFragment(
                                             FragmentChangePassword.newInstance((mBean as BeanFindPassword)),
                                             true
@@ -270,11 +273,49 @@ class FragmentCheckEmail : BaseFragment() {
                             .show()
 
                         if (code == DAClient.SUCCESS) {
-                            addDreamProfile()
-                        }
+                            checkLogin(bean)
+                        } else Toast.makeText(
+                            context!!.applicationContext,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             })
+    }
+
+    /**
+     * 로그인
+     */
+    private fun checkLogin(bean: BeanRegister) {
+        DAClient.login(bean.email, bean.password, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+
+                    if (code == DAClient.SUCCESS) {
+
+                        val json = JSONObject(body)
+                        val token = json.getString("token")
+                        val profileIdx = json.getInt("profile_idx")
+
+                        Comm_Prefs.setToken(token)
+                        Comm_Prefs.setUserProfileIndex(profileIdx)
+
+                        addDreamProfile()
+                    } else Toast.makeText(
+                        context!!.applicationContext,
+                        message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
     /**
@@ -296,8 +337,6 @@ class FragmentCheckEmail : BaseFragment() {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
                             val json = JSONObject(body)
@@ -307,8 +346,14 @@ class FragmentCheckEmail : BaseFragment() {
                             Comm_Prefs.setToken(token)
                             Comm_Prefs.setUserProfileIndex(profile_idx)
 
-                            (activity as ActivityLoginContainer).initFragment()
-                        }
+                            val intent = Intent(context, ActivityMain::class.java)
+                            activity?.startActivity(intent)
+                            activity?.finish()
+                        } else Toast.makeText(
+                            context!!.applicationContext,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             })

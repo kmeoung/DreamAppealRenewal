@@ -233,7 +233,6 @@ class FragmentDreamPoint : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
 
@@ -300,6 +299,8 @@ class FragmentDreamPoint : BaseFragment() {
                         }catch (e: Exception){
                             e.printStackTrace()
                         }
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

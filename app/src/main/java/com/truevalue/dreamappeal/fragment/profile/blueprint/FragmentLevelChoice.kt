@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
 import android.app.Activity.RESULT_OK
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanCategory
 import com.truevalue.dreamappeal.bean.BeanCategoryDetail
@@ -23,19 +23,18 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_add_achievement.*
 import kotlinx.android.synthetic.main.fragment_level_choice.*
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import java.io.IOException
 
 class FragmentLevelChoice : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mAdapterDetail: BaseRecyclerViewAdapter? = null
+
+    private var mDialog : ProgressDialog? = null
 
     private val TYPE_IDEA = 0
     private val TYPE_LIKE = 1
@@ -105,6 +104,9 @@ class FragmentLevelChoice : BaseFragment() {
             ll_idea.visibility = VISIBLE
             ll_like.visibility = VISIBLE
         }
+
+        mDialog = ProgressDialog(context!!)
+        mDialog!!.setCancelable(false)
     }
 
     /**
@@ -228,7 +230,6 @@ class FragmentLevelChoice : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         mAdapter!!.clear()
@@ -241,6 +242,8 @@ class FragmentLevelChoice : BaseFragment() {
                             )
                             mAdapter!!.add(bean)
                         }
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -261,7 +264,6 @@ class FragmentLevelChoice : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         mAdapterDetail!!.clear()
@@ -280,6 +282,8 @@ class FragmentLevelChoice : BaseFragment() {
                             )
                             mAdapterDetail!!.add(bean)
                         }
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -290,6 +294,8 @@ class FragmentLevelChoice : BaseFragment() {
      * Action Post 추가
      */
     private fun addActionPost() {
+        if (mDialog != null && !mDialog!!.isShowing) mDialog!!.show()
+
         val contents = postContents
         val tags = ""
         val post_type = when (mCategoryType) {
@@ -308,6 +314,11 @@ class FragmentLevelChoice : BaseFragment() {
             object_idx,
             step_idx,
             object : DAHttpCallback {
+                override fun onFailure(call: Call, e: IOException) {
+                    super.onFailure(call, e)
+                    if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+                }
+
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -324,8 +335,8 @@ class FragmentLevelChoice : BaseFragment() {
                             val result = json.getJSONObject("result")
                             val insertId = result.getInt("insertId")
                             uploadImage(insertId)
-                        }
-                    }
+                        }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+                    }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                 }
             })
     }
@@ -389,7 +400,7 @@ class FragmentLevelChoice : BaseFragment() {
                     }
 
                     override fun onError(id: Int, ex: java.lang.Exception?) {
-
+                        if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                     }
                 })
         }
@@ -405,6 +416,11 @@ class FragmentLevelChoice : BaseFragment() {
             list.add(s)
         }
         DAClient.uploadsImage(idx, type, list, object : DAHttpCallback {
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+            }
+
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -412,6 +428,7 @@ class FragmentLevelChoice : BaseFragment() {
                 code: String,
                 message: String
             ) {
+                if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                 if (context != null) {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
@@ -527,5 +544,10 @@ class FragmentLevelChoice : BaseFragment() {
         override fun getItemViewType(i: Int): Int {
             return 0
         }
+    }
+
+    override fun onDestroy() {
+        if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+        super.onDestroy()
     }
 }

@@ -204,8 +204,6 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                 ) {
                     srl_refresh.isRefreshing = false
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
                             mBeanPerformance = BeanPerformance(
@@ -261,6 +259,9 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                                 mBeanPerformance!!.achievement_posts.add(bean)
                             }
 
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

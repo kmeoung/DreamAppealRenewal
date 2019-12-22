@@ -13,6 +13,7 @@ import com.truevalue.dreamappeal.bean.BeanProfileGroup
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Param
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import okhttp3.Call

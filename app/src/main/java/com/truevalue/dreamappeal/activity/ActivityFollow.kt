@@ -135,7 +135,6 @@ class ActivityFollow : BaseActivity() {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
@@ -147,6 +146,8 @@ class ActivityFollow : BaseActivity() {
                             Gson().fromJson<BeanFollow>(follower.toString(), BeanFollow::class.java)
                         mAdapter!!.add(bean)
                     }
+                }else{
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -165,7 +166,7 @@ class ActivityFollow : BaseActivity() {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+
 
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
@@ -177,6 +178,8 @@ class ActivityFollow : BaseActivity() {
                             Gson().fromJson<BeanFollow>(follow.toString(), BeanFollow::class.java)
                         mAdapter!!.add(bean)
                     }
+                }else{
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         })

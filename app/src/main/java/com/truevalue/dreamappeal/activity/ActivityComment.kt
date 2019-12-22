@@ -186,11 +186,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
-                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
+                }else{
+                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -216,11 +217,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
-                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
+                }else{
+                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -246,11 +248,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
-                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
+                }else{
+                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -276,11 +279,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 srl_refresh.isRefreshing = false
-                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
-                    .show()
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
+                }else{
+                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })

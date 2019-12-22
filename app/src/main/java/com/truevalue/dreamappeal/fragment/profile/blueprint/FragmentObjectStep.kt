@@ -314,7 +314,6 @@ class FragmentObjectStep : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         if (mAdapter == null) return
@@ -405,6 +404,8 @@ class FragmentObjectStep : BaseFragment() {
                             e.printStackTrace()
                         }
 
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

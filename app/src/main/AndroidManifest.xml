@@ -10,7 +10,7 @@
     <!--카메라-->
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <!--  todo : 임시    android:usesCleartextTraffic="true" 모든 cleartext 트래픽은 허용처리가 됩니다.-->
+    <!--  임시    android:usesCleartextTraffic="true" 모든 cleartext 트래픽은 허용처리가 됩니다.-->
     <application
             android:name=".base.BaseApplication"
             android:allowBackup="true"
@@ -94,6 +94,9 @@
                 android:name=".activity.ActivityAddPost"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="500e2bccf72f3906c4aee099eb1056b51a28f127" />
 
     </application>
 

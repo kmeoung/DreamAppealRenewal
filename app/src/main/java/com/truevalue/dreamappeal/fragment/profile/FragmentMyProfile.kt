@@ -98,7 +98,6 @@ class FragmentMyProfile : BaseFragment() {
                 message: String
             ) {
                 if(context != null){
-                    Toast.makeText(context!!.applicationContext,message, Toast.LENGTH_SHORT).show()
 
                     if(code == DAClient.SUCCESS){
                         // todo : 데이터 바인딩 필요
@@ -126,6 +125,8 @@ class FragmentMyProfile : BaseFragment() {
                             group.Class = Object.getInt("class")
                             mAdapter!!.add(group)
                         }
+                    }else{
+                        Toast.makeText(context!!.applicationContext,message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -125,7 +125,6 @@ class FragmentAchivementPostDetail : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
@@ -147,6 +146,8 @@ class FragmentAchivementPostDetail : BaseFragment() {
 
                         mBean = bean
                         setData(bean)
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
