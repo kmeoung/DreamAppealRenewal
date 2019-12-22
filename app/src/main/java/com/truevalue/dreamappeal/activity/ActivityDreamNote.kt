@@ -1,35 +1,55 @@
 package com.truevalue.dreamappeal.activity
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
+import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.fragment.profile.FragmentDreamNoteIdea
 import com.truevalue.dreamappeal.fragment.profile.FragmentDreamNoteLife
+import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_dream_note.*
 
-class ActivityDreamNote : BaseActivity(){
+class ActivityDreamNote : BaseFragment(){
 
-    private var mViewUserIdx = -1;
+    private var mViewUserIdx = -1
     companion object{
         val EXTRA_VIEW_USER_IDX = "EXTRA_VIEW_USER_IDX"
+        fun newInstance(view_user_idx : Int) : ActivityDreamNote{
+            val fragment = ActivityDreamNote()
+            fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dream_note)
-        // init View
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.activity_dream_note,container,false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         initView()
-        // Action
+
         onAction()
     }
 
-    private fun initView(){
-        mViewUserIdx = intent.getIntExtra(EXTRA_VIEW_USER_IDX,-1)
+    /**
+     * View Init
+     */
+    private fun initView() {
+        // Action Bar 설정
+        iv_back_black.visibility = View.VISIBLE
+        tv_title.text = getString(R.string.str_dream_note)
     }
+
 
     /**
      * Normal Action
@@ -42,13 +62,6 @@ class ActivityDreamNote : BaseActivity(){
         replaceFragment(R.id.dream_note_container,
             FragmentDreamNoteLife.newInstance(mViewUserIdx),false)
 
-    }
-
-    /**
-     * Fragment에서 접근하는 Fragment 변경
-     */
-    fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
-        replaceFragment(R.id.dream_note_container, fragment, addToBack)
     }
 
     /**

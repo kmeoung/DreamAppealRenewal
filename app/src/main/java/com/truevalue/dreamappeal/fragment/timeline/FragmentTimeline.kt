@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.timeline
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,10 +18,12 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.bean.BeanCommentDetail
 import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
@@ -83,7 +87,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             when (it) {
                 iv_search -> {
                     val intent = Intent(context!!, ActivitySearch::class.java)
-                    startActivityForResult(intent,ActivitySearch.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
                 }
             }
         }
@@ -274,14 +278,17 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     .into(ivProfile)
             }
 
-            if(bean.profile_idx != Comm_Prefs.getUserProfileIndex()){
+            if (bean.profile_idx != Comm_Prefs.getUserProfileIndex()) {
                 ivProfile.setOnClickListener(View.OnClickListener {
-                    (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(bean.profile_idx),true)
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentProfile.newInstance(bean.profile_idx),
+                        true
+                    )
                 })
             }
 
             ivMore.setOnClickListener(View.OnClickListener {
-                // todo : More 기능 추가 필요
+                showPopupMenu(ivMore,bean)
             })
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
@@ -318,7 +325,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 )
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
                 intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
-                startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
             llComment.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context!!, ActivityComment::class.java)
@@ -327,7 +334,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     ActivityComment.EXTRA_TYPE_ACTION_POST
                 )
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
-                startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
 
             llCheering.setOnClickListener(View.OnClickListener {
@@ -339,12 +346,80 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
+    /**
+     * Show PopupMenu
+     */
+    private fun showPopupMenu(ivMore: View, bean: BeanTimeline) {
+        val popupMenu = PopupMenu(context!!, ivMore)
+        popupMenu.menu.add(getString(R.string.str_edit))
+        popupMenu.menu.add(getString(R.string.str_delete))
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.title) {
+                getString(R.string.str_edit) -> {
+                    val intent = Intent(context!!,ActivityAddPost::class.java)
+                    intent.putExtra(ActivityAddPost.EDIT_VIEW_TYPE,ActivityAddPost.EDIT_ACTION_POST)
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX,bean.idx)
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES,bean.imageList)
+                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS,bean!!.content)
+                    startActivity(intent)
+                }
+                getString(R.string.str_delete) -> {
+                    val builder =
+                        AlertDialog.Builder(context!!)
+                            .setTitle(getString(R.string.str_delete_post_title))
+                            .setMessage(getString(R.string.str_delete_post_contents))
+                            .setPositiveButton(
+                                getString(R.string.str_yes)
+                            ) { dialog, _ ->
+                                deletePost(bean)
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton(
+                                getString(R.string.str_no)
+                            ) { dialog, _ -> dialog.dismiss() }
+                    val dialog = builder.create()
+                    dialog.show()
+                }
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
+    /**
+     * Post 삭제
+     */
+    fun deletePost(bean: BeanTimeline) {
+        DAClient.deleteActionPostsDetail(bean.idx, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        mAdatper!!.remove(bean)
+                        mAdatper!!.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX || requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentProfile.newInstance(view_user_idx),
+                    true
+                )
             }
         }
     }
@@ -353,8 +428,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 인증 좋아요
      */
-    private fun actionLike(bean : BeanTimeline){
-        DAClient.likeActionPost(bean.idx,object : DAHttpCallback{
+    private fun actionLike(bean: BeanTimeline) {
+        DAClient.likeActionPost(bean.idx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -362,10 +437,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                if(context != null){
-                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if(code == DAClient.SUCCESS){
+                    if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val status = json.getBoolean("status")
                         bean.status = status

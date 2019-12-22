@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.viewpager.widget.ViewPager.*
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
@@ -46,6 +47,8 @@ class FragmentBestPost : BaseFragment() {
             return fragment
         }
     }
+
+    private val REQUEST_EDIT_PAGE = 2020
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -137,6 +140,8 @@ class FragmentBestPost : BaseFragment() {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
                 val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
                 (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            }else if(requestCode == REQUEST_EDIT_PAGE){
+                achivementPostDetail()
             }
         }
     }
@@ -225,7 +230,13 @@ class FragmentBestPost : BaseFragment() {
         builder.setItems(list) { _, i ->
             when (list[i]) {
                 getString(R.string.str_edit) -> if (mBean != null) {
-                    // todo : 수정
+                    val intent = Intent(context!!,ActivityAddPost::class.java)
+                    intent.putExtra(ActivityAddPost.EDIT_VIEW_TYPE,ActivityAddPost.EDIT_ACHIEVEMENT_POST)
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX,mBestIdx)
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES,mAdapter!!.getAll())
+                    intent.putExtra(ActivityAddPost.REQUEST_TITLE,mBean!!.title)
+                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS,mBean!!.content)
+                    startActivityForResult(intent,REQUEST_EDIT_PAGE)
                 }
                 getString(R.string.str_delete) -> {
                     val builder =
@@ -272,6 +283,8 @@ class FragmentBestPost : BaseFragment() {
             }
         })
     }
+
+
 
     /**
      * Data 셋팅

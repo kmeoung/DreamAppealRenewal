@@ -45,35 +45,11 @@ class FragmentDreamNoteLife : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // View 초기화
-        initView()
-        // View Click Listener
-        onClickView()
+
         // RecyclerView Adapter 초기화
         initAdapter()
         // data bind
         getDreamNoteLife()
-    }
-
-    /**
-     * View Init
-     */
-    private fun initView() {
-        // Action Bar 설정
-        (activity as ActivityDreamNote).iv_back_black.visibility = View.VISIBLE
-        (activity as ActivityDreamNote).tv_title.text = getString(R.string.str_dream_note)
-    }
-
-    /**
-     * View 클릭 리스너
-     */
-    private fun onClickView() {
-        val listener = View.OnClickListener {
-            when (it) {
-                (activity as ActivityDreamNote).iv_back_black -> activity!!.finish()
-            }
-        }
-        (activity as ActivityDreamNote).iv_back_black.setOnClickListener(listener)
     }
 
     /**
@@ -154,11 +130,7 @@ class FragmentDreamNoteLife : BaseFragment() {
                 val tvDate = h.getItemView<TextView>(R.id.tv_date)
 
                 tvTitle.text = bean.content
-                if (bean.thumbnail_image.isNullOrEmpty()) {
-                    Glide.with(context!!).load(R.drawable.ic_image_white).load(ivThumbnail)
-                } else Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).load(
-                    ivThumbnail
-                )
+                Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).centerCrop().into(ivThumbnail)
                 // todo : Date 형식 맞춰야 합니다
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val sdf2 = SimpleDateFormat("yyyy. MM. dd")
@@ -167,9 +139,9 @@ class FragmentDreamNoteLife : BaseFragment() {
                 tvDate.text = sdf2.format(date)
 
                 h.itemView.setOnClickListener(View.OnClickListener {
-                    (activity as ActivityDreamNote).replaceFragment(
-                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx),
-                        addToBack = true
+                    (activity as ActivityMain).replaceFragment(
+                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx,FagmentActionPost.TYPE_DREAM_NOTE_LIFE),
+                        addToBack = true,isMainRefresh = false
                     )
                 })
             }

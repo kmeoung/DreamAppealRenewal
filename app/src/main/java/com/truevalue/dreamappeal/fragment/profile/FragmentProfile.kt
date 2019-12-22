@@ -146,9 +146,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
                     showDialog()
                 }
                 iv_dream_note->{
-                    val intent = Intent(context!!,ActivityDreamNote::class.java)
-                    intent.putExtra(ActivityDreamNote.EXTRA_VIEW_USER_IDX,mViewUserIdx)
-                    startActivity(intent)
+                    (activity as ActivityMain).replaceFragment(ActivityDreamNote.newInstance(mViewUserIdx),addToBack = true,isMainRefresh = false)
                 }
             }
         }

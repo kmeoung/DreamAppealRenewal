@@ -49,11 +49,23 @@ class FragmentLevelChoice : BaseFragment() {
     private var selectedCategoryIdx = -1
     private var selectedCategoryDetailIdx = -1
 
+    private var mPostIdx : Int = -1
+
     companion object {
         fun newInstance(images: ArrayList<File>?, post_contents: String): FragmentLevelChoice {
             val fragment = FragmentLevelChoice()
             fragment.mImages = images
             fragment.postContents = post_contents
+
+            return fragment
+        }
+
+        fun newInstance(post_idx : Int,category_idx : Int,category_detail_idx : Int): FragmentLevelChoice {
+            val fragment = FragmentLevelChoice()
+            fragment.mPostIdx = post_idx
+            fragment.selectedCategoryIdx = category_idx
+            fragment.selectedCategoryDetailIdx = category_detail_idx
+            fragment.mCategoryType = fragment.TYPE_ACTION_POST
             return fragment
         }
     }
@@ -85,6 +97,14 @@ class FragmentLevelChoice : BaseFragment() {
         iv_back_blue.visibility = VISIBLE
         iv_back_black.visibility = GONE
         iv_check.visibility = VISIBLE
+
+        if(mPostIdx > -1) {
+            ll_idea.visibility = GONE
+            ll_like.visibility = GONE
+        }else {
+            ll_idea.visibility = VISIBLE
+            ll_like.visibility = VISIBLE
+        }
     }
 
     /**
@@ -96,7 +116,11 @@ class FragmentLevelChoice : BaseFragment() {
                 iv_back_blue -> (activity!!.onBackPressed())
                 iv_check -> {
                     if (iv_check.isSelected) {
-                        addActionPost()
+                        if(mPostIdx > -1) {
+                            updateActionPost()
+                        }else{
+                            addActionPost()
+                        }
                     }
                 }
                 ll_idea -> {
@@ -159,6 +183,10 @@ class FragmentLevelChoice : BaseFragment() {
                 tv_category_detail.visibility = VISIBLE
                 // 실천인증 가져오기
                 getCategory()
+
+                if(mPostIdx > -1){
+                    getCategoryDetail(selectedCategoryIdx)
+                }
             }
         }
     }
@@ -258,6 +286,9 @@ class FragmentLevelChoice : BaseFragment() {
         })
     }
 
+    /**
+     * Action Post 추가
+     */
     private fun addActionPost() {
         val contents = postContents
         val tags = ""
@@ -293,6 +324,36 @@ class FragmentLevelChoice : BaseFragment() {
                             val result = json.getJSONObject("result")
                             val insertId = result.getInt("insertId")
                             uploadImage(insertId)
+                        }
+                    }
+                }
+            })
+    }
+
+    /**
+     * Http
+     * 수정
+     */
+    private fun updateActionPost() {
+        DAClient.updateActionPosts(
+            mPostIdx,
+            selectedCategoryIdx,
+            selectedCategoryDetailIdx,
+            null,
+            null,
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+                        if (code == DAClient.SUCCESS) {
+                            activity!!.onBackPressed()
                         }
                     }
                 }

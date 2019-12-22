@@ -15,22 +15,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.BeanActionPost
-import com.truevalue.dreamappeal.bean.BeanActionPostHeader
-import com.truevalue.dreamappeal.bean.BeanBlueprintObject
-import com.truevalue.dreamappeal.bean.BeanObjectStep
+import com.truevalue.dreamappeal.bean.*
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
@@ -43,6 +42,8 @@ import kotlinx.android.synthetic.main.layout_object_step_header.*
 import okhttp3.Call
 import org.json.JSONException
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FragmentObjectStep : BaseFragment() {
     private var mBean: BeanBlueprintObject? = null
@@ -52,7 +53,7 @@ class FragmentObjectStep : BaseFragment() {
     private var mViewUserIdx: Int = -1
 
     companion object {
-        fun newInstance(bean: BeanBlueprintObject,view_user_idx: Int): FragmentObjectStep {
+        fun newInstance(bean: BeanBlueprintObject, view_user_idx: Int): FragmentObjectStep {
             val fragment = FragmentObjectStep()
             fragment.mViewUserIdx = view_user_idx
             fragment.mBean = bean
@@ -72,10 +73,10 @@ class FragmentObjectStep : BaseFragment() {
         initView()
         // View Click Listener
         onClickView()
-        // 데이터 초기화
-        initData()
         // recyclerview adapter 초기화
         initAdapter()
+        // 데이터 초기화
+        initData()
     }
 
     /**
@@ -84,10 +85,10 @@ class FragmentObjectStep : BaseFragment() {
     private fun initView() {
         tv_title.text = getString(R.string.str_object_step)
 
-        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
             iv_object_step_more.visibility = VISIBLE
             tv_detail_step.visibility = VISIBLE
-        }else{
+        } else {
             iv_object_step_more.visibility = GONE
             tv_detail_step.visibility = GONE
         }
@@ -133,7 +134,7 @@ class FragmentObjectStep : BaseFragment() {
                     showMoreDialog()
                 }
                 tv_detail_step -> {
-                    if (mObjectBean != null) {
+                    if (mObjectBean != null && mObjectBean!!.complete == 0) {
                         (activity as ActivityMain).replaceFragment(
                             FragmentAddPage.newInstance(
                                 FragmentAddPage.VIEW_TYPE_ADD_STEP_DETAIL, mObjectBean!!.idx
@@ -151,7 +152,7 @@ class FragmentObjectStep : BaseFragment() {
                         ActivityComment.EXTRA_INDEX,
                         mViewUserIdx
                     ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
-                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 btn_commit_comment -> {
                     if (btn_commit_comment.isSelected) addBlueprintComment()
@@ -169,10 +170,13 @@ class FragmentObjectStep : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentProfile.newInstance(view_user_idx),
+                    true
+                )
             }
         }
     }
@@ -183,7 +187,7 @@ class FragmentObjectStep : BaseFragment() {
     private fun showMoreDialog() {
         val list =
             arrayOf(
-                getString(R.string.str_down_best_post),
+                if (mBean!!.complete == 1) getString(R.string.str_do_not_success) else getString(R.string.str_do_success),
                 getString(R.string.str_edit),
                 getString(R.string.str_delete)
             )
@@ -191,11 +195,20 @@ class FragmentObjectStep : BaseFragment() {
             AlertDialog.Builder(context)
         builder.setItems(list) { _, i ->
             when (list[i]) {
-                getString(R.string.str_down_best_post) -> {
-
+                getString(R.string.str_do_not_success) -> {
+                    updateComplete(mBean!!.idx, 0)
                 }
-                getString(R.string.str_edit) -> if (mBean != null) {
-                    // todo : 수정
+                getString(R.string.str_do_success) -> {
+                    updateComplete(mBean!!.idx, 1)
+                }
+                getString(R.string.str_edit) -> if (mObjectBean != null) {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentAddPage.newInstance(
+                            FragmentAddPage.VIEW_TYPE_EDIT_STEP,
+                            mObjectBean!!.idx,
+                            mObjectBean!!.object_name
+                        ), addToBack = true,isMainRefresh = false
+                    )
                 }
                 getString(R.string.str_delete) -> {
                     val builder =
@@ -204,9 +217,9 @@ class FragmentObjectStep : BaseFragment() {
                             .setMessage(getString(R.string.str_delete_post_contents))
                             .setPositiveButton(
                                 getString(R.string.str_yes)
-                            ) { dialog, which ->
-                                if (mBean != null) {
-
+                            ) { dialog, _ ->
+                                if (mObjectBean != null) {
+                                    deleteObjectStep(mObjectBean!!.idx)
                                 }
                                 dialog.dismiss()
                             }
@@ -219,6 +232,63 @@ class FragmentObjectStep : BaseFragment() {
             }
         }
         builder.create().show()
+    }
+
+    /**
+     * Http
+     * 삭제
+     */
+    private fun deleteObjectStep(object_idx: Int){
+        DAClient.deleteObject(object_idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
+
+                    if (code == DAClient.SUCCESS) {
+                        (activity as ActivityMain).onBackPressed(true)
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * complete 설정
+     */
+    private fun updateComplete(object_idx: Int, complete: Int) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        DAClient.updateObject(
+            object_idx,
+            null,
+            null,
+            complete,
+            if (complete == 1) sdf.format(Date()) else null,
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+
+                        if (code == DAClient.SUCCESS) {
+                            getObjects(object_idx)
+                        }
+                    }
+                }
+            })
     }
 
     /**
@@ -259,9 +329,15 @@ class FragmentObjectStep : BaseFragment() {
                         )
 
                         mObjectBean = bean
-
                         tv_object_step_title.text = bean.object_name
-//                        "total_action_post_count":0, todo : 추후 사용
+                        val postCount = json.getInt("total_action_post_count")
+                        tv_total_count.text = "총 인증 ${postCount}개"
+
+                        if (mObjectBean!!.complete == 0) {
+                            ll_complete.visibility = GONE
+                        } else {
+                            ll_complete.visibility = VISIBLE
+                        }
                         try {
                             val commentCount = json.getInt("comment_count")
 
@@ -415,12 +491,12 @@ class FragmentObjectStep : BaseFragment() {
 
                 tvPosition.text = bean.position.toString()
                 tvTitle.text = bean.title
-                if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+                if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                     ivMore.visibility = VISIBLE
-                }else ivMore.visibility = GONE
+                } else ivMore.visibility = GONE
 
                 ivMore.setOnClickListener(View.OnClickListener {
-                    // todo : 여기서는 기능 구현이 필요합니다
+                    showPopupMenu(ivMore,bean)
                 })
 
             } else if (getItemViewType(i) == TYPE_ITEM) {
@@ -435,12 +511,76 @@ class FragmentObjectStep : BaseFragment() {
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx),
+                        FagmentActionPost.newInstance(bean.idx, mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = false
                     )
                 })
             }
+        }
+
+        /**
+         * Show PopupMenu
+         */
+        private fun showPopupMenu(ivMore: View, bean: BeanActionPostHeader) {
+            val popupMenu = PopupMenu(context!!, ivMore)
+            popupMenu.menu.add(getString(R.string.str_edit))
+            popupMenu.menu.add(getString(R.string.str_delete))
+
+            popupMenu.setOnMenuItemClickListener {
+                when (it.title) {
+                    getString(R.string.str_edit) -> {
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentAddPage.newInstance(
+                                    FragmentAddPage.VIEW_TYPE_EDIT_STEP_DETAIL, bean.object_idx,bean.idx,bean.title
+                                ), addToBack = true, isMainRefresh = false
+                            )
+                    }
+                    getString(R.string.str_delete) -> {
+                        val builder =
+                            AlertDialog.Builder(context!!)
+                                .setTitle(getString(R.string.str_delete_post_title))
+                                .setMessage(getString(R.string.str_delete_post_contents))
+                                .setPositiveButton(
+                                    getString(R.string.str_yes)
+                                ) { dialog, _ ->
+                                    deleteObjectStepDetail(bean.idx,bean.object_idx)
+                                    dialog.dismiss()
+                                }
+                                .setNegativeButton(
+                                    getString(R.string.str_no)
+                                ) { dialog, _ -> dialog.dismiss() }
+                        val dialog = builder.create()
+                        dialog.show()
+                    }
+                }
+                false
+            }
+            popupMenu.show()
+        }
+
+        /**
+         * Http
+         * Object Step Detail 제거
+         */
+        private fun deleteObjectStepDetail(step_idx : Int, object_idx: Int){
+            DAClient.deleteObjectStepDetail(step_idx, object_idx, object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                        if (code == DAClient.SUCCESS) {
+                            getObjects(object_idx)
+                        }
+                    }
+                }
+            })
         }
 
         override fun getItemViewType(i: Int): Int {

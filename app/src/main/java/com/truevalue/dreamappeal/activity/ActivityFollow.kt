@@ -203,29 +203,29 @@ class ActivityFollow : BaseActivity() {
             val bean = mAdapter!!.get(i) as BeanFollow
 
             if (bean.status == 1) {
-                tv_add_follow.setTextColor(
+                tvAddFollow.setTextColor(
                     ContextCompat.getColor(
                         this@ActivityFollow,
                         R.color.black
                     )
                 )
-                tv_add_follow.background = ContextCompat.getDrawable(
+                tvAddFollow.background = ContextCompat.getDrawable(
                     this@ActivityFollow,
                     R.drawable.bg_round_rectangle_gray2
                 )
-                tv_add_follow.text = getString(R.string.str_following)
+                tvAddFollow.text = getString(R.string.str_following)
             } else {
-                tv_add_follow.setTextColor(
+                tvAddFollow.setTextColor(
                     ContextCompat.getColor(
                         this@ActivityFollow,
                         R.color.white
                     )
                 )
-                tv_add_follow.background = ContextCompat.getDrawable(
+                tvAddFollow.background = ContextCompat.getDrawable(
                     this@ActivityFollow,
                     R.drawable.bg_round_rectangle_blue_2
                 )
-                tv_add_follow.text = getString(R.string.str_add_follow)
+                tvAddFollow.text = getString(R.string.str_add_follow)
             }
 
             ivProfile.setOnClickListener(View.OnClickListener {

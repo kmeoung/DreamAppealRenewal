@@ -66,7 +66,7 @@ class FragmentMeritAndMotive : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!)
+        mAdapter = BasePagerAdapter(context!!, true)
         pager_image.adapter = mAdapter
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {

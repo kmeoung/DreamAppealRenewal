@@ -32,6 +32,7 @@ class FragmentAddPage : BaseFragment() {
     private var mObjectIdx: Int = -1
     private var mStepIdx: Int = -1
     private var mAdapter : BasePagerAdapter<String>? = null
+    private var mContents : String? = null
 
     companion object {
         val VIEW_TYPE_ADD_ABILITY = "VIEW_TYPE_ADD_ABILITY"
@@ -62,6 +63,19 @@ class FragmentAddPage : BaseFragment() {
         }
 
         /**
+         * 실현 성과 수정
+         * 상세 추가
+         */
+        fun newInstance(view_type: String, object_idx: Int,contents : String): FragmentAddPage {
+            val fragment = FragmentAddPage()
+            fragment.mViewType = view_type
+            fragment.mObjectIdx = object_idx
+            fragment.mContents = contents
+            return fragment
+        }
+
+
+        /**
          * 상세 수정 / 삭제
          */
         fun newInstance(view_type: String, object_idx: Int, step_idx: Int): FragmentAddPage {
@@ -69,6 +83,18 @@ class FragmentAddPage : BaseFragment() {
             fragment.mViewType = view_type
             fragment.mObjectIdx = object_idx
             fragment.mStepIdx = step_idx
+            return fragment
+        }
+
+        /**
+         * 상세 수정 / 삭제
+         */
+        fun newInstance(view_type: String, object_idx: Int, step_idx: Int,contents : String): FragmentAddPage {
+            val fragment = FragmentAddPage()
+            fragment.mViewType = view_type
+            fragment.mObjectIdx = object_idx
+            fragment.mStepIdx = step_idx
+            fragment.mContents = contents
             return fragment
         }
 
@@ -100,7 +126,7 @@ class FragmentAddPage : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!)
+        mAdapter = BasePagerAdapter(context!!, true)
         pager_image.adapter = mAdapter
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
@@ -161,9 +187,9 @@ class FragmentAddPage : BaseFragment() {
 
             if(mViewType == VIEW_TYPE_ADD_OPPORTUNITY ||
                 mViewType == VIEW_TYPE_EDIT_OPPORTUNITY) {
-                DAClient.abilityExampleImage(ex_idx,exListener)
-            }else{
                 DAClient.opportunityExampleImage(ex_idx,exListener)
+            }else{
+                DAClient.abilityExampleImage(ex_idx,exListener)
             }
         }else{
             DAClient.objectExampleImage(ex_idx,exListener)
@@ -237,6 +263,11 @@ class FragmentAddPage : BaseFragment() {
             et_contents.setText(mBeanAnO!!.contents)
             tv_default.visibility = View.GONE
         }
+
+        if(mContents != null){
+            et_contents.setText(mContents)
+            tv_default.visibility = GONE
+        }
     }
 
     /**
@@ -260,7 +291,7 @@ class FragmentAddPage : BaseFragment() {
                 iv_check -> {
                     clickCheck()
                 }
-                iv_back_black -> (activity as ActivityMain).onBackPressed()
+                iv_back_black -> (activity as ActivityMain).onBackPressed(false)
             }
         }
         iv_check.setOnClickListener(listener)

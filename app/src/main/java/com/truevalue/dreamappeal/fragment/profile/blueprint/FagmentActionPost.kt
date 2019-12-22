@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,12 +16,15 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail
 import com.truevalue.dreamappeal.bean.BeanActionPostImage
+import com.truevalue.dreamappeal.bean.BeanTimeline
+import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -40,11 +44,31 @@ class FagmentActionPost : BaseFragment() {
 
     private var mPostIdx = -1
     private var mViewUserIdx = -1
+    private var mBean: BeanActionPostDetail? = null
+    private var isDreamNoteType: String? = null
+
+    private val EXTRA_CHANGE_CATEGORY = 3030
+
     companion object {
-        fun newInstance(post_idx: Int, view_user_idx : Int): FagmentActionPost {
+        val TYPE_DREAM_NOTE_IDEA = "TYPE_DREAM_NOTE_IDEA"
+        val TYPE_DREAM_NOTE_LIFE = "TYPE_DREAM_NOTE_LIFE"
+
+        fun newInstance(post_idx: Int, view_user_idx: Int): FagmentActionPost {
             val fragment = FagmentActionPost()
             fragment.mPostIdx = post_idx
             fragment.mViewUserIdx = view_user_idx
+            return fragment
+        }
+
+        fun newInstance(
+            post_idx: Int,
+            view_user_idx: Int,
+            dream_note_type: String
+        ): FagmentActionPost {
+            val fragment = FagmentActionPost()
+            fragment.mPostIdx = post_idx
+            fragment.mViewUserIdx = view_user_idx
+            fragment.isDreamNoteType = dream_note_type
             return fragment
         }
     }
@@ -77,9 +101,74 @@ class FagmentActionPost : BaseFragment() {
         // text 설정
         tv_title.text = getString(R.string.str_level_choice_action_post)
 
-        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
             iv_action_more.visibility = VISIBLE
-        }else iv_action_more.visibility = GONE
+        } else iv_action_more.visibility = GONE
+
+        if (isDreamNoteType != null) {
+
+            when (isDreamNoteType) {
+                TYPE_DREAM_NOTE_LIFE -> {
+                    iv_circle.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_circle_green
+                        )
+                    )
+                    tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.asparagus))
+                    iv_side_img.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_side_green
+                        )
+                    )
+                }
+                TYPE_DREAM_NOTE_IDEA -> {
+                    iv_circle.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_circle_yellow
+                        )
+                    )
+                    tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.yellow_orange))
+                    iv_side_img.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_side_yellow
+                        )
+                    )
+                }
+                else -> {
+                    iv_circle.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_circle_blue
+                        )
+                    )
+                    tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
+                    iv_side_img.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.ic_side_blue
+                        )
+                    )
+                }
+            }
+        } else {
+            iv_circle.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context!!,
+                    R.drawable.ic_circle_blue
+                )
+            )
+            tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
+            iv_side_img.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context!!,
+                    R.drawable.ic_side_blue
+                )
+            )
+        }
     }
 
     /**
@@ -100,22 +189,22 @@ class FagmentActionPost : BaseFragment() {
                     )
                     intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
                     intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
-                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
-                ll_comment-> {
+                ll_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
                     intent.putExtra(
                         ActivityComment.EXTRA_VIEW_TYPE,
                         ActivityComment.EXTRA_TYPE_ACTION_POST
                     )
                     intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
-                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_share -> {
 
                 }
                 iv_action_more -> {
-
+                    showMoreDialog()
                 }
             }
         }
@@ -127,12 +216,102 @@ class FagmentActionPost : BaseFragment() {
         iv_action_more.setOnClickListener(listener)
     }
 
+    /**
+     * 더보기 Dialog 띄우기
+     */
+    private fun showMoreDialog() {
+        val list = if (isDreamNoteType != null) arrayOf(
+            getString(R.string.str_edit),
+            getString(R.string.str_delete)
+        ) else arrayOf(
+            getString(R.string.str_edit_level),
+            getString(R.string.str_edit),
+            getString(R.string.str_delete)
+        )
+        val builder =
+            AlertDialog.Builder(context)
+        builder.setItems(list) { _, i ->
+            when (list[i]) {
+                getString(R.string.str_edit_level) -> {
+                    val intent = Intent(context!!, ActivityAddPost::class.java)
+                    intent.putExtra(
+                        ActivityAddPost.EDIT_VIEW_TYPE,
+                        ActivityAddPost.EDIT_CHANGE_CATEGORY
+                    )
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mPostIdx)
+                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_IDX, mBean!!.object_idx)
+                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_DETAIL_IDX, mBean!!.step_idx)
+                    startActivityForResult(intent, EXTRA_CHANGE_CATEGORY)
+                }
+                getString(R.string.str_edit) -> {
+
+                    val intent = Intent(context!!, ActivityAddPost::class.java)
+                    intent.putExtra(
+                        ActivityAddPost.EDIT_VIEW_TYPE,
+                        ActivityAddPost.EDIT_ACTION_POST
+                    )
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mPostIdx)
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapter!!.getAll())
+                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, tv_contents.text.toString())
+                    startActivity(intent)
+                }
+
+                getString(R.string.str_delete) -> {
+                    val builder =
+                        AlertDialog.Builder(context)
+                            .setTitle(getString(R.string.str_delete_post_title))
+                            .setMessage(getString(R.string.str_delete_post_contents))
+                            .setPositiveButton(
+                                getString(R.string.str_yes)
+                            ) { dialog, _ ->
+                                deletePost()
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton(
+                                getString(R.string.str_no)
+                            ) { dialog, _ -> dialog.dismiss() }
+                    val dialog = builder.create()
+                    dialog.show()
+                }
+            }
+        }
+        builder.create().show()
+    }
+
+    /**
+     * Post 삭제
+     */
+    fun deletePost() {
+        DAClient.deleteActionPostsDetail(mPostIdx, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        (activity as ActivityMain).onBackPressed(false)
+                    }
+                }
+            }
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentProfile.newInstance(view_user_idx),
+                    true
+                )
+            } else if (requestCode == EXTRA_CHANGE_CATEGORY) {
+                (activity as ActivityMain).onBackPressed(false)
             }
         }
     }
@@ -141,8 +320,8 @@ class FagmentActionPost : BaseFragment() {
      * Http
      * 인증 좋아요
      */
-    private fun actionLike(){
-        DAClient.likeActionPost(mPostIdx,object : DAHttpCallback{
+    private fun actionLike() {
+        DAClient.likeActionPost(mPostIdx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -150,10 +329,10 @@ class FagmentActionPost : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(context != null){
-                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if(code == DAClient.SUCCESS){
+                    if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
@@ -226,9 +405,9 @@ class FagmentActionPost : BaseFragment() {
                             mAdapter!!.notifyDataSetChanged()
                         } catch (e: Exception) {
                             e.printStackTrace()
+                        } finally {
+                            setData(bean)
                         }
-
-                        setData(bean)
                     }
                 }
             }
@@ -238,7 +417,8 @@ class FagmentActionPost : BaseFragment() {
     /**
      * Data binding
      */
-    private fun setData(bean : BeanActionPostDetail) {
+    private fun setData(bean: BeanActionPostDetail) {
+        mBean = bean
         Glide.with(context!!)
             .load(bean.profile_image)
             .placeholder(R.drawable.drawer_user)
@@ -246,20 +426,6 @@ class FagmentActionPost : BaseFragment() {
             .into(iv_dream_profile)
 
         iv_cheering.isSelected = bean.status
-
-        iv_circle.setImageDrawable(
-            ContextCompat.getDrawable(
-                context!!,
-                R.drawable.ic_circle_blue
-            )
-        )
-        tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
-        iv_side_img.setImageDrawable(
-            ContextCompat.getDrawable(
-                context!!,
-                R.drawable.ic_side_blue
-            )
-        )
 
         iv_more.setOnClickListener(View.OnClickListener {
             // todo : More 기능 추가 필요
@@ -284,7 +450,7 @@ class FagmentActionPost : BaseFragment() {
         tv_contents.text = bean.content
 
         tv_cheering.text = "${bean.like_count}개"
-        tv_comment.text =  "${bean.comment_count}개"
+        tv_comment.text = "${bean.comment_count}개"
 
     }
 

@@ -31,13 +31,28 @@ class FragmentNewAddAchievementPost : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mImages: ArrayList<File>? = null
+    private var mUrls: ArrayList<String>? = null
     private var mBestIdx: Int = -1
+    private var postIdx : Int = -1
+    private var mTitle : String? = null
+    private var mContents : String? = null
 
     companion object {
         fun newInstance(images: ArrayList<File>, best_idx: Int): FragmentNewAddAchievementPost {
             val fragment = FragmentNewAddAchievementPost()
             fragment.mImages = images
             fragment.mBestIdx = best_idx
+            return fragment
+        }
+
+        fun newInstance(url: ArrayList<String>,best_idx : Int, post_idx : Int,title : String,
+                        contents : String): FragmentNewAddAchievementPost {
+            val fragment = FragmentNewAddAchievementPost()
+            fragment.mUrls = url
+            fragment.mBestIdx = best_idx
+            fragment.postIdx = post_idx
+            fragment.mTitle = title
+            fragment.mContents = contents
             return fragment
         }
     }
@@ -64,10 +79,6 @@ class FragmentNewAddAchievementPost : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
-        tv_text_btn.visibility = GONE
-        iv_check.visibility = VISIBLE
-        tv_title.text = getString(R.string.str_new_post)
-
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -76,6 +87,22 @@ class FragmentNewAddAchievementPost : BaseFragment() {
                     (!et_comment.text.toString().isNullOrEmpty() && !et_title.text.toString().isNullOrEmpty())
             }
         })
+
+        if(postIdx > -1){
+            tv_text_btn.visibility = GONE
+            iv_check.visibility = VISIBLE
+            tv_title.text = getString(R.string.str_edit_post)
+
+            et_title.setText(mTitle)
+            et_comment.setText(mContents)
+            et_title.setSelection(et_title.length())
+            et_comment.setSelection(et_comment.length())
+        }else {
+            tv_text_btn.visibility = GONE
+            iv_check.visibility = VISIBLE
+            tv_title.text = getString(R.string.str_new_post)
+        }
+
     }
 
     /**
@@ -95,6 +122,10 @@ class FragmentNewAddAchievementPost : BaseFragment() {
             for (i in 0 until mImages!!.size) {
                 mAdapter!!.add(mImages!![i])
             }
+        }else if(mUrls != null && mUrls!!.size > 0){
+            for (i in 0 until mUrls!!.size) {
+                mAdapter!!.add(mUrls!![i])
+            }
         }
     }
 
@@ -106,8 +137,13 @@ class FragmentNewAddAchievementPost : BaseFragment() {
             when (it) {
                 iv_back_black -> activity!!.onBackPressed()
                 iv_check -> {
+
                     if (iv_check.isSelected) {
-                        addAchievementPost()
+                        if(postIdx > -1){
+                            updateAchievementPost()
+                        }else {
+                            addAchievementPost()
+                        }
                     }
                 }
             }
@@ -139,6 +175,33 @@ class FragmentNewAddAchievementPost : BaseFragment() {
                         val result = json.getJSONObject("result")
                         val insertId = result.getInt("insertId")
                         uploadImage(insertId)
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * Achievement Post 수정
+     */
+    private fun updateAchievementPost(){
+        val title = et_title.text.toString()
+        val contents = et_comment.text.toString()
+        DAClient.updateAchievementPost(title,contents,postIdx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(context != null){
+                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+
+                    if(code == DAClient.SUCCESS){
+                        activity!!.setResult(RESULT_OK)
+                        activity!!.onBackPressed()
                     }
                 }
             }
@@ -223,10 +286,10 @@ class FragmentNewAddAchievementPost : BaseFragment() {
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             if (mAdapter != null) {
                 val ivImage = h.getItemView<ImageView>(R.id.iv_image)
-                val file = mAdapter!!.get(i)
+                val image = mAdapter!!.get(i)
 
                 Glide.with(context!!)
-                    .load(file)
+                    .load(image)
                     .placeholder(R.drawable.ic_image_black)
                     .centerCrop()
                     .into(ivImage)

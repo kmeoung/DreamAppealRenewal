@@ -191,7 +191,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     private fun bindData() {
         if (mBean != null) {
             val bean = mBean!!
-
             // todo : 팔로워 필요
             if(bean.follow_status != null){
                 tv_add_follow.visibility = VISIBLE

@@ -10,13 +10,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityDreamNote
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FagmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
-import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_recyclerview.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -42,35 +40,10 @@ class FragmentDreamNoteIdea : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // View 초기화
-        initView()
-        // View Click Listener
-        onClickView()
         // RecyclerView Adapter 초기화
         initAdapter()
         // data bind
         getDreamNoteIdea()
-    }
-
-    /**
-     * View Init
-     */
-    private fun initView() {
-        // Action Bar 설정
-        (activity as ActivityDreamNote).iv_back_black.visibility = View.VISIBLE
-        (activity as ActivityDreamNote).tv_title.text = getString(R.string.str_dream_note)
-    }
-
-    /**
-     * View 클릭 리스너
-     */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                (activity as ActivityDreamNote).iv_back_black->activity!!.finish()
-            }
-        }
-        (activity as ActivityDreamNote).iv_back_black.setOnClickListener(listener)
     }
 
     /**
@@ -140,14 +113,12 @@ class FragmentDreamNoteIdea : BaseFragment() {
                 val bean = mAdapter!!.get(i) as BeanDreamNoteIdea
                 val ivIdea = h.getItemView<ImageView>(R.id.iv_idea)
 
-                if(bean.thumbnail_image.isNullOrEmpty()){
-                    Glide.with(context!!).load(R.drawable.ic_image_white).load(ivIdea)
-                }else Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).load(ivIdea)
+                Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).centerCrop().into(ivIdea)
 
                 h.itemView.setOnClickListener(View.OnClickListener {
-                    (activity as ActivityDreamNote).replaceFragment(
-                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx),
-                        addToBack = true
+                    (activity as ActivityMain).replaceFragment(
+                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx,FagmentActionPost.TYPE_DREAM_NOTE_IDEA),
+                        addToBack = true,isMainRefresh = false
                     )
                 })
             }

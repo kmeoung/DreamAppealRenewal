@@ -9,84 +9,97 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
     <LinearLayout
             android:id="@+id/ll_idea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/iv_check_idea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="11dp"
+                    android:src="@drawable/ic_yellow_check" />
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:text="@string/str_level_choice_idea"
+                    android:textColor="@color/black"
+                    android:textSize="15.7sp" />
+
+            <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:rotation="90"
+                    android:src="@drawable/ic_side_yellow" />
+        </LinearLayout>
 
         <ImageView
-                android:id="@+id/iv_check_idea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="11dp"
-                android:src="@drawable/ic_yellow_check" />
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyish" />
 
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:text="@string/str_level_choice_idea"
-                android:textColor="@color/black"
-                android:textSize="15.7sp" />
-
-        <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:rotation="90"
-                android:src="@drawable/ic_side_yellow" />
     </LinearLayout>
 
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/greyish" />
 
     <LinearLayout
             android:id="@+id/ll_like"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/iv_check_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="11dp"
+                    android:src="@drawable/ic_green_check" />
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:text="@string/str_level_choice_like"
+                    android:textColor="@color/black"
+                    android:textSize="15.7sp" />
+
+            <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:rotation="90"
+                    android:src="@drawable/ic_side_green" />
+        </LinearLayout>
 
         <ImageView
-                android:id="@+id/iv_check_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="11dp"
-                android:src="@drawable/ic_green_check" />
-
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:text="@string/str_level_choice_like"
-                android:textColor="@color/black"
-                android:textSize="15.7sp" />
-
-        <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:rotation="90"
-                android:src="@drawable/ic_side_green" />
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/greyish" />
     </LinearLayout>
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/greyish" />
 
     <LinearLayout
             android:id="@+id/ll_action_post"
@@ -139,7 +152,7 @@
             android:paddingBottom="8.3dp"
             android:text="@string/str_select_object"
             android:textColor="@color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -161,7 +174,7 @@
             android:paddingBottom="8.3dp"
             android:text="@string/str_select_step"
             android:textColor="@color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     <androidx.recyclerview.widget.RecyclerView

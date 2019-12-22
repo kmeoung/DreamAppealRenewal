@@ -8,8 +8,9 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
 import java.util.*
+import kotlin.collections.ArrayList
 
-class BasePagerAdapter<String>(private val mContext: Context) :
+class BasePagerAdapter<String>(private val mContext: Context,private var isCrop : Boolean? = false) :
     PagerAdapter() {
     private val mArray: ArrayList<String>
 
@@ -27,6 +28,10 @@ class BasePagerAdapter<String>(private val mContext: Context) :
 
     operator fun get(i: Int): String {
         return mArray[i]
+    }
+
+    fun getAll() : ArrayList<String>{
+        return mArray
     }
 
     override fun isViewFromObject(
@@ -47,11 +52,18 @@ class BasePagerAdapter<String>(private val mContext: Context) :
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(mContext)
         val url = mArray[position]
-        Glide.with(mContext)
-            .load(url)
-            .placeholder(R.drawable.ic_image_black)
-            .centerCrop()
-            .into(imageView)
+        if(isCrop == false) {
+            Glide.with(mContext)
+                .load(url)
+                .placeholder(R.drawable.ic_image_black)
+                .centerCrop()
+                .into(imageView)
+        }else{
+            Glide.with(mContext)
+                .load(url)
+                .placeholder(R.drawable.ic_image_black)
+                .into(imageView)
+        }
         container.addView(imageView, 0)
         return imageView
     }

@@ -637,6 +637,34 @@ object DAClient {
             params,
             callback
         )
+    }
+
+    /**
+     * PATCH
+     * 성과 수정
+     */
+    fun updateAchievementPost(
+        title: String,
+        content: String,
+        post_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_ACHIEVEMENT_POSTS_POST_IDX.replace(
+            Comm_Param.POST_INDEX,
+            post_idx.toString()
+        )
+        val params = DAHttpParams()
+        params.put("title", title)
+        params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
 
     }
 
@@ -1236,7 +1264,7 @@ object DAClient {
         object_idx: Int,
         object_name: String?,
         thumbnail_image: String?,
-        complete: String?,
+        complete: Int?,
         complete_date: String?,
         callback: DAHttpCallback
     ) {
@@ -1248,8 +1276,8 @@ object DAClient {
         val params = DAHttpParams()
         if (!object_name.isNullOrEmpty()) params.put("object_name", object_name)
         if (!thumbnail_image.isNullOrEmpty()) params.put("thumbnail_image", thumbnail_image)
-        if (!complete.isNullOrEmpty()) params.put("object_name", complete)
-        if (!complete_date.isNullOrEmpty()) params.put("object_name", complete_date)
+        if (complete != null) params.put("complete", complete)
+        if (!complete_date.isNullOrEmpty()) params.put("complete_date", complete_date)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,
@@ -1337,9 +1365,9 @@ object DAClient {
 
     /**
      * DELETE
-     * 실천 목표 세부단계 수정
+     * 실천 목표 세부단계 삭제
      */
-    fun updateObjectStepDetail(
+    fun deleteObjectStepDetail(
         step_idx: Int,
         object_idx: Int,
         callback: DAHttpCallback

@@ -71,15 +71,23 @@
                         android:fontFamily="@font/nanum_square_round_b"
                         android:text="0"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
 
             </LinearLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/pale_grey"/>
+
 
             <LinearLayout
                     android:id="@+id/ll_dream_point"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="19dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -101,9 +109,18 @@
                         android:fontFamily="@font/nanum_square_round_b"
                         android:text="0"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
 
             </LinearLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/pale_grey"/>
+
 
 
         </LinearLayout>

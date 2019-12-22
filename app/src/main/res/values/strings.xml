@@ -180,6 +180,8 @@
 
     <string name="str_success_mission">미션 달성</string>
     <string name="str_success">완료</string>
+    <string name="str_do_success">완료하기</string>
+    <string name="str_do_not_success">완료취소하기</string>
     <string name="str_get">획득</string>
     <string name="str_dream_point">드림포인트</string>
     <string name="str_dream_note">드림노트</string>
@@ -288,4 +290,6 @@
     <string name="str_timeline">타임라인</string>
 
     <string name="str_new_post">새 게시물</string>
+    <string name="str_edit_post">게시물 수정</string>
+    <string name="str_edit_level">실천 목표 / 세부단계 재설정</string>
 </resources>

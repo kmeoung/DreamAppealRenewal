@@ -32,7 +32,7 @@ class FragmentAnO : BaseFragment() {
 
     private var mViewType: Int?
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    private var mPagerAdapter : BasePagerAdapter<String>? = null
+
     init {
         mViewType = VIEW_TYPE_ABILITY
     }
@@ -64,10 +64,19 @@ class FragmentAnO : BaseFragment() {
         initView()
         // View Click Listener
         onClickView()
-        // RecyclerView 초기화
+        // init Adpater
         initAdapter()
         // init data
         setTabView(mViewType!!)
+    }
+
+    /**
+     * RecyclerView 초기화
+     */
+    private fun initAdapter() {
+        mAdapter = BaseRecyclerViewAdapter(rvListener)
+        rv_ano.adapter = mAdapter
+        rv_ano.layoutManager = LinearLayoutManager(context)
     }
 
     /**
@@ -136,7 +145,6 @@ class FragmentAnO : BaseFragment() {
                         )
                     )
                     getAbilities()
-                    getExampleAbility()
                 }
                 VIEW_TYPE_OPPORTUNITY -> {
                     iv_ability.isSelected = false
@@ -164,7 +172,6 @@ class FragmentAnO : BaseFragment() {
                         )
                     )
                     getOpportunities()
-                    getExampleOpportunity()
                 }
             }
         } else {
@@ -360,86 +367,6 @@ class FragmentAnO : BaseFragment() {
      */
     private fun initView() {
         tv_title.text = getText(R.string.str_default_ability_and_opportunity)
-    }
-
-    /**
-     * RecyclerView 초기화
-     */
-    private fun initAdapter() {
-        mAdapter = BaseRecyclerViewAdapter(rvListener)
-        rv_ano.adapter = mAdapter
-        rv_ano.layoutManager = LinearLayoutManager(context)
-
-        mPagerAdapter = BasePagerAdapter(context!!)
-        pager_image.adapter = mPagerAdapter
-        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
-            }
-        })
-    }
-
-    /**
-     * Http
-     * 예시 이미지 가져오기
-     */
-    private fun getExampleAbility(){
-        DAClient.abilityExampleImage(1,object : DAHttpCallback{
-            override fun onResponse(
-                call: Call,
-                serverCode: Int,
-                body: String,
-                code: String,
-                message: String
-            ) {
-                if(code == DAClient.SUCCESS){
-                    val json = JSONObject(body)
-                    val exUrl = json.getJSONArray("ex_url")
-
-                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
-
-                    mPagerAdapter!!.clear()
-                    for(i in 0 until exUrl.length()){
-                        val image = exUrl.getJSONObject(i)
-                        val url = image.getString("url")
-                        mPagerAdapter!!.add(url)
-                    }
-                    mPagerAdapter!!.notifyDataSetChanged()
-                }
-            }
-        })
-    }
-
-    /**
-     * Http
-     * 예시 이미지 가져오기
-     */
-    private fun getExampleOpportunity(){
-        DAClient.opportunityExampleImage(1,object : DAHttpCallback{
-            override fun onResponse(
-                call: Call,
-                serverCode: Int,
-                body: String,
-                code: String,
-                message: String
-            ) {
-                if(code == DAClient.SUCCESS){
-                    val json = JSONObject(body)
-                    val exUrl = json.getJSONArray("ex_url")
-
-                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
-
-                    mPagerAdapter!!.clear()
-                    for(i in 0 until exUrl.length()){
-                        val image = exUrl.getJSONObject(i)
-                        val url = image.getString("url")
-                        mPagerAdapter!!.add(url)
-                    }
-                    mPagerAdapter!!.notifyDataSetChanged()
-                }
-            }
-        })
     }
 
     /**

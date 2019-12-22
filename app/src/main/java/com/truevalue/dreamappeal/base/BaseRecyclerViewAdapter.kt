@@ -43,6 +43,12 @@ class BaseRecyclerViewAdapter(listener: IORecyclerViewListener) :
         notifyDataSetChanged()
     }
 
+    fun remove(a : Any){
+        mArray.remove(a)
+        notifyDataSetChanged()
+    }
+
+
     fun size() : Int = mArray.size
 
     fun getList() : ArrayList<Any>{
