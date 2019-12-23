@@ -68,6 +68,8 @@ class FragmentMyProfileEdit : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
+        // todo : 현재는 거주지 비활성화
+        et_address.isEnabled = false
         // 상단 바 설정
         (activity as ActivityMyProfileContainer).iv_back_black.visibility = View.VISIBLE
         (activity as ActivityMyProfileContainer).tv_title.text =
@@ -167,7 +169,8 @@ class FragmentMyProfileEdit : BaseFragment() {
     private fun isAllInput(): Boolean {
         return TextUtils.isEmpty(et_name.text.toString())
                 || TextUtils.isEmpty(et_nickname.text.toString())
-                || TextUtils.isEmpty(et_address.text.toString())
+//                || TextUtils.isEmpty(et_address.text.toString())
+        // todo : 현재는 거주지 비활성화
     }
 
     /**
@@ -181,11 +184,11 @@ class FragmentMyProfileEdit : BaseFragment() {
         bean.birth = SimpleDateFormat("yyyy-MM-dd").format(mCal.time)
         bean.gender = if(isGender) 0 else 1
         bean.address = et_address.text.toString()
-        bean.private.name = if(iv_lock_name.isSelected) 1 else 0
-        bean.private.birth = if(iv_lock_birth.isSelected) 1 else 0
-        bean.private.address = if(iv_lock_address.isSelected) 1 else 0
-        bean.private.gender = if(iv_lock_gender.isSelected) 1 else 0
-        bean.private.nickname = if(iv_lock_nickname.isSelected) 1 else 0
+        bean.private!!.name = if(iv_lock_name.isSelected) 1 else 0
+        bean.private!!.birth = if(iv_lock_birth.isSelected) 1 else 0
+        bean.private!!.address = if(iv_lock_address.isSelected) 1 else 0
+        bean.private!!.gender = if(iv_lock_gender.isSelected) 1 else 0
+        bean.private!!.nickname = if(iv_lock_nickname.isSelected) 1 else 0
 
         DAClient.updateMyUserData(bean, object : DAHttpCallback {
             override fun onResponse(

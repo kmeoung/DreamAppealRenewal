@@ -620,20 +620,28 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
                     val tvJob = h.getItemView<TextView>(R.id.tv_job)
 
-                    tvValueStyle.text = bean.value_style
-                    tvJob.text = "${bean.job} ${bean.name}"
+                    tvValueStyle.text = if(bean.value_style.isNullOrEmpty()) "" else bean.value_style
+                    tvJob.text =  "${if(bean.job.isNullOrEmpty()) "" else bean.job} ${if(bean.name.isNullOrEmpty()) "" else bean.name}"
                 } else {
                     val tvName = h.getItemView<TextView>(R.id.tv_name)
                     val tvTag = h.getItemView<TextView>(R.id.tv_tag)
-                    tvName.text = bean.name
-                    tvTag.text = "@${bean.parent_name}"
+                    tvName.text = if(bean.name.isNullOrEmpty()) "" else bean.name
+                    tvTag.text = if(bean.parent_name.isNullOrEmpty()) "" else "@${bean.parent_name}"
                 }
-                tvComment.text = bean.content
-                Glide.with(this@ActivityComment)
-                    .load(bean.image)
-                    .placeholder(R.drawable.drawer_user)
-                    .circleCrop()
-                    .into(ivProfile)
+                tvComment.text = if(bean.content.isNullOrEmpty()) "" else bean.content
+
+                if(bean.image.isNullOrEmpty()) {
+                    Glide.with(this@ActivityComment)
+                        .load(R.drawable.drawer_user)
+                        .circleCrop()
+                        .into(ivProfile)
+                }else{
+                    Glide.with(this@ActivityComment)
+                        .load(bean.image)
+                        .placeholder(R.drawable.drawer_user)
+                        .circleCrop()
+                        .into(ivProfile)
+                }
 
                 if (mIndex != Comm_Prefs.getUserProfileIndex()) {
                     ivProfile.setOnClickListener(View.OnClickListener {

@@ -378,9 +378,15 @@ class FagmentActionPost : BaseFragment() {
                         val profile = json.getJSONObject("profile")
                         val value_style = profile.getString("value_style")
                         val job = profile.getString("job")
+                        val profile_image = profile.getString("profile_image")
 
                         tv_value_style.text = value_style
                         tv_job.text = job
+                        Glide.with(context!!)
+                            .load(profile_image)
+                            .placeholder(R.drawable.drawer_user)
+                            .circleCrop()
+                            .into(iv_dream_profile)
 
                         val actionPost = json.getJSONObject("action_post")
                         val bean = Gson().fromJson<BeanActionPostDetail>(
@@ -420,12 +426,6 @@ class FagmentActionPost : BaseFragment() {
      */
     private fun setData(bean: BeanActionPostDetail) {
         mBean = bean
-        Glide.with(context!!)
-            .load(bean.profile_image)
-            .placeholder(R.drawable.drawer_user)
-            .circleCrop()
-            .into(iv_dream_profile)
-
         iv_cheering.isSelected = bean.status
 
         iv_more.setOnClickListener(View.OnClickListener {

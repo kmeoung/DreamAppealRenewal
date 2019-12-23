@@ -113,7 +113,7 @@ class FragmentDreamList : BaseFragment() {
     private fun getDreamList() {
 
         DAClient.profilesList(
-            Comm_Prefs.getUserProfileIndex(),
+            mViewUserIdx,
             object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,

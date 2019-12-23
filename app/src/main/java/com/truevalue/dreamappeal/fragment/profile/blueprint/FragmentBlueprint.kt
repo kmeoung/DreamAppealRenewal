@@ -37,7 +37,10 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.bottom_comment_view.*
+import kotlinx.android.synthetic.main.bottom_comment_view.tv_comment
 import kotlinx.android.synthetic.main.fragment_blueprint.*
+import kotlinx.android.synthetic.main.fragment_blueprint.srl_refresh
+import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONException
@@ -51,6 +54,12 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mBean: BeanBlueprint? = null
 
     private var mViewUserIdx: Int = -1
+
+    private var isMyDreamMore = false
+
+    init {
+        isMyDreamMore = false
+    }
 
     companion object {
         fun newInstance(view_user_idx: Int): FragmentBlueprint {
@@ -117,11 +126,13 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
                 tv_default_object,
                 iv_add_object -> {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentAddPage.newInstance(
-                            FragmentAddPage.VIEW_TYPE_ADD_STEP
-                        ), addToBack = true, isMainRefresh = true
-                    )
+                    if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentAddPage.newInstance(
+                                FragmentAddPage.VIEW_TYPE_ADD_STEP
+                            ), addToBack = true, isMainRefresh = true
+                        )
+                    }
                 }
                 ll_ability -> (activity as ActivityMain).replaceFragment(
                     FragmentAnO.newInstance(FragmentAnO.VIEW_TYPE_ABILITY, mViewUserIdx),
@@ -148,6 +159,16 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 btn_commit_comment -> {
                     if (btn_commit_comment.isSelected) addBlueprintComment()
                 }
+                btn_ability_and_opportunity->{
+                    if (isMyDreamMore) {
+                        isMyDreamMore = false
+                        btn_ability_and_opportunity.text = getString(R.string.str_more_view)
+                    } else {
+                        isMyDreamMore = true
+                        btn_ability_and_opportunity.text = getString(R.string.str_close_view)
+                    }
+                    if(mAnOAdapter != null) mAnOAdapter!!.notifyDataSetChanged()
+                }
             }
         }
 
@@ -158,6 +179,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         ll_opportunity.setOnClickListener(listener)
         rl_comment.setOnClickListener(listener)
         btn_commit_comment.setOnClickListener(listener)
+        btn_ability_and_opportunity.setOnClickListener(listener)
 
     }
 
@@ -557,6 +579,12 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     true
                 )
             })
+
+            if (isMyDreamMore) {
+                tvContents.maxLines = 1000
+            } else {
+                tvContents.maxLines = 1
+            }
         }
 
         override fun getItemViewType(i: Int): Int = 0

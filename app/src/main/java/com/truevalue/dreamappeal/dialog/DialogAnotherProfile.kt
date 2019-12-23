@@ -5,9 +5,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
+import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter2
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAnotherProfile
@@ -20,7 +22,7 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
     private val LISTITEM_TYPE_INFO = 0
     private val LISTITEM_TYPE_GROUP = 1
 
-    private var mAdapter: BaseRecyclerViewAdapter? = null
+    private var mAdapter: BaseRecyclerViewAdapter2<Any>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,21 +40,10 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
         onClickView()
         // RecyclerView Adapter 초기 설정
         initAdapter()
-        // Data 생성
+        // initData
         initData()
     }
 
-    /**
-     * Data 생성
-     */
-    private fun initData() {
-        if (mAdapter != null) {
-            mAdapter!!.add(BeanAnotherProfileInfo("info"))
-            for (i in 1..10) {
-                mAdapter!!.add(BeanAnotherProfileGroup("group"))
-            }
-        }
-    }
 
     /**
      * View CLick Listenre
@@ -67,9 +58,25 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
      * RecyclerView Adapter 설정
      */
     private fun initAdapter() {
-        mAdapter = BaseRecyclerViewAdapter(listener)
+        mAdapter = BaseRecyclerViewAdapter2(listener)
         rv_another_profile.adapter = mAdapter
         rv_another_profile.layoutManager = LinearLayoutManager(context)
+    }
+
+    /**
+     * RecyclerView Data 설정
+     */
+    private fun initData(){
+        if(bean != null){
+            mAdapter!!.clear()
+            mAdapter!!.add(bean!!)
+
+            if(bean!!.group != null && bean!!.group!!.size > 0){
+                for(i in 0 until bean!!.group!!.size){
+                    mAdapter!!.add(bean!!.group!![i])
+                }
+            }
+        }
     }
 
     private val listener = object : IORecyclerViewListener {
@@ -90,13 +97,34 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
+            if(mAdapter != null){
+                if(getItemViewType(i) == LISTITEM_TYPE_INFO) {
+                    val bean = mAdapter!!.get(i) as BeanAnotherProfile
+                    val tvName = h.getItemView<TextView>(R.id.tv_name)
+                    val tvNickName = h.getItemView<TextView>(R.id.tv_nickname)
+                    val tvAge = h.getItemView<TextView>(R.id.tv_age)
+                    val tvGender = h.getItemView<TextView>(R.id.tv_gender)
+                    val tvAddress = h.getItemView<TextView>(R.id.tv_address)
+                    val tvEmail = h.getItemView<TextView>(R.id.tv_email)
 
+                    tvName.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                    tvNickName.text = if(bean.nickname.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+//                    tvAge.text = if(bean..isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                    tvGender.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                    tvAddress.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                    tvEmail.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+
+
+                }else{
+                    val bean = mAdapter!!.get(i) as BeanAnotherProfileGroup
+                }
+            }
         }
 
         override fun getItemViewType(i: Int): Int {
             if (mAdapter != null) {
                 when (mAdapter?.get(i)) {
-                    is BeanAnotherProfileInfo -> return LISTITEM_TYPE_INFO
+                    is BeanAnotherProfile -> return LISTITEM_TYPE_INFO
                     else -> return LISTITEM_TYPE_GROUP
                 }
             }

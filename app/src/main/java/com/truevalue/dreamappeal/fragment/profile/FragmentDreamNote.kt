@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment
+package com.truevalue.dreamappeal.fragment.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,8 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.fragment.profile.FragmentDreamNoteIdea
-import com.truevalue.dreamappeal.fragment.profile.FragmentDreamNoteLife
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_dream_note.*
 
@@ -19,7 +18,8 @@ class FragmentDreamNote : BaseFragment(){
     companion object{
         val EXTRA_VIEW_USER_IDX = "EXTRA_VIEW_USER_IDX"
         fun newInstance(view_user_idx : Int) : FragmentDreamNote {
-            val fragment = FragmentDreamNote()
+            val fragment =
+                FragmentDreamNote()
             fragment.mViewUserIdx = view_user_idx
             return fragment
         }
@@ -47,6 +47,7 @@ class FragmentDreamNote : BaseFragment(){
         iv_back_black.visibility = View.VISIBLE
         tv_title.text = getString(R.string.str_dream_note)
     }
+
 
 
     /**
@@ -78,10 +79,14 @@ class FragmentDreamNote : BaseFragment(){
                     replaceFragment(R.id.dream_note_container,
                         FragmentDreamNoteIdea.newInstance(mViewUserIdx),false)
                 }
+                iv_back_black->{
+                    (activity as ActivityMain).onBackPressed(true)
+                }
             }
         }
         ll_idea.setOnClickListener(listener)
         ll_life.setOnClickListener(listener)
+        iv_back_black.setOnClickListener(listener)
     }
 
     /**

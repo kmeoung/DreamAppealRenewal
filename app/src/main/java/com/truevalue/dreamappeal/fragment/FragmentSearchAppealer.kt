@@ -137,6 +137,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                 Glide.with(context!!)
                     .load(bean.image)
                     .placeholder(R.drawable.drawer_user)
+                    .circleCrop()
                     .into(ivProfile)
             }
 

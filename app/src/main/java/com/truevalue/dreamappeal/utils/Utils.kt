@@ -296,7 +296,10 @@ object Utils {
     /**
      * 타이머 남은 시간 계산
      */
-    fun getTimerTime(endDate: String): String {
+    fun getTimerTime(endDate: String?): String {
+
+        if(endDate.isNullOrEmpty()) return ""
+
         var strDate = ""
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val endDate = sdf.parse(endDate)
@@ -388,7 +391,6 @@ object Utils {
         subBucket: String,
         listener: IOS3ImageUploaderListener
     ) {
-        val AWS_LOG = "AWS_LOG"
         val transferUtility = TransferUtility.builder()
             .context(context)
             .awsConfiguration(AWSMobileClient.getInstance().configuration)
@@ -404,12 +406,10 @@ object Utils {
 
         val fileName = "${date.time}.$ext"
         val uploadObserver = transferUtility.upload(KEY + fileName, file)
-        Log.d(AWS_LOG, "UPLOAD - - It Is a Key: ${uploadObserver.key}")
         // Attach a listener to the observer
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
                 val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
-                Log.d("AWS_LOG", "UPLOAD - - ID: $id, percent done = $done")
             }
 
             override fun onStateChanged(id: Int, state: TransferState?) {
@@ -419,7 +419,6 @@ object Utils {
             }
 
             override fun onError(id: Int, ex: java.lang.Exception?) {
-                Log.d("AWS_LOG", "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
                 listener.onError(id, ex)
             }
         })
@@ -441,7 +440,6 @@ object Utils {
         subBucket: String,
         listener: IOS3ImageUploaderListener
     ) {
-        val AWS_LOG = "AWS_LOG"
         val transferUtility = TransferUtility.builder()
             .context(context)
             .awsConfiguration(AWSMobileClient.getInstance().configuration)
@@ -461,7 +459,6 @@ object Utils {
 
             val fileName = "${date.time}_$i.$ext"
             val uploadObserver = transferUtility.upload(KEY + fileName, file[i])
-            Log.d(AWS_LOG, "UPLOAD - - It Is a Key: ${uploadObserver.key}")
 
             addressList.add(uploadObserver.key)
 
@@ -469,7 +466,6 @@ object Utils {
             uploadObserver.setTransferListener(object : TransferListener {
                 override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
                     val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
-                    Log.d("AWS_LOG", "UPLOAD - - ID: $id, percent done = $done")
                 }
 
                 override fun onStateChanged(id: Int, state: TransferState?) {
@@ -477,13 +473,10 @@ object Utils {
                         listener.onStateCompleted(id, state, uploadObserver.key)
                         // todo : 모든 이미지가 성공했을 시 업로드
                         if (++completeFile >= file.size) listener.onMutiStateCompleted(addressList)
-                        Log.d("MULTI : ", "$completeFile : CompleteSize")
-                        Log.d("MULTI : ", "$file.size : FileSize")
                     }
                 }
 
                 override fun onError(id: Int, ex: java.lang.Exception?) {
-                    Log.d("AWS_LOG", "UPLOAD ERROR - - ID: $id - - EX: ${ex!!.message.toString()}")
                     listener.onError(id, ex)
                 }
             })

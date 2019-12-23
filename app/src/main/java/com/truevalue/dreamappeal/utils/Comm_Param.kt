@@ -6,11 +6,6 @@ object Comm_Param {
     val REAL = !BuildConfig.DEBUG
     val APP_NAME = "DreamAppeal"
 
-    // 개발용 아이디 비밀번호
-    val DEBUG_NAME = "DEBUG"
-    val DEBUG_EMAIL = "kmeoung@gmail.com"
-    val DEBUG_PASSWORD = "12345678"
-
     // DEV 서버
     private val DEV_API = "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버

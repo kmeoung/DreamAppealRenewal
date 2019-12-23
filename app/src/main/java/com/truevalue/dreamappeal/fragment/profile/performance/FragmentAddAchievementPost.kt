@@ -168,7 +168,7 @@ class FragmentAddAchievementPost : BaseFragment() {
     private fun uploadImage(post_idx: Int) {
         val idx = post_idx
         val type = DAClient.IMAGE_TYPE_ACHIVEMENT_POST
-
+        var isCalled = false
         if (mAdapter != null) {
             Utils.multiUploadWithTransferUtility(
                 context!!.applicationContext,
@@ -178,7 +178,10 @@ class FragmentAddAchievementPost : BaseFragment() {
                     IOS3ImageUploaderListener {
                     override fun onMutiStateCompleted(adressList: ArrayList<String>) {
                         super.onMutiStateCompleted(adressList)
-                        updateProfileImage(idx, type, adressList)
+                        if(!isCalled){
+                            updateProfileImage(idx, type, adressList)
+                            isCalled = true
+                        }
                     }
 
                     override fun onStateCompleted(

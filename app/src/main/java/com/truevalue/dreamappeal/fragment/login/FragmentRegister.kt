@@ -83,14 +83,6 @@ class FragmentRegister : BaseFragment() {
         tv_date.text = String.format("%02d", date) + "일"
         tv_gender.text = "남"
         isGender = false
-
-        // TODO : 테스트용
-        if (!Comm_Param.REAL) {
-            et_id.setText(Comm_Param.DEBUG_EMAIL)
-            et_name.setText(Comm_Param.DEBUG_NAME)
-            et_password.setText(Comm_Param.DEBUG_PASSWORD)
-            et_re_password.setText(Comm_Param.DEBUG_PASSWORD)
-        }
     }
 
     /**

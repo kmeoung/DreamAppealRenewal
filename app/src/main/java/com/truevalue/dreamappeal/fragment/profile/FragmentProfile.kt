@@ -12,10 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.fragment.FragmentDreamNote
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.bean.BeanAnotherProfile
+import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
+import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentNewPerformance
@@ -26,6 +29,7 @@ import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
 
@@ -111,7 +115,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
      * Dialog 띄우기
      */
     private fun showDialog(){
-        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        val profile_idx = mViewUserIdx
 
         DAClient.getAnotherUserData(profile_idx,object : DAHttpCallback {
             override fun onResponse(
@@ -122,9 +126,30 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
                 message: String
             ) {
                 if(context != null) {
-                    Toast.makeText(context!!.applicationContext,message, Toast.LENGTH_SHORT).show()
-//                    val dialog = DialogAnotherProfile(context!!, null)
-//                    dialog.show()
+                    if(code == DAClient.SUCCESS){
+                        val json = JSONObject(body)
+                        val user = json.getJSONObject("user")
+                        val groups = json.getJSONArray("groups")
+
+                        val bean = Gson().fromJson<BeanAnotherProfile>(user.toString(),BeanAnotherProfile::class.java)
+
+                        val groupList = ArrayList<BeanAnotherProfileGroup>()
+                        if(groups.length() > 0){
+                            for(i in 0 until groups.length()){
+                                val group = groups.getJSONObject(i)
+                                val groupBean = Gson().fromJson<BeanAnotherProfileGroup>(group.toString(),BeanAnotherProfileGroup::class.java)
+                                groupList.add(groupBean)
+                            }
+                        }
+                        if(groupList.size > 0){
+                            bean.group = groupList
+                        }
+
+                        val dialog = DialogAnotherProfile(context!!, bean)
+                        dialog.show()
+                    }else{
+                        Toast.makeText(context!!.applicationContext,message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -140,7 +165,10 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
             when (it) {
                 iv_menu -> (activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
                 tv_title -> {
-                    showDialog()
+                    if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
+                        // todo : 추후 상대방 프로필 클릭
+//                        showDialog()
+                    }
                 }
                 iv_dream_note->{
                     (activity as ActivityMain).replaceFragment(FragmentDreamNote.newInstance(mViewUserIdx),addToBack = true,isMainRefresh = false)

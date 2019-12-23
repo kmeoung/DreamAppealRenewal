@@ -38,6 +38,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linear_name" />
 
+        <!-- todo : 거주지는 추후 추가 예정입니다 -->
+
         <TextView
                 android:id="@+id/address"
                 android:layout_width="wrap_content"
@@ -49,7 +51,8 @@
                 android:textColor="@color/azure"
                 android:textSize="14.8sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_birth" />
+                app:layout_constraintTop_toBottomOf="@+id/linear_birth"
+                android:visibility="gone"/>
 
         <TextView
                 android:id="@+id/birthday"
@@ -172,7 +175,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address">
+                app:layout_constraintTop_toBottomOf="@+id/address"
+                android:visibility="gone">
 
             <EditText
                     android:id="@+id/et_address"

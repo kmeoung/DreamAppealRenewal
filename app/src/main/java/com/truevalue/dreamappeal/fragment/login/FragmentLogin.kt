@@ -48,11 +48,6 @@ class FragmentLogin : BaseFragment() {
         // Action Bar 설정
         tv_title.text = ""
         iv_back_blue.visibility = VISIBLE
-
-        if (!Comm_Param.REAL) {
-            et_id.setText(Comm_Param.DEBUG_EMAIL)
-            et_password.setText(Comm_Param.DEBUG_PASSWORD)
-        }
     }
 
     /**

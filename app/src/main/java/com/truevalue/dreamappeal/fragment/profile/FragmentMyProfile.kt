@@ -107,14 +107,16 @@ class FragmentMyProfile : BaseFragment() {
                         profileUser.private = Gson().fromJson(user.getJSONObject("privates").toString(),BeanProfileUserPrivates::class.java)
                         mBean = profileUser
                         val bean = profileUser
-                        tv_name.text = bean.name
+                        tv_name.text = if(bean.name.isNullOrEmpty()) getString(R.string.str_none) else bean.name
                         tv_nickname.text = if(bean.nickname.isNullOrEmpty()) getString(R.string.str_none) else bean.nickname
-                        val sdf = SimpleDateFormat("yyyy-MM-dd")
-                        val date = sdf.parse(bean.birth)
-                        tv_age.text = Utils.dateToAge(date).toString()
+                        if(!bean.birth.isNullOrEmpty()) {
+                            val sdf = SimpleDateFormat("yyyy-MM-dd")
+                            val date = sdf.parse(bean.birth)
+                            tv_age.text = Utils.dateToAge(date).toString()
+                        }
                         tv_gender.text = getString(if(bean.gender == 0) R.string.str_female else R.string.str_male)
                         tv_address.text = if(bean.address.isNullOrEmpty()) getString(R.string.str_none) else bean.address
-                        tv_email.text = bean.email
+                        tv_email.text = if(bean.email.isNullOrEmpty()) getString(R.string.str_none) else bean.email
 
                         val groups = json.getJSONArray("groups")
                         mAdapter!!.clear()
@@ -161,8 +163,8 @@ class FragmentMyProfile : BaseFragment() {
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             val bean = mAdapter!!.get(i) as BeanProfileGroup
-            h.getItemView<TextView>(R.id.tv_rank).text = bean.position
-            h.getItemView<TextView>(R.id.tv_group).text = bean.groupName
+            h.getItemView<TextView>(R.id.tv_rank).text = if(bean.position.isNullOrEmpty()) getString(R.string.str_none) else bean.position
+            h.getItemView<TextView>(R.id.tv_group).text = if(bean.groupName.isNullOrEmpty()) getString(R.string.str_none) else bean.groupName
             h.getItemView<TextView>(R.id.tv_time).text = "${bean.start_date} ~ ${bean.end_date}"
 
             h.itemView.setOnLongClickListener(View.OnLongClickListener {

@@ -231,13 +231,22 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                 })
             }else{
                 tvPost.text = Utils.replaceTextColor(context,tvPost,getString(R.string.str_best_post))
-                h.itemView.setOnClickListener(View.OnClickListener {
-                    val intent = Intent(context!!,ActivityCameraGallery::class.java)
-                    intent.putExtra(ActivityCameraGallery.VIEW_TYPE,ActivityCameraGallery.EXTRA_ACHIVEMENT_POST)
-                    intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)
-                    intent.putExtra(ActivityCameraGallery.ACHIEVEMENT_POST_BEST_IDX,i + 1)
-                    startActivityForResult(intent,REQUEST_ADD_ACHIEVEMENT)
-                })
+
+                if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                    h.itemView.setOnClickListener(View.OnClickListener {
+                        val intent = Intent(context!!, ActivityCameraGallery::class.java)
+                        intent.putExtra(
+                            ActivityCameraGallery.VIEW_TYPE,
+                            ActivityCameraGallery.EXTRA_ACHIVEMENT_POST
+                        )
+                        intent.putExtra(
+                            ActivityCameraGallery.SELECT_TYPE,
+                            ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT
+                        )
+                        intent.putExtra(ActivityCameraGallery.ACHIEVEMENT_POST_BEST_IDX, i + 1)
+                        startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT)
+                    })
+                }
             }
         }
     }

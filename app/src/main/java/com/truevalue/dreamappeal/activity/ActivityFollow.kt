@@ -33,6 +33,7 @@ import org.json.JSONObject
 class ActivityFollow : BaseActivity() {
 
     private var mViewType: String? = null
+    private var mViewUserIdx = -1
 
     companion object {
         val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
@@ -41,6 +42,7 @@ class ActivityFollow : BaseActivity() {
 
         val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
         val REQUEST_REPLACE_USER_IDX = 4000
+        val REQUEST_VIEW_USER_IDX = "REQUEST_VIEW_USER_IDX"
     }
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
@@ -79,6 +81,7 @@ class ActivityFollow : BaseActivity() {
             when (mViewType) {
                 VIEW_TYPE_FOLLOWER -> {
                     tv_title.text = getString(R.string.str_follower)
+                    mViewUserIdx = intent.getIntExtra(RESULT_REPLACE_USER_IDX,-1)
                     getFollower()
                 }
                 VIEW_TYPE_FOLLOWING -> {
@@ -126,7 +129,7 @@ class ActivityFollow : BaseActivity() {
      */
     private fun getFollower() {
         // todo : 현재 보고있는 프로필의 인덱스를 넣어야 합니다
-        val profile_idx = Comm_Prefs.getUserProfileIndex()
+        val profile_idx = mViewUserIdx
         DAClient.getFollowerList(profile_idx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,

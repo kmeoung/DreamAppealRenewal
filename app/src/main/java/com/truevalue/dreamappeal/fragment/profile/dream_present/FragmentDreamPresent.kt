@@ -30,16 +30,7 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_dream_present.*
-import kotlinx.android.synthetic.main.fragment_dream_present.iv_cheering
-import kotlinx.android.synthetic.main.fragment_dream_present.iv_comment
-import kotlinx.android.synthetic.main.fragment_dream_present.ll_cheering
-import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment
-import kotlinx.android.synthetic.main.fragment_dream_present.ll_comment_detail
-import kotlinx.android.synthetic.main.fragment_dream_present.ll_share
-import kotlinx.android.synthetic.main.fragment_dream_present.tv_cheering
-import kotlinx.android.synthetic.main.fragment_dream_present.tv_comment
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.File
@@ -54,6 +45,14 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     private val REQUEST_CODE_PICK_PROFILE_IMAGE = 1000
 
     private var mViewUserIdx: Int = -1
+
+    private var isMyDreamMore = false
+    private var isMyDreamReason = false
+
+    init {
+        isMyDreamMore = false
+        isMyDreamReason = false
+    }
 
     companion object {
         fun newInstance(view_user_idx: Int): FragmentDreamPresent {
@@ -249,13 +248,19 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             if (bean.description.isNullOrEmpty()) {
                 tv_init_dream_description.visibility = VISIBLE
                 tv_dream_description.text = ""
+                btn_dream_description_more.visibility = GONE
             } else {
                 tv_dream_description.text = bean.description
+                btn_dream_description_more.visibility = VISIBLE
             }
 
-            if (bean.meritNmotive.isNullOrEmpty()) tv_init_merit_and_motive.visibility =
-                VISIBLE
-            else tv_init_merit_and_motive.visibility = GONE
+            if (bean.meritNmotive.isNullOrEmpty()){
+                tv_init_merit_and_motive.visibility = VISIBLE
+                btn_merit_and_motive_more.visibility = GONE
+            }else{
+                tv_init_merit_and_motive.visibility = GONE
+                btn_merit_and_motive_more.visibility = VISIBLE
+            }
 
             tv_merit_and_motive.text = bean.meritNmotive
 
@@ -295,6 +300,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         ActivityFollow.EXTRA_VIEW_TYPE,
                         ActivityFollow.VIEW_TYPE_FOLLOWER
                     )
+                    intent.putExtra(ActivityFollow.REQUEST_VIEW_USER_IDX,mViewUserIdx)
                     startActivityForResult(intent,ActivityFollow.REQUEST_REPLACE_USER_IDX)
                 }
                 iv_dream_profile -> {
@@ -344,9 +350,26 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 }
                 btn_dream_description_more -> {
                     // Expend Description View
+                    if (isMyDreamMore) {
+                        isMyDreamMore = false
+                        btn_dream_description_more.text = getString(R.string.str_more_view)
+                    } else {
+                        isMyDreamMore = true
+                        btn_dream_description_more.text = getString(R.string.str_close_view)
+                    }
+                    if(mAdapter != null) mAdapter!!.notifyDataSetChanged()
                 }
                 btn_merit_and_motive_more -> {
                     // Expend Merit Motive View
+                    if (isMyDreamReason) {
+                        isMyDreamReason = false
+                        tv_merit_and_motive.maxLines = 3
+                        btn_merit_and_motive_more.text = getString(R.string.str_more_view)
+                    } else {
+                        isMyDreamReason = true
+                        tv_merit_and_motive.maxLines = 1000
+                        btn_merit_and_motive_more.text = getString(R.string.str_close_view)
+                    }
                 }
                 ll_cheering -> {
                     profileLike()
@@ -440,13 +463,22 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
         if (mAdapter != null) {
             val content: String = mAdapter!!.mArray[i] as String
-            h.getItemView<TextView>(R.id.tv_contents).text = content
+            val tvContents = h.getItemView<TextView>(R.id.tv_contents)
+            tvContents.text = content
             h.itemView.setOnClickListener(View.OnClickListener {
-                (activity as ActivityMain).replaceFragment(
-                    FragmentDreamDescription.newInstance(mBean),
-                    true
-                )
+                if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentDreamDescription.newInstance(mBean),
+                        true
+                    )
+                }
             })
+
+            if (isMyDreamMore) {
+                tvContents.maxLines = 1000
+            } else {
+                tvContents.maxLines = 1
+            }
         }
     }
 
@@ -592,10 +624,11 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
 
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

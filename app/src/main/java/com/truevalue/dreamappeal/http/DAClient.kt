@@ -199,10 +199,10 @@ object DAClient {
     ) {
 
         val params = DAHttpParams()
-        params.put("name", bean.name)
-        params.put("nickname", bean.nickname)
+        if(!bean.name.isNullOrEmpty()) params.put("name", bean.name!!)
+        if(!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname!!)
         params.put("gender", bean.gender)
-        params.put("address", bean.address)
+        if(!bean.address.isNullOrEmpty()) params.put("address", bean.address!!)
 
         val privates = Gson().toJson(bean.private)
         params.put("privates", privates)
