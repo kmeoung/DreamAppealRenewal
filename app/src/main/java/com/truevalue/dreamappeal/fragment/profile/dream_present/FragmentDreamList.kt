@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
@@ -282,6 +283,12 @@ class FragmentDreamList : BaseFragment() {
                 val tvachievement = h.getItemView<TextView>(R.id.tv_achievement)
                 val tvAction = h.getItemView<TextView>(R.id.tv_action)
                 val tvExp = h.getItemView<TextView>(R.id.tv_exp)
+
+                Glide.with(context!!)
+                    .load(bean.image)
+                    .placeholder(R.drawable.drawer_user)
+                    .circleCrop()
+                    .into(ivProfile)
 
                 // todo : 상대방 프로필에 들어갈 경우는 다르게 설정해줘야 합니다
                 if (bean.idx == mViewUserIdx) {

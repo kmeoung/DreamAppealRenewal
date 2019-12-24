@@ -88,6 +88,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             mViewType = intent.getStringExtra(EXTRA_VIEW_TYPE)
             mIndex = intent.getIntExtra(EXTRA_INDEX, -1)
         }
+
         Utils.setSwipeRefreshLayout(srl_refresh, this)
         rl_comment.visibility = GONE
         btn_commit_comment.visibility = VISIBLE
@@ -100,7 +101,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             imm.showSoftInput(et_comment, 0)
             bottom_comment.visibility = VISIBLE
         } else {
-            bottom_comment.visibility = GONE
+            bottom_comment.visibility = VISIBLE
         }
 
         et_comment.addTextChangedListener(object : TextWatcher {

@@ -333,7 +333,7 @@ object Utils {
         val sdf2 = SimpleDateFormat("yyyy. MM. dd")
         val cal = Calendar.getInstance()
 
-        val nowHour = cal.get(Calendar.HOUR)
+        val nowHour = cal.get(Calendar.HOUR_OF_DAY)
         val nowMinute = cal.get(Calendar.MINUTE)
         val nowSeconds = cal.get(Calendar.SECOND)
         try {

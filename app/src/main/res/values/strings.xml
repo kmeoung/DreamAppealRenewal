@@ -2,6 +2,7 @@
     <string name="app_name">드림어필</string>
 
     <string name="str_dream_profile">드림프로필</string>
+    <string name="str_error_server">서버에 에러가 발생하였습니다.</string>
 
     <string name="str_not_ready_yet">준비중입니다.</string>
 

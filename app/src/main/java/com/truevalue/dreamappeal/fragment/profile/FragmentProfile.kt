@@ -25,13 +25,15 @@ import com.truevalue.dreamappeal.fragment.profile.performance.FragmentNewPerform
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.IOUserNameListener
 import kotlinx.android.synthetic.main.action_bar_main.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.Call
 import org.json.JSONObject
 
-class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
+
+class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNameListener {
 
     private var mFragments: Array<BaseFragment>?
     private var mTabs: Array<String>?
@@ -105,7 +107,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
      */
     private fun initFragments() {
         mFragments = arrayOf(
-            FragmentDreamPresent.newInstance(mViewUserIdx),
+            FragmentDreamPresent.newInstance(mViewUserIdx,this),
             FragmentNewPerformance.newInstance(mViewUserIdx),
             FragmentBlueprint.newInstance(mViewUserIdx)
         )
@@ -166,8 +168,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
                 iv_menu -> (activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
                 tv_title -> {
                     if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
-                        // todo : 추후 상대방 프로필 클릭
-//                        showDialog()
+                        showDialog()
                     }
                 }
                 iv_dream_note->{
@@ -211,6 +212,10 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh {
                 }
             }
         }
+    }
+
+    override fun sendName(name: String) {
+        tv_title.text = "$name 드림프로필"
     }
 }
 

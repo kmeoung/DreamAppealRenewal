@@ -11,6 +11,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +20,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityAddPost
-import com.truevalue.dreamappeal.activity.ActivityComment
-import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.activity.ActivitySearch
+import com.truevalue.dreamappeal.activity.*
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
@@ -179,6 +177,12 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         if(code == "NO_MORE_POST"){
                             isLast = true
                             mAdatper!!.notifyDataSetChanged()
+                        }else if(code == DAClient.FAIL){
+                            ActivityCompat.finishAffinity(activity!!)
+                            val intent = Intent(context!!,ActivityIntro::class.java)
+                            Comm_Prefs.setUserProfileIndex(-1)
+                            Comm_Prefs.setToken(null)
+                            startActivity(intent)
                         }
                         Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
@@ -238,7 +242,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val tvArrow = h.getItemView<TextView>(R.id.tv_arrow)
             val tvStep = h.getItemView<TextView>(R.id.tv_step)
             val rlImages = h.getItemView<RelativeLayout>(R.id.rl_images)
-            // todo : 여기는 썸네일이 아닌 모든 데이터가 나와야 하는게 아닌가 ?
             val pagerImages = h.getItemView<ViewPager>(R.id.pager_image)
             val llIndicator = h.getItemView<LinearLayout>(R.id.ll_indicator)
             val tvIndicator = h.getItemView<TextView>(R.id.tv_indicator)
@@ -247,7 +250,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val tvCheering = h.getItemView<TextView>(R.id.tv_cheering)
             val ivComment = h.getItemView<ImageView>(R.id.iv_comment)
             val tvComment = h.getItemView<TextView>(R.id.tv_comment)
-            // todo : 좋아요 및 나머지 추후 연동
             val llCheering = h.getItemView<LinearLayout>(R.id.ll_cheering)
             val ivCheering = h.getItemView<ImageView>(R.id.iv_cheering)
             val llComment = h.getItemView<LinearLayout>(R.id.ll_comment)

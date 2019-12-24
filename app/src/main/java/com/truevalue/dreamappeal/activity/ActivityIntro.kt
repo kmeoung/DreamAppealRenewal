@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
@@ -44,10 +45,12 @@ class ActivityIntro : BaseActivity() {
             intent = Intent(this@ActivityIntro, ActivityPermission::class.java)
         }
 
+
         startActivity(intent)
+
+        finish()
         // TODO : Activity 애니메이션 없애기
 //            overridePendingTransition(0, 0);
-        finish()
         false
     })
 

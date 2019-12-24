@@ -18,8 +18,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:paddingLeft="8dp"
-            android:paddingTop="12dp"
-            android:paddingRight="8dp">
+            android:paddingTop="12dp">
 
         <LinearLayout
                 android:layout_width="0dp"
@@ -53,23 +52,25 @@
                     android:textSize="14.7sp" />
 
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_cancel"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="7dp"
                     android:id="@+id/iv_cancel"/>
 
         </LinearLayout>
 
         <Button
                 android:id="@+id/btn_cancel"
-                android:layout_width="40dp"
+                android:layout_width="45dp"
                 android:layout_height="32dp"
                 android:background="@null"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="취소"
                 android:textColor="@color/main_blue"
-                android:textSize="14.7sp" />
+                android:textSize="17sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
 
     </LinearLayout>
     <!--검색 바-->

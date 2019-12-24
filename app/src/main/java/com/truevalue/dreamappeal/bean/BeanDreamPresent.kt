@@ -20,4 +20,5 @@ data class BeanDreamPresent(var idx : Int,
                             var level : Int,
                             var descriptions: ArrayList<String>,
                             var follow_status : Int?,
-                            var follow_count : Int)
+                            var follow_count : Int,
+                            var following_count : Int)

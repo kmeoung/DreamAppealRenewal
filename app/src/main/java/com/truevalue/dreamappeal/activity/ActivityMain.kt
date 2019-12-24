@@ -43,6 +43,10 @@ class ActivityMain : BaseActivity() {
         val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
     }
 
+    data class BeanDrawerData(var following : Int,var dream_point : Int)
+
+    var mDrawerData : BeanDrawerData? = null
+
     var mMainViewType = ""
 
     init {
@@ -90,6 +94,8 @@ class ActivityMain : BaseActivity() {
         initBottomView()
         // Drawer View Click Listener
         onClickDrawerView()
+        // Drawer
+        setDrawer()
 //
 //        val ivMenu: ImageView = findViewById(R.id.iv_menu)
 //        ivMenu.setOnClickListener(View.OnClickListener {
@@ -105,7 +111,8 @@ class ActivityMain : BaseActivity() {
     private fun setDrawer() {
         dl_drawer.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
-
+                tv_following.text = if(mDrawerData != null) "${mDrawerData!!.following}" else "0"
+                tv_dream_point.text = if(mDrawerData != null) String.format("%,d",mDrawerData!!.dream_point) else "0"
             }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
@@ -113,11 +120,13 @@ class ActivityMain : BaseActivity() {
             }
 
             override fun onDrawerClosed(drawerView: View) {
-
+                tv_following.text = if(mDrawerData != null) "${mDrawerData!!.following}" else "0"
+                tv_dream_point.text = if(mDrawerData != null) String.format("%,d",mDrawerData!!.dream_point) else "0"
             }
 
             override fun onDrawerOpened(drawerView: View) {
-
+                tv_following.text = if(mDrawerData != null) "${mDrawerData!!.following}" else "0"
+                tv_dream_point.text = if(mDrawerData != null) String.format("%,d",mDrawerData!!.dream_point) else "0"
             }
         })
     }

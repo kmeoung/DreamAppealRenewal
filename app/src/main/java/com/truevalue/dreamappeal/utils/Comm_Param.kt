@@ -3,7 +3,7 @@ package com.truevalue.dreamappeal.utils
 import com.truevalue.dreamappeal.BuildConfig
 
 object Comm_Param {
-    val REAL = !BuildConfig.DEBUG
+    val REAL = BuildConfig.DEBUG
     val APP_NAME = "DreamAppeal"
 
     // DEV 서버

@@ -11,6 +11,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,16 +20,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityCameraGallery
-import com.truevalue.dreamappeal.activity.ActivityComment
-import com.truevalue.dreamappeal.activity.ActivityFollow
-import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.activity.*
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.IOUserNameListener
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
@@ -48,6 +47,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
     private var isMyDreamMore = false
     private var isMyDreamReason = false
+    private var mNameListener: IOUserNameListener? = null
 
     init {
         isMyDreamMore = false
@@ -55,9 +55,13 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     }
 
     companion object {
-        fun newInstance(view_user_idx: Int): FragmentDreamPresent {
+        fun newInstance(
+            view_user_idx: Int,
+            name_listener: IOUserNameListener
+        ): FragmentDreamPresent {
             val fragment = FragmentDreamPresent()
             fragment.mViewUserIdx = view_user_idx
+            fragment.mNameListener = name_listener
             return fragment
         }
     }
@@ -91,13 +95,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     override fun OnServerRefresh() {
         super.OnServerRefresh()
         getProfile()
-    }
-
-    /**
-     * 임시 데이터 Bind
-     */
-    private fun bindTempData() {
-        for (i in 0 until 3) mAdapter!!.add("")
     }
 
     /**
@@ -176,9 +173,17 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                 bindData()
                             }
                         }
-                    }else{
+                    } else {
                         Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
                             .show()
+
+                        if (code == DAClient.FAIL) {
+                            ActivityCompat.finishAffinity(activity!!)
+                            val intent = Intent(context!!, ActivityIntro::class.java)
+                            Comm_Prefs.setUserProfileIndex(-1)
+                            Comm_Prefs.setToken(null)
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -192,19 +197,27 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     private fun bindData() {
         if (mBean != null) {
             val bean = mBean!!
-            // todo : 팔로워 필요
-            if(bean.follow_status != null){
+
+            if (!bean.name.isNullOrEmpty()) {
+                if (mNameListener != null) mNameListener?.sendName(bean.name)
+            }
+
+            (activity as ActivityMain).mDrawerData =
+                ActivityMain.BeanDrawerData(bean.following_count, bean.point)
+            if (bean.follow_status != null) {
                 tv_add_follow.visibility = VISIBLE
-                if(bean.follow_status == 1){
-                    tv_add_follow.setTextColor(ContextCompat.getColor(context!!,R.color.black))
-                    tv_add_follow.background = ContextCompat.getDrawable(context!!,R.drawable.bg_round_rectangle_gray2)
+                if (bean.follow_status == 1) {
+                    tv_add_follow.setTextColor(ContextCompat.getColor(context!!, R.color.black))
+                    tv_add_follow.background =
+                        ContextCompat.getDrawable(context!!, R.drawable.bg_round_rectangle_gray2)
                     tv_add_follow.text = getString(R.string.str_following)
-                }else{
-                    tv_add_follow.setTextColor(ContextCompat.getColor(context!!,R.color.white))
-                    tv_add_follow.background = ContextCompat.getDrawable(context!!,R.drawable.bg_round_rectangle_blue_2)
+                } else {
+                    tv_add_follow.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                    tv_add_follow.background =
+                        ContextCompat.getDrawable(context!!, R.drawable.bg_round_rectangle_blue_2)
                     tv_add_follow.text = getString(R.string.str_add_follow)
                 }
-            }else{
+            } else {
                 tv_add_follow.visibility = GONE
             }
             tv_follwer.text = bean.follow_count.toString()
@@ -254,10 +267,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 btn_dream_description_more.visibility = VISIBLE
             }
 
-            if (bean.meritNmotive.isNullOrEmpty()){
+            if (bean.meritNmotive.isNullOrEmpty()) {
                 tv_init_merit_and_motive.visibility = VISIBLE
                 btn_merit_and_motive_more.visibility = GONE
-            }else{
+            } else {
                 tv_init_merit_and_motive.visibility = GONE
                 btn_merit_and_motive_more.visibility = VISIBLE
             }
@@ -300,8 +313,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         ActivityFollow.EXTRA_VIEW_TYPE,
                         ActivityFollow.VIEW_TYPE_FOLLOWER
                     )
-                    intent.putExtra(ActivityFollow.REQUEST_VIEW_USER_IDX,mViewUserIdx)
-                    startActivityForResult(intent,ActivityFollow.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(ActivityFollow.REQUEST_VIEW_USER_IDX, mViewUserIdx)
+                    startActivityForResult(intent, ActivityFollow.REQUEST_REPLACE_USER_IDX)
                 }
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
@@ -357,7 +370,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         isMyDreamMore = true
                         btn_dream_description_more.text = getString(R.string.str_close_view)
                     }
-                    if(mAdapter != null) mAdapter!!.notifyDataSetChanged()
+                    if (mAdapter != null) mAdapter!!.notifyDataSetChanged()
                 }
                 btn_merit_and_motive_more -> {
                     // Expend Merit Motive View
@@ -390,7 +403,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             ActivityComment.EXTRA_OFF_KEYBOARD,
                             "OFF"
                         )
-                        startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                        startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                     }
                 }
                 ll_comment -> {
@@ -405,13 +418,13 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             ActivityComment.EXTRA_VIEW_TYPE,
                             ActivityComment.EXTRA_TYPE_PROFILE
                         )
-                        startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                        startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                     }
                 }
                 ll_share -> {
 
                 }
-                tv_add_follow->{
+                tv_add_follow -> {
                     follow()
                 }
             }
@@ -466,7 +479,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
             tvContents.text = content
             h.itemView.setOnClickListener(View.OnClickListener {
-                if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                     (activity as ActivityMain).replaceFragment(
                         FragmentDreamDescription.newInstance(mBean),
                         true
@@ -535,13 +548,29 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         val json = JSONObject(body)
                         val status = json.getInt("status")
                         mBean!!.follow_status = status
-                        if(status == 1){
-                            tv_add_follow.setTextColor(ContextCompat.getColor(context!!,R.color.black))
-                            tv_add_follow.background = ContextCompat.getDrawable(context!!,R.drawable.bg_round_rectangle_gray2)
+                        if (status == 1) {
+                            tv_add_follow.setTextColor(
+                                ContextCompat.getColor(
+                                    context!!,
+                                    R.color.black
+                                )
+                            )
+                            tv_add_follow.background = ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.bg_round_rectangle_gray2
+                            )
                             tv_add_follow.text = getString(R.string.str_following)
-                        }else{
-                            tv_add_follow.setTextColor(ContextCompat.getColor(context!!,R.color.white))
-                            tv_add_follow.background = ContextCompat.getDrawable(context!!,R.drawable.bg_round_rectangle_blue_2)
+                        } else {
+                            tv_add_follow.setTextColor(
+                                ContextCompat.getColor(
+                                    context!!,
+                                    R.color.white
+                                )
+                            )
+                            tv_add_follow.background = ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.bg_round_rectangle_blue_2
+                            )
                             tv_add_follow.text = getString(R.string.str_add_follow)
                         }
                     }
@@ -567,7 +596,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_PICK_PROFILE_IMAGE) {
-                val fileArray : ArrayList<File> =
+                val fileArray: ArrayList<File> =
                     data!!.getSerializableExtra(ActivityCameraGallery.REQUEST_IMAGE_FILES) as ArrayList<File>
 
                 if (fileArray.size > 0) {
@@ -600,10 +629,14 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         .apply(RequestOptions().circleCrop())
                         .into(iv_dream_profile)
                 }
-            }else if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX || requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX
-                || requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+            } else if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX || requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX
+                || requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX
+            ) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentProfile.newInstance(view_user_idx),
+                    true
+                )
             }
         }
     }
@@ -627,8 +660,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
                     if (code == DAClient.SUCCESS) {
 
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

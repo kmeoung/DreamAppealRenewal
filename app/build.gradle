@@ -12,10 +12,28 @@ android {
         applicationId "com.truevalue.dreamappeal"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.0.1.5"
+        versionCode 13
+        versionName "1.0.1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
+    signingConfigs {
+
+        release {
+
+            storeFile file('/key_store/key_store.jks') // 기준은 App 폴더 기준이다.
+
+            storePassword "roqkf2019"
+
+            keyAlias "key_alias"
+
+            keyPassword "roqkf2019"
+
+        }
+
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -26,8 +44,11 @@ android {
                 applicationIdSuffix ".renewaldev"
                 manifestPlaceholders = [appName: "RenewalDevAppeal"]
             }
+
+            signingConfig signingConfigs.release
         }
     }
+
 }
 
 dependencies {

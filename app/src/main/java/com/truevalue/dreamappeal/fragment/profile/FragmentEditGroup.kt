@@ -92,11 +92,11 @@ class FragmentEditGroup : BaseFragment() {
 
             val cal = Calendar.getInstance()
             cal.time = sDate
-            tv_start_year.text = String.format("%04d",cal.get(Calendar.YEAR))
-            tv_start_month.text = String.format("%02d",cal.get(Calendar.MONTH) + 1)
+            tv_start_year.text = String.format("%04d", cal.get(Calendar.YEAR))
+            tv_start_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
             cal.time = eDate
-            tv_end_year.text = String.format("%04d",cal.get(Calendar.YEAR))
-            tv_end_month.text = String.format("%02d",cal.get(Calendar.MONTH) + 1)
+            tv_end_year.text = String.format("%04d", cal.get(Calendar.YEAR))
+            tv_end_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
 
             et_detail_info.setText(mBean!!.description)
 
@@ -211,9 +211,11 @@ class FragmentEditGroup : BaseFragment() {
             when (it) {
                 (activity as ActivityMyProfileContainer).iv_close -> activity!!.onBackPressed()
                 (activity as ActivityMyProfileContainer).iv_check -> {
-                    // todo : 다시 설정해야 함
-                    if(mBean != null) editGroupInfo()
-                    else addGroupInfo()
+                    if (iv_check.isSelected) {
+                        // todo : 다시 설정해야 함
+                        if (mBean != null) editGroupInfo()
+                        else addGroupInfo()
+                    }
                 }
                 tv_sort -> setClassView()// 뷴류 설정
                 tv_start_year -> setYear(tv_start_year)

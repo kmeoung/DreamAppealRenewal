@@ -13,6 +13,7 @@ import kotlin.collections.ArrayList
 object DAClient {
 
     val SUCCESS = "SUCCESS"
+    val FAIL = "FAIL"
     val VALIDATE_EMAIL = "VALIDATE_EMAIL"
     val API_NOT_FOUND = "API_NOT_FOUND"
     val NOT_GRANTED = "NOT_GRANTED"

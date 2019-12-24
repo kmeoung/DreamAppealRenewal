@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="45dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -26,30 +26,32 @@
                 app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="11dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleX="0.65"
+                    android:scaleY="0.65"
                     android:src="@drawable/ic_event" />
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/nanum_square_round_r"
+                    android:fontFamily="@font/nanum_square_round_b"
                     android:text="@string/str_timeline"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="17.2sp" />
         </LinearLayout>
 
 
         <ImageView
                 android:id="@+id/iv_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:src="@drawable/ic_search_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:scaleY="0.65"
+                android:scaleX="0.65"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

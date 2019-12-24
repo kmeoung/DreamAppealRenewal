@@ -17,7 +17,7 @@ import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileInfo
 import kotlinx.android.synthetic.main.dialog_another_profile.*
 
-class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Dialog(context) {
+class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Dialog(context) {
 
     private val LISTITEM_TYPE_INFO = 0
     private val LISTITEM_TYPE_GROUP = 1
@@ -48,7 +48,7 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
     /**
      * View CLick Listenre
      */
-    private fun onClickView(){
+    private fun onClickView() {
         iv_close.setOnClickListener {
             dismiss()
         }
@@ -66,13 +66,13 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
     /**
      * RecyclerView Data 설정
      */
-    private fun initData(){
-        if(bean != null){
+    private fun initData() {
+        if (bean != null) {
             mAdapter!!.clear()
             mAdapter!!.add(bean!!)
 
-            if(bean!!.group != null && bean!!.group!!.size > 0){
-                for(i in 0 until bean!!.group!!.size){
+            if (bean!!.group != null && bean!!.group!!.size > 0) {
+                for (i in 0 until bean!!.group!!.size) {
                     mAdapter!!.add(bean!!.group!![i])
                 }
             }
@@ -97,8 +97,8 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            if(mAdapter != null){
-                if(getItemViewType(i) == LISTITEM_TYPE_INFO) {
+            if (mAdapter != null) {
+                if (getItemViewType(i) == LISTITEM_TYPE_INFO) {
                     val bean = mAdapter!!.get(i) as BeanAnotherProfile
                     val tvName = h.getItemView<TextView>(R.id.tv_name)
                     val tvNickName = h.getItemView<TextView>(R.id.tv_nickname)
@@ -107,16 +107,30 @@ class DialogAnotherProfile(context: Context,var bean : BeanAnotherProfile?) : Di
                     val tvAddress = h.getItemView<TextView>(R.id.tv_address)
                     val tvEmail = h.getItemView<TextView>(R.id.tv_email)
 
-                    tvName.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
-                    tvNickName.text = if(bean.nickname.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
-//                    tvAge.text = if(bean..isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
-                    tvGender.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
-                    tvAddress.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
-                    tvEmail.text = if(bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                    tvName.text =
+                        if (bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                    tvNickName.text =
+                        if (bean.nickname.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.nickname
+                    tvAge.text = context!!.getString(R.string.str_none)
+                    tvGender.text = if (bean.gender.isNullOrEmpty())
+                        context!!.getString(R.string.str_none)
+                    else if (bean.gender == "0") context.getString(R.string.str_female) else context.getString(
+                        R.string.str_male
+                    )
+                    tvAddress.text =
+                        if (bean.address.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.address
+                    tvEmail.text =
+                        if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.email
 
 
-                }else{
+                } else {
                     val bean = mAdapter!!.get(i) as BeanAnotherProfileGroup
+                    val tvGroup = h.getItemView<TextView>(R.id.tv_group)
+                    val tvRank = h.getItemView<TextView>(R.id.tv_rank)
+
+                    tvGroup.text = if(bean.groupName.isNullOrEmpty()) context.getString(R.string.str_none) else bean.groupName
+                    tvRank.text = if(bean.position.isNullOrEmpty()) context.getString(R.string.str_none) else bean.position
+
                 }
             }
         }

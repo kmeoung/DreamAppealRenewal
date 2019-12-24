@@ -81,7 +81,7 @@ class ActivityFollow : BaseActivity() {
             when (mViewType) {
                 VIEW_TYPE_FOLLOWER -> {
                     tv_title.text = getString(R.string.str_follower)
-                    mViewUserIdx = intent.getIntExtra(RESULT_REPLACE_USER_IDX,-1)
+                    mViewUserIdx = intent.getIntExtra(REQUEST_VIEW_USER_IDX,-1)
                     getFollower()
                 }
                 VIEW_TYPE_FOLLOWING -> {
@@ -196,7 +196,7 @@ class ActivityFollow : BaseActivity() {
             get() = if (mAdapter != null) mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            return BaseViewHolder.newInstance(R.layout.listitem_follower, parent, false)
+            return BaseViewHolder.newInstance(R.layout.listitem_follow, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {

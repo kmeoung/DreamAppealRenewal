@@ -43,15 +43,4 @@ object Comm_Prefs {
         return prefs!!.getInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX,-1)
     }
 
-    /**
-     * Another User Profile Index
-     */
-    fun setAnotherUserProfileIndex(idx : Int){
-        prefs!!.edit().putInt(Comm_Prefs_Param.PREFS_ANOTHER_USER_PROFILE_INDEX,idx).commit()
-    }
-
-    fun getAnotherUserProfileIndex() : Int{
-        return prefs!!.getInt(Comm_Prefs_Param.PREFS_ANOTHER_USER_PROFILE_INDEX,-1)
-    }
-
 }
