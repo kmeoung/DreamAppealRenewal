@@ -266,6 +266,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             })
 
+            if(bean.profile_idx == Comm_Prefs.getUserProfileIndex()){
+                ivMore.visibility = VISIBLE
+            }else ivMore.visibility = GONE
+
             tvIndicator.text = ((1).toString() + " / " + bean.imageList.size)
             for (j in 0 until bean.imageList.size) {
                 pagerAdapter.add(bean.imageList[j])
