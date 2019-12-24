@@ -111,29 +111,52 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
 
                     var privateBean = bean.private!!
 
+                    if(privateBean.name == 0){
+                        tvName.text = if (!bean.name.isNullOrEmpty()) bean.name
+                        else context!!.getString(R.string.str_none)
+                    }else{
+                        tvName.text = context.getString(R.string.str_private)
+                    }
 
+                    if(privateBean.nickname == 0){
+                        tvNickName.text = if (!bean.nickname.isNullOrEmpty()) bean.nickname
+                        else  context!!.getString(R.string.str_none)
+                    }else{
+                        tvNickName.text = context.getString(R.string.str_private)
+                    }
 
-                    tvName.text =
-                        if (bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else if(privateBean.name == 0) bean.name else
-                            context.getString(R.string.str_private)
-                    tvNickName.text =
-                        if (bean.nickname.isNullOrEmpty()) context!!.getString(R.string.str_none) else
-                            if(privateBean.nickname == 0) bean.nickname else context.getString(R.string.str_private)
                     val sdf = SimpleDateFormat("yyyy-MM-dd")
-                    tvAge.text = if(bean.birth.isNullOrEmpty()) context!!.getString(R.string.str_none)
-                    else if(privateBean.birth == 0) Utils.dateToAge(sdf.parse(bean.birth)).toString() else
-                        context.getString(R.string.str_private)
-                    tvGender.text = if (bean.gender.isNullOrEmpty())
-                        context!!.getString(R.string.str_none)
-                    else if(privateBean.gender == 0) if(bean.gender == "0") context.getString(R.string.str_female) else context.getString(
-                        R.string.str_male
-                    )
-                    else context.getString(R.string.str_private)
 
-                    tvAddress.text =
-                        if (bean.address.isNullOrEmpty()) context!!.getString(R.string.str_none) else if(privateBean.address == 0) bean.address else context.getString(R.string.str_private)
-                    tvEmail.text =
-                        if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else if(privateBean.email == 0) bean.email else context.getString(R.string.str_private)
+                    if(privateBean.birth == 0){
+                        tvAge.text = if (bean.birth.isNullOrEmpty()) context!!.getString(R.string.str_none)
+                        else Utils.dateToAge(sdf.parse(bean.birth)).toString()
+                    }else{
+                        tvAge.text = context.getString(R.string.str_private)
+                    }
+
+                    if(privateBean.gender == 0){
+                        if(bean.gender.isNullOrEmpty()){
+                            tvGender.text = context!!.getString(R.string.str_none)
+                        }else{
+                            tvGender.text = if(bean.gender == "0") context.getString(R.string.str_female)
+                            else context.getString(R.string.str_male)
+                        }
+                    }else{
+                        tvGender.text = context.getString(R.string.str_private)
+                    }
+
+                    if(privateBean.address == 0){
+                        tvAddress.text = if (bean.address.isNullOrEmpty()) context!!.getString(R.string.str_none)
+                        else bean.address
+                    }else{
+                        tvAddress.text = context.getString(R.string.str_private)
+                    }
+
+                    if(privateBean.email == 0){
+                        tvEmail.text = if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.email
+                    }else{
+                        tvEmail.text = context.getString(R.string.str_private)
+                    }
 
 
                 } else {
