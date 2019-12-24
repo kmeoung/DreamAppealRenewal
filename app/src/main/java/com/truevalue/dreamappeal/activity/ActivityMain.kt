@@ -26,8 +26,8 @@ import kotlinx.android.synthetic.main.nav_view.*
 
 class ActivityMain : BaseActivity() {
     var mActionListener: IOActionBarListener? = null
-    // todo : 현재 나의 프로필을 보고 있고, 내가 다른 프로필을 선택하여
-    // todo : 변겅이 되었는지를 확인하여 MainProfile을 변경
+    // 현재 나의 프로필을 보고 있고, 내가 다른 프로필을 선택하여
+    // 변겅이 되었는지를 확인하여 MainProfile을 변경
     private var mCurrentUserIdx : Int = -1
 
     companion object {

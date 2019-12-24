@@ -8,6 +8,8 @@ data class BeanAnotherProfile(
     var gender : String?,
     var address : String?,
     var email : String?,
-    var group: ArrayList<BeanAnotherProfileGroup>?
+    var group: ArrayList<BeanAnotherProfileGroup>?,
+    var private : BeanProfileUserPrivates?,
+    var birth : String?
 )
 

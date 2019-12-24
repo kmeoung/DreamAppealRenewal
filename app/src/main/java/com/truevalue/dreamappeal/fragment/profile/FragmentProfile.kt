@@ -18,6 +18,7 @@ import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
+import com.truevalue.dreamappeal.bean.BeanProfileUserPrivates
 import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
@@ -132,9 +133,10 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
                         val json = JSONObject(body)
                         val user = json.getJSONObject("user")
                         val groups = json.getJSONArray("groups")
-
+                        val privates = user.getJSONObject("privates")
+                        val beanPrivates = Gson().fromJson<BeanProfileUserPrivates>(privates.toString(),BeanProfileUserPrivates::class.java)
                         val bean = Gson().fromJson<BeanAnotherProfile>(user.toString(),BeanAnotherProfile::class.java)
-
+                        bean.private = beanPrivates
                         val groupList = ArrayList<BeanAnotherProfileGroup>()
                         if(groups.length() > 0){
                             for(i in 0 until groups.length()){

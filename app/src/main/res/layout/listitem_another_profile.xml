@@ -12,7 +12,7 @@
             android:id="@+id/another_profile_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="27dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:text="@string/str_normal_prifile_info"
             android:textColor="@color/azure"
@@ -27,7 +27,7 @@
             android:fontFamily="@font/nanum_square_round_r"
             android:text="@string/str_group"
             android:textColor="@color/azure"
-            app:layout_constraintStart_toStartOf="@+id/email"
+            app:layout_constraintStart_toStartOf="@+id/another_profile_info"
             app:layout_constraintTop_toBottomOf="@+id/tv_email" />
 
     <TextView

@@ -14,11 +14,9 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanProfileUser
-import com.truevalue.dreamappeal.bean.BeanProfileUserPrivates
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_dream_title.*
 import kotlinx.android.synthetic.main.fragment_normal_profile_edit.*
 import okhttp3.Call
 import java.text.SimpleDateFormat

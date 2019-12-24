@@ -15,7 +15,9 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileInfo
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.dialog_another_profile.*
+import java.text.SimpleDateFormat
 
 class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Dialog(context) {
 
@@ -107,20 +109,31 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
                     val tvAddress = h.getItemView<TextView>(R.id.tv_address)
                     val tvEmail = h.getItemView<TextView>(R.id.tv_email)
 
+                    var privateBean = bean.private!!
+
+
+
                     tvName.text =
-                        if (bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.name
+                        if (bean.name.isNullOrEmpty()) context!!.getString(R.string.str_none) else if(privateBean.name == 0) bean.name else
+                            context.getString(R.string.str_private)
                     tvNickName.text =
-                        if (bean.nickname.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.nickname
-                    tvAge.text = context!!.getString(R.string.str_none)
+                        if (bean.nickname.isNullOrEmpty()) context!!.getString(R.string.str_none) else
+                            if(privateBean.nickname == 0) bean.nickname else context.getString(R.string.str_private)
+                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+                    tvAge.text = if(bean.birth.isNullOrEmpty()) context!!.getString(R.string.str_none)
+                    else if(privateBean.birth == 0) Utils.dateToAge(sdf.parse(bean.birth)).toString() else
+                        context.getString(R.string.str_private)
                     tvGender.text = if (bean.gender.isNullOrEmpty())
                         context!!.getString(R.string.str_none)
-                    else if (bean.gender == "0") context.getString(R.string.str_female) else context.getString(
+                    else if(privateBean.gender == 0) if(bean.gender == "0") context.getString(R.string.str_female) else context.getString(
                         R.string.str_male
                     )
+                    else context.getString(R.string.str_private)
+
                     tvAddress.text =
-                        if (bean.address.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.address
+                        if (bean.address.isNullOrEmpty()) context!!.getString(R.string.str_none) else if(privateBean.address == 0) bean.address else context.getString(R.string.str_private)
                     tvEmail.text =
-                        if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.email
+                        if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else if(privateBean.email == 0) bean.email else context.getString(R.string.str_private)
 
 
                 } else {
