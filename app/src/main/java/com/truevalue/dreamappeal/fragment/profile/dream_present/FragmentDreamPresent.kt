@@ -387,7 +387,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_cheering -> {
                     profileLike()
                 }
-                iv_comment -> {
+                ll_comment_detail -> {
                     if (context != null) {
                         val intent = Intent(context!!, ActivityComment::class.java)
                         // todo : 현재 사용자가 보고있는 페이지의 idx를 보내야 합니다.
@@ -442,7 +442,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         btn_dream_description_more.setOnClickListener(listener)
         btn_merit_and_motive_more.setOnClickListener(listener)
         ll_cheering.setOnClickListener(listener)
-        iv_comment.setOnClickListener(listener)
+        ll_comment_detail.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         tv_add_follow.setOnClickListener(listener)

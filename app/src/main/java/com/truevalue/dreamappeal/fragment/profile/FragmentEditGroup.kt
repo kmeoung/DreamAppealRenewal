@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,8 +101,21 @@ class FragmentEditGroup : BaseFragment() {
             tv_end_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
 
             et_detail_info.setText(mBean!!.description)
-
         }
+
+
+    }
+
+    private fun isCheck() : Boolean{
+
+        val check = (!et_group_name.text.toString().isNullOrEmpty())
+                && (!et_group_rank.text.toString().isNullOrEmpty())
+                && (!tv_sort.text.toString().isNullOrEmpty())
+                && (!tv_start_year.text.toString().isNullOrEmpty())
+                && (!tv_start_month.text.toString().isNullOrEmpty())
+                && (!tv_end_year.text.toString().isNullOrEmpty())
+                && (!tv_end_month.text.toString().isNullOrEmpty())
+        return check
     }
 
     /**
@@ -115,6 +130,27 @@ class FragmentEditGroup : BaseFragment() {
         // todo : 여기 추가 수정 따로 이씀 header도 다름
         (activity as ActivityMyProfileContainer).tv_title.text =
             getString(R.string.str_add_group_info)
+
+        val textWatcher = object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                (activity as ActivityMyProfileContainer).iv_check.isSelected = isCheck()
+            }
+        }
+
+        et_group_name.addTextChangedListener(textWatcher)
+        et_group_rank.addTextChangedListener(textWatcher)
+        tv_sort.addTextChangedListener(textWatcher)
+        tv_start_month.addTextChangedListener(textWatcher)
+        tv_start_year.addTextChangedListener(textWatcher)
+        tv_end_month.addTextChangedListener(textWatcher)
+        tv_end_year.addTextChangedListener(textWatcher)
+
     }
 
     /**
@@ -209,9 +245,9 @@ class FragmentEditGroup : BaseFragment() {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-                (activity as ActivityMyProfileContainer).iv_close -> activity!!.onBackPressed()
+                (activity as ActivityMyProfileContainer).iv_close -> (activity as ActivityMyProfileContainer).onBackPressed()
                 (activity as ActivityMyProfileContainer).iv_check -> {
-                    if (iv_check.isSelected) {
+                    if ((activity as ActivityMyProfileContainer).iv_check.isSelected) {
                         // todo : 다시 설정해야 함
                         if (mBean != null) editGroupInfo()
                         else addGroupInfo()
@@ -274,7 +310,7 @@ class FragmentEditGroup : BaseFragment() {
                         ).show()
 
                         if (code == DAClient.SUCCESS) {
-                            activity!!.onBackPressed()
+                            (activity as ActivityMyProfileContainer).onBackPressed()
                         }
                     }
                 }
@@ -325,7 +361,7 @@ class FragmentEditGroup : BaseFragment() {
                         ).show()
 
                         if (code == DAClient.SUCCESS) {
-                            activity!!.onBackPressed()
+                            (activity as ActivityMyProfileContainer).onBackPressed()
                         }
                     }
                 }

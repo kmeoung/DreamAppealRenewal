@@ -181,7 +181,7 @@ class FagmentActionPost : BaseFragment() {
                 ll_cheering -> {
                     actionLike()
                 }
-                iv_comment -> {
+                ll_comment_detail -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
                     intent.putExtra(
                         ActivityComment.EXTRA_VIEW_TYPE,
@@ -210,7 +210,7 @@ class FagmentActionPost : BaseFragment() {
         }
         iv_back_black.setOnClickListener(listener)
         ll_cheering.setOnClickListener(listener)
-        iv_comment.setOnClickListener(listener)
+        ll_comment_detail.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_action_more.setOnClickListener(listener)

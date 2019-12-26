@@ -255,6 +255,12 @@ class ActivityFollow : BaseActivity() {
             tvAddFollow.setOnClickListener(View.OnClickListener {
                 follow(bean.idx, bean)
             })
+
+            if(bean.idx == Comm_Prefs.getUserProfileIndex()){
+                tv_add_follow.visibility = GONE
+            }else{
+                tv_add_follow.visibility = VISIBLE
+            }
         }
 
         /**

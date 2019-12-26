@@ -303,17 +303,20 @@ class ActivityMain : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-
-        if(isMainRefresh || mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
-            if(mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()){
-                mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
-                if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshAllView()
-            }else{
-                if(mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
+        if(dl_drawer.isDrawerOpen(Gravity.RIGHT)) {
+            dl_drawer.closeDrawer(Gravity.RIGHT)
+        }else {
+            super.onBackPressed()
+            if (isMainRefresh || mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()) {
+                if (mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()) {
+                    mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
+                    if (mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshAllView()
+                } else {
+                    if (mViewRefreshListener != null) mViewRefreshListener!!.OnRefreshView()
+                }
             }
+            isMainRefresh = false
         }
-        isMainRefresh = false
     }
 
     fun onBackPressed(isMainRefresh: Boolean){

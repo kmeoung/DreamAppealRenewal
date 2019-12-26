@@ -105,7 +105,7 @@ class FragmentBestPost : BaseFragment() {
                 ll_cheering -> {
                     achievementLike()
                 }
-                iv_comment->{
+                ll_comment_detail->{
                     val intent = Intent(context!!, ActivityComment::class.java)
                     intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                     intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
@@ -128,7 +128,7 @@ class FragmentBestPost : BaseFragment() {
         }
         iv_back.setOnClickListener(listener)
         ll_cheering.setOnClickListener(listener)
-        iv_comment.setOnClickListener(listener)
+        ll_comment_detail.setOnClickListener(listener)
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_more.setOnClickListener(listener)

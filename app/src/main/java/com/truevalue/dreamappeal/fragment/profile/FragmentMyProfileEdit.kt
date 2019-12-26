@@ -17,6 +17,7 @@ import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import kotlinx.android.synthetic.main.fragment_normal_profile_edit.*
 import okhttp3.Call
 import java.text.SimpleDateFormat
@@ -62,6 +63,17 @@ class FragmentMyProfileEdit : BaseFragment() {
         onClickView()
     }
 
+    private fun isCheck() : Boolean{
+
+        val check = (!et_name.text.toString().isNullOrEmpty())
+                && (!et_nickname.text.toString().isNullOrEmpty())
+                && (!tv_gender.text.toString().isNullOrEmpty())
+                && (!tv_date.text.toString().isNullOrEmpty())
+        // todo : 지금은 주소 비활성화 
+
+        return check
+    }
+
     /**
      * View 초기화
      */
@@ -88,6 +100,8 @@ class FragmentMyProfileEdit : BaseFragment() {
         et_name.addTextChangedListener(textWatcher)
         et_nickname.addTextChangedListener(textWatcher)
         et_address.addTextChangedListener(textWatcher)
+        tv_gender.addTextChangedListener(textWatcher)
+        tv_date.addTextChangedListener(textWatcher)
 
         if (mBean != null) {
             et_name.setText(mBean!!.name)
@@ -161,16 +175,8 @@ class FragmentMyProfileEdit : BaseFragment() {
      * 오른쪽 상단 아이콘 설정
      */
     private fun initRightBtn() {
-        (activity as ActivityMyProfileContainer).iv_check.isSelected = !isAllInput()
+        (activity as ActivityMyProfileContainer).iv_check.isSelected = isCheck()
     }
-
-    private fun isAllInput(): Boolean {
-        return TextUtils.isEmpty(et_name.text.toString())
-                || TextUtils.isEmpty(et_nickname.text.toString())
-//                || TextUtils.isEmpty(et_address.text.toString())
-        // todo : 현재는 거주지 비활성화
-    }
-
     /**
      * Http
      * 내 정보 수정

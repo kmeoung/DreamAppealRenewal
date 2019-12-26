@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "502189773006",
+    "firebase_url": "https://dreamappeal-7febd.firebaseio.com",
+    "project_id": "dreamappeal-7febd",
+    "storage_bucket": "dreamappeal-7febd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502189773006:android:08d3ac35e274762a24c09f",
+        "android_client_info": {
+          "package_name": "com.truevalue.dreamappeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502189773006-2dcegpl8t286hdf9es6pmj29rm37ff2e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADjDoEt29We_sHPeAOPyh8w3Yr-cMP17c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502189773006-2dcegpl8t286hdf9es6pmj29rm37ff2e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">드림어필</string>
-
+    <string name="str_name_value_style">님이</string>
+    <string name="str_is_update_1">을 업데이트 했습니다</string>
+    <string name="str_is_update_2">를 업데이트 했습니다</string>
+    <string name="str_objective_postposition">를</string>
+    <string name="str_did">했습니다</string>
+    <string name="str_go_view">보러가기 >></string>
     <string name="str_dream_profile">드림프로필</string>
     <string name="str_error_server">서버에 에러가 발생하였습니다.</string>
 
@@ -56,7 +61,9 @@
     <string name="str_explanation">설명</string>
     <string name="str_merit">매력</string>
     <string name="str_motive">계기</string>
-
+    <string name="str_dream_title">꿈 명칭</string>
+    <string name="str_dream_description">꿈 설명</string>
+    <string name="str_dream_merit_and_motive">꿈의 매력과 계기</string>
     <string name="str_merit_and_motive">매력 / 계기</string>
 
     <string name="str_more_view">더보기</string>

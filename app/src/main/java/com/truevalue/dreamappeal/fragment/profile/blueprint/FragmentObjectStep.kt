@@ -83,6 +83,8 @@ class FragmentObjectStep : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
+        ll_bottom_comment.visibility = GONE
+
         tv_title.text = getString(R.string.str_object_step)
 
         if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {

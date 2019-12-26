@@ -346,6 +346,7 @@ class ActivityCameraGallery : BaseActivity() {
                 }
                 REQUEST_ADD_ACTION_POST , REQUEST_ADD_ACHIEVEMENT_POST-> {
                     // todo : 여기에는 확인이 필요합니다.
+                    setResult(RESULT_OK)
                     finish()
                 }
 

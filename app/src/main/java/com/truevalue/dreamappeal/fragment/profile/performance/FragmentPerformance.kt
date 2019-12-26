@@ -301,9 +301,10 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
             val llItem = h.getItemView<LinearLayout>(R.id.ll_item)
             val iBtnMore = h.getItemView<ImageButton>(R.id.ibtn_more)
             val ivComment = h.getItemView<ImageView>(R.id.iv_comment)
+            val llCommentDetailll = h.getItemView<LinearLayout>(R.id.ll_comment_detail)
             val llComment = h.getItemView<LinearLayout>(R.id.ll_comment)
 
-            ivComment.setOnClickListener(View.OnClickListener {
+            llCommentDetailll.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context!!,ActivityComment::class.java)
                 intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE,ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
                 intent.putExtra(ActivityComment.EXTRA_INDEX,bean.idx)
