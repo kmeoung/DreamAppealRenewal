@@ -62,6 +62,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
         val REQUEST_REPLACE_USER_IDX = 2000
+        val RESULT_CODE = 1004
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,18 +154,25 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-                iv_back_black -> finish()
+                iv_back_black ->{
+                    setResult(RESULT_OK)
+                    finish()
+                }
                 btn_commit_comment -> if (btn_commit_comment.isSelected) if (mIsEdit) updateComment(
                     mParentIdx
                 ) else addComment(mParentIdx)
                 iv_writer_reply_close -> {
                     initComment()
                 }
+                tv_title->{
+                    rv_comments.smoothScrollToPosition(0)
+                }
             }
         }
         iv_back_black.setOnClickListener(listener)
         btn_commit_comment.setOnClickListener(listener)
         iv_writer_reply_close.setOnClickListener(listener)
+        tv_title.setOnClickListener(listener)
     }
 
     /**
@@ -648,7 +656,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     ivProfile.setOnClickListener(View.OnClickListener {
                         val intent = Intent()
                         intent.putExtra(RESULT_REPLACE_USER_IDX, bean.writer_idx)
-                        setResult(RESULT_OK, intent)
+                        setResult(RESULT_CODE, intent)
                         finish()
                     })
                 }

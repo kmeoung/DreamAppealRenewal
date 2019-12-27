@@ -13,6 +13,7 @@
 
     <string name="str_menu_normal_profile">일반 프로필</string>
     <string name="str_menu_following">팔로잉</string>
+    <string name="str_cheering_member">응원해준 어필러</string>
     <string name="str_menu_dreampoint">드림 포인트</string>
 
     <string name="str_title_dream_title">꿈에 명칭 달아주기</string>

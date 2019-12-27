@@ -15,7 +15,6 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentLevelChoice
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
 import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
@@ -208,12 +207,12 @@ class ActivityMain : BaseActivity() {
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
                 ll_following -> {
-                    val intent = Intent(this@ActivityMain, ActivityFollow::class.java)
+                    val intent = Intent(this@ActivityMain, ActivityFollowCheering::class.java)
                     intent.putExtra(
-                        ActivityFollow.EXTRA_VIEW_TYPE,
-                        ActivityFollow.VIEW_TYPE_FOLLOWING
+                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
+                        ActivityFollowCheering.VIEW_TYPE_FOLLOWING
                     )
-                    startActivityForResult(intent,ActivityFollow.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent,ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
                 ll_dream_point -> {
@@ -232,7 +231,7 @@ class ActivityMain : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK){
-            if (requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX) {
+            if (requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX) {
                 val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
                 replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
             }

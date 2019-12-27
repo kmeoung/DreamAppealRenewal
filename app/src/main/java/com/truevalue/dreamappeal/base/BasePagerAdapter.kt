@@ -55,13 +55,14 @@ class BasePagerAdapter<String>(private val mContext: Context,private var isCrop 
         if(isCrop == false) {
             Glide.with(mContext)
                 .load(url)
-                .placeholder(R.drawable.ic_image_black)
+                .placeholder(R.drawable.ic_image_white)
                 .centerCrop()
+                .thumbnail(0.1f)
                 .into(imageView)
         }else{
             Glide.with(mContext)
                 .load(url)
-                .placeholder(R.drawable.ic_image_black)
+                .placeholder(R.drawable.ic_image_white)
                 .into(imageView)
         }
         container.addView(imageView, 0)

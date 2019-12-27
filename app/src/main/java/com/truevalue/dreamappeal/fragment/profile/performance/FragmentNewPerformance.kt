@@ -16,12 +16,12 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityCameraGallery
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.bean.BeanAchievementPost
+import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter2
+import com.truevalue.dreamappeal.base.BaseViewHolder
+import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanBestPost
 import com.truevalue.dreamappeal.bean.BeanNewPerformance
-import com.truevalue.dreamappeal.bean.BeanPerformance
-import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -56,7 +56,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_new_performance, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_swipe_recyclerview, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

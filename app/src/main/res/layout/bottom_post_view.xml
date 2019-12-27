@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
     <!--응원 / 댓글 / 공유-->
@@ -21,6 +21,7 @@
 
             <!--불꽃 (좋아요)-->
             <LinearLayout
+                    android:id="@+id/ll_cheering_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -190,7 +191,6 @@
 
     </LinearLayout>
     <!--응원 / 댓글 / 공유-->
-
 
 
 </LinearLayout>

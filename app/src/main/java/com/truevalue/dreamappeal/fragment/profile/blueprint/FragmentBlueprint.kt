@@ -126,7 +126,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
                 tv_default_object,
                 iv_add_object -> {
-                    if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                         (activity as ActivityMain).replaceFragment(
                             FragmentAddPage.newInstance(
                                 FragmentAddPage.VIEW_TYPE_ADD_STEP
@@ -154,12 +154,12 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         ActivityComment.EXTRA_INDEX,
                         mViewUserIdx
                     ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
-                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 btn_commit_comment -> {
                     if (btn_commit_comment.isSelected) addBlueprintComment()
                 }
-                btn_ability_and_opportunity->{
+                btn_ability_and_opportunity -> {
                     if (isMyDreamMore) {
                         isMyDreamMore = false
                         btn_ability_and_opportunity.text = getString(R.string.str_more_view)
@@ -167,7 +167,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         isMyDreamMore = true
                         btn_ability_and_opportunity.text = getString(R.string.str_close_view)
                     }
-                    if(mAnOAdapter != null) mAnOAdapter!!.notifyDataSetChanged()
+                    if (mAnOAdapter != null) mAnOAdapter!!.notifyDataSetChanged()
                 }
             }
         }
@@ -185,10 +185,13 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentProfile.newInstance(view_user_idx),
+                    true
+                )
             }
         }
     }
@@ -219,6 +222,17 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     if (code == DAClient.SUCCESS) {
                         et_comment.setText("")
                         // todo : 여기서 혹시 더 필요한게 있으면 추가바람
+                        val intent = Intent(context!!, ActivityComment::class.java)
+                        intent.putExtra(
+                            ActivityComment.EXTRA_VIEW_TYPE,
+                            ActivityComment.EXTRA_TYPE_BLUEPRINT
+                        )
+                        intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, "OFF")
+                        intent.putExtra(
+                            ActivityComment.EXTRA_INDEX,
+                            mViewUserIdx
+                        )
+                        startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                     }
                 }
             }
@@ -231,9 +245,9 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun initView() {
         Utils.setSwipeRefreshLayout(srl_refresh, this)
-        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
             iv_add_object.visibility = VISIBLE
-        }else{
+        } else {
             iv_add_object.visibility = GONE
         }
 
@@ -531,8 +545,9 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             e.printStackTrace()
 
                         }
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

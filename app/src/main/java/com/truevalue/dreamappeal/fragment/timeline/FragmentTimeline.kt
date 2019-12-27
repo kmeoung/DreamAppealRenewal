@@ -255,6 +255,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llComment = h.getItemView<LinearLayout>(R.id.ll_comment)
             val llShare = h.getItemView<LinearLayout>(R.id.ll_share)
             val tvTime = h.getItemView<TextView>(R.id.tv_time)
+            val llCheeringDetail = h.getItemView<LinearLayout>(R.id.ll_cheering_detail)
 
             val pagerAdapter = BasePagerAdapter<String>(context!!)
             pagerImages.adapter = pagerAdapter
@@ -329,6 +330,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     .load(bean.profile_image)
                     .placeholder(R.drawable.drawer_user)
                     .circleCrop()
+                    .thumbnail(0.1f)
                     .into(ivProfile)
             }
 
@@ -393,6 +395,16 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             llCheering.setOnClickListener(View.OnClickListener {
                 actionLike(bean)
+            })
+
+            llCheeringDetail.setOnClickListener(View.OnClickListener {
+                val intent = Intent(context, ActivityFollowCheering::class.java)
+                intent.putExtra(
+                    ActivityFollowCheering.EXTRA_VIEW_TYPE,
+                    ActivityFollowCheering.VIEW_TYPE_CHEERING_ACTION
+                )
+                intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, bean.idx)
+                startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
             })
 
             ivCheering.isSelected = bean.status
@@ -471,7 +483,16 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX || requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX) {
+
+            }
+        } else if (resultCode == ActivityComment.RESULT_CODE ||
+            resultCode == ActivityFollowCheering.RESULT_CODE
+        ) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+            ) {
                 val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
                     FragmentProfile.newInstance(view_user_idx),

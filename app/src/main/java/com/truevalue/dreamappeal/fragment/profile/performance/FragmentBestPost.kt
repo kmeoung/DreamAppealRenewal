@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
+import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
@@ -38,8 +39,9 @@ class FragmentBestPost : BaseFragment() {
     private var mBean: BeanAchivementPostDetail? = null
     private var mAdapter: BasePagerAdapter<String>? = null
     private var mViewUserIdx = -1
+
     companion object {
-        fun newInstance(post_idx: Int, best_idx: Int,view_user_idx : Int): FragmentBestPost {
+        fun newInstance(post_idx: Int, best_idx: Int, view_user_idx: Int): FragmentBestPost {
             val fragment = FragmentBestPost()
             fragment.mPostIdx = post_idx
             fragment.mBestIdx = best_idx
@@ -76,9 +78,9 @@ class FragmentBestPost : BaseFragment() {
         // 상단 이미지 정사각형 설정
         Utils.setImageViewSquare(context, rl_images)
 
-        if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
             iv_more.visibility = View.VISIBLE
-        }else iv_more.visibility = View.GONE
+        } else iv_more.visibility = View.GONE
     }
 
     /**
@@ -105,24 +107,39 @@ class FragmentBestPost : BaseFragment() {
                 ll_cheering -> {
                     achievementLike()
                 }
-                ll_comment_detail->{
+                ll_comment_detail -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
-                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
-                    intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
-                    intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD," ")
-                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(
+                        ActivityComment.EXTRA_VIEW_TYPE,
+                        ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST
+                    )
+                    intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
+                    intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
+                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_comment -> {
                     val intent = Intent(context!!, ActivityComment::class.java)
-                    intent.putExtra(ActivityComment.EXTRA_VIEW_TYPE, ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST)
-                    intent.putExtra(ActivityComment.EXTRA_INDEX,mPostIdx)
-                    startActivityForResult(intent,ActivityComment.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(
+                        ActivityComment.EXTRA_VIEW_TYPE,
+                        ActivityComment.EXTRA_TYPE_ACHIEVEMENT_POST
+                    )
+                    intent.putExtra(ActivityComment.EXTRA_INDEX, mPostIdx)
+                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_share -> {
 
                 }
                 iv_more -> {
                     showMoreDialog()
+                }
+                ll_cheering_detail -> {
+                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                    intent.putExtra(
+                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
+                        ActivityFollowCheering.VIEW_TYPE_CHEERING_ACHIEVEMENT
+                    )
+                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mPostIdx)
+                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
                 }
             }
         }
@@ -132,16 +149,30 @@ class FragmentBestPost : BaseFragment() {
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_more.setOnClickListener(listener)
+        ll_cheering_detail.setOnClickListener(listener)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
-            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                (activity as ActivityMain).replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
-            }else if(requestCode == REQUEST_EDIT_PAGE){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+            ) {
                 achivementPostDetail()
+            } else if (requestCode == REQUEST_EDIT_PAGE) {
+                achivementPostDetail()
+            }
+        } else if (resultCode == ActivityComment.RESULT_CODE ||
+            resultCode == ActivityFollowCheering.RESULT_CODE
+        ) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+            ) {
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                (activity as ActivityMain).replaceFragment(
+                    FragmentProfile.newInstance(view_user_idx),
+                    true
+                )
             }
         }
     }
@@ -150,8 +181,8 @@ class FragmentBestPost : BaseFragment() {
      * Http
      * 성과 좋아요
      */
-    private fun achievementLike(){
-        DAClient.likeAchievementPost(mPostIdx,object : DAHttpCallback{
+    private fun achievementLike() {
+        DAClient.likeAchievementPost(mPostIdx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -159,10 +190,10 @@ class FragmentBestPost : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(context != null){
-                    Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if(code == DAClient.SUCCESS){
+                    if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
@@ -209,8 +240,9 @@ class FragmentBestPost : BaseFragment() {
 
                         mBean = bean
                         setData(bean)
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -231,13 +263,16 @@ class FragmentBestPost : BaseFragment() {
         builder.setItems(list) { _, i ->
             when (list[i]) {
                 getString(R.string.str_edit) -> if (mBean != null) {
-                    val intent = Intent(context!!,ActivityAddPost::class.java)
-                    intent.putExtra(ActivityAddPost.EDIT_VIEW_TYPE,ActivityAddPost.EDIT_ACHIEVEMENT_POST)
-                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX,mBestIdx)
-                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES,mAdapter!!.getAll())
-                    intent.putExtra(ActivityAddPost.REQUEST_TITLE,mBean!!.title)
-                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS,mBean!!.content)
-                    startActivityForResult(intent,REQUEST_EDIT_PAGE)
+                    val intent = Intent(context!!, ActivityAddPost::class.java)
+                    intent.putExtra(
+                        ActivityAddPost.EDIT_VIEW_TYPE,
+                        ActivityAddPost.EDIT_ACHIEVEMENT_POST
+                    )
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mBestIdx)
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapter!!.getAll())
+                    intent.putExtra(ActivityAddPost.REQUEST_TITLE, mBean!!.title)
+                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, mBean!!.content)
+                    startActivityForResult(intent, REQUEST_EDIT_PAGE)
                 }
                 getString(R.string.str_delete) -> {
                     val builder =
@@ -284,7 +319,6 @@ class FragmentBestPost : BaseFragment() {
             }
         })
     }
-
 
 
     /**
