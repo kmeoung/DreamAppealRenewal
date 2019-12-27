@@ -69,7 +69,7 @@ class FragmentMyProfileEdit : BaseFragment() {
                 && (!et_nickname.text.toString().isNullOrEmpty())
                 && (!tv_gender.text.toString().isNullOrEmpty())
                 && (!tv_date.text.toString().isNullOrEmpty())
-        // todo : 지금은 주소 비활성화 
+        // todo : 지금은 주소 비활성화
 
         return check
     }
