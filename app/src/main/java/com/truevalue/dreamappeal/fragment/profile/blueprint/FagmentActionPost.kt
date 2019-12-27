@@ -368,7 +368,7 @@ class FagmentActionPost : BaseFragment() {
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+                tv_indicator.text = if(mAdapter!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapter!!.getCount()) else "0 / 0"
             }
         })
     }

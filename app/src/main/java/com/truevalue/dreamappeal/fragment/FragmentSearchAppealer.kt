@@ -36,6 +36,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
     private var mSearchType = TYPE_MODIFIER
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
+    val RESULT_CODE = 1004
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -153,7 +154,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                 h.itemView.setOnClickListener(View.OnClickListener {
                     val intent = Intent()
                     intent.putExtra(ActivitySearch.RESULT_REPLACE_USER_IDX, bean.idx)
-                    activity!!.setResult(AppCompatActivity.RESULT_OK, intent)
+                    activity!!.setResult(RESULT_CODE, intent)
                     activity!!.finish()
                 })
             }

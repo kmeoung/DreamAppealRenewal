@@ -271,7 +271,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 ivMore.visibility = VISIBLE
             }else ivMore.visibility = GONE
 
-            tvIndicator.text = ((1).toString() + " / " + bean.imageList.size)
+            tvIndicator.text = if(bean.imageList.size > 0) ((1).toString() + " / " + bean.imageList.size) else ((0).toString() + " / " + bean.imageList.size)
             for (j in 0 until bean.imageList.size) {
                 pagerAdapter.add(bean.imageList[j])
             }
@@ -491,7 +491,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             resultCode == ActivityFollowCheering.RESULT_CODE
         ) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
