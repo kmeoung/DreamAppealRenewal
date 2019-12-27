@@ -97,8 +97,8 @@ class ActivityCameraGallery : BaseActivity() {
             mViewType = intent.getStringExtra(VIEW_TYPE)
         }
 
-        if(mViewType == EXTRA_ACHIVEMENT_POST){
-            mBestIdx = intent.getIntExtra(ACHIEVEMENT_POST_BEST_IDX,-1)
+        if (mViewType == EXTRA_ACHIVEMENT_POST) {
+            mBestIdx = intent.getIntExtra(ACHIEVEMENT_POST_BEST_IDX, -1)
         }
 
         when (mSelectType) {
@@ -134,7 +134,7 @@ class ActivityCameraGallery : BaseActivity() {
                         val intent =
                             Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
                         intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        intent.putExtra(REQUEST_BEST_IDX,mBestIdx)
+                        intent.putExtra(REQUEST_BEST_IDX, mBestIdx)
                         intent.putExtra(VIEW_TYPE, EXTRA_ACHIVEMENT_POST)
                         startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT_POST)
                     } else if (mViewType.equals(EXTRA_ACTION_POST)) {
@@ -151,7 +151,7 @@ class ActivityCameraGallery : BaseActivity() {
                         intent.putExtra(VIEW_TYPE, EXTRA_ACTION_POST)
                         intent.putExtra(REQUEST_IMAGE_FILES, array)
                         startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
-                    }else if(mViewType.equals(EXTRA_DREAM_PROFILE)){
+                    } else if (mViewType.equals(EXTRA_DREAM_PROFILE)) {
                         if (isMultiMode) {
                             // Action Post 이미지 추가로 이동
                             for (i in 0 until mMultiImage!!.size) {
@@ -162,8 +162,8 @@ class ActivityCameraGallery : BaseActivity() {
                         }
 
                         val intent = Intent()
-                        intent.putExtra(REQUEST_IMAGE_FILES,array)
-                        setResult(Activity.RESULT_OK,intent)
+                        intent.putExtra(REQUEST_IMAGE_FILES, array)
+                        setResult(Activity.RESULT_OK, intent)
                         finish()
                     }
                 }
@@ -175,8 +175,8 @@ class ActivityCameraGallery : BaseActivity() {
                         }
                         else -> true
                     }
+                    btn_multi_select.isSelected = isMultiMode
                     mGridAdapter!!.notifyDataSetChanged()
-
                 }
                 iv_close -> {
                     finish()
@@ -344,7 +344,7 @@ class ActivityCameraGallery : BaseActivity() {
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
-                REQUEST_ADD_ACTION_POST , REQUEST_ADD_ACHIEVEMENT_POST-> {
+                REQUEST_ADD_ACTION_POST, REQUEST_ADD_ACHIEVEMENT_POST -> {
                     // todo : 여기에는 확인이 필요합니다.
                     setResult(RESULT_OK)
                     finish()

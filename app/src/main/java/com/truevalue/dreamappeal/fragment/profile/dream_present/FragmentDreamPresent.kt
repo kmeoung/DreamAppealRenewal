@@ -308,13 +308,13 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 }
                 ll_follower -> {
                     // replace to Follower
-                    val intent = Intent(context, ActivityFollow::class.java)
+                    val intent = Intent(context, ActivityFollowCheering::class.java)
                     intent.putExtra(
-                        ActivityFollow.EXTRA_VIEW_TYPE,
-                        ActivityFollow.VIEW_TYPE_FOLLOWER
+                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
+                        ActivityFollowCheering.VIEW_TYPE_FOLLOWER
                     )
-                    intent.putExtra(ActivityFollow.REQUEST_VIEW_USER_IDX, mViewUserIdx)
-                    startActivityForResult(intent, ActivityFollow.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mViewUserIdx)
+                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
                 }
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
@@ -427,6 +427,15 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 tv_add_follow -> {
                     follow()
                 }
+                ll_cheering_detail->{
+                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                    intent.putExtra(
+                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
+                        ActivityFollowCheering.VIEW_TYPE_CHEERING_PROFILE
+                    )
+                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mViewUserIdx)
+                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                }
             }
         }
 
@@ -446,6 +455,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         tv_add_follow.setOnClickListener(listener)
+        ll_cheering_detail.setOnClickListener(listener)
     }
 
     /**
@@ -573,6 +583,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             )
                             tv_add_follow.text = getString(R.string.str_add_follow)
                         }
+                        getProfile()
                     }
                 }
             }
@@ -629,8 +640,15 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         .apply(RequestOptions().circleCrop())
                         .into(iv_dream_profile)
                 }
-            } else if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX || requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX
-                || requestCode == ActivityFollow.REQUEST_REPLACE_USER_IDX
+            } else if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+            ) {
+                getProfile()
+            }
+        }else if(resultCode == ActivityComment.RESULT_CODE ||
+            resultCode == ActivityFollowCheering.RESULT_CODE){
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(

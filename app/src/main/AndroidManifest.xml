@@ -73,7 +73,7 @@
 
         <!-- 팔로워 -->
         <activity
-                android:name=".activity.ActivityFollow"
+                android:name=".activity.ActivityFollowCheering"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 

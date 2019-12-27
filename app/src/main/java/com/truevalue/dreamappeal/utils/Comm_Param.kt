@@ -79,6 +79,21 @@ object Comm_Param {
     val URL_FOLLOW = "$URL_API/follow"
     val URL_FOLLOW_PROFILE_IDX = "$URL_FOLLOW/$PROFILE_INDEX"
 
+/**
+ * @GET {'/list/profile/:idx'} : lookup list of profile likes
+ * @GET {'/list/action/:idx'} : lookup list of action post likes
+ * @GET {'/list/achievement/:idx'} : lookup list of achievement post likes**/
+
+    // 응원해준 어필러
+    val CHEERING_INDEX = "CHEERING_INDEX"
+    val URL_LIST = "$URL_API/likes/list"
+    val URL_LIST_PROFILE = "$URL_LIST/profile"
+    val URL_LIST_PROFILE_IDX = "$URL_LIST_PROFILE/$CHEERING_INDEX"
+    val URL_LIST_ACTION = "$URL_LIST/action"
+    val URL_LIST_ACTION_IDX = "$URL_LIST_ACTION/$CHEERING_INDEX"
+    val URL_LIST_ACHIEVEMENT = "$URL_LIST/achievement"
+    val URL_LIST_ACHIEVEMENT_IDX = "$URL_LIST_ACHIEVEMENT/$CHEERING_INDEX"
+
     // 드림포인트
     val MISSION_INDEX = "MISSION_INDEX"
     val URL_DREAMPOINT = "$URL_API/dreampoint"

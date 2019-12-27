@@ -908,6 +908,67 @@ object DAClient {
 
     /**
      * GET
+     * PROFILE
+     * 나를 응원하는 어필러 리스트
+     */
+    fun getProfileCheering(
+        idx : Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_LIST_PROFILE_IDX.replace(Comm_Param.CHEERING_INDEX,idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * ACTION POST
+     * 나를 응원하는 어필러 리스트
+     */
+    fun getActionCheering(
+        idx : Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_LIST_ACTION_IDX.replace(Comm_Param.CHEERING_INDEX,idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * ACHIEVEMENT POST
+     * 나를 응원하는 어필러 리스트
+     */
+    fun getAchievementCheeing(
+        idx : Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_LIST_ACHIEVEMENT_IDX.replace(Comm_Param.CHEERING_INDEX,idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+
+    /**
+     * GET
      * 드림포인트 조회
      */
     fun getDreamPoint(callback: DAHttpCallback) {

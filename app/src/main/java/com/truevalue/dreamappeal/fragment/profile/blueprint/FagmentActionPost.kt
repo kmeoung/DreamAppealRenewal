@@ -11,26 +11,23 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
+import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail
 import com.truevalue.dreamappeal.bean.BeanActionPostImage
-import com.truevalue.dreamappeal.bean.BeanTimeline
-import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_best_post.iv_more
 import kotlinx.android.synthetic.main.action_bar_best_post.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_post_view.*
@@ -206,6 +203,15 @@ class FagmentActionPost : BaseFragment() {
                 iv_action_more -> {
                     showMoreDialog()
                 }
+                ll_cheering_detail->{
+                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                    intent.putExtra(
+                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
+                        ActivityFollowCheering.VIEW_TYPE_CHEERING_ACTION
+                    )
+                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mPostIdx)
+                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                }
             }
         }
         iv_back_black.setOnClickListener(listener)
@@ -214,6 +220,7 @@ class FagmentActionPost : BaseFragment() {
         ll_comment.setOnClickListener(listener)
         ll_share.setOnClickListener(listener)
         iv_action_more.setOnClickListener(listener)
+        ll_cheering_detail.setOnClickListener(listener)
     }
 
     /**
@@ -305,13 +312,21 @@ class FagmentActionPost : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
+                getActionPost()
+            } else if (requestCode == EXTRA_CHANGE_CATEGORY) {
+                (activity as ActivityMain).onBackPressed(false)
+            }
+        } else if (resultCode == ActivityComment.RESULT_CODE ||
+            resultCode == ActivityFollowCheering.RESULT_CODE
+        ) {
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+            ) {
                 val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
                     FragmentProfile.newInstance(view_user_idx),
                     true
                 )
-            } else if (requestCode == EXTRA_CHANGE_CATEGORY) {
-                (activity as ActivityMain).onBackPressed(false)
             }
         }
     }
@@ -427,10 +442,6 @@ class FagmentActionPost : BaseFragment() {
     private fun setData(bean: BeanActionPostDetail) {
         mBean = bean
         iv_cheering.isSelected = bean.status
-
-        iv_more.setOnClickListener(View.OnClickListener {
-            // todo : More 기능 추가 필요
-        })
 
         if (bean.object_name.isNullOrEmpty() && bean.step_name.isNullOrEmpty()) {
             ll_object_step.visibility = View.GONE

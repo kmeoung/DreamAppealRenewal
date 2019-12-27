@@ -2,6 +2,9 @@ package com.truevalue.dreamappeal.fragment
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
+import android.text.InputFilter.AllCaps
+import android.text.InputFilter.LengthFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,6 +48,7 @@ class FragmentDreamPointCoupon : BaseFragment() {
         (activity as ActivityDreamPoint).iv_close.visibility = View.VISIBLE
         (activity as ActivityDreamPoint).iv_check.visibility = View.GONE
         (activity as ActivityDreamPoint).tv_title.text = getString(R.string.str_add_coupon)
+        et_coupon.filters = arrayOf(AllCaps(), LengthFilter(19)) // 소문자로 입력된 값을 대문자로 바꿔줌.
 
         et_coupon.addTextChangedListener(object : TextWatcher {
             private var beforeLength = 0
@@ -68,14 +72,12 @@ class FragmentDreamPointCoupon : BaseFragment() {
                     )
                     return
                 }
-
                 val inputChar = s[s.length - 1]
-                if (inputChar != '-' && (inputChar < '0' || inputChar > '9')) {
+                if (inputChar != '-' &&
+                    (inputChar == 'O' || inputChar == 'o') &&
+                    ((inputChar < '1' || inputChar > '9')
+                            && (inputChar < 'A' || inputChar > 'Z'))) {
                     et_coupon.text.delete(s.length - 1, s.length)
-                    Log.d(
-                        "addTextChangedListener",
-                        "onTextChanged: Intput text is wrong (Type : Number)"
-                    )
                     return
                 }
 
@@ -97,17 +99,6 @@ class FragmentDreamPointCoupon : BaseFragment() {
                     }
                 }// 입력 중
                 et_coupon.setSelection(et_coupon.length())
-
-//                if (s.length() === 19) {
-//                    btnInput.setBackground(
-//                        ContextCompat.getDrawable(context!!, R.drawable.btn_active)
-//                    )
-//                } else {
-//                    btnInput.setBackground(
-//                        ContextCompat.getDrawable(context!!, R.drawable.btn_inactive)
-//                    )
-//                }
-
             }
         })
     }
