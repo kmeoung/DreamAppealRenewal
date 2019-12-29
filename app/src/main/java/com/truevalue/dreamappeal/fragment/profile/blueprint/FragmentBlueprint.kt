@@ -12,6 +12,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -622,7 +623,14 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val tvObjectTitle = h.getItemView<TextView>(R.id.tv_object_title)
             val ivObject = h.getItemView<ImageView>(R.id.iv_object)
             val tvObjectCount = h.getItemView<TextView>(R.id.tv_object_count)
+            val llComplete = h.getItemView<LinearLayout>(R.id.ll_complete)
             tvObjectTitle.text = bean.object_name
+
+            if(bean.complete == 1){
+                llComplete.visibility = VISIBLE
+            }else{
+                llComplete.visibility = GONE
+            }
 
             Glide.with(context!!)
                 .load(bean.thumbnail_image)

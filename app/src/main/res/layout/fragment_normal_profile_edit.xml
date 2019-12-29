@@ -158,7 +158,8 @@
                     android:id="@+id/iv_lock_nickname"
                     android:layout_width="34.7dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_lock" />
+                    android:src="@drawable/ic_lock"
+                    android:visibility="gone"/>
 
 
         </LinearLayout>

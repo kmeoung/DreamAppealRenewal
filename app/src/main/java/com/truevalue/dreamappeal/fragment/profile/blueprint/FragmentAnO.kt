@@ -96,7 +96,7 @@ class FragmentAnO : BaseFragment() {
                         (activity as ActivityMain).replaceFragment(
                             FragmentAddPage.newInstance(
                                 type
-                            ), true
+                            ), true,isMainRefresh = false
                         )
                     }
                 }
@@ -406,7 +406,7 @@ class FragmentAnO : BaseFragment() {
                             FragmentAddPage.newInstance(
                                 type
                                 , bean
-                            ), true
+                            ), true,isMainRefresh = false
                         )
                     }
                     getString(R.string.str_delete) -> {

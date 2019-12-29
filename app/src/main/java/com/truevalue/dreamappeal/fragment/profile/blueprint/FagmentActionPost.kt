@@ -38,12 +38,11 @@ import org.json.JSONObject
 class FagmentActionPost : BaseFragment() {
 
     private var mAdapter: BasePagerAdapter<String>? = null
-
     private var mPostIdx = -1
     private var mViewUserIdx = -1
     private var mBean: BeanActionPostDetail? = null
     private var isDreamNoteType: String? = null
-
+    private var mTags : String? = null
     private val EXTRA_CHANGE_CATEGORY = 3030
 
     companion object {
@@ -257,6 +256,7 @@ class FagmentActionPost : BaseFragment() {
                         ActivityAddPost.EDIT_VIEW_TYPE,
                         ActivityAddPost.EDIT_ACTION_POST
                     )
+                    intent.putExtra(ActivityAddPost.REQUEST_TAGS,mTags)
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mPostIdx)
                     intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapter!!.getAll())
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, tv_contents.text.toString())
@@ -404,6 +404,28 @@ class FagmentActionPost : BaseFragment() {
                             .into(iv_dream_profile)
 
                         val actionPost = json.getJSONObject("action_post")
+
+                        val tags = actionPost.getString("tags")
+
+                        mTags = tags
+                        var strTags = ""
+                        if(!mTags.isNullOrEmpty()){
+                            tv_tag.visibility = VISIBLE
+                            if(mTags!!.contains(",".toRegex())) {
+
+                                val tags = mTags!!.split(",".toRegex())
+                                for (i in 0 until tags.size) {
+                                    strTags = "$strTags #${tags[i]} "
+                                }
+                            }else{
+                                strTags = " #${mTags!!}"
+                            }
+                        }else{
+                            strTags = getString(R.string.str_tag)
+                            tv_tag.visibility = GONE
+                        }
+                        tv_tag.text = strTags
+
                         val bean = Gson().fromJson<BeanActionPostDetail>(
                             actionPost.toString(),
                             BeanActionPostDetail::class.java
@@ -465,6 +487,5 @@ class FagmentActionPost : BaseFragment() {
         tv_comment.text = "${bean.comment_count}개"
 
     }
-
 
 }

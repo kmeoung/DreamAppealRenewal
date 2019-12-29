@@ -63,7 +63,8 @@
                     android:layout_height="32.7dp"
                     android:background="@color/white"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_tag_title">
 
                 <ImageView
                         android:layout_width="32.7dp"
@@ -88,20 +89,50 @@
 
             <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_marginTop="2dp"
+                    android:layout_height="1px"
                     android:background="@color/pale_grey" />
 
-
-            <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/cg_tag"
+            <LinearLayout
+                    android:id="@+id/ll_input_tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="32.7dp">
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
-                <!-- Chips can be declared here, or added dynamically. -->
+                <EditText
+                        android:id="@+id/et_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="37.5dp"
+                        android:background="@color/white"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:gravity="center_vertical"
+                        android:hint="@string/str_input_tag"
+                        android:imeOptions="actionDone"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:inputType="text"
+                        android:paddingLeft="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/brown_grey"
+                        android:textSize="14.7sp" />
 
-            </com.google.android.material.chip.ChipGroup>
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/pale_grey" />
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="37.5dp"
+                    android:background="@color/white"
+                    android:paddingTop="8.3dp"
+                    android:paddingBottom="8.3dp"
+                    android:visibility="gone"/>
 
             <ImageView
                     android:layout_width="match_parent"

@@ -24,6 +24,7 @@ class ActivityAddPost : BaseActivity() {
         val REQUEST_IAMGE_FILES = "REQUEST_IAMGE_FILES"
         val REQUEST_TITLE = "REQUEST_TITLE"
         val REQUEST_CONTENTS = "REQUEST_CONTENTS"
+        val REQUEST_TAGS = "REQUEST_TAGS"
 
         val REQUEST_CATEOGORY_IDX = "REQUEST_CATEOGORY_IDX"
         val REQUEST_CATEOGORY_DETAIL_IDX = "REQUEST_CATEOGORY_DETAIL_IDX"
@@ -77,7 +78,8 @@ class ActivityAddPost : BaseActivity() {
                 }
                 EDIT_ACTION_POST->{
                     val contents = intent.getStringExtra(REQUEST_CONTENTS)
-                    replaceFragment(FragmentAddActionPost.newInstance(imageFiles,postIdx,contents), false)
+                    val tags = intent.getStringExtra(REQUEST_TAGS)
+                    replaceFragment(FragmentAddActionPost.newInstance(imageFiles,postIdx,contents,tags), false)
                 }
                 EDIT_CHANGE_CATEGORY->{
                     val categoryIdx = intent.getIntExtra(REQUEST_CATEOGORY_IDX,-1)

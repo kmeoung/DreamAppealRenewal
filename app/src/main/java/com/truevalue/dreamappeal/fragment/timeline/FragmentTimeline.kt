@@ -29,6 +29,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
+import kotlinx.android.synthetic.main.fragment_action_post.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -256,6 +257,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llShare = h.getItemView<LinearLayout>(R.id.ll_share)
             val tvTime = h.getItemView<TextView>(R.id.tv_time)
             val llCheeringDetail = h.getItemView<LinearLayout>(R.id.ll_cheering_detail)
+            val tvTag = h.getItemView<TextView>(R.id.tv_tag)
 
             val pagerAdapter = BasePagerAdapter<String>(context!!)
             pagerImages.adapter = pagerAdapter
@@ -266,6 +268,25 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         ((position + 1).toString() + " / " + pagerAdapter!!.getCount())
                 }
             })
+
+            var strTags = ""
+            if(!bean.tags.isNullOrEmpty()){
+                tvTag.visibility = VISIBLE
+                if(bean.tags!!.contains(",".toRegex())) {
+
+                    val tags = bean.tags!!.split(",".toRegex())
+                    for (i in 0 until tags.size) {
+                        strTags = "$strTags #${tags[i]} "
+                    }
+                }else{
+                    strTags = " #${bean.tags!!}"
+                }
+            }else{
+                strTags = getString(R.string.str_tag)
+                tvTag.visibility = GONE
+            }
+            tvTag.text = strTags
+
 
             if(bean.profile_idx == Comm_Prefs.getUserProfileIndex()){
                 ivMore.visibility = VISIBLE
@@ -348,7 +369,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             })
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
-            tvJob.text = if (bean.job.isNullOrEmpty()) "" else bean.job
+            tvJob.text = if (bean.job.isNullOrEmpty()) "" else "${bean.job} ${if(bean.nickname.isNullOrEmpty()) "" else bean.nickname}"
             if (bean.object_title.isNullOrEmpty() && bean.step_title.isNullOrEmpty()) {
                 llObjectStep.visibility = GONE
             } else {
@@ -431,6 +452,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
                     intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, bean.imageList)
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, bean!!.content)
+                    intent.putExtra(ActivityAddPost.REQUEST_TAGS,bean!!.tags)
                     startActivity(intent)
                 }
                 getString(R.string.str_delete) -> {

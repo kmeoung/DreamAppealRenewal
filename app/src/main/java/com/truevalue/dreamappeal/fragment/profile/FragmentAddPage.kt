@@ -254,7 +254,7 @@ class FragmentAddPage : BaseFragment() {
             et_contents.isFocusableInTouchMode = true
             et_contents.requestFocus()
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(tv_default, 0)
+            imm.showSoftInput(et_contents, 0)
             tv_default.visibility = GONE
         })
 

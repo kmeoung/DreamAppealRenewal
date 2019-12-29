@@ -280,7 +280,7 @@ class FragmentDreamList : BaseFragment() {
                 val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
                 val tvJob = h.getItemView<TextView>(R.id.tv_job)
                 val tvLevel = h.getItemView<TextView>(R.id.tv_level)
-                val tvachievement = h.getItemView<TextView>(R.id.tv_achievement)
+                val tvAchievement = h.getItemView<TextView>(R.id.tv_achievement)
                 val tvAction = h.getItemView<TextView>(R.id.tv_action)
                 val tvExp = h.getItemView<TextView>(R.id.tv_exp)
 
@@ -321,7 +321,7 @@ class FragmentDreamList : BaseFragment() {
                 tvValueStyle.text = bean.value_style
                 tvJob.text = bean.job
                 tvLevel.text = String.format("Lv.%02d", bean.level)
-                tvachievement.text = bean.achievement_post_count.toString() + "회"
+                tvAchievement.text = bean.achievement_post_count.toString() + " / 3"
                 tvAction.text = bean.action_post_count.toString() + "회"
                 tvExp.text = String.format("%d / %d", bean.exp, bean.max_exp)
             }

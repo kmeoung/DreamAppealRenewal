@@ -2118,6 +2118,7 @@ object DAClient {
         step_idx: Int?,
         thumbnail_image: String?,
         content: String?,
+        tags : String?,
         callback: DAHttpCallback
     ) {
 
@@ -2129,6 +2130,7 @@ object DAClient {
         if (step_idx != null) params.put("step_idx", step_idx)
         if (thumbnail_image != null) params.put("thumbnail_image", thumbnail_image)
         if (content != null) params.put("content", content)
+        if(tags != null) params.put("tags", tags)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,

@@ -34,32 +34,42 @@ class FragmentLevelChoice : BaseFragment() {
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mAdapterDetail: BaseRecyclerViewAdapter? = null
 
-    private var mDialog : ProgressDialog? = null
+    private var mDialog: ProgressDialog? = null
 
     private val TYPE_IDEA = 0
     private val TYPE_LIKE = 1
     private val TYPE_ACTION_POST = 2
 
-    private var mCategoryType = TYPE_IDEA
+    private var mCategoryType = -1
 
     private var mImages: ArrayList<File>? = null
+    private var mTags: ArrayList<String>? = null
     private var postContents: String? = null
 
     private var selectedCategoryIdx = -1
     private var selectedCategoryDetailIdx = -1
 
-    private var mPostIdx : Int = -1
+    private var mPostIdx: Int = -1
 
     companion object {
-        fun newInstance(images: ArrayList<File>?, post_contents: String): FragmentLevelChoice {
+        fun newInstance(
+            images: ArrayList<File>?,
+            tags: ArrayList<String>?,
+            post_contents: String
+        ): FragmentLevelChoice {
             val fragment = FragmentLevelChoice()
             fragment.mImages = images
+            fragment.mTags = tags
             fragment.postContents = post_contents
 
             return fragment
         }
 
-        fun newInstance(post_idx : Int,category_idx : Int,category_detail_idx : Int): FragmentLevelChoice {
+        fun newInstance(
+            post_idx: Int,
+            category_idx: Int,
+            category_detail_idx: Int
+        ): FragmentLevelChoice {
             val fragment = FragmentLevelChoice()
             fragment.mPostIdx = post_idx
             fragment.selectedCategoryIdx = category_idx
@@ -97,10 +107,10 @@ class FragmentLevelChoice : BaseFragment() {
         iv_back_black.visibility = GONE
         iv_check.visibility = VISIBLE
 
-        if(mPostIdx > -1) {
+        if (mPostIdx > -1) {
             ll_idea.visibility = GONE
             ll_like.visibility = GONE
-        }else {
+        } else {
             ll_idea.visibility = VISIBLE
             ll_like.visibility = VISIBLE
         }
@@ -118,9 +128,9 @@ class FragmentLevelChoice : BaseFragment() {
                 iv_back_blue -> (activity!!.onBackPressed())
                 iv_check -> {
                     if (iv_check.isSelected) {
-                        if(mPostIdx > -1) {
+                        if (mPostIdx > -1) {
                             updateActionPost()
-                        }else{
+                        } else {
                             addActionPost()
                         }
                     }
@@ -186,9 +196,20 @@ class FragmentLevelChoice : BaseFragment() {
                 // 실천인증 가져오기
                 getCategory()
 
-                if(mPostIdx > -1){
+                if (mPostIdx > -1) {
                     getCategoryDetail(selectedCategoryIdx)
                 }
+            }
+            else -> {
+                rv_category.visibility = GONE
+                rv_category_detail.visibility = GONE
+                iv_check_idea.isSelected = false
+                iv_check_like.isSelected = false
+                iv_check_action_post.isSelected = false
+                tv_category.visibility = GONE
+                tv_category_detail.visibility = GONE
+                if (mAdapter != null) mAdapter!!.notifyDataSetChanged()
+                if (mAdapterDetail != null) mAdapterDetail!!.notifyDataSetChanged()
             }
         }
     }
@@ -212,6 +233,7 @@ class FragmentLevelChoice : BaseFragment() {
                 return selectedCategoryIdx > 0 &&
                         selectedCategoryDetailIdx > -1
             }
+            else->false
         }
         return false
     }
@@ -242,8 +264,9 @@ class FragmentLevelChoice : BaseFragment() {
                             )
                             mAdapter!!.add(bean)
                         }
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -282,8 +305,9 @@ class FragmentLevelChoice : BaseFragment() {
                             )
                             mAdapterDetail!!.add(bean)
                         }
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -294,10 +318,21 @@ class FragmentLevelChoice : BaseFragment() {
      * Action Post 추가
      */
     private fun addActionPost() {
+        if(mCategoryType == -1) return
+
         if (mDialog != null && !mDialog!!.isShowing) mDialog!!.show()
 
         val contents = postContents
-        val tags = ""
+        var tags = ""
+
+        if (mTags != null || mTags!!.size > 0) {
+            for (i in 0 until mTags!!.size) {
+                if (i == 0) tags = mTags!![i]
+                else tags = "$tags,${mTags!![i]}"
+            }
+        }
+
+
         val post_type = when (mCategoryType) {
             TYPE_ACTION_POST -> DAClient.POST_TYPE_ACTION
             TYPE_IDEA -> DAClient.POST_TYPE_IDEA
@@ -335,8 +370,8 @@ class FragmentLevelChoice : BaseFragment() {
                             val result = json.getJSONObject("result")
                             val insertId = result.getInt("insertId")
                             uploadImage(insertId)
-                        }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
-                    }else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+                        } else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
+                    } else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                 }
             })
     }
@@ -350,6 +385,7 @@ class FragmentLevelChoice : BaseFragment() {
             mPostIdx,
             selectedCategoryIdx,
             selectedCategoryDetailIdx,
+            null,
             null,
             null,
             object : DAHttpCallback {
@@ -388,7 +424,7 @@ class FragmentLevelChoice : BaseFragment() {
                     IOS3ImageUploaderListener {
                     override fun onMutiStateCompleted(adressList: ArrayList<String>) {
                         super.onMutiStateCompleted(adressList)
-                        if(!isCalled){
+                        if (!isCalled) {
                             updateProfileImage(idx, type, adressList)
                             isCalled = true
                         }
