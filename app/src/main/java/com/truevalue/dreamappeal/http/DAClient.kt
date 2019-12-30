@@ -1643,7 +1643,6 @@ object DAClient {
      */
     fun updateProfileComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         content: String,
         callback: DAHttpCallback
     ) {
@@ -1654,7 +1653,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
         params.put("content", content)
 
         BaseOkhttpClient.request(
@@ -1668,11 +1666,10 @@ object DAClient {
 
     /**
      * DELETE
-     * 내 꿈 소개 댓글 수정
+     * 내 꿈 소개 댓글 삭제
      */
     fun deleteProfileComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         callback: DAHttpCallback
     ) {
 
@@ -1682,7 +1679,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
 
         BaseOkhttpClient.request(
             HttpType.DELETE,
@@ -1756,7 +1752,6 @@ object DAClient {
      */
     fun updateBlueprintComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         content: String,
         callback: DAHttpCallback
     ) {
@@ -1767,7 +1762,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
         params.put("content", content)
 
         BaseOkhttpClient.request(
@@ -1781,11 +1775,10 @@ object DAClient {
 
     /**
      * DELETE
-     * 발전계획 댓글 수정
+     * 발전계획 댓글 삭제
      */
     fun deleteBlueprintComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         callback: DAHttpCallback
     ) {
 
@@ -1795,7 +1788,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
 
         BaseOkhttpClient.request(
             HttpType.DELETE,
@@ -1870,7 +1862,6 @@ object DAClient {
      */
     fun updateAchievementPostComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         content: String,
         callback: DAHttpCallback
     ) {
@@ -1881,7 +1872,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
         params.put("content", content)
 
         BaseOkhttpClient.request(
@@ -1895,11 +1885,10 @@ object DAClient {
 
     /**
      * DELETE
-     * 실현성과 댓글 수정
+     * 실현성과 댓글 삭제
      */
     fun deleteAchievementPostComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         callback: DAHttpCallback
     ) {
 
@@ -1909,7 +1898,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
 
         BaseOkhttpClient.request(
             HttpType.DELETE,
@@ -1983,7 +1971,6 @@ object DAClient {
      */
     fun updateActionPostComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         content: String,
         callback: DAHttpCallback
     ) {
@@ -1994,7 +1981,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
         params.put("content", content)
 
         BaseOkhttpClient.request(
@@ -2008,11 +1994,10 @@ object DAClient {
 
     /**
      * DELETE
-     * 실현성과 댓글 수정
+     * 실현성과 댓글 삭제
      */
     fun deleteActionPostComment(
         comment_idx: Int,
-        my_profile_idx: Int,
         callback: DAHttpCallback
     ) {
 
@@ -2022,7 +2007,6 @@ object DAClient {
         )
 
         val params = DAHttpParams()
-        params.put("my_profile_idx", my_profile_idx)
 
         BaseOkhttpClient.request(
             HttpType.DELETE,

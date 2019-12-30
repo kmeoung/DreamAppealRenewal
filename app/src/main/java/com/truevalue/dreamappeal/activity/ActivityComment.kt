@@ -396,9 +396,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 내 꿈 소개 댓글 수정
      */
     private fun updatePresentComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
-        DAClient.updateProfileComment(comment_idx, my_profile_idx, contents, updateCommentListener)
+        DAClient.updateProfileComment(comment_idx, contents, updateCommentListener)
     }
 
     /**
@@ -406,11 +405,9 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 발전계획 댓글 수정
      */
     private fun updateBlueprintComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.updateBlueprintComment(
             comment_idx,
-            my_profile_idx,
             contents,
             updateCommentListener
         )
@@ -421,11 +418,9 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실현성과 댓글 수정
      */
     private fun updateAchievementPostComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.updateAchievementPostComment(
             comment_idx,
-            my_profile_idx,
             contents,
             updateCommentListener
         )
@@ -436,11 +431,9 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실천인증 댓글 수정
      */
     private fun updateActionPostComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.updateActionPostComment(
             comment_idx,
-            my_profile_idx,
             contents,
             updateCommentListener
         )
@@ -463,8 +456,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 내 꿈 소개 댓글 삭제
      */
     private fun deletePresentComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteProfileComment(comment_idx, my_profile_idx, updateCommentListener)
+        DAClient.deleteProfileComment(comment_idx, updateCommentListener)
     }
 
     /**
@@ -472,8 +464,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 발전계획 댓글 삭제
      */
     private fun deleteBlueprintComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteBlueprintComment(comment_idx, my_profile_idx, updateCommentListener)
+        DAClient.deleteBlueprintComment(comment_idx, updateCommentListener)
     }
 
     /**
@@ -481,8 +472,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실현성과 댓글 삭제
      */
     private fun deleteAchievementPostComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteAchievementPostComment(comment_idx, my_profile_idx, updateCommentListener)
+        DAClient.deleteAchievementPostComment(comment_idx, updateCommentListener)
     }
 
     /**
@@ -490,8 +480,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실천인증 댓글 삭제
      */
     private fun deleteActionPostComment(comment_idx: Int) {
-        val my_profile_idx = Comm_Prefs.getUserProfileIndex()
-        DAClient.deleteActionPostComment(comment_idx, my_profile_idx, updateCommentListener)
+        DAClient.deleteActionPostComment(comment_idx, updateCommentListener)
     }
 
 
@@ -751,6 +740,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         ll_writer.visibility = VISIBLE
         tv_writer.text = bean.name
         et_comment.setText(bean.content)
+        et_comment.setSelection(et_comment.length())
         mIsEdit = true
         mParentIdx = bean.idx
     }

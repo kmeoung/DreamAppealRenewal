@@ -1,12 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -23,22 +19,21 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityAddPost
-import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.*
+import com.truevalue.dreamappeal.bean.BeanActionPost
+import com.truevalue.dreamappeal.bean.BeanActionPostHeader
+import com.truevalue.dreamappeal.bean.BeanBlueprintObject
+import com.truevalue.dreamappeal.bean.BeanObjectStep
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
-import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.bottom_comment_view.*
 import kotlinx.android.synthetic.main.fragment_object_step.*
 import kotlinx.android.synthetic.main.layout_object_step_header.*
 import okhttp3.Call
@@ -86,7 +81,6 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
      * View 초기화
      */
     private fun initView() {
-        ll_bottom_comment.visibility = GONE
 
         tv_title.text = getString(R.string.str_object_step)
 
@@ -97,35 +91,6 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
             iv_object_step_more.visibility = GONE
             tv_detail_step.visibility = GONE
         }
-
-        // 댓글 설정
-        et_comment.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                charSequence: CharSequence,
-                i: Int,
-                i1: Int,
-                i2: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                charSequence: CharSequence,
-                i: Int,
-                i1: Int,
-                i2: Int
-            ) {
-                if (!et_comment.text.toString().isNullOrEmpty()) {
-                    btn_commit_comment.visibility = View.VISIBLE
-                    rl_comment.visibility = View.GONE
-                } else {
-                    btn_commit_comment.visibility = View.GONE
-                    rl_comment.visibility = View.VISIBLE
-                }
-                btn_commit_comment.isSelected = !et_comment.text.toString().isNullOrEmpty()
-            }
-
-            override fun afterTextChanged(editable: Editable) {}
-        })
 
         Utils.setSwipeRefreshLayout(srl_refresh,this)
     }
@@ -149,43 +114,13 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                         )
                     }
                 }
-                rl_comment -> {
-                    val intent = Intent(context!!, ActivityComment::class.java)
-                    intent.putExtra(
-                        ActivityComment.EXTRA_VIEW_TYPE,
-                        ActivityComment.EXTRA_TYPE_BLUEPRINT
-                    )
-                    intent.putExtra(
-                        ActivityComment.EXTRA_INDEX,
-                        mViewUserIdx
-                    )
-                    startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
-                }
-                btn_commit_comment -> {
-                    if (btn_commit_comment.isSelected) addBlueprintComment()
-                }
             }
         }
 
         iv_back_black.setOnClickListener(listener)
         iv_object_step_more.setOnClickListener(listener)
         tv_detail_step.setOnClickListener(listener)
-        rl_comment.setOnClickListener(listener)
-        btn_commit_comment.setOnClickListener(listener)
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
-                (activity as ActivityMain).replaceFragment(
-                    FragmentProfile.newInstance(view_user_idx),
-                    true
-                )
-            }
-        }
     }
 
     /**
@@ -350,33 +285,6 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                         } else {
                             ll_complete.visibility = VISIBLE
                         }
-                        try {
-                            val commentCount = json.getInt("comment_count")
-
-                            if (commentCount < 1000) {
-                                tv_comment.text = commentCount.toString()
-                            } else {
-                                val k = commentCount / 1000
-                                if (k < 1000) {
-                                    tv_comment.text = "${k}K"
-                                } else {
-                                    val m = k / 1000
-                                    tv_comment.text = "${m}M"
-                                }
-                            }
-
-                            val image = json.getString("user_image")
-                            if (TextUtils.isEmpty(image))
-                                Glide.with(context!!).load(R.drawable.drawer_user).apply(
-                                    RequestOptions().circleCrop()
-                                ).into(iv_profile)
-                            else
-                                Glide.with(context!!).load(image).placeholder(R.drawable.drawer_user).apply(
-                                    RequestOptions().circleCrop()
-                                ).into(iv_profile)
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
 
                         try {
                             val noneStepActionPost = json.getJSONArray("none_step_action_post")
@@ -423,38 +331,6 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                 }
             }
         })
-    }
-
-    /**
-     * Http
-     * 발전계획 댓글 추가
-     */
-    private fun addBlueprintComment() {
-        val dst_profile_idx = mViewUserIdx
-        val writer_idx = Comm_Prefs.getUserProfileIndex()
-        val contents = et_comment.text.toString()
-        DAClient.addBlueprintComment(
-            dst_profile_idx,
-            writer_idx,
-            0,
-            contents,
-            object : DAHttpCallback {
-                override fun onResponse(
-                    call: Call,
-                    serverCode: Int,
-                    body: String,
-                    code: String,
-                    message: String
-                ) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                        .show()
-                    if (code == DAClient.SUCCESS) {
-                        et_comment.setText("")
-                    }
-                }
-            }
-
-        )
     }
 
     /**

@@ -46,12 +46,4 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!--댓글 창-->
-    <include
-            layout="@layout/bottom_comment_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ll_bottom_comment"/>
-    <!--댓글 창-->
-
 </LinearLayout>

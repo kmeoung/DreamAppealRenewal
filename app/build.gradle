@@ -3,17 +3,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
-
-apply plugin: 'io.fabric'
-
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.truevalue.dreamappeal"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 17
-        versionName "1.0.2.0"
+        versionCode 18
+        versionName "1.0.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,8 +39,8 @@ android {
 
             debug{
                 applicationIdSuffix ".renewaldev"
-                manifestPlaceholders = [appName: "RenewalDevAppeal"]
-                //manifestPlaceholders = [appName: "@string/app_name"]
+                manifestPlaceholders = [appName: "DevAppeal"]
+//                manifestPlaceholders = [appName: "@string/app_name"]
             }
 
             signingConfig signingConfigs.release
@@ -75,9 +72,10 @@ dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.amazonaws:aws-android-sdk-s3:2.7.+'
     implementation 'com.amazonaws:aws-android-sdk-cognito:2.7.+'
-    compile('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
-        transitive = true
-    }
     implementation 'com.android.support:design:28.0.0'
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
