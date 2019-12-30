@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.*
@@ -26,6 +29,7 @@ import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
@@ -105,8 +109,43 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         val listener = View.OnClickListener {
             when (it) {
                 iv_search -> {
-                    val intent = Intent(context!!, ActivitySearch::class.java)
-                    startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
+                    if(Comm_Param.REAL) {
+                        val intent = Intent(context!!, ActivitySearch::class.java)
+                        startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
+                    }else{
+                        FirebaseInstanceId.getInstance().instanceId
+                            .addOnCompleteListener(OnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    Log.w("TEST", "getInstanceId failed", task.exception)
+                                    return@OnCompleteListener
+                                }
+
+                                // Get new Instance ID token
+                                val token = task.result?.token
+                                Comm_Prefs.setPushToken(token)
+                                // Log and toast
+                                //val msg = getString(R.string.msg_token_fmt, token)
+                                Log.d("token is this", token)
+                                //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                                DAClient.sendToken(token, object : DAHttpCallback {
+                                    override fun onResponse(
+                                        call: Call,
+                                        serverCode: Int,
+                                        body: String,
+                                        code: String,
+                                        message: String
+                                    ) {
+                                        Log.d("token is this", body)
+
+                                        Toast.makeText(
+                                            context!!.applicationContext,
+                                            message,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                })
+                            })
+                    }
                 }
                 ll_timeline -> {
                     rv_timeline.smoothScrollToPosition(0)
@@ -558,7 +597,44 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * On Refresh
      */
     override fun onRefresh() {
-        isLast = false
-        getTimeLineData(false, -1, true)
+        if(!Comm_Param.REAL){
+            srl_refresh.isRefreshing = false
+
+            if(Comm_Prefs.getPushToken() == null) {
+                FirebaseInstanceId.getInstance().instanceId
+                    .addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w("TEST", "getInstanceId failed", task.exception)
+                            return@OnCompleteListener
+                        }
+
+                        // Get new Instance ID token
+                        val token = task.result?.token
+                        Comm_Prefs.setPushToken(token)
+                        // Log and toast
+                        //val msg = getString(R.string.msg_token_fmt, token)
+                        Log.d("token is this", token)
+                        //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        DAClient.sendToken(token, object : DAHttpCallback {
+                            override fun onResponse(
+                                call: Call,
+                                serverCode: Int,
+                                body: String,
+                                code: String,
+                                message: String
+                            ) {
+                                Toast.makeText(
+                                    context!!.applicationContext,
+                                    message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    })
+            }
+        }else {
+            isLast = false
+            getTimeLineData(false, -1, true)
+        }
     }
 }

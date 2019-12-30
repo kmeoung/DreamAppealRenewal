@@ -1,9 +1,11 @@
 package com.truevalue.dreamappeal.http
 
+import android.util.Log
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -46,6 +48,37 @@ object DAClient {
     val POST_TYPE_ACTION = 0
     val POST_TYPE_LIFE = 1
     val POST_TYPE_IDEA = 2
+
+    fun sendToken(push_token : String?,
+                  callback: DAHttpCallback?){
+        var nCallback : DAHttpCallback
+        if(callback == null)
+            nCallback = object : DAHttpCallback{
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    Log.d("Token Test ",body)
+                }
+            }
+        else
+            nCallback = callback
+
+        val params = DAHttpParams()
+        if(push_token.isNullOrEmpty()) return
+        params.put("push_token",push_token!!)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            "${Comm_Param.URL_API}/notification",
+            getHttpHeader(),
+            params,
+            nCallback
+        )
+    }
 
     /**
      * PATCH

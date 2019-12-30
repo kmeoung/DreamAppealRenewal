@@ -33,6 +33,17 @@ object Comm_Prefs {
     }
 
     /**
+     * Push Token
+     */
+    fun setPushToken(token : String?){
+        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_PUSH_TOKEN,token).commit()
+    }
+
+    fun getPushToken() : String?{
+        return prefs!!.getString(Comm_Prefs_Param.PREFS_PUSH_TOKEN,null)
+    }
+
+    /**
      * Profile Index
      */
     fun setUserProfileIndex(idx : Int){
