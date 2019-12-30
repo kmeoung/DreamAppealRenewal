@@ -186,7 +186,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      * 주요 성과 페이지 조회
      */
     private fun getAchievementPostMain() {
-        // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
+        // TW : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다.
         val profile_idx = Comm_Prefs.getUserProfileIndex()
         DAClient.achievementPostMain(profile_idx,
             object : DAHttpCallback {
@@ -292,7 +292,6 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
      */
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
         if (mAdapter != null) {
-            // todo : Data Class 파일
             var bean = mAdapter!!.get(i) as BeanAchievementPost
             val tvTitle = h.getItemView<TextView>(R.id.tv_title)
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
@@ -461,7 +460,6 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
 
     /**
      * View Page 자동 스크롤 Handler
-     * todo : 현재 getCurrentItem null 오류가 있습니다.
      */
     private val handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message?) {
@@ -532,7 +530,7 @@ class FragmentPerformance : BaseFragment(), IORecyclerViewListener,
                     tvBestPostachievement.text = bean.title
 
                     view.setOnClickListener(View.OnClickListener {
-                        // todo : 상세 이동
+                        // TW : 상세 이동
                         /*(activity as ActivityMain).replaceFragment(
                             FragmentBestPost.newInstance(bean.idx,position + 1,mV),
                             addToBack = true,

@@ -158,7 +158,7 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                     intent.putExtra(
                         ActivityComment.EXTRA_INDEX,
                         mViewUserIdx
-                    ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
+                    )
                     startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 btn_commit_comment -> {
@@ -430,7 +430,7 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
      * 발전계획 댓글 추가
      */
     private fun addBlueprintComment() {
-        val dst_profile_idx = mViewUserIdx // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mViewUserIdx
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addBlueprintComment(
@@ -450,7 +450,6 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                         .show()
                     if (code == DAClient.SUCCESS) {
                         et_comment.setText("")
-                        // todo : 여기서 혹시 더 필요한게 있으면 추가바람
                     }
                 }
             }

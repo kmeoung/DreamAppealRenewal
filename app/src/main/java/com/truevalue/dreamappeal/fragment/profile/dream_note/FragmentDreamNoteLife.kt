@@ -81,7 +81,6 @@ class FragmentDreamNoteLife : BaseFragment() {
      * 일상 겸험 가져오기
      */
     private fun getDreamNoteLife() {
-        // todo : 현재 보고있는 프로필의 idx 를 넣어야 합니다
         val cur_profile_idx = mViewUserIdx
 
         DAClient.getDreamNoteLife(cur_profile_idx,
@@ -153,7 +152,6 @@ class FragmentDreamNoteLife : BaseFragment() {
 
                 tvTitle.text = bean.content
                 Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).centerCrop().into(ivThumbnail)
-                // todo : Date 형식 맞춰야 합니다
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val sdf2 = SimpleDateFormat("yyyy. MM. dd")
 

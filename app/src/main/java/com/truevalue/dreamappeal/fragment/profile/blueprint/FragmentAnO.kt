@@ -240,7 +240,7 @@ class FragmentAnO : BaseFragment() {
      * 갖출 능력 조회
      */
     private fun getAbilities() {
-        val profile_idx: Int = mViewUserIdx // todo : 여기에는 현재 사용중인 프로필의 idx를 넣어야 합니다
+        val profile_idx: Int = mViewUserIdx
 
         DAClient.getAbilities(profile_idx, object : DAHttpCallback {
             override fun onResponse(
@@ -280,7 +280,7 @@ class FragmentAnO : BaseFragment() {
      */
     private fun getOpportunities() {
         val profile_idx: Int =
-            mViewUserIdx // todo : 여기에는 현재 사용중인 프로필의 idx를 넣어야 합니다
+            mViewUserIdx
 
         DAClient.getOpportunity(profile_idx, object : DAHttpCallback {
             override fun onResponse(
@@ -330,7 +330,7 @@ class FragmentAnO : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        // todo : 서버 호출을 굳이 해야하는지 확인
+                        //  서버 호출을 굳이 해야하는지 확인
                         getAbilities()
                     }
                 }
@@ -355,7 +355,7 @@ class FragmentAnO : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        // todo : 서버 호출을 굳이 해야하는지 확인
+                        //  서버 호출을 굳이 해야하는지 확인
                         getOpportunities()
                     }
                 }

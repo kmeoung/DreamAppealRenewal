@@ -128,7 +128,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
      * 주요 성과 페이지 조회
      */
     private fun getAchievementPostMain() {
-        // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
+        // TW : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다.
         val profile_idx = mViewUserIdx
         DAClient.achievementPostMain(profile_idx,
             object : DAHttpCallback {

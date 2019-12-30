@@ -290,7 +290,6 @@ class FragmentDreamList : BaseFragment() {
                     .circleCrop()
                     .into(ivProfile)
 
-                // todo : 상대방 프로필에 들어갈 경우는 다르게 설정해줘야 합니다
                 if (bean.idx == mViewUserIdx) {
                     ctlDreamListItem.background =
                         resources.getDrawable(R.drawable.bg_empty_rectangle_blue_2)

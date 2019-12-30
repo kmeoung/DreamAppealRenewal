@@ -154,7 +154,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     intent.putExtra(
                         ActivityComment.EXTRA_INDEX,
                         mViewUserIdx
-                    ) // todo : 현재 보고있는 유저의 Index를 넣어야 합니다
+                    )
                     startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 btn_commit_comment -> {
@@ -202,7 +202,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * 발전계획 댓글 추가
      */
     private fun addBlueprintComment() {
-        val dst_profile_idx = mViewUserIdx // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mViewUserIdx //  현재 보고있는 profile을 넣어야 함
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addBlueprintComment(
@@ -222,7 +222,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         .show()
                     if (code == DAClient.SUCCESS) {
                         et_comment.setText("")
-                        // todo : 여기서 혹시 더 필요한게 있으면 추가바람
+                        // TW : 여기서 혹시 더 필요한게 있으면 추가바람
                         val intent = Intent(context!!, ActivityComment::class.java)
                         intent.putExtra(
                             ActivityComment.EXTRA_VIEW_TYPE,
@@ -352,7 +352,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * 발전계획 페이지 조회
      */
     private fun getBlueprint() {
-        // todo : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
+        // TW : 현재 조회하고 있는 Profile User Index 를 사용해야 합니다. +
         val profile_idx = mViewUserIdx
         DAClient.getBlueprint(profile_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {

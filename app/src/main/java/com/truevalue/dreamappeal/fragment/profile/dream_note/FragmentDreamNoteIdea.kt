@@ -79,7 +79,6 @@ class FragmentDreamNoteIdea : BaseFragment() {
      * 일상 영감갤러리 가져오기
      */
     private fun getDreamNoteIdea() {
-        // todo : 현재 보고있는 프로필의 idx 를 넣어야 합니다
         val cur_profile_idx = mViewUserIdx
 
         DAClient.getDreamNoteIdea(cur_profile_idx,

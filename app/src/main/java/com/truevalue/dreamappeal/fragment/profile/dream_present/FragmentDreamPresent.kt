@@ -390,7 +390,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_comment_detail -> {
                     if (context != null) {
                         val intent = Intent(context!!, ActivityComment::class.java)
-                        // todo : 현재 사용자가 보고있는 페이지의 idx를 보내야 합니다.
                         intent.putExtra(
                             ActivityComment.EXTRA_INDEX,
                             mViewUserIdx
@@ -409,7 +408,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 ll_comment -> {
                     if (context != null) {
                         val intent = Intent(context!!, ActivityComment::class.java)
-                        // todo : 현재 사용자가 보고있는 페이지의 idx를 보내야 합니다.
+
                         intent.putExtra(
                             ActivityComment.EXTRA_INDEX,
                             mViewUserIdx
@@ -510,7 +509,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * 프로필 좋아요
      */
     private fun profileLike() {
-        // todo : 현재 조회중인 프로필 idx를 넣어야 합니다
         val profile_idx = mViewUserIdx
         DAClient.likeDreamPresent(profile_idx, object : DAHttpCallback {
             override fun onResponse(
@@ -540,7 +538,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * 팔로우 / 언팔로우
      */
     private fun follow() {
-        // todo : 보고있는 profile index 를 여기다가 넣어야 합니다
         val profile_idx = mViewUserIdx
         DAClient.follow(profile_idx, object : DAHttpCallback {
             override fun onResponse(
@@ -554,7 +551,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        // todo : 여기서 팔로우 설정
                         val json = JSONObject(body)
                         val status = json.getInt("status")
                         mBean!!.follow_status = status
