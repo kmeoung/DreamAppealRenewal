@@ -394,9 +394,10 @@ class FagmentActionPost : BaseFragment() {
                         val value_style = profile.getString("value_style")
                         val job = profile.getString("job")
                         val profile_image = profile.getString("profile_image")
+                        val nickname = profile.getString("nickname")
 
                         tv_value_style.text = value_style
-                        tv_job.text = job
+                        tv_job.text = "$job $nickname"
                         Glide.with(context!!)
                             .load(profile_image)
                             .placeholder(R.drawable.drawer_user)

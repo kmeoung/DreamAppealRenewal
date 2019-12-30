@@ -444,7 +444,7 @@ class FragmentAddPage : BaseFragment() {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        (activity as ActivityMain).onBackPressed(false)
+                        (activity as ActivityMain).onBackPressed(true)
                     }
                 }
             }

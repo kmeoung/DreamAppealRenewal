@@ -68,6 +68,8 @@ class FragmentDreamNoteIdea : BaseFragment() {
      */
     private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(recyclerViewListener)
+        val itemDecorate = BaseGridItemDecorate(context!!,1.0f,3)
+        rv_recycle.addItemDecoration(itemDecorate)
         rv_recycle.adapter = mAdapter
         rv_recycle.layoutManager = GridLayoutManager(context!!,3)
     }

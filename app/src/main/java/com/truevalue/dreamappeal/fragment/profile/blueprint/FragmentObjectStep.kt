@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
@@ -35,6 +36,7 @@ import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_comment_view.*
 import kotlinx.android.synthetic.main.fragment_object_step.*
@@ -42,10 +44,11 @@ import kotlinx.android.synthetic.main.layout_object_step_header.*
 import okhttp3.Call
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentObjectStep : BaseFragment() {
+class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mBean: BeanBlueprintObject? = null
     private var mAdapter: BaseRecyclerViewAdapter? = null
     private var mObjectBean: BeanObjectStep? = null
@@ -123,6 +126,8 @@ class FragmentObjectStep : BaseFragment() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
+
+        Utils.setSwipeRefreshLayout(srl_refresh,this)
     }
 
     /**
@@ -308,6 +313,11 @@ class FragmentObjectStep : BaseFragment() {
      */
     private fun getObjects(object_idx: Int) {
         DAClient.getObjects(object_idx, object : DAHttpCallback {
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                srl_refresh.isRefreshing = false
+            }
+
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -315,6 +325,7 @@ class FragmentObjectStep : BaseFragment() {
                 code: String,
                 message: String
             ) {
+                srl_refresh.isRefreshing = false
                 if (context != null) {
 
                     if (code == DAClient.SUCCESS) {
@@ -506,7 +517,7 @@ class FragmentObjectStep : BaseFragment() {
                 val bean = mAdapter!!.get(i) as BeanActionPost
 
                 val ivImage = h.getItemView<ImageView>(R.id.iv_image)
-
+                Utils.setImageItemViewSquare(context!!,ivImage)
                 Glide.with(context!!)
                     .load(bean.thumbnail_image)
                     .placeholder(R.drawable.ic_image_white)
@@ -592,5 +603,11 @@ class FragmentObjectStep : BaseFragment() {
             ) return TYPE_HEADER
             return TYPE_ITEM
         }
+    }
+
+    override fun onRefresh() {
+        if(mBean != null) {
+            getObjects(mBean!!.idx)
+        }else srl_refresh.isRefreshing = false
     }
 }

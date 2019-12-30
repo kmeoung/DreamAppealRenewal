@@ -8,7 +8,7 @@ import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.Spinner
 import android.widget.TextView
@@ -398,7 +398,7 @@ object Utils {
             .build()
 
         val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
-        val KEY = "public/images/$other"
+        val KEY = if(Comm_Param.REAL) "public/images/$other" else "public/devImages/$other"
 
         val date = Date()
         val pos = file.name.lastIndexOf(".")
@@ -447,7 +447,7 @@ object Utils {
             .build()
 
         val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
-        val KEY = "public/images/$other"
+        val KEY = if(Comm_Param.REAL) "public/images/$other" else "public/devImages/$other"
         var completeFile = 1
         var addressList = ArrayList<String>()
 
@@ -502,6 +502,39 @@ object Utils {
             params.height = swidth
             view.layoutParams = params
         }
+    }
+
+    /**
+     * 이미지 아이템 뷰 정사각형 처리
+     */
+    fun setImageItemViewSquare(context: Context?, view: View) {
+        if (context != null) {
+            val params = view.layoutParams
+            val display = context!!.resources.displayMetrics
+            val swidth = display.widthPixels
+            params.width = swidth / 3 + swidth % 3
+            params.height = swidth / 3 + swidth % 3
+            view.layoutParams = params
+        }
+    }
+
+    /**
+     * replace Comment Count text
+     */
+    fun getCommentView(count : Int):String{
+        var strCommentCount = ""
+        if (count < 1000) {
+            strCommentCount = count.toString()
+        } else {
+            val k = count / 1000
+            if (k < 1000) {
+                strCommentCount = "${k}K"
+            } else {
+                val m = k / 1000
+                strCommentCount = "${m}M"
+            }
+        }
+        return strCommentCount
     }
 
     /**
@@ -565,6 +598,21 @@ object Utils {
                 view.movementMethod = LinkMovementMethod.getInstance()
             }
         }
+    }
+
+    /**
+     * DpToPixel 코드
+     *
+     * @param context
+     * @param DP
+     * @return
+     */
+    fun DpToPixel(context: Context, DP: Float): Int {
+        val px = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, DP, context.resources
+                .displayMetrics
+        )
+        return px.toInt()
     }
 
 

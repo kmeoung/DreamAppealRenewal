@@ -180,6 +180,8 @@ class FragmentDreamPointUsage : BaseFragment() {
                         val json = JSONObject(body)
                         mAdapter!!.clear()
                         try {
+                            val cur_point = json.getInt("cur_point")
+                            tv_point.text = String.format("%,d",cur_point)
                             val missionPointList = json.getJSONArray("get_point_list")
                             for (i in 0 until missionPointList.length()) {
                                 val bean = Gson().fromJson<BeanDreamPointGetUsage>(

@@ -257,6 +257,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llShare = h.getItemView<LinearLayout>(R.id.ll_share)
             val tvTime = h.getItemView<TextView>(R.id.tv_time)
             val llCheeringDetail = h.getItemView<LinearLayout>(R.id.ll_cheering_detail)
+            val llCommentDetail = h.getItemView<LinearLayout>(R.id.ll_comment_detail)
             val tvTag = h.getItemView<TextView>(R.id.tv_tag)
 
             val pagerAdapter = BasePagerAdapter<String>(context!!)
@@ -393,15 +394,14 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             tvCheering.text = "${bean.like_count}개"
             tvComment.text = "${bean.comment_count}개"
 
-            // todo : 여기 bean.post_type 에 맞게 해야함 서버관련 문제 때문에 상의 후 진행
-            ivComment.setOnClickListener(View.OnClickListener {
+            llCommentDetail.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context!!, ActivityComment::class.java)
                 intent.putExtra(
                     ActivityComment.EXTRA_VIEW_TYPE,
                     ActivityComment.EXTRA_TYPE_ACTION_POST
                 )
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
-                intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, " ")
+                intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, "OFF")
                 startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
             })
             llComment.setOnClickListener(View.OnClickListener {

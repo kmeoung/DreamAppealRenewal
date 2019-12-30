@@ -304,17 +304,8 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun bindData() {
         if (mBean != null) {
             val commentCount = mBean!!.comment_count
-            if (commentCount < 1000) {
-                tv_comment.text = commentCount.toString()
-            } else {
-                val k = commentCount / 1000
-                if (k < 1000) {
-                    tv_comment.text = "${k}K"
-                } else {
-                    val m = k / 1000
-                    tv_comment.text = "${m}M"
-                }
-            }
+
+            tv_comment.text = Utils.getCommentView(commentCount)
             val image = mBean!!.user_image
 
             if (TextUtils.isEmpty(image))
