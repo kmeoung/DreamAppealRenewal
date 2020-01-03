@@ -529,7 +529,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             }
         }
         if (isScroll && mAdapter != null && mAdapter!!.size() > 0)
-            rv_comments.scrollToPosition(mAdapter!!.itemCount - 1)
+            rv_comments.scrollToPosition(mAdapter!!.size())
     }
 
     /**

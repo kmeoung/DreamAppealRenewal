@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -108,6 +109,10 @@ class FragmentAddActionPost : BaseFragment() {
                     if(mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString())
                     et_tag.setText("")
                     rv_tag.visibility = VISIBLE
+                    sv_add_post.post(Runnable {
+                        sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
+                    })
+                    rv_tag.smoothScrollToPosition(mTagAdapter!!.size())
                 }
             }else
                 false

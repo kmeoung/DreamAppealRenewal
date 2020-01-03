@@ -218,4 +218,9 @@ class FragmentMeritAndMotive : BaseFragment() {
                 }
             })
     }
+
+    override fun onStop() {
+        super.onStop()
+        Utils.downKeyBoard(activity!!)
+    }
 }

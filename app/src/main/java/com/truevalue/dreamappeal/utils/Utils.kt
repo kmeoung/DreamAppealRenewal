@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -10,6 +11,8 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -285,7 +288,7 @@ object Utils {
 
             if (!TextUtils.isEmpty(absolutePathOfImage)) {
 
-                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage, false,-1)
+                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage, false, -1)
                 imageInfoList.add(info)
             }
         }
@@ -298,7 +301,7 @@ object Utils {
      */
     fun getTimerTime(endDate: String?): String {
 
-        if(endDate.isNullOrEmpty()) return ""
+        if (endDate.isNullOrEmpty()) return ""
 
         var strDate = ""
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -306,18 +309,18 @@ object Utils {
         val curDate = Date()
 
         var time: Long = endDate.time - curDate.time
-        val day: Int = (time / (24 * 60 * 60 * 1000)).toInt()
+        val day: Long = (time / (24 * 60 * 60 * 1000))
         time -= day * (24 * 60 * 60 * 1000)
-        val hour: Int = (time / (60 * 60 * 1000)).toInt()
+        val hour: Long = (time / (60 * 60 * 1000))
         time -= hour * (60 * 60 * 1000)
-        val min: Int = (time / (60 * 1000)).toInt()
+        val min: Long = (time / (60 * 1000))
         time -= min * (60 * 1000)
-        val sec: Int = (time / 1000).toInt()
+        val sec: Long = (time / 1000)
 
         strDate = if (day > 0) {
-            String.format("%d일 %d시간 %d분", day, hour, min)
+            "${day}일 ${hour}시간 ${min}분"
         } else {
-            String.format("%d시간 %d분 %d초", hour, min, sec)
+            "${hour}시간 ${min}분 ${sec}초"
         }
         return strDate
     }
@@ -398,7 +401,7 @@ object Utils {
             .build()
 
         val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
-        val KEY = if(Comm_Param.REAL) "public/images/$other" else "public/devImages/$other"
+        val KEY = if (Comm_Param.REAL) "public/images/$other" else "public/devImages/$other"
 
         val date = Date()
         val pos = file.name.lastIndexOf(".")
@@ -447,7 +450,7 @@ object Utils {
             .build()
 
         val other = if (subBucket.isNullOrEmpty()) "" else "$subBucket/"
-        val KEY = if(Comm_Param.REAL) "public/images/$other" else "public/devImages/$other"
+        val KEY = if (Comm_Param.REAL) "public/images/$other" else "public/devImages/$other"
         var completeFile = 1
         var addressList = ArrayList<String>()
 
@@ -521,7 +524,7 @@ object Utils {
     /**
      * replace Comment Count text
      */
-    fun getCommentView(count : Int):String{
+    fun getCommentView(count: Int): String {
         var strCommentCount = ""
         if (count < 1000) {
             strCommentCount = count.toString()
@@ -615,5 +618,18 @@ object Utils {
         return px.toInt()
     }
 
+    /**
+     * Keyboard 내리기
+     * Activity 에서 키보드 내리기
+     */
+    fun downKeyBoard(activity: Activity) {
+//        val inputMethodManager =
+//            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
+
+        val imm =
+            activity.applicationContext.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
+    }
 
 }

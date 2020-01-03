@@ -20,6 +20,7 @@ import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_add_page.*
 import okhttp3.Call
@@ -531,5 +532,8 @@ class FragmentAddPage : BaseFragment() {
         })
     }
 
-
+    override fun onStop() {
+        super.onStop()
+        Utils.downKeyBoard(activity!!)
+    }
 }

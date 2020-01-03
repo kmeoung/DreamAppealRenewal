@@ -9,7 +9,7 @@
         android:layout_marginRight="15.3dp"
         android:background="@drawable/bg_dream_list"
         android:orientation="vertical"
-        android:layout_marginBottom="4.3dp">
+        android:layout_marginBottom="8dp">
 
     <ProgressBar
             android:id="@+id/pb_exp"
@@ -53,27 +53,33 @@
 
     <TextView
             android:id="@+id/tv_value_style"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="21dp"
+            android:ellipsize="end"
             android:fontFamily="@font/nanum_pen"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="24.8sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete"
             app:layout_constraintStart_toEndOf="@+id/iv_profile"
             app:layout_constraintTop_toTopOf="@+id/iv_profile"
-            tools:text="드림어필" />
+            tools:text="" />
 
     <TextView
             android:id="@+id/tv_job"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bmjua"
             android:textColor="@color/black"
             android:textSize="24.8sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_value_style"
             app:layout_constraintTop_toBottomOf="@+id/tv_value_style"
-            tools:text="서버개발자" />
+            tools:text="서버개발자"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
     <TextView
             android:id="@+id/tv_level"

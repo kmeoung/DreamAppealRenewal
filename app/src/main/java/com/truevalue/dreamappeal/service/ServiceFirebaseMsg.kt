@@ -12,15 +12,23 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityIntro
+import com.truevalue.dreamappeal.bean.BeanPushMsg
 import com.truevalue.dreamappeal.http.*
 import com.truevalue.dreamappeal.utils.Comm_Param
 import okhttp3.Call
+import org.json.JSONException
+import org.json.JSONObject
 
-class ServiceFirebaseMsg : FirebaseMessagingService(){
+class ServiceFirebaseMsg : FirebaseMessagingService() {
 
     private val TAG = "FirebaseService"
+
+    companion object {
+        val TYPE = "TYPE"
+    }
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
@@ -33,26 +41,36 @@ class ServiceFirebaseMsg : FirebaseMessagingService(){
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.from)
 
-        if(remoteMessage.data != null) {
+        if (remoteMessage.data != null) {
             Log.d(TAG, "Notification Message Data: ${remoteMessage.data}")
             sendNotification(remoteMessage.data.toString())
         }
     }
 
     private fun sendNotification(body: String?) {
-        val intent = Intent(this, ActivityIntro::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra("Notification", body)
+        var json: JSONObject?
+        var bean : BeanPushMsg? = null
+        try {
+            json = JSONObject(body)
+            bean = Gson().fromJson<BeanPushMsg>(json.toString(), BeanPushMsg::class.java)
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
 
-        val CHANNEL_ID = "CollocNotification"
-        val CHANNEL_NAME = "CollocChannel"
-        val description = "This is Colloc channel"
+        val intent = Intent(this, ActivityIntro::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(TYPE, body)
+        }
+        Log.d("SERVICE FIRE", body)
+        val CHANNEL_ID = bean!!.pageNo
+        val CHANNEL_NAME = bean!!.style
+        val description = bean!!.style
         val importance = NotificationManager.IMPORTANCE_HIGH
 
-        var notificationManager: NotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        var notificationManager: NotificationManager =
+            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
             channel.description = description
             channel.enableLights(true)
@@ -68,8 +86,8 @@ class ServiceFirebaseMsg : FirebaseMessagingService(){
         var notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
             .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle("Colloc Notification")
-            .setContentText(body)
+            .setContentTitle(CHANNEL_ID)
+            .setContentText(CHANNEL_NAME)
             .setAutoCancel(true)
             .setSound(notificationSound)
             .setContentIntent(pendingIntent)

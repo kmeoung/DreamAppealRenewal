@@ -646,5 +646,11 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         // 여기서 서버 Refresh
         getBlueprint()
+        Utils.downKeyBoard(activity!!)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Utils.downKeyBoard(activity!!)
     }
 }

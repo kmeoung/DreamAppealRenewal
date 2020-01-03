@@ -4,7 +4,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="9dp">
+        android:paddingBottom="7dp">
 
     <ImageView
             android:layout_width="5dp"
@@ -23,6 +23,7 @@
             android:fontFamily="@font/nanum_square_round_r"
             android:maxLines="1"
             android:textColor="@color/black"
+            android:lineSpacingExtra="@dimen/text_line_spacing"
             android:textSize="13sp" />
 
 </LinearLayout>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_line_spacing">5.7sp</dimen>
+    <dimen name="text_line_spacing">4sp</dimen>
 </resources>

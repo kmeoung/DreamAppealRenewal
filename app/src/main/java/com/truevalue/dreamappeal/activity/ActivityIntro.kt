@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
+import com.truevalue.dreamappeal.service.ServiceFirebaseMsg
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 
 class ActivityIntro : BaseActivity() {
@@ -46,7 +47,10 @@ class ActivityIntro : BaseActivity() {
             intent = Intent(this@ActivityIntro, ActivityPermission::class.java)
         }
 
-
+        if (getIntent().getStringExtra(ServiceFirebaseMsg.TYPE) != null) {
+            val extra = getIntent().getStringExtra(ServiceFirebaseMsg.TYPE)
+            intent.putExtra(ServiceFirebaseMsg.TYPE, extra)
+        }
         startActivity(intent)
 
         finish()

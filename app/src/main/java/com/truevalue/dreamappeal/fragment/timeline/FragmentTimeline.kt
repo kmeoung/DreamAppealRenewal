@@ -83,23 +83,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mAdatper = BaseRecyclerViewAdapter(rvListener)
         rv_timeline.adapter = mAdatper
         rv_timeline.layoutManager = LinearLayoutManager(context!!)
-
-        /*rv_timeline.setOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!rv_timeline.canScrollVertically(-1)) {
-                } else if (!rv_timeline.canScrollVertically(1)) {
-                    if(!isLast){
-                        getTimeLineData(
-                            true,
-                            (mAdatper!!.get(mAdatper!!.size() - 1) as BeanTimeline).idx,
-                            false
-                        )
-                    }
-                } else {
-
-                }
-            }
-        })*/
     }
 
     /**
@@ -109,43 +92,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         val listener = View.OnClickListener {
             when (it) {
                 iv_search -> {
-                    if(Comm_Param.REAL) {
-                        val intent = Intent(context!!, ActivitySearch::class.java)
-                        startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
-                    }else{
-                        FirebaseInstanceId.getInstance().instanceId
-                            .addOnCompleteListener(OnCompleteListener { task ->
-                                if (!task.isSuccessful) {
-                                    Log.w("TEST", "getInstanceId failed", task.exception)
-                                    return@OnCompleteListener
-                                }
-
-                                // Get new Instance ID token
-                                val token = task.result?.token
-                                Comm_Prefs.setPushToken(token)
-                                // Log and toast
-                                //val msg = getString(R.string.msg_token_fmt, token)
-                                Log.d("token is this", token)
-                                //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                                DAClient.sendToken(token, object : DAHttpCallback {
-                                    override fun onResponse(
-                                        call: Call,
-                                        serverCode: Int,
-                                        body: String,
-                                        code: String,
-                                        message: String
-                                    ) {
-                                        Log.d("token is this", body)
-
-                                        Toast.makeText(
-                                            context!!.applicationContext,
-                                            message,
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                })
-                            })
-                    }
+                    val intent = Intent(context!!, ActivitySearch::class.java)
+                    startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_timeline -> {
                     rv_timeline.smoothScrollToPosition(0)
@@ -213,18 +161,19 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             e.printStackTrace()
                         }
 
-                    }else{
-                        if(code == "NO_MORE_POST"){
+                    } else {
+                        if (code == "NO_MORE_POST") {
                             isLast = true
                             mAdatper!!.notifyDataSetChanged()
-                        }else if(code == DAClient.FAIL){
+                        } else if (code == DAClient.FAIL) {
                             ActivityCompat.finishAffinity(activity!!)
-                            val intent = Intent(context!!,ActivityIntro::class.java)
+                            val intent = Intent(context!!, ActivityIntro::class.java)
                             Comm_Prefs.setUserProfileIndex(-1)
                             Comm_Prefs.setToken(null)
                             startActivity(intent)
                         }
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -236,7 +185,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdatper != null) if(mAdatper!!.size() > 4 && !isLast) mAdatper!!.size() + 1 else mAdatper!!.size()  else 0
+            get() = if (mAdatper != null) if (mAdatper!!.size() > 4 && !isLast) mAdatper!!.size() + 1 else mAdatper!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             if (RV_TYPE_TIMELINE == viewType) {
@@ -310,29 +259,30 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             })
 
             var strTags = ""
-            if(!bean.tags.isNullOrEmpty()){
+            if (!bean.tags.isNullOrEmpty()) {
                 tvTag.visibility = VISIBLE
-                if(bean.tags!!.contains(",".toRegex())) {
+                if (bean.tags!!.contains(",".toRegex())) {
 
                     val tags = bean.tags!!.split(",".toRegex())
                     for (i in 0 until tags.size) {
                         strTags = "$strTags #${tags[i]} "
                     }
-                }else{
+                } else {
                     strTags = " #${bean.tags!!}"
                 }
-            }else{
+            } else {
                 strTags = getString(R.string.str_tag)
                 tvTag.visibility = GONE
             }
             tvTag.text = strTags
 
 
-            if(bean.profile_idx == Comm_Prefs.getUserProfileIndex()){
+            if (bean.profile_idx == Comm_Prefs.getUserProfileIndex()) {
                 ivMore.visibility = VISIBLE
-            }else ivMore.visibility = GONE
+            } else ivMore.visibility = GONE
 
-            tvIndicator.text = if(bean.imageList.size > 0) ((1).toString() + " / " + bean.imageList.size) else ((0).toString() + " / " + bean.imageList.size)
+            tvIndicator.text =
+                if (bean.imageList.size > 0) ((1).toString() + " / " + bean.imageList.size) else ((0).toString() + " / " + bean.imageList.size)
             for (j in 0 until bean.imageList.size) {
                 pagerAdapter.add(bean.imageList[j])
             }
@@ -409,7 +359,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             })
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
-            tvJob.text = if (bean.job.isNullOrEmpty()) "" else "${bean.job} ${if(bean.nickname.isNullOrEmpty()) "" else bean.nickname}"
+            tvJob.text =
+                if (bean.job.isNullOrEmpty()) "" else "${bean.job} ${if (bean.nickname.isNullOrEmpty()) "" else bean.nickname}"
             if (bean.object_title.isNullOrEmpty() && bean.step_title.isNullOrEmpty()) {
                 llObjectStep.visibility = GONE
             } else {
@@ -491,7 +442,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
                     intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, bean.imageList)
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, bean!!.content)
-                    intent.putExtra(ActivityAddPost.REQUEST_TAGS,bean!!.tags)
+                    intent.putExtra(ActivityAddPost.REQUEST_TAGS, bean!!.tags)
                     startActivity(intent)
                 }
                 getString(R.string.str_delete) -> {
@@ -545,7 +496,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX) {
+                requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX
+            ) {
 
             }
         } else if (resultCode == ActivityComment.RESULT_CODE ||
@@ -597,10 +549,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * On Refresh
      */
     override fun onRefresh() {
-        if(!Comm_Param.REAL){
+        if (!Comm_Param.REAL) {
             srl_refresh.isRefreshing = false
 
-            if(Comm_Prefs.getPushToken() == null) {
+            if (true) {
                 FirebaseInstanceId.getInstance().instanceId
                     .addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
@@ -632,7 +584,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         })
                     })
             }
-        }else {
+        } else {
             isLast = false
             getTimeLineData(false, -1, true)
         }

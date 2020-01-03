@@ -47,7 +47,7 @@ class FragmentLevelChoice : BaseFragment() {
     private var postContents: String? = null
 
     private var selectedCategoryIdx = -1
-    private var selectedCategoryDetailIdx = -1
+    private var selectedCategoryDetailIdx = 0
 
     private var mPostIdx: Int = -1
 
@@ -193,6 +193,8 @@ class FragmentLevelChoice : BaseFragment() {
                 iv_check_action_post.isSelected = true
                 tv_category.visibility = VISIBLE
                 tv_category_detail.visibility = VISIBLE
+
+                mAdapterDetail!!.clear()
                 // 실천인증 가져오기
                 getCategory()
 
@@ -221,17 +223,16 @@ class FragmentLevelChoice : BaseFragment() {
         when (mCategoryType) {
             TYPE_IDEA -> {
                 selectedCategoryIdx = -1
-                selectedCategoryDetailIdx = -1
+                selectedCategoryDetailIdx = 0
                 return true
             }
             TYPE_LIKE -> {
                 selectedCategoryIdx = -1
-                selectedCategoryDetailIdx = -1
+                selectedCategoryDetailIdx = 0
                 return true
             }
             TYPE_ACTION_POST -> {
-                return selectedCategoryIdx > 0 &&
-                        selectedCategoryDetailIdx > -1
+                return selectedCategoryIdx > 0
             }
             else->false
         }
@@ -341,7 +342,7 @@ class FragmentLevelChoice : BaseFragment() {
         }
         val object_idx = if (selectedCategoryIdx == -1) null else selectedCategoryIdx
         val step_idx =
-            if (selectedCategoryIdx == -1 || selectedCategoryDetailIdx == -1) null else selectedCategoryDetailIdx
+            if (selectedCategoryIdx == -1) null else selectedCategoryDetailIdx
         DAClient.addActionPost(
             contents,
             post_type,
@@ -527,7 +528,7 @@ class FragmentLevelChoice : BaseFragment() {
                 llBg.setOnClickListener(View.OnClickListener {
                     if (selectedCategoryIdx != bean.idx) {
                         selectedCategoryIdx = bean.idx
-                        selectedCategoryDetailIdx = -1
+                        selectedCategoryDetailIdx = 0
                         iv_check.isSelected = isCheckEnable()
                         getCategoryDetail(selectedCategoryIdx)
                         mAdapter!!.notifyDataSetChanged()

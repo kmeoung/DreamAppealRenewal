@@ -14,6 +14,8 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
+import com.truevalue.dreamappeal.fragment.dream_board.FragmentDreamBoard
+import com.truevalue.dreamappeal.fragment.notification.FragmentNotification
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
@@ -21,6 +23,8 @@ import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformanc
 import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.service.ServiceFirebaseMsg
+import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
@@ -31,7 +35,7 @@ class ActivityMain : BaseActivity() {
     var mActionListener: IOActionBarListener? = null
     // 현재 나의 프로필을 보고 있고, 내가 다른 프로필을 선택하여
     // 변겅이 되었는지를 확인하여 MainProfile을 변경
-    private var mCurrentUserIdx : Int = -1
+    private var mCurrentUserIdx: Int = -1
 
     companion object {
         var isMainRefresh = false
@@ -46,15 +50,16 @@ class ActivityMain : BaseActivity() {
         val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
     }
 
-    data class BeanDrawerData(var following : Int,var dream_point : Int)
+    data class BeanDrawerData(var following: Int, var dream_point: Int)
 
-    var mDrawerData : BeanDrawerData? = null
+    var mDrawerData: BeanDrawerData? = null
 
     var mMainViewType = ""
 
     init {
         // 회원가입시 PROFILE로 이동
-        mMainViewType = if(Comm_Prefs.getUserProfileIndex() > -1) MAIN_TYPE_TIMELINE else MAIN_TYPE_PROFILE
+        mMainViewType =
+            if (Comm_Prefs.getUserProfileIndex() > -1) MAIN_TYPE_HOME else MAIN_TYPE_PROFILE
     }
 
     private var mActionBarType = ACTION_BAR_TYPE_PROFILE_MAIN
@@ -62,6 +67,11 @@ class ActivityMain : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (intent.getStringExtra(ServiceFirebaseMsg.TYPE) != null) {
+            mMainViewType = MAIN_TYPE_NOTIFICATION
+        }
+
         // Action
         onAction()
 
@@ -73,7 +83,7 @@ class ActivityMain : BaseActivity() {
         }.execute()
     }
 
-    fun initAllView(){
+    fun initAllView() {
         val fm = supportFragmentManager
         for (i in 0..fm.backStackEntryCount) {
             fm.popBackStack()
@@ -99,13 +109,7 @@ class ActivityMain : BaseActivity() {
         onClickDrawerView()
         // Drawer
         setDrawer()
-//
-//        val ivMenu: ImageView = findViewById(R.id.iv_menu)
-//        ivMenu.setOnClickListener(View.OnClickListener {
-//            var intent = Intent(this, ActivityLoginContainer::class.java)
-//            startActivity(intent)
-//            finish()
-//        })
+
     }
 
     /**
@@ -114,8 +118,11 @@ class ActivityMain : BaseActivity() {
     private fun setDrawer() {
         dl_drawer.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
-                tv_following.text = if(mDrawerData != null) "${mDrawerData!!.following}" else "0"
-                tv_dream_point.text = if(mDrawerData != null) String.format("%,d",mDrawerData!!.dream_point) else "0"
+                tv_following.text = if (mDrawerData != null) "${mDrawerData!!.following}" else "0"
+                tv_dream_point.text = if (mDrawerData != null) String.format(
+                    "%,d",
+                    mDrawerData!!.dream_point
+                ) else "0"
             }
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
@@ -123,13 +130,19 @@ class ActivityMain : BaseActivity() {
             }
 
             override fun onDrawerClosed(drawerView: View) {
-                tv_following.text = if(mDrawerData != null) "${mDrawerData!!.following}" else "0"
-                tv_dream_point.text = if(mDrawerData != null) String.format("%,d",mDrawerData!!.dream_point) else "0"
+                tv_following.text = if (mDrawerData != null) "${mDrawerData!!.following}" else "0"
+                tv_dream_point.text = if (mDrawerData != null) String.format(
+                    "%,d",
+                    mDrawerData!!.dream_point
+                ) else "0"
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                tv_following.text = if(mDrawerData != null) "${mDrawerData!!.following}" else "0"
-                tv_dream_point.text = if(mDrawerData != null) String.format("%,d",mDrawerData!!.dream_point) else "0"
+                tv_following.text = if (mDrawerData != null) "${mDrawerData!!.following}" else "0"
+                tv_dream_point.text = if (mDrawerData != null) String.format(
+                    "%,d",
+                    mDrawerData!!.dream_point
+                ) else "0"
             }
         })
     }
@@ -156,7 +169,7 @@ class ActivityMain : BaseActivity() {
      * Fragment에서 접근하는 Fragment 변경
      * IsMainRefresh = 메인 프로필 조회할 것인지
      */
-    fun replaceFragment(fragment: Fragment, addToBack: Boolean, isMainRefresh : Boolean) {
+    fun replaceFragment(fragment: Fragment, addToBack: Boolean, isMainRefresh: Boolean) {
         replaceFragment(R.id.base_container, fragment, addToBack)
         ActivityMain.isMainRefresh = isMainRefresh
     }
@@ -167,21 +180,23 @@ class ActivityMain : BaseActivity() {
     private fun onClickBottomView() {
         val onClickListener = View.OnClickListener {
             when (it) {
-                // todo : 지원준비중입니다.
-                iv_home , iv_notification ->{
-                    Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
+                iv_home -> {
+                    mMainViewType = MAIN_TYPE_HOME
                 }
                 iv_timeline ->
                     mMainViewType = MAIN_TYPE_TIMELINE
                 iv_add_board ->
                     mMainViewType = MAIN_TYPE_ADD_BOARD
+                iv_notification -> {
+                    mMainViewType = MAIN_TYPE_NOTIFICATION
+                }
                 iv_profile ->
                     mMainViewType = MAIN_TYPE_PROFILE
             }
-            if(it != iv_home || it != iv_notification) {
-                initFragment()
-                initBottomView()
-            }
+
+            initFragment()
+            initBottomView()
+
         }
 
         iv_home.setOnClickListener(onClickListener)
@@ -216,7 +231,7 @@ class ActivityMain : BaseActivity() {
                         ActivityFollowCheering.EXTRA_VIEW_TYPE,
                         ActivityFollowCheering.VIEW_TYPE_FOLLOWING
                     )
-                    startActivityForResult(intent,ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
                 ll_dream_point -> {
@@ -234,10 +249,10 @@ class ActivityMain : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == ActivityFollowCheering.RESULT_CODE){
+        if (resultCode == ActivityFollowCheering.RESULT_CODE) {
             if (requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX,-1)
-                replaceFragment(FragmentProfile.newInstance(view_user_idx),true)
+                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                replaceFragment(FragmentProfile.newInstance(view_user_idx), true)
             }
         }
     }
@@ -286,29 +301,34 @@ class ActivityMain : BaseActivity() {
      */
     private fun initFragment() {
         // todo : 처음 페이지 설정 시 변경 필요
-       when (mMainViewType) {
-            MAIN_TYPE_HOME -> {
-
-            }
-            MAIN_TYPE_TIMELINE -> replaceFragment(R.id.base_container, FragmentTimeline(), false)
-            MAIN_TYPE_ADD_BOARD ->{
-                val intent = Intent(this@ActivityMain,ActivityCameraGallery::class.java)
-                intent.putExtra(ActivityCameraGallery.VIEW_TYPE,ActivityCameraGallery.EXTRA_ACTION_POST)
-                intent.putExtra(ActivityCameraGallery.SELECT_TYPE,ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT)
+        when (mMainViewType) {
+            MAIN_TYPE_HOME -> replaceFragment(FragmentDreamBoard(), false)
+            MAIN_TYPE_TIMELINE -> replaceFragment(FragmentTimeline(), false)
+            MAIN_TYPE_ADD_BOARD -> {
+                val intent = Intent(this@ActivityMain, ActivityCameraGallery::class.java)
+                intent.putExtra(
+                    ActivityCameraGallery.VIEW_TYPE,
+                    ActivityCameraGallery.EXTRA_ACTION_POST
+                )
+                intent.putExtra(
+                    ActivityCameraGallery.SELECT_TYPE,
+                    ActivityCameraGallery.EXTRA_IMAGE_MULTI_SELECT
+                )
                 startActivity(intent)
             }
-            MAIN_TYPE_NOTIFICATION -> {
-
-            }
-            MAIN_TYPE_PROFILE -> replaceFragment(R.id.base_container, FragmentProfile.newInstance(Comm_Prefs.getUserProfileIndex()), false)
+            MAIN_TYPE_NOTIFICATION -> replaceFragment(FragmentNotification(), false)
+            MAIN_TYPE_PROFILE -> replaceFragment(
+                FragmentProfile.newInstance(Comm_Prefs.getUserProfileIndex()),
+                false
+            )
         }
 
     }
 
     override fun onBackPressed() {
-        if(dl_drawer.isDrawerOpen(Gravity.RIGHT)) {
+        if (dl_drawer.isDrawerOpen(Gravity.RIGHT)) {
             dl_drawer.closeDrawer(Gravity.RIGHT)
-        }else {
+        } else {
             super.onBackPressed()
             if (isMainRefresh || mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()) {
                 if (mCurrentUserIdx != Comm_Prefs.getUserProfileIndex()) {
@@ -322,10 +342,11 @@ class ActivityMain : BaseActivity() {
         }
     }
 
-    fun onBackPressed(isMainRefresh: Boolean){
+    fun onBackPressed(isMainRefresh: Boolean) {
         ActivityMain.isMainRefresh = isMainRefresh
         onBackPressed()
     }
+
     /**
      * Init Fragment Stack
      */
@@ -336,13 +357,13 @@ class ActivityMain : BaseActivity() {
         }
     }
 
-    var mViewRefreshListener : IOMainViewRefresh? = null
+    var mViewRefreshListener: IOMainViewRefresh? = null
 
     /**
      * Main 페이지에서 View가 Refresh되지 않는 현상을 수정
      */
     interface IOMainViewRefresh {
         fun OnRefreshView()
-        fun OnRefreshAllView(){}
+        fun OnRefreshAllView() {}
     }
 }

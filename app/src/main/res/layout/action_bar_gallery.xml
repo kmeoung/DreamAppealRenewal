@@ -9,7 +9,6 @@
         android:elevation="5dp">
 
     <!--툴바-->
-
     <ImageView
             android:id="@+id/iv_close"
             android:layout_width="45dp"
@@ -49,32 +48,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <!--    <TextView-->
-    <!--            android:id="@+id/tv_title"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:fontFamily="@font/nanum_square_round_r"-->
-    <!--            android:gravity="center"-->
-    <!--            android:text="@string/str_register"-->
-    <!--            android:textColor="@color/black"-->
-    <!--            android:textSize="17.2sp"-->
-    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
     <Spinner
             android:id="@+id/sp_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
             android:layout_weight="1"
             android:fontFamily="@font/nanum_square_round_r"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/iv_close"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
             android:id="@+id/iv_more"

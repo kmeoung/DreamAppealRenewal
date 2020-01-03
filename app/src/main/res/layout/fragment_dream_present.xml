@@ -99,7 +99,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="5dp"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:text="@string/str_follower"
@@ -131,7 +131,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="5dp"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:text="@string/str_action_post"
@@ -163,7 +163,7 @@
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="5dp"
                                 android:fontFamily="@font/nanum_square_round_r"
                                 android:gravity="center"
                                 android:text="@string/str_achievement_post"
@@ -200,7 +200,7 @@
                                 android:id="@+id/iv_dream_profile"
                                 android:layout_width="53dp"
                                 android:layout_height="53dp"
-                                android:layout_marginRight="27dp"
+                                android:layout_marginRight="13dp"
                                 android:src="@drawable/drawer_user" />
                         <!--꿈 프로필 이미지-->
 
@@ -273,6 +273,7 @@
                                     android:layout_marginLeft="20dp"
                                     android:layout_marginRight="20dp"
                                     android:fontFamily="@font/nanum_square_round_b"
+                                    android:lineSpacingExtra="@dimen/text_line_spacing"
                                     android:text=""
                                     android:textColor="@color/black"
                                     android:textSize="13sp" />
@@ -337,7 +338,7 @@
                 <TextView
                         android:layout_width="80dp"
                         android:layout_height="30sp"
-                        android:layout_marginLeft="13dp"
+                        android:layout_marginLeft="17dp"
                         android:layout_marginTop="13dp"
                         android:background="@color/background"
                         android:fontFamily="@font/nanum_pen"
@@ -364,7 +365,7 @@
                             android:minHeight="81dp"
                             android:orientation="vertical"
                             android:paddingLeft="10dp"
-                            android:paddingTop="10dp"
+                            android:paddingTop="6dp"
                             android:paddingBottom="10dp">
 
                         <RelativeLayout
@@ -383,7 +384,7 @@
                                         android:layout_marginTop="10dp"
                                         android:layout_weight="1"
                                         android:fontFamily="@font/nanum_square_round_r"
-                                        android:lineSpacingExtra="7.3sp"
+                                        android:lineSpacingExtra="@dimen/text_line_spacing"
                                         android:maxLines="3"
                                         android:paddingRight="13dp"
                                         android:text=""
@@ -510,6 +511,7 @@
                                 android:layout_width="70dp"
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
+                                android:layout_marginRight="8dp"
                                 android:background="@drawable/bg_round_rectangle_blue_2"
                                 android:elevation="3dp"
                                 android:fontFamily="@font/nanum_square_round_r"

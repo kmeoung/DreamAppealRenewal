@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="130dp"
                     android:layout_marginLeft="57.5dp"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginRight="57.5dp"
                     android:src="@drawable/login_logo" />
 
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="48.7dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginRight="30dp"
                     android:autofillHints=""
                     android:background="@drawable/bg_round_rectangle_white_3"
@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="47.3dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="110dp"
                     android:background="@drawable/bg_round_rectangle_blue"
