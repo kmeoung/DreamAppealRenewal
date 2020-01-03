@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="13.7dp"
+        android:paddingTop="16dp"
+        android:paddingRight="13.3dp"
+        android:paddingBottom="13.3dp">
+
+    <RelativeLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginRight="13.3dp">
+
+        <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/drawer_user" />
+
+        <ImageView
+                android:id="@+id/iv_flame"
+                android:layout_width="12dp"
+                android:layout_height="17dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/flame_clicked" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16.3dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/tv_contents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:lineSpacingExtra="@dimen/text_line_spacing"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="13.3sp" />
+
+
+        <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.7dp"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:text=""
+                android:textColor="@color/warm_grey"
+                android:textSize="11sp" />
+
+
+    </LinearLayout>
+
+    <ImageView
+            android:id="@+id/iv_post"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/bg_tag" />
+
+
+</LinearLayout>

@@ -3,12 +3,14 @@ package com.truevalue.dreamappeal.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -97,6 +99,28 @@ object Utils {
         val ssb = SpannableStringBuilder(str)
         ssb.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(context, color)),
+            first,
+            last,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        return ssb
+    }
+
+    /**
+     * replace Text Type
+     */
+    fun replaceTextType(
+        context: Context?,
+        tv: TextView,
+        changeText: String
+    ): SpannableStringBuilder {
+        if (context == null) return SpannableStringBuilder()
+        val str = tv.text.toString()
+        val first = str.indexOf(changeText)
+        val last = str.lastIndexOf(changeText) + changeText.length
+        val ssb = SpannableStringBuilder(str)
+        ssb.setSpan(
+            StyleSpan(Typeface.BOLD),
             first,
             last,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
