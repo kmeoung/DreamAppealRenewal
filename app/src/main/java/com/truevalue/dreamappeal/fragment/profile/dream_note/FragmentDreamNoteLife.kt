@@ -14,11 +14,10 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FagmentActionPost
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.fragment_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_recyclerview.rv_recycle
 import kotlinx.android.synthetic.main.fragment_swipe_recyclerview.*
 import okhttp3.Call
@@ -160,7 +159,7 @@ class FragmentDreamNoteLife : BaseFragment() {
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FagmentActionPost.newInstance(bean.idx,mViewUserIdx,FagmentActionPost.TYPE_DREAM_NOTE_LIFE),
+                        FragmentActionPost.newInstance(bean.idx,mViewUserIdx,FragmentActionPost.TYPE_DREAM_NOTE_LIFE),
                         addToBack = true,isMainRefresh = false
                     )
                 })

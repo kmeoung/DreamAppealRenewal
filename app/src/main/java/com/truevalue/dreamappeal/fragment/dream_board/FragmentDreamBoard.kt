@@ -78,6 +78,7 @@ class FragmentDreamBoard : BaseFragment() {
                 tv_event.isSelected = false
                 tv_popular.isSelected = true
                 tv_concern.isSelected = false
+                replaceFragment(R.id.board_container,FragmentPopular(),false)
             }
             TAB_TYPE_CONCERN->{
                 tv_event.isSelected = false

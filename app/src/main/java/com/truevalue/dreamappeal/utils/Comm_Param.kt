@@ -3,14 +3,16 @@ package com.truevalue.dreamappeal.utils
 import com.truevalue.dreamappeal.BuildConfig
 
 object Comm_Param {
-//    val REAL = !BuildConfig.DEBUG
-    val REAL = true
+    val REAL = !BuildConfig.DEBUG
+//    val REAL = true
     val APP_NAME = "DreamAppeal"
 
     // DEV 서버
     private val DEV_API = "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버
     private val REAL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
+    // Kakao Addr
+    val KAKAO_ADDRESS_API = "https://dapi.kakao.com/v2/local/search/address.json"
     // API
     val URL_API = if (REAL) REAL_API else DEV_API
 
@@ -204,7 +206,6 @@ object Comm_Param {
     val URL_LIKES_ACHIEVEMENT_IDX = "$URL_LIKES_ACHIEVEMENT/$POST_INDEX"
 
     //댓글 좋아요
-
     val URL_LIKES_BLUEPRINT = "$URL_LIKES/blueprint"
     val URL_LIKES_PROFILE_COMMENT = "$URL_LIKES_PROFILE/comment"
     val URL_LIKES_PROFILE_COMMENT_IDX = "$URL_LIKES_PROFILE_COMMENT/$COMMENT_INDEX"
@@ -215,4 +216,7 @@ object Comm_Param {
     val URL_LIKES_ACTION_COMMENT = "$URL_LIKES_ACTION/comment"
     val URL_LIKES_ACTION_COMMENT_IDX = "$URL_LIKES_ACTION_COMMENT/$COMMENT_INDEX"
 
+    //드림보드 /board/popluar
+    val URL_BOARD = "$URL_API/board"
+    val URL_BOARD_POPULAR = "$URL_BOARD/popular"
 }

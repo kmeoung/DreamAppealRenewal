@@ -2,7 +2,6 @@ package com.truevalue.dreamappeal.fragment.profile.blueprint
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
@@ -400,7 +398,7 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FagmentActionPost.newInstance(bean.idx, mViewUserIdx),
+                        FragmentActionPost.newInstance(bean.idx, mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = false
                     )

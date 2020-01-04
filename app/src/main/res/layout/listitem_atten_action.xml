@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:apps="http://schemas.android.com/tools"
+        android:layout_width="@dimen/thumb"
+        android:layout_height="@dimen/thumb"
+        android:background="@null"
+        android:orientation="vertical">
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        <ImageView
+                android:id="@+id/iv_book_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/white" />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_centerInParent="true"
+                android:background="#80000000"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:gravity="center"
+                    android:lineSpacingExtra="@dimen/text_line_spacing"
+                    android:maxLines="2"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="13.3sp"
+                    apps:text="제대로 된 지속성 진로교육 만들기" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@color/white_three"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            apps:text="뉴에이지 피아니스트" />
+
+</LinearLayout>

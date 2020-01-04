@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.fragment_action_post.*
 import okhttp3.Call
 import org.json.JSONObject
 
-class FagmentActionPost : BaseFragment() {
+class FragmentActionPost : BaseFragment() {
 
     private var mAdapter: BasePagerAdapter<String>? = null
     private var mPostIdx = -1
@@ -49,8 +49,8 @@ class FagmentActionPost : BaseFragment() {
         val TYPE_DREAM_NOTE_IDEA = "TYPE_DREAM_NOTE_IDEA"
         val TYPE_DREAM_NOTE_LIFE = "TYPE_DREAM_NOTE_LIFE"
 
-        fun newInstance(post_idx: Int, view_user_idx: Int): FagmentActionPost {
-            val fragment = FagmentActionPost()
+        fun newInstance(post_idx: Int, view_user_idx: Int): FragmentActionPost {
+            val fragment = FragmentActionPost()
             fragment.mPostIdx = post_idx
             fragment.mViewUserIdx = view_user_idx
             return fragment
@@ -60,8 +60,8 @@ class FagmentActionPost : BaseFragment() {
             post_idx: Int,
             view_user_idx: Int,
             dream_note_type: String
-        ): FagmentActionPost {
-            val fragment = FagmentActionPost()
+        ): FragmentActionPost {
+            val fragment = FragmentActionPost()
             fragment.mPostIdx = post_idx
             fragment.mViewUserIdx = view_user_idx
             fragment.isDreamNoteType = dream_note_type

@@ -79,6 +79,12 @@
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 
+        <!-- 주소 검색 -->
+        <activity
+                android:name=".activity.ActivityAddrSearch"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize" />
+
         <!-- 댓글 -->
         <activity
                 android:name=".activity.ActivityComment"

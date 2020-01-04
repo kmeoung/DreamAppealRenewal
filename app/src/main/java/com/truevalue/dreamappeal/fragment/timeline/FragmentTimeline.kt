@@ -92,7 +92,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         val listener = View.OnClickListener {
             when (it) {
                 iv_search -> {
-                    val intent = Intent(context!!, ActivitySearch::class.java)
+                    val intent = Intent(context!!, ActivityAddrSearch::class.java)
                     startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_timeline -> {

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/pale_grey"
+        android:orientation="vertical">
+
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="4.7dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+            <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4.3dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:hint="제목을 입력해 주세요"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="17dp"
+                    android:paddingTop="14.7dp"
+                    android:paddingBottom="14.7dp"
+                    android:textColorHint="@color/brown_grey"
+                    android:textSize="14.7sp" />
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="4.3dp">
+
+                <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_add_camera"
+                        android:layout_marginLeft="13.3dp"
+                        android:layout_marginTop="10.3dp"
+                        android:id="@+id/iv_add_photo"
+                        android:layout_marginBottom="12.3dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_achivement_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="88dp"
+                        android:layout_marginBottom="8.3dp"/>
+
+            </LinearLayout>
+
+            <EditText
+                    android:id="@+id/et_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:minHeight="150dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:gravity="left|top"
+                    android:hint="코멘트 입력.."
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/warm_grey"
+                    android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

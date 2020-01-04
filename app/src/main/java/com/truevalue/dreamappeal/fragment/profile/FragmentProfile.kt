@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.gson.Gson
@@ -67,6 +68,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initView()
         if (pagerAdapter == null) {
             // Tabs 초기화
             initTabs()
@@ -79,6 +81,12 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
         initAdapter()
         // View 클릭 리스너
         onClickView()
+    }
+
+    private fun initView(){
+        if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()){
+            iv_back.visibility = VISIBLE
+        }
     }
 
     /**
@@ -177,11 +185,15 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
                 iv_dream_note->{
                     (activity as ActivityMain).replaceFragment(FragmentDreamNote.newInstance(mViewUserIdx),addToBack = true,isMainRefresh = false)
                 }
+                iv_back->{
+                    (activity as ActivityMain).onBackPressed(false)
+                }
             }
         }
         iv_menu.setOnClickListener(listener)
         tv_title.setOnClickListener(listener)
         iv_dream_note.setOnClickListener(listener)
+        iv_back.setOnClickListener(listener)
     }
 
     /**

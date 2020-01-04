@@ -58,37 +58,50 @@ object BaseOkhttpClient : OkHttpClient() {
                 if (call.request().url.toUrl().toString().split("?")[0] == url) {
                     val strBody = response.body!!.string()
                     if (!Comm_Param.REAL) Log.d("SERVER BODY", strBody)
+                    var code: String? = null
+                    var message: String? = null
+                    var isJson = false
                     try {
                         var json = JSONObject(strBody)
-                        val code: String? = json.getString("code")
-                        val message: String? = json.getString("message")
-                        if (callback != null) {
-                            if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                                handler.post(Runnable {
-                                    callback.onResponse(
+                        isJson = true
+                        code = json.getString("code")
+                        message = json.getString("message")
+                    } catch (e: JSONException) {
+                    } finally {
+                        handler.post(Runnable {
+                            if (callback != null) {
+                                if (isJson) {
+                                    if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
+                                        handler.post(Runnable {
+                                            callback.onResponse(
+                                                call,
+                                                response.code,
+                                                strBody,
+                                                code,
+                                                message
+                                            )
+                                        })
+                                    } else {
+                                        callback!!.onResponse(
+                                            call,
+                                            response.code,
+                                            strBody,
+                                            DAClient.SUCCESS,
+                                            ""
+                                        )
+                                    }
+                                } else {
+                                    callback!!.onResponse(
                                         call,
                                         response.code,
                                         strBody,
-                                        code,
-                                        message
+                                        DAClient.FAIL,
+                                        mContext!!.getString(R.string.str_error_server)
                                     )
-                                })
+                                }
                             }
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                        })
 
-                        if (mContext != null) {
-                            handler.post(Runnable {
-                                callback!!.onResponse(
-                                    call,
-                                    response.code,
-                                    strBody,
-                                    DAClient.FAIL,
-                                    mContext!!.getString(R.string.str_error_server)
-                                )
-                            })
-                        }
                     }
                 }
 

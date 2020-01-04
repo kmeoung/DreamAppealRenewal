@@ -15,6 +15,7 @@ import kotlin.collections.ArrayList
 object DAClient {
 
     val SUCCESS = "SUCCESS"
+    val SUCCESS_ADDRESS = "SUCCESS_ADDRESS"
     val FAIL = "FAIL"
     val VALIDATE_EMAIL = "VALIDATE_EMAIL"
     val API_NOT_FOUND = "API_NOT_FOUND"
@@ -49,11 +50,13 @@ object DAClient {
     val POST_TYPE_LIFE = 1
     val POST_TYPE_IDEA = 2
 
-    fun sendToken(push_token : String?,
-                  callback: DAHttpCallback?){
-        var nCallback : DAHttpCallback
-        if(callback == null)
-            nCallback = object : DAHttpCallback{
+    fun sendToken(
+        push_token: String?,
+        callback: DAHttpCallback?
+    ) {
+        var nCallback: DAHttpCallback
+        if (callback == null)
+            nCallback = object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -61,15 +64,15 @@ object DAClient {
                     code: String,
                     message: String
                 ) {
-                    Log.d("Token Test ",body)
+                    Log.d("Token Test ", body)
                 }
             }
         else
             nCallback = callback
 
         val params = DAHttpParams()
-        if(push_token.isNullOrEmpty()) return
-        params.put("push_token",push_token!!)
+        if (push_token.isNullOrEmpty()) return
+        params.put("push_token", push_token!!)
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -233,10 +236,10 @@ object DAClient {
     ) {
 
         val params = DAHttpParams()
-        if(!bean.name.isNullOrEmpty()) params.put("name", bean.name!!)
-        if(!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname!!)
+        if (!bean.name.isNullOrEmpty()) params.put("name", bean.name!!)
+        if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname!!)
         params.put("gender", bean.gender)
-        if(!bean.address.isNullOrEmpty()) params.put("address", bean.address!!)
+        if (!bean.address.isNullOrEmpty()) params.put("address", bean.address!!)
 
         val privates = Gson().toJson(bean.private)
         params.put("privates", privates)
@@ -945,10 +948,10 @@ object DAClient {
      * 나를 응원하는 어필러 리스트
      */
     fun getProfileCheering(
-        idx : Int,
+        idx: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_LIST_PROFILE_IDX.replace(Comm_Param.CHEERING_INDEX,idx.toString())
+        val url = Comm_Param.URL_LIST_PROFILE_IDX.replace(Comm_Param.CHEERING_INDEX, idx.toString())
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -965,10 +968,10 @@ object DAClient {
      * 나를 응원하는 어필러 리스트
      */
     fun getActionCheering(
-        idx : Int,
+        idx: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_LIST_ACTION_IDX.replace(Comm_Param.CHEERING_INDEX,idx.toString())
+        val url = Comm_Param.URL_LIST_ACTION_IDX.replace(Comm_Param.CHEERING_INDEX, idx.toString())
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -985,10 +988,11 @@ object DAClient {
      * 나를 응원하는 어필러 리스트
      */
     fun getAchievementCheeing(
-        idx : Int,
+        idx: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_LIST_ACHIEVEMENT_IDX.replace(Comm_Param.CHEERING_INDEX,idx.toString())
+        val url =
+            Comm_Param.URL_LIST_ACHIEVEMENT_IDX.replace(Comm_Param.CHEERING_INDEX, idx.toString())
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -2135,7 +2139,7 @@ object DAClient {
         step_idx: Int?,
         thumbnail_image: String?,
         content: String?,
-        tags : String?,
+        tags: String?,
         callback: DAHttpCallback
     ) {
 
@@ -2147,7 +2151,7 @@ object DAClient {
         if (step_idx != null) params.put("step_idx", step_idx)
         if (thumbnail_image != null) params.put("thumbnail_image", thumbnail_image)
         if (content != null) params.put("content", content)
-        if(tags != null) params.put("tags", tags)
+        if (tags != null) params.put("tags", tags)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,
@@ -2201,11 +2205,11 @@ object DAClient {
      * GET
      * 타임라인 가져오기
      */
-    fun getTimeLine(refresh : Boolean,last_idx : Int,callback: DAHttpCallback) {
+    fun getTimeLine(refresh: Boolean, last_idx: Int, callback: DAHttpCallback) {
 
         val params = DAHttpParams()
-        if(refresh) params.put("refresh",refresh)
-        if(last_idx > -1) params.put("last_idx",last_idx)
+        if (refresh) params.put("refresh", refresh)
+        if (last_idx > -1) params.put("last_idx", last_idx)
         BaseOkhttpClient.request(
             HttpType.GET,
             Comm_Param.URL_TIMELINES,
@@ -2241,7 +2245,7 @@ object DAClient {
      * Achievement Post 좋아요
      */
     fun likeAchievementPost(
-        post_idx : Int,
+        post_idx: Int,
         callback: DAHttpCallback
     ) {
         BaseOkhttpClient.request(
@@ -2261,7 +2265,7 @@ object DAClient {
      * Action Post 좋아요
      */
     fun likeActionPost(
-        post_idx : Int,
+        post_idx: Int,
         callback: DAHttpCallback
     ) {
         BaseOkhttpClient.request(
@@ -2321,7 +2325,7 @@ object DAClient {
      * 성과 댓글 좋아요
      */
     fun likeAchievementPostComment(
-        comment_idx : Int,
+        comment_idx: Int,
         callback: DAHttpCallback
     ) {
         BaseOkhttpClient.request(
@@ -2341,7 +2345,7 @@ object DAClient {
      * 인증 댓글 좋아요
      */
     fun likeActionPostComment(
-        comment_idx : Int,
+        comment_idx: Int,
         callback: DAHttpCallback
     ) {
         BaseOkhttpClient.request(
@@ -2350,6 +2354,21 @@ object DAClient {
                 Comm_Param.COMMENT_INDEX,
                 comment_idx.toString()
             ),
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 드림보드 - 인기 조회
+     */
+    fun getDreamBoardPopular(callback: DAHttpCallback?) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_BOARD_POPULAR,
             getHttpHeader(),
             null,
             callback

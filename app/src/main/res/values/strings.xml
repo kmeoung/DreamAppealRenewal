@@ -294,7 +294,7 @@
     <string name="str_appealer">어필러</string>
     <string name="str_board">게시물</string>
     <string name="str_hint_search">검색</string>
-    
+
     <string name="str_modifier_based_recommendation">수식어 기반 추천</string>
     <string name="str_location_based_recommendation">위치 기반 추천</string>
 
@@ -310,4 +310,10 @@
     <string name="str_event">이벤트</string>
     <string name="str_popular">인기</string>
     <string name="str_concern">고민 터놓기</string>
+
+    <string name="str_attention_appealer">주목받는 어필러</string>
+    <string name="str_attention_action">주목받는 실천</string>
+    <string name="str_attention_idea">주목받는 영감 자료</string>
+
+    <string name="kakao_rest_api_key">df31c29507a9f167d92975172772f1da</string>
 </resources>
