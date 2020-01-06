@@ -2375,4 +2375,63 @@ object DAClient {
         )
     }
 
+    /**
+     * POST
+     * 회원 주소 등록
+     */
+    fun setUserAddress(
+        address_name: String?,
+        region_1depth_name: String?,
+        region_2depth_name: String?,
+        region_3depth_name: String?,
+        region_3depth_h_name: String?,
+        x: Double?,
+        y: Double?,
+        zip_code: String?,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        if (!address_name.isNullOrEmpty()) params.put("address_name", address_name) else params.put("address_name", "")
+        if (!region_1depth_name.isNullOrEmpty()) params.put(
+            "region_1depth_name",
+            region_1depth_name
+        ) else params.put(
+            "region_1depth_name",
+            ""
+        )
+        if (!region_2depth_name.isNullOrEmpty()) params.put(
+            "region_2depth_name",
+            region_2depth_name
+        ) else params.put(
+            "region_2depth_name",
+            ""
+        )
+        if (!region_3depth_name.isNullOrEmpty()) params.put(
+            "region_3depth_name",
+            region_3depth_name
+        ) else params.put(
+            "region_3depth_name",
+            ""
+        )
+        if (!region_3depth_h_name.isNullOrEmpty()) params.put(
+            "region_3depth_h_name",
+            region_3depth_h_name
+        ) else params.put(
+            "region_3depth_h_name",
+            ""
+        )
+        if (x != null) params.put("x", x) else params.put("x", 0)
+        if (y != null) params.put("y", y) else params.put("y", 0)
+        if (!zip_code.isNullOrEmpty()) params.put("zip_code", zip_code) else params.put("zip_code", "")
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_USERS_ADDRESS,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
 }

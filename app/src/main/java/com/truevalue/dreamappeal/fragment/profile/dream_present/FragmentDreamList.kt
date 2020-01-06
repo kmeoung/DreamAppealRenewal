@@ -19,6 +19,7 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dream_list.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -55,6 +56,16 @@ class FragmentDreamList : BaseFragment() {
         onClickView()
         // 꿈 목록 조회
         getDreamList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as ActivityMain).bottom_view.visibility = GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as ActivityMain).bottom_view.visibility = VISIBLE
     }
 
     /**

@@ -315,5 +315,7 @@
     <string name="str_attention_action">주목받는 실천</string>
     <string name="str_attention_idea">주목받는 영감 자료</string>
 
+    <string name="str_cancel">취소</string>
+
     <string name="kakao_rest_api_key">df31c29507a9f167d92975172772f1da</string>
 </resources>

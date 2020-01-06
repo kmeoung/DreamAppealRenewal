@@ -23,6 +23,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dream_title.*
 import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
 import kotlinx.android.synthetic.main.fragment_merit_and_motive.pager_image
@@ -60,6 +61,16 @@ class FragmentMeritAndMotive : BaseFragment() {
         onClickView()
         // Pager Adapter 초기화
         initAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as ActivityMain).bottom_view.visibility = GONE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as ActivityMain).bottom_view.visibility = VISIBLE
     }
 
     /**

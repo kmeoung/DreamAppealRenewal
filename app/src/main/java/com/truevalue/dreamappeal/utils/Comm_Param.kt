@@ -26,6 +26,9 @@ object Comm_Param {
     val URL_USERS_PROFILE_IDX = "$URL_USERS/$PROFILE_INDEX"
     val URL_USERS_SIGNUP = "$URL_USERS/signup"
 
+    // 주소
+    val URL_USERS_ADDRESS = "$URL_USERS/address"
+
     // 소속
     val GROUP_INDEX = "GROUP_INDEX"
     val URL_USERS_GROUP = "$URL_USERS/group"
