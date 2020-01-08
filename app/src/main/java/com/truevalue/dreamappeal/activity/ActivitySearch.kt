@@ -12,6 +12,8 @@ import android.widget.Toast
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.FragmentSearchAppealer
+import com.truevalue.dreamappeal.fragment.FragmentSearchBoard
+import com.truevalue.dreamappeal.fragment.FragmentSearchTag
 import kotlinx.android.synthetic.main.activity_search.*
 
 class ActivitySearch : BaseActivity() {
@@ -24,7 +26,7 @@ class ActivitySearch : BaseActivity() {
 
     private val SEARCH_DELAY = 1000L
 
-    companion object{
+    companion object {
         var RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
         var REQUEST_REPLACE_USER_IDX = 3000
     }
@@ -126,24 +128,21 @@ class ActivitySearch : BaseActivity() {
                 replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
             }
             TYPE_BOARD -> {
-                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
-//                tv_appealer.isSelected = false
-//                tv_board.isSelected = true
-//                tv_tag.isSelected = false
-//                // todo : 각자 위치로 이동 필요
-//                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
+//                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
+                tv_appealer.isSelected = false
+                tv_board.isSelected = true
+                tv_tag.isSelected = false
+                replaceFragment(R.id.search_container, FragmentSearchBoard(), false)
             }
             TYPE_TAG -> {
-                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
-//                tv_appealer.isSelected = false
-//                tv_board.isSelected = false
-//                tv_tag.isSelected = true
-//                // todo : 각자 위치로 이동 필요
-//                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
+//                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
+                tv_appealer.isSelected = false
+                tv_board.isSelected = false
+                tv_tag.isSelected = true
+                replaceFragment(R.id.search_container, FragmentSearchTag(), false)
             }
         }
-
-        if(search_type == TYPE_APPEALER) mSearchType = search_type
+        mSearchType = search_type
     }
 
 

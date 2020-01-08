@@ -317,5 +317,7 @@
 
     <string name="str_cancel">취소</string>
 
+    <string name="str_no_address">주소지가 없습니다</string>
+
     <string name="kakao_rest_api_key">df31c29507a9f167d92975172772f1da</string>
 </resources>

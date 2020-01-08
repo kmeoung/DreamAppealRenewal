@@ -1,11 +1,13 @@
 package com.truevalue.dreamappeal.fragment.profile
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
@@ -13,9 +15,9 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
 import com.truevalue.dreamappeal.bean.BeanProfileGroup
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.dialog.DialogYearMonthPicker
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
-import com.truevalue.dreamappeal.utils.Comm_Param
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import okhttp3.Call
@@ -26,6 +28,10 @@ class FragmentEditGroup : BaseFragment() {
 
     private var mClass: Int = -1
     private var mBean: BeanProfileGroup? = null
+
+    private var mSCal: Calendar? = null
+    private var mECal: Calendar? = null
+
 
     /**
      * class 각 숫자의 의미
@@ -62,11 +68,7 @@ class FragmentEditGroup : BaseFragment() {
         initData()
         // View On Click Listener
         onClickView()
-
-        // todo : 나중에 dropdown으로 변경이 필요함
-        setSpinner()
     }
-
 
     /**
      * InitData
@@ -102,20 +104,19 @@ class FragmentEditGroup : BaseFragment() {
 
             et_detail_info.setText(mBean!!.description)
         }
-
-
     }
 
-    private fun isCheck() : Boolean{
-
-        val check = (!et_group_name.text.toString().isNullOrEmpty())
+    /**
+     * 체크 확인
+     */
+    private fun isCheck(): Boolean {
+        return (!et_group_name.text.toString().isNullOrEmpty())
                 && (!et_group_rank.text.toString().isNullOrEmpty())
                 && (!tv_sort.text.toString().isNullOrEmpty())
                 && (!tv_start_year.text.toString().isNullOrEmpty())
                 && (!tv_start_month.text.toString().isNullOrEmpty())
                 && (!tv_end_year.text.toString().isNullOrEmpty())
                 && (!tv_end_month.text.toString().isNullOrEmpty())
-        return check
     }
 
     /**
@@ -127,16 +128,13 @@ class FragmentEditGroup : BaseFragment() {
         (activity as ActivityMyProfileContainer).iv_back_blue.visibility = View.GONE
         (activity as ActivityMyProfileContainer).iv_check.visibility = View.VISIBLE
         (activity as ActivityMyProfileContainer).iv_close.visibility = View.VISIBLE
-        // todo : 여기 추가 수정 따로 이씀 header도 다름
+        // todo : 여기 추가 수정 따로 있음 header도 다름
         (activity as ActivityMyProfileContainer).tv_title.text =
             getString(R.string.str_add_group_info)
 
-        val textWatcher = object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+        val textWatcher = object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 (activity as ActivityMyProfileContainer).iv_check.isSelected = isCheck()
@@ -214,31 +212,6 @@ class FragmentEditGroup : BaseFragment() {
         popupMenu.show()
     }
 
-    // todo : 나중에 변경이 필요합니다.
-    private fun setSpinner() {
-//
-//        val startYearList = ArrayList<String>()
-//        for(i in Calendar.getInstance().get(Calendar.YEAR) .. Calendar.getInstance().get(Calendar.YEAR) + 2){
-//            startYearList.add(i.toString())
-//        }
-//        sp_start_year.adapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,startYearList)
-//        sp_start_year.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//
-//            }
-//
-//            override fun onNothingSelected(p0: AdapterView<*>?) {}
-//        }
-//
-//        sp_end_year.adapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,startYearList)
-//        sp_end_year.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//
-//            }
-//            override fun onNothingSelected(p0: AdapterView<*>?) {}
-//        }
-    }
-
     /**
      * View Click Listener
      */
@@ -248,7 +221,6 @@ class FragmentEditGroup : BaseFragment() {
                 (activity as ActivityMyProfileContainer).iv_close -> (activity as ActivityMyProfileContainer).onBackPressed()
                 (activity as ActivityMyProfileContainer).iv_check -> {
                     if ((activity as ActivityMyProfileContainer).iv_check.isSelected) {
-                        // todo : 다시 설정해야 함
                         if (mBean != null) editGroupInfo()
                         else addGroupInfo()
                     }

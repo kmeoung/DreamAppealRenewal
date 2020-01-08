@@ -3,16 +3,46 @@
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-    <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+    <ImageView
+            android:layout_width="49dp"
+            android:layout_height="49dp"
+            android:src="@drawable/drawer_user"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="15dp"/>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="13.7dp"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:text="@string/str_popular_tag"
-            android:textColor="@color/black"
-            android:textSize="13.3sp" />
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/tv_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="#Show_Me_Your_Dream"
+                android:textColor="@color/black"
+                android:textSize="13.3sp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+        <TextView
+                android:id="@+id/tv_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="1.1k개 게시물"
+                android:textColor="@color/black"
+                android:textSize="13.3sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="8.7dp"/>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

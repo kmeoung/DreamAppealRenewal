@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityComment
+import com.truevalue.dreamappeal.activity.ActivityAddrSearch
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
@@ -23,20 +22,24 @@ import com.truevalue.dreamappeal.bean.BeanAppealer
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.fragment_search_appealer.*
 import okhttp3.Call
 import org.json.JSONObject
 
 class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
 
-    private val TYPE_MODIFIER = 0
-    private val TYPE_LOCATION = 1
+    private val TYPE_LOCATION = 0
+    private val TYPE_MODIFIER = 1
 
-    private var mSearchType = TYPE_MODIFIER
+    private var mSearchType = TYPE_LOCATION
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    val RESULT_CODE = 1004
+
+    companion object {
+        private const val RESULT_CODE = 1004
+        private const val REQUEST_ADDR = 1005
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,9 +56,9 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
         onClickView()
         // init adapter
         initAdapter()
-
+        // 처음 버튼 설정
         setSearchType(mSearchType)
-
+        // 초반 데이터 가져오기
         getAppealerSearch()
     }
 
@@ -82,18 +85,27 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
         val listener = View.OnClickListener {
             when (it) {
                 tv_modifier -> {
-                    if (mSearchType != TYPE_MODIFIER)
-                        setSearchType(TYPE_MODIFIER)
+                    Toast.makeText(
+                        context!!.applicationContext,
+                        getString(R.string.str_not_ready_yet),
+                        Toast.LENGTH_SHORT
+                    ).show()
+//                    if (mSearchType != TYPE_MODIFIER)
+//                        setSearchType(TYPE_MODIFIER)
                 }
                 tv_location -> {
-                    Toast.makeText(context!!.applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
-//                    if (mSearchType != TYPE_LOCATION)
-//                        setSearchType(TYPE_LOCATION)
+                    if (mSearchType != TYPE_LOCATION)
+                        setSearchType(TYPE_LOCATION)
+                }
+                tv_addr -> {
+                    val intent = Intent(context!!, ActivityAddrSearch::class.java)
+                    startActivityForResult(intent, REQUEST_ADDR)
                 }
             }
         }
         tv_modifier.setOnClickListener(listener)
         tv_location.setOnClickListener(listener)
+        tv_addr.setOnClickListener(listener)
     }
 
     /**
@@ -147,10 +159,10 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
             tvName.text = if (bean.nickname.isNullOrEmpty()) "" else bean.nickname
 
             ivDelete.setOnClickListener(View.OnClickListener {
-                // todo : 여기는 잘 모르겠습니다
+                // todo : 역할을 잘 모르겠습니다.
             })
 
-            if(bean.idx != Comm_Prefs.getUserProfileIndex()) {
+            if (bean.idx != Comm_Prefs.getUserProfileIndex()) {
                 h.itemView.setOnClickListener(View.OnClickListener {
                     val intent = Intent()
                     intent.putExtra(ActivitySearch.RESULT_REPLACE_USER_IDX, bean.idx)
@@ -193,7 +205,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                         if (bean.idx != null)
                             mAdapter!!.add(bean)
                     }
-                }else{
+                } else {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -241,6 +253,14 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
             getAppealerSearch()
         } else {
             getAppealerSearch(keyword)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == REQUEST_ADDR){
+            // todo : 여기서 주소지를 가져와야 합니다.
         }
     }
 }

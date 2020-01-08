@@ -14,22 +14,22 @@
             android:orientation="horizontal">
 
         <TextView
-                android:id="@+id/tv_modifier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="14.3dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:text="@string/str_modifier_based_recommendation"
-                android:textColor="@color/color_search"
-                android:textSize="12.3sp" />
-
-        <TextView
                 android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="14.3dp"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="@string/str_location_based_recommendation"
+                android:textColor="@color/color_search"
+                android:textSize="12.3sp" />
+
+        <TextView
+                android:id="@+id/tv_modifier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="14.3dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="@string/str_modifier_based_recommendation"
                 android:textColor="@color/color_search"
                 android:textSize="12.3sp" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="14.3dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:text=""
+                android:text="@string/str_no_address"
                 android:textColor="@color/black"
                 android:textSize="12.3sp" />
 

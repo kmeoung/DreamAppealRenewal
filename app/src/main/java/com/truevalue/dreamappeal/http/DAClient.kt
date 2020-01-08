@@ -2166,7 +2166,6 @@ object DAClient {
     /**
      * GET
      * 어필러 추천
-     * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
      */
     fun searchAppealer(callback: DAHttpCallback) {
 
@@ -2181,8 +2180,7 @@ object DAClient {
 
     /**
      * POST
-     * 어필러 추천
-     * todo : 검색쪽은 다 똑같아서 일단 1개만 테스트
+     * 어필러 검색
      */
     fun searchAppealer(
         keyword: String,
@@ -2195,6 +2193,78 @@ object DAClient {
         BaseOkhttpClient.request(
             HttpType.POST,
             Comm_Param.URL_SEARCH_APPEALER,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 게시글 추천
+     */
+    fun searchBoard(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_SEARCH_ACTION_POST,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 게시글 검색
+     */
+    fun searchBoard(
+        keyword: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("keyword", keyword)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_SEARCH_ACTION_POST,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 태그 추천
+     */
+    fun searchTag(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_SEARCH_TAG,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 태그 검색
+     */
+    fun searchTag(
+        keyword: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("keyword", keyword)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_SEARCH_TAG,
             getHttpHeader(),
             params,
             callback

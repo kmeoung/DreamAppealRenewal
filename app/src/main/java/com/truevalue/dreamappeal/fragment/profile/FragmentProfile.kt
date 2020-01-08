@@ -21,6 +21,7 @@ import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
 import com.truevalue.dreamappeal.bean.BeanProfileUserPrivates
 import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
+import com.truevalue.dreamappeal.dialog.DialogYearMonthPicker
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_note.FragmentDreamNote
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
@@ -180,6 +181,9 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
                 tv_title -> {
                     if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
                         showDialog()
+                    }else{
+                        val dialog = DialogYearMonthPicker(context!!,-1,-1)
+                        dialog.show()
                     }
                 }
                 iv_dream_note->{
