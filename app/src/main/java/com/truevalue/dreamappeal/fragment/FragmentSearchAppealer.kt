@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanAddress
 import com.truevalue.dreamappeal.bean.BeanAppealer
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -259,8 +261,43 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == REQUEST_ADDR){
-            // todo : 여기서 주소지를 가져와야 합니다.
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ADDR) {
+                val bean =
+                    data!!.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
+                setUserAddress(bean)
+            }
         }
+    }
+
+    /**
+     * Http
+     * 유저 주소 등록
+     */
+    private fun setUserAddress(bean: BeanAddress) {
+        DAClient.setUserAddress(bean.address_name,
+            bean.region_1depth_name,
+            bean.region_2depth_name,
+            bean.region_3depth_name,
+            bean.region_3depth_h_name,
+            bean.x,
+            bean.y,
+            bean.zip_code,
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        .show()
+                    if (code == DAClient.SUCCESS) {
+                        tv_addr.text =
+                            "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
+                    }
+                }
+            })
     }
 }

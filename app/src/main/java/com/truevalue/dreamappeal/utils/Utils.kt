@@ -532,6 +532,21 @@ object Utils {
     }
 
     /**
+     * 이미지 뷰 크기 처리
+     */
+    fun setImageViewSquare(context: Context?, view: View, column: Int, row: Int) {
+        if (context != null) {
+            val params = view.layoutParams
+            val display = context!!.resources.displayMetrics
+            val swidth = display.widthPixels
+            params.width = swidth
+            val standard = (swidth / column) * row
+            params.height = standard
+            view.layoutParams = params
+        }
+    }
+
+    /**
      * 이미지 아이템 뷰 정사각형 처리
      */
     fun setImageItemViewSquare(context: Context?, view: View) {

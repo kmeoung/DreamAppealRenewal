@@ -29,24 +29,29 @@ import org.json.JSONObject
 
 class ActivityFollowCheering : BaseActivity() {
 
-    private var mViewType: String? = null
-    private var mListIdx = -1
+    private var mViewType: String?
+    private var mListIdx: Int
+    private var mAdapter: BaseRecyclerViewAdapter?
 
-    companion object {
-        val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
-        val VIEW_TYPE_FOLLOWING = "VIEW_TYPE_FOLLOWING"
-        val VIEW_TYPE_FOLLOWER = "VIEW_TYPE_FOLLOWER"
-        val VIEW_TYPE_CHEERING_PROFILE = "VIEW_TYPE_CHEERING_PROFILE"
-        val VIEW_TYPE_CHEERING_ACTION = "VIEW_TYPE_CHEERING_ACTION"
-        val VIEW_TYPE_CHEERING_ACHIEVEMENT = "VIEW_TYPE_CHEERING_ACHIEVEMENT"
-
-        val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
-        val REQUEST_REPLACE_USER_IDX = 4000
-        val REQUEST_VIEW_LIST_IDX = "REQUEST_VIEW_LIST_IDX"
-        val RESULT_CODE = 1004
+    init {
+        mViewType = null
+        mListIdx = -1
+        mAdapter = null
     }
 
-    private var mAdapter: BaseRecyclerViewAdapter? = null
+    companion object {
+        const val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
+        const val VIEW_TYPE_FOLLOWING = "VIEW_TYPE_FOLLOWING"
+        const val VIEW_TYPE_FOLLOWER = "VIEW_TYPE_FOLLOWER"
+        const val VIEW_TYPE_CHEERING_PROFILE = "VIEW_TYPE_CHEERING_PROFILE"
+        const val VIEW_TYPE_CHEERING_ACTION = "VIEW_TYPE_CHEERING_ACTION"
+        const val VIEW_TYPE_CHEERING_ACHIEVEMENT = "VIEW_TYPE_CHEERING_ACHIEVEMENT"
+
+        const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+        const val REQUEST_REPLACE_USER_IDX = 4000
+        const val REQUEST_VIEW_LIST_IDX = "REQUEST_VIEW_LIST_IDX"
+        const val RESULT_CODE = 1004
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,31 +82,32 @@ class ActivityFollowCheering : BaseActivity() {
      * 데이터 초기화
      */
     private fun initData() {
-        mViewType = intent.getStringExtra(EXTRA_VIEW_TYPE)
-        if (!mViewType.isNullOrEmpty()) {
+
+        intent.getStringExtra(EXTRA_VIEW_TYPE)?.let {
+            mViewType = it
             when (mViewType) {
                 VIEW_TYPE_FOLLOWER -> {
                     tv_title.text = getString(R.string.str_follower)
-                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX,-1)
+                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX, -1)
                     getFollower()
                 }
                 VIEW_TYPE_FOLLOWING -> {
                     tv_title.text = getString(R.string.str_menu_following)
                     getFollowing()
                 }
-                VIEW_TYPE_CHEERING_PROFILE ->{
+                VIEW_TYPE_CHEERING_PROFILE -> {
                     tv_title.text = getString(R.string.str_cheering_member)
-                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX,-1)
+                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX, -1)
                     getCheeringMember()
                 }
-                VIEW_TYPE_CHEERING_ACTION ->{
+                VIEW_TYPE_CHEERING_ACTION -> {
                     tv_title.text = getString(R.string.str_cheering_member)
-                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX,-1)
+                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX, -1)
                     getCheeringMember()
                 }
-                VIEW_TYPE_CHEERING_ACHIEVEMENT ->{
+                VIEW_TYPE_CHEERING_ACHIEVEMENT -> {
                     tv_title.text = getString(R.string.str_cheering_member)
-                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX,-1)
+                    mListIdx = intent.getIntExtra(REQUEST_VIEW_LIST_IDX, -1)
                     getCheeringMember()
                 }
             }
@@ -124,7 +130,6 @@ class ActivityFollowCheering : BaseActivity() {
         val clickListener = View.OnClickListener {
             when (it) {
                 iv_back_blue -> finish()
-
             }
         }
         iv_back_blue.setOnClickListener(clickListener)
@@ -135,8 +140,10 @@ class ActivityFollowCheering : BaseActivity() {
      */
     private fun initAdapter() {
         if (mAdapter == null) mAdapter = BaseRecyclerViewAdapter(listener)
-        rv_follow.layoutManager = LinearLayoutManager(this@ActivityFollowCheering)
-        rv_follow.adapter = mAdapter
+        rv_follow.run {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(this@ActivityFollowCheering)
+        }
     }
 
     /**
@@ -157,14 +164,22 @@ class ActivityFollowCheering : BaseActivity() {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val followers = json.getJSONArray("followers")
-                    mAdapter!!.clear()
-                    for (i in 0 until followers.length()) {
-                        val follower = followers.getJSONObject(i)
-                        val bean =
-                            Gson().fromJson<BeanFollow>(follower.toString(), BeanFollow::class.java)
-                        mAdapter!!.add(bean)
+
+                    mAdapter?.let {
+                        it.clear()
+                        for (i in 0 until followers.length()) {
+                            val follower = followers.getJSONObject(i)
+                            val bean =
+                                Gson().fromJson<BeanFollow>(
+                                    follower.toString(),
+                                    BeanFollow::class.java
+                                )
+                            it.add(bean)
+                        }
                     }
-                }else{
+
+
+                } else {
                     Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -189,14 +204,20 @@ class ActivityFollowCheering : BaseActivity() {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val following = json.getJSONArray("following")
-                    mAdapter!!.clear()
-                    for (i in 0 until following.length()) {
-                        val follow = following.getJSONObject(i)
-                        val bean =
-                            Gson().fromJson<BeanFollow>(follow.toString(), BeanFollow::class.java)
-                        mAdapter!!.add(bean)
+                    mAdapter?.let {
+                        it.clear()
+                        for (i in 0 until following.length()) {
+                            val follow = following.getJSONObject(i)
+                            val bean =
+                                Gson().fromJson<BeanFollow>(
+                                    follow.toString(),
+                                    BeanFollow::class.java
+                                )
+                            it.add(bean)
+                        }
                     }
-                }else{
+
+                } else {
                     Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -208,14 +229,17 @@ class ActivityFollowCheering : BaseActivity() {
      * 나를 응원해준 어필러 보기
      */
     private fun getCheeringMember() {
-        when(mViewType) {
-            VIEW_TYPE_CHEERING_PROFILE-> DAClient.getProfileCheering(mListIdx, cheeringListener)
-            VIEW_TYPE_CHEERING_ACTION-> DAClient.getActionCheering(mListIdx, cheeringListener)
-            VIEW_TYPE_CHEERING_ACHIEVEMENT-> DAClient.getAchievementCheeing(mListIdx, cheeringListener)
+        when (mViewType) {
+            VIEW_TYPE_CHEERING_PROFILE -> DAClient.getProfileCheering(mListIdx, cheeringListener)
+            VIEW_TYPE_CHEERING_ACTION -> DAClient.getActionCheering(mListIdx, cheeringListener)
+            VIEW_TYPE_CHEERING_ACHIEVEMENT -> DAClient.getAchievementCheeing(
+                mListIdx,
+                cheeringListener
+            )
         }
     }
 
-    val cheeringListener = object : DAHttpCallback {
+    private val cheeringListener = object : DAHttpCallback {
         override fun onResponse(
             call: Call,
             serverCode: Int,
@@ -226,14 +250,18 @@ class ActivityFollowCheering : BaseActivity() {
             if (code == DAClient.SUCCESS) {
                 val json = JSONObject(body)
                 val following = json.getJSONArray("like_list")
-                mAdapter!!.clear()
-                for (i in 0 until following.length()) {
-                    val follow = following.getJSONObject(i)
-                    val bean =
-                        Gson().fromJson<BeanFollow>(follow.toString(), BeanFollow::class.java)
-                    mAdapter!!.add(bean)
+
+                mAdapter?.let {
+                    it.clear()
+                    for (i in 0 until following.length()) {
+                        val follow = following.getJSONObject(i)
+                        val bean =
+                            Gson().fromJson<BeanFollow>(follow.toString(), BeanFollow::class.java)
+                        it.add(bean)
+                    }
                 }
-            }else{
+
+            } else {
                 Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
             }
         }
@@ -245,7 +273,7 @@ class ActivityFollowCheering : BaseActivity() {
      */
     private val listener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.size() else 0
+            get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             return BaseViewHolder.newInstance(R.layout.listitem_follow, parent, false)
@@ -260,11 +288,12 @@ class ActivityFollowCheering : BaseActivity() {
 
             val bean = mAdapter!!.get(i) as BeanFollow
 
-            if(mViewType == VIEW_TYPE_CHEERING_ACHIEVEMENT ||
+            if (mViewType == VIEW_TYPE_CHEERING_ACHIEVEMENT ||
                 mViewType == VIEW_TYPE_CHEERING_ACTION ||
-                mViewType == VIEW_TYPE_CHEERING_PROFILE){
+                mViewType == VIEW_TYPE_CHEERING_PROFILE
+            ) {
                 tvAddFollow.visibility = GONE
-            }else {
+            } else {
                 if (bean.status == 1) {
                     tvAddFollow.setTextColor(
                         ContextCompat.getColor(
@@ -291,9 +320,9 @@ class ActivityFollowCheering : BaseActivity() {
                     tvAddFollow.text = getString(R.string.str_add_follow)
                 }
 
-                if(bean.idx == Comm_Prefs.getUserProfileIndex()){
+                if (bean.idx == Comm_Prefs.getUserProfileIndex()) {
                     tvAddFollow.visibility = GONE
-                }else{
+                } else {
                     tvAddFollow.visibility = VISIBLE
                 }
             }
@@ -335,16 +364,13 @@ class ActivityFollowCheering : BaseActivity() {
                     code: String,
                     message: String
                 ) {
-                    if (this@ActivityFollowCheering != null) {
-                        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                        if (code == DAClient.SUCCESS) {
-                            // todo : 여기서 팔로우 설정
-                            val json = JSONObject(body)
-                            val status = json.getInt("status")
-                            bean!!.status = status
-                            mAdapter!!.notifyDataSetChanged()
-                        }
+                    if (code == DAClient.SUCCESS) {
+                        val json = JSONObject(body)
+                        val status = json.getInt("status")
+                        bean.status = status
+                        mAdapter!!.notifyDataSetChanged()
                     }
                 }
             })

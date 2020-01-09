@@ -115,7 +115,7 @@ class FragmentMyProfile : BaseFragment() {
                             tv_age.text = Utils.dateToAge(date).toString()
                         }
                         tv_gender.text = getString(if(bean.gender == 0) R.string.str_female else R.string.str_male)
-                        tv_address.text = if(bean.address.isNullOrEmpty()) getString(R.string.str_none) else bean.address
+                        tv_address.text = if(bean.address == null || (bean.address as String).isNullOrEmpty()) getString(R.string.str_none) else (bean.address as String)
                         tv_email.text = if(bean.email.isNullOrEmpty()) getString(R.string.str_none) else bean.email
 
                         val groups = json.getJSONArray("groups")

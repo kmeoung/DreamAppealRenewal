@@ -16,7 +16,9 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 
 class ActivityIntro : BaseActivity() {
 
-    private val DELAY: Long = 1000 * 1
+    companion object{
+        private const val DELAY: Long = 1000 * 1
+    }
 
     private val handler = Handler(Handler.Callback {
 
@@ -38,19 +40,19 @@ class ActivityIntro : BaseActivity() {
             && readStorage == PackageManager.PERMISSION_GRANTED
         ) {
             val prefs = Comm_Prefs
-            if (prefs.getUserProfileIndex() > -1) { // 바로 메인
-                intent = Intent(this@ActivityIntro, ActivityMain::class.java)
+            intent = if (prefs.getUserProfileIndex() > -1) { // 바로 메인
+                Intent(this@ActivityIntro, ActivityMain::class.java)
             } else { // 로그인 페이지
-                intent = Intent(this@ActivityIntro, ActivityLoginContainer::class.java)
+                Intent(this@ActivityIntro, ActivityLoginContainer::class.java)
             }
         } else {
             intent = Intent(this@ActivityIntro, ActivityPermission::class.java)
         }
 
-        if (getIntent().getStringExtra(ServiceFirebaseMsg.TYPE) != null) {
-            val extra = getIntent().getStringExtra(ServiceFirebaseMsg.TYPE)
-            intent.putExtra(ServiceFirebaseMsg.TYPE, extra)
+        getIntent().getStringExtra(ServiceFirebaseMsg.TYPE)?.let{
+            intent.putExtra(ServiceFirebaseMsg.TYPE, it)
         }
+
         startActivity(intent)
 
         finish()

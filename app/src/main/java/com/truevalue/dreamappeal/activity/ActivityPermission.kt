@@ -14,7 +14,9 @@ import kotlinx.android.synthetic.main.activity_permission.*
 
 class ActivityPermission : BaseActivity() {
 
-    private val REQUEST_PERMISSION_GRANT = 3000;
+    companion object{
+        private const val REQUEST_PERMISSION_GRANT = 3000
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +41,11 @@ class ActivityPermission : BaseActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 권한 허가
                 // 해당 권한을 사용해서 작업을 진행할 수 있습니다
-                val intent: Intent
                 val prefs = Comm_Prefs
-                if (prefs.getUserProfileIndex() > -1) { // 바로 메인
-                    intent = Intent(this@ActivityPermission, ActivityMain::class.java)
+                val intent: Intent = if (prefs.getUserProfileIndex() > -1) { // 바로 메인
+                    Intent(this@ActivityPermission, ActivityMain::class.java)
                 } else { // 로그인 페이지
-                    // todo : 로그인 지정이 필요합니다
-                    intent = Intent(this@ActivityPermission, ActivityLoginContainer::class.java)
+                    Intent(this@ActivityPermission, ActivityLoginContainer::class.java)
                 }
                 startActivity(intent)
                 finish()

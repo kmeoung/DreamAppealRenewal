@@ -36,8 +36,8 @@ class ActivityImgScaling : BaseActivity() {
      * Data 초기화
      */
     private fun initData() {
-        if (intent.getSerializableExtra(EXTRA_IMAGES) != null) {
-            mArrayImg = intent.getSerializableExtra(EXTRA_IMAGES) as ArrayList<String>
+        intent.getSerializableExtra(EXTRA_IMAGES)?.let {
+            mArrayImg = it as ArrayList<String>
         }
     }
 

@@ -107,7 +107,7 @@ object DAClient {
         jsonObject.put("idx", idx)
         jsonObject.put("upload_type", numType)
         val path = JSONArray()
-        for (i in 0 until url.size) {
+        for (i in url.indices) {
             val jsonUrl = JSONObject()
             jsonUrl.put("url", url[i])
             path.put(jsonUrl)
@@ -239,7 +239,17 @@ object DAClient {
         if (!bean.name.isNullOrEmpty()) params.put("name", bean.name!!)
         if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname!!)
         params.put("gender", bean.gender)
-        if (!bean.address.isNullOrEmpty()) params.put("address", bean.address!!)
+
+        if(bean.address != null){
+            when(bean.address!!){
+                is JSONObject->{
+                    params.put("address", bean.address!! as JSONObject)
+                }
+                is String->{
+                    if(!(bean.address as String).isNullOrEmpty()) params.put("address", bean.address!! as String)
+                }
+            }
+        }
 
         val privates = Gson().toJson(bean.private)
         params.put("privates", privates)

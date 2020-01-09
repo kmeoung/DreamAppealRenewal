@@ -18,28 +18,33 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class ActivitySearch : BaseActivity() {
 
-    private val TYPE_APPEALER = 0
-    private val TYPE_BOARD = 1
-    private val TYPE_TAG = 2
-
-    private var mSearchType = TYPE_APPEALER
-
-    private val SEARCH_DELAY = 1000L
-
+    private var mSearchType : Int
+    var mSearchListener: IOSearchListener? = null
+    val handler: Handler
     companion object {
+        private const val TYPE_APPEALER = 0
+        private const val TYPE_BOARD = 1
+        private const val TYPE_TAG = 2
+        private const val SEARCH_DELAY = 1000L
+        
         var RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
         var REQUEST_REPLACE_USER_IDX = 3000
+    }
+
+    init {
+        mSearchType = TYPE_APPEALER
+        mSearchListener = null
+        handler = Handler(Handler.Callback {
+            mSearchListener?.let {
+                it.onSearch(et_search.text.toString())
+            }
+            false
+        })
     }
 
     interface IOSearchListener {
         fun onSearch(keyword: String)
     }
-
-    var mSearchListener: IOSearchListener? = null
-    val handler: Handler = Handler(Handler.Callback {
-        mSearchListener!!.onSearch(et_search.text.toString())
-        false
-    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,9 +75,7 @@ class ActivitySearch : BaseActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 handler.removeMessages(0)
 
-                if (et_search.text.toString().isNullOrEmpty()) {
-                    iv_cancel.visibility = GONE
-                } else iv_cancel.visibility = VISIBLE
+                iv_cancel.visibility = if (et_search.text.toString().isNullOrEmpty()) GONE else VISIBLE
 
                 handler.sendEmptyMessageDelayed(0, SEARCH_DELAY)
             }

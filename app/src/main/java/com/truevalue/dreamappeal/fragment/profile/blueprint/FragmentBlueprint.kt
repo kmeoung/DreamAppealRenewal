@@ -290,12 +290,15 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mAnOAdapter = BaseRecyclerViewAdapter(abilityAndOpportunityListener)
         mObjectAdapter = BaseRecyclerViewAdapter(objectListener)
 
-        rv_ability_and_opportunity.adapter = mAnOAdapter
-        rv_object.adapter = mObjectAdapter
+        rv_ability_and_opportunity.run {
+            adapter = mAnOAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
-        rv_ability_and_opportunity.layoutManager =
-            LinearLayoutManager(context)
-        rv_object.layoutManager = LinearLayoutManager(context)
+        rv_object.run {
+            adapter = mObjectAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     /**

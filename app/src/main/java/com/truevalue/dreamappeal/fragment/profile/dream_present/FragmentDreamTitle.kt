@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dream_title.*
 import kotlinx.android.synthetic.main.fragment_dream_title.pager_image
 import kotlinx.android.synthetic.main.fragment_dream_title.tv_indicator
-import kotlinx.android.synthetic.main.fragment_post_detail.*
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -185,6 +184,8 @@ class FragmentDreamTitle : BaseFragment() {
             if (!mBean!!.job.isNullOrEmpty()) et_job.setText(mBean!!.job)
             if (!mBean!!.value_style.isNullOrEmpty()) et_value_style.setText(mBean!!.value_style)
         }
+
+        Utils.setImageViewSquare(context!!,rl_images)
     }
 
     /**

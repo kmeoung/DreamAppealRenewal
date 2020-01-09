@@ -1,19 +1,15 @@
 package com.truevalue.dreamappeal.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
@@ -24,11 +20,9 @@ import com.truevalue.dreamappeal.bean.BeanAddress
 import com.truevalue.dreamappeal.http.*
 import com.truevalue.dreamappeal.utils.Comm_Param
 import kotlinx.android.synthetic.main.activity_address_search.*
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_search.btn_cancel
 import kotlinx.android.synthetic.main.activity_search.et_search
 import kotlinx.android.synthetic.main.activity_search.iv_cancel
-import kotlinx.android.synthetic.main.fragment_add_action_post.*
 import okhttp3.Call
 import org.json.JSONException
 import org.json.JSONObject
@@ -40,6 +34,10 @@ class ActivityAddrSearch : BaseActivity() {
     private val SEARCH_DELAY = 1000L
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
+
+    companion object {
+        const val RESULT_ADDRESS = "RESULT_ADDRESS"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,8 +80,10 @@ class ActivityAddrSearch : BaseActivity() {
      */
     private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
-        rv_search.adapter = mAdapter
-        rv_search.layoutManager = LinearLayoutManager(this)
+        rv_search.run {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(this@ActivityAddrSearch)
+        }
     }
 
     /**
@@ -101,7 +101,7 @@ class ActivityAddrSearch : BaseActivity() {
         btn_cancel.setOnClickListener(listener)
         iv_cancel.setOnClickListener(listener)
 
-        et_search.setOnEditorActionListener(TextView.OnEditorActionListener { _, i, _ ->
+        et_search.setOnEditorActionListener{ _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 if (!et_search.text.toString().isNullOrEmpty()) {
                     getAddrPost(et_search.text.toString())
@@ -110,8 +110,7 @@ class ActivityAddrSearch : BaseActivity() {
             } else
                 false
             true
-        })
-
+        }
     }
 
     /**
@@ -142,54 +141,54 @@ class ActivityAddrSearch : BaseActivity() {
                     code: String,
                     message: String
                 ) {
-                    val json = JSONObject(body)
-                    mAdapter!!.clear()
-                    try {
-                        val documents = json.getJSONArray("documents")
-                        for (i in 0 until documents.length()) {
-                            val document = documents.getJSONObject(i)
-                            var address : JSONObject
-                            try{
-                                address = document.getJSONObject("address")
-                            }catch (e: Exception){
-                                address = document.getJSONObject("road_address")
+                    mAdapter?.let {
+                        val json = JSONObject(body)
+                        it.clear()
+                        try {
+                            val documents = json.getJSONArray("documents")
+                            for (i in 0 until documents.length()) {
+                                val document = documents.getJSONObject(i)
+                                var address: JSONObject
+                                try {
+                                    address = document.getJSONObject("address")
+                                } catch (e: Exception) {
+                                    address = document.getJSONObject("road_address")
+                                }
+                                val addrName = address.getString("address_name")
+
+                                val region_1depth_name = address.getString("region_1depth_name")
+                                val region_2depth_name = address.getString("region_2depth_name")
+                                val region_3depth_name = address.getString("region_3depth_name")
+                                var region_3depth_h_name: String? = try {
+                                    address.getString("region_3depth_h_name")
+                                } catch (e: Exception) {
+                                    " "
+                                }
+
+                                val x = address.getDouble("x")
+                                val y = address.getDouble("y")
+
+                                var zip_code: String? = try {
+                                    address.getString("zip_code")
+                                } catch (e: Exception) {
+                                    " "
+                                }
+
+                                val bean = BeanAddress(
+                                    addrName,
+                                    region_1depth_name,
+                                    region_2depth_name,
+                                    region_3depth_name,
+                                    region_3depth_h_name,
+                                    x,
+                                    y,
+                                    zip_code
+                                )
+                                it.add(bean)
                             }
-                            val addrName = address.getString("address_name")
-
-                            val region_1depth_name = address.getString("region_1depth_name")
-                            val region_2depth_name = address.getString("region_2depth_name")
-                            val region_3depth_name = address.getString("region_3depth_name")
-                            var region_3depth_h_name : String?
-                            try {
-                                region_3depth_h_name = address.getString("region_3depth_h_name")
-                            }catch (e : Exception){
-                                region_3depth_h_name = null
-                            }
-
-                            val x = address.getDouble("x")
-                            val y = address.getDouble("y")
-
-                            var zip_code : String?
-                            try{
-                                zip_code = address.getString("zip_code")
-                            }catch (e : Exception){
-                                zip_code = null
-                            }
-
-                            val bean = BeanAddress(
-                                addrName,
-                                region_1depth_name,
-                                region_2depth_name,
-                                region_3depth_name,
-                                region_3depth_h_name,
-                                x,
-                                y,
-                                zip_code
-                            )
-                            mAdapter!!.add(bean)
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
                         }
-                    }catch (e : JSONException){
-                        e.printStackTrace()
                     }
                 }
             }
@@ -201,7 +200,7 @@ class ActivityAddrSearch : BaseActivity() {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.size() else 0
+            get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             return BaseViewHolder.newInstance(R.layout.listitem_addr_search, parent, false)
@@ -209,11 +208,16 @@ class ActivityAddrSearch : BaseActivity() {
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             val tvAddr = h.getItemView<TextView>(R.id.tv_addr)
-            val bean = mAdapter!!.get(i) as BeanAddress
-            tvAddr.text = bean.addres_name
-            tvAddr.setOnClickListener(View.OnClickListener {
-                setUserAddress(bean)
-            })
+            mAdapter?.let {
+                val bean = it.get(i) as BeanAddress
+                tvAddr.text = bean.address_name
+                tvAddr.setOnClickListener {
+                    val intent = Intent()
+                    intent.putExtra(RESULT_ADDRESS, bean)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
+            }
         }
 
         override fun getItemViewType(i: Int): Int {
@@ -221,31 +225,5 @@ class ActivityAddrSearch : BaseActivity() {
         }
     }
 
-
-    /**
-     * Http
-     * 유저 주소 등록
-     */
-    private fun setUserAddress(bean : BeanAddress){
-        DAClient.setUserAddress(bean.addres_name,
-            bean.region_1depth_name,
-            bean.region_2depth_name,
-            bean.region_3depth_name,
-            bean.region_3depth_h_name,
-            bean.x,
-            bean.y,
-            bean.zipcode,
-            object : DAHttpCallback{
-                override fun onResponse(
-                    call: Call,
-                    serverCode: Int,
-                    body: String,
-                    code: String,
-                    message: String
-                ) {
-                    Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
 
 }

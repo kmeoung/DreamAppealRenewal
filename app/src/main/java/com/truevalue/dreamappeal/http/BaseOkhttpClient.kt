@@ -48,9 +48,11 @@ object BaseOkhttpClient : OkHttpClient() {
         if (!Comm_Param.REAL) Log.d("SERVER REQUEST URL", call.request().url.toString())
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                if (callback != null) {
-                    callback.onFailure(call, e)
-                } else return
+                callback?.let {
+                    it.onFailure(call,e)
+                } ?: run{
+                    return
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {

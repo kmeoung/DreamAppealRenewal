@@ -24,7 +24,6 @@ import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_dream_title.*
 import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
 import kotlinx.android.synthetic.main.fragment_merit_and_motive.pager_image
 import kotlinx.android.synthetic.main.fragment_merit_and_motive.tv_indicator
@@ -167,6 +166,8 @@ class FragmentMeritAndMotive : BaseFragment() {
             if (!mBean!!.meritNmotive.isNullOrEmpty()) et_merit_and_motive.setText(mBean!!.meritNmotive)
             tv_init_merit_and_motive.visibility = GONE
         }
+
+        Utils.setImageViewSquare(context!!,rl_images)
     }
 
     /**

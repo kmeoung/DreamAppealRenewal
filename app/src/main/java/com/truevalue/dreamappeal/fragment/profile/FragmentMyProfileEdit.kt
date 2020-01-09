@@ -1,6 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile
 
+import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -11,15 +13,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityAddrSearch
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.bean.BeanAddress
 import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.fragment_ano.*
 import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import kotlinx.android.synthetic.main.fragment_normal_profile_edit.*
 import okhttp3.Call
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +34,8 @@ class FragmentMyProfileEdit : BaseFragment() {
     private var mBean: BeanProfileUser? = null
     private var isGender: Boolean
     private var mCal: Calendar
+
+    private var mAddrBean : BeanAddress? = null
 
     /**
      * privates data
@@ -42,6 +50,8 @@ class FragmentMyProfileEdit : BaseFragment() {
     }
 
     companion object {
+        private const val REQUEST_ADDR = 1005
+
         fun newInstance(bean: BeanProfileUser?): FragmentMyProfileEdit {
             var fragment = FragmentMyProfileEdit()
             fragment.mBean = bean
@@ -64,22 +74,17 @@ class FragmentMyProfileEdit : BaseFragment() {
     }
 
     private fun isCheck() : Boolean{
-
-        val check = (!et_name.text.toString().isNullOrEmpty())
+        return (!et_name.text.toString().isNullOrEmpty())
                 && (!et_nickname.text.toString().isNullOrEmpty())
                 && (!tv_gender.text.toString().isNullOrEmpty())
                 && (!tv_date.text.toString().isNullOrEmpty())
-        // todo : 지금은 주소 비활성화
-
-        return check
+                && (!tv_address.text.toString().isNullOrEmpty())
     }
 
     /**
      * View 초기화
      */
     private fun initView() {
-        // todo : 현재는 거주지 비활성화
-        et_address.isEnabled = false
         // 상단 바 설정
         (activity as ActivityMyProfileContainer).iv_back_black.visibility = View.VISIBLE
         (activity as ActivityMyProfileContainer).tv_title.text =
@@ -99,7 +104,7 @@ class FragmentMyProfileEdit : BaseFragment() {
         }
         et_name.addTextChangedListener(textWatcher)
         et_nickname.addTextChangedListener(textWatcher)
-        et_address.addTextChangedListener(textWatcher)
+        tv_address.addTextChangedListener(textWatcher)
         tv_gender.addTextChangedListener(textWatcher)
         tv_date.addTextChangedListener(textWatcher)
 
@@ -110,7 +115,7 @@ class FragmentMyProfileEdit : BaseFragment() {
             tv_date.text = SimpleDateFormat("yyyy. MM. dd").format(mCal.time)
             tv_gender.text =
                 getString(if (mBean!!.gender == 0) R.string.str_female else R.string.str_male)
-            et_address.setText(if (mBean!!.nickname.isNullOrEmpty()) "" else mBean!!.address)
+            tv_address.text = if (mBean!!.address == null || (mBean!!.address as String).isNullOrEmpty()) "" else (mBean!!.address as String)
 
             if (mBean!!.private != null) {
                 /**
@@ -187,7 +192,20 @@ class FragmentMyProfileEdit : BaseFragment() {
         bean.nickname = et_nickname.text.toString()
         bean.birth = SimpleDateFormat("yyyy-MM-dd").format(mCal.time)
         bean.gender = if(isGender) 0 else 1
-        bean.address = et_address.text.toString()
+
+        bean.address = if(mAddrBean != null){
+            val json = JSONObject()
+            json.put("address_name",mAddrBean!!.address_name)
+            json.put("region_1depth_name",mAddrBean!!.region_1depth_name)
+            json.put("region_2depth_name",mAddrBean!!.region_2depth_name)
+            json.put("region_3depth_name",mAddrBean!!.region_3depth_name)
+            json.put("region_3depth_h_name",mAddrBean!!.region_3depth_h_name)
+            json.put("x",mAddrBean!!.x)
+            json.put("y",mAddrBean!!.y)
+            json.put("zip_code",mAddrBean!!.zip_code)
+            json
+        }else null
+
         bean.private!!.name = if(iv_lock_name.isSelected) 1 else 0
         bean.private!!.birth = if(iv_lock_birth.isSelected) 1 else 0
         bean.private!!.address = if(iv_lock_address.isSelected) 1 else 0
@@ -237,6 +255,10 @@ class FragmentMyProfileEdit : BaseFragment() {
                         updateMyUserData()
                     }
                 }
+                tv_address->{
+                    val intent = Intent(context!!,ActivityAddrSearch::class.java)
+                    startActivityForResult(intent, REQUEST_ADDR)
+                }
             }
         }
 
@@ -249,5 +271,17 @@ class FragmentMyProfileEdit : BaseFragment() {
         iv_lock_nickname.setOnClickListener(listener)
         iv_lock_name.setOnClickListener(listener)
         tv_gender.setOnClickListener(listener)
+        tv_address.setOnClickListener(listener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK){
+            if(requestCode == REQUEST_ADDR){
+                val bean = data!!.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
+                mAddrBean = bean
+                tv_address.text = "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
+            }
+        }
     }
 }

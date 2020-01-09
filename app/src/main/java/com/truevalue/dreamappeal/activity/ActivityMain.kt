@@ -40,14 +40,14 @@ class ActivityMain : BaseActivity() {
     companion object {
         var isMainRefresh = false
 
-        val MAIN_TYPE_HOME = "MAIN_TYPE_HOME"
-        val MAIN_TYPE_TIMELINE = "MAIN_TYPE_TIMELINE"
-        val MAIN_TYPE_ADD_BOARD = "MAIN_TYPE_ADD_BOARD"
-        val MAIN_TYPE_NOTIFICATION = "MAIN_TYPE_NOTIFICATION"
-        val MAIN_TYPE_PROFILE = "MAIN_TYPE_PROFILE"
+        const val MAIN_TYPE_HOME = "MAIN_TYPE_HOME"
+        const val MAIN_TYPE_TIMELINE = "MAIN_TYPE_TIMELINE"
+        const val MAIN_TYPE_ADD_BOARD = "MAIN_TYPE_ADD_BOARD"
+        const val MAIN_TYPE_NOTIFICATION = "MAIN_TYPE_NOTIFICATION"
+        const val MAIN_TYPE_PROFILE = "MAIN_TYPE_PROFILE"
 
-        val ACTION_BAR_TYPE_PROFILE_MAIN = "ACTION_BAR_TYPE_PROFILE_MAIN"
-        val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
+        const val ACTION_BAR_TYPE_PROFILE_MAIN = "ACTION_BAR_TYPE_PROFILE_MAIN"
+        const val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
     }
 
     data class BeanDrawerData(var following: Int, var dream_point: Int)
@@ -68,7 +68,7 @@ class ActivityMain : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (intent.getStringExtra(ServiceFirebaseMsg.TYPE) != null) {
+        intent.getStringExtra(ServiceFirebaseMsg.TYPE)?.let{
             mMainViewType = MAIN_TYPE_NOTIFICATION
         }
 
@@ -77,7 +77,6 @@ class ActivityMain : BaseActivity() {
 
         mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
 
-        // todo : AWS Mobile Init
         AWSMobileClient.getInstance().initialize(this) {
             Log.d("AWS_LOG", "AWS INITIALIZED")
         }.execute()

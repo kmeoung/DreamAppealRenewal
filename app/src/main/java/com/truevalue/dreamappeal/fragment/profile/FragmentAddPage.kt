@@ -24,6 +24,10 @@ import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_page.*
+import kotlinx.android.synthetic.main.fragment_add_page.pager_image
+import kotlinx.android.synthetic.main.fragment_add_page.rl_images
+import kotlinx.android.synthetic.main.fragment_add_page.tv_indicator
+import kotlinx.android.synthetic.main.fragment_dream_title.*
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -33,8 +37,8 @@ class FragmentAddPage : BaseFragment() {
     private var mBeanAnO: BeanBlueprintAnO? = null
     private var mObjectIdx: Int = -1
     private var mStepIdx: Int = -1
-    private var mAdapter : BasePagerAdapter<String>? = null
-    private var mContents : String? = null
+    private var mAdapter: BasePagerAdapter<String>? = null
+    private var mContents: String? = null
 
     companion object {
         val VIEW_TYPE_ADD_ABILITY = "VIEW_TYPE_ADD_ABILITY"
@@ -68,7 +72,7 @@ class FragmentAddPage : BaseFragment() {
          * 실현 성과 수정
          * 상세 추가
          */
-        fun newInstance(view_type: String, object_idx: Int,contents : String): FragmentAddPage {
+        fun newInstance(view_type: String, object_idx: Int, contents: String): FragmentAddPage {
             val fragment = FragmentAddPage()
             fragment.mViewType = view_type
             fragment.mObjectIdx = object_idx
@@ -91,7 +95,12 @@ class FragmentAddPage : BaseFragment() {
         /**
          * 상세 수정 / 삭제
          */
-        fun newInstance(view_type: String, object_idx: Int, step_idx: Int,contents : String): FragmentAddPage {
+        fun newInstance(
+            view_type: String,
+            object_idx: Int,
+            step_idx: Int,
+            contents: String
+        ): FragmentAddPage {
             val fragment = FragmentAddPage()
             fragment.mViewType = view_type
             fragment.mObjectIdx = object_idx
@@ -154,8 +163,8 @@ class FragmentAddPage : BaseFragment() {
      * Http
      * 예시 이미지 가져오기
      */
-    private fun getExampleIamges(){
-        val exListener =  object : DAHttpCallback {
+    private fun getExampleIamges() {
+        val exListener = object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -180,31 +189,33 @@ class FragmentAddPage : BaseFragment() {
             }
         }
 
-       val ex_idx : Int = when(mViewType){
-                VIEW_TYPE_ADD_ABILITY->1
-                VIEW_TYPE_ADD_OPPORTUNITY->1
-                VIEW_TYPE_EDIT_ABILITY->1
-                VIEW_TYPE_EDIT_OPPORTUNITY->1
-                VIEW_TYPE_ADD_STEP->1
-                VIEW_TYPE_EDIT_STEP->1
-                VIEW_TYPE_ADD_STEP_DETAIL->2
-                VIEW_TYPE_EDIT_STEP_DETAIL->2
-           else->1
-       }
+        val ex_idx: Int = when (mViewType) {
+            VIEW_TYPE_ADD_ABILITY -> 1
+            VIEW_TYPE_ADD_OPPORTUNITY -> 1
+            VIEW_TYPE_EDIT_ABILITY -> 1
+            VIEW_TYPE_EDIT_OPPORTUNITY -> 1
+            VIEW_TYPE_ADD_STEP -> 1
+            VIEW_TYPE_EDIT_STEP -> 1
+            VIEW_TYPE_ADD_STEP_DETAIL -> 2
+            VIEW_TYPE_EDIT_STEP_DETAIL -> 2
+            else -> 1
+        }
 
-        if(mViewType == VIEW_TYPE_ADD_ABILITY ||
+        if (mViewType == VIEW_TYPE_ADD_ABILITY ||
             mViewType == VIEW_TYPE_EDIT_ABILITY ||
             mViewType == VIEW_TYPE_ADD_OPPORTUNITY ||
-            mViewType == VIEW_TYPE_EDIT_OPPORTUNITY){
+            mViewType == VIEW_TYPE_EDIT_OPPORTUNITY
+        ) {
 
-            if(mViewType == VIEW_TYPE_ADD_OPPORTUNITY ||
-                mViewType == VIEW_TYPE_EDIT_OPPORTUNITY) {
-                DAClient.opportunityExampleImage(ex_idx,exListener)
-            }else{
-                DAClient.abilityExampleImage(ex_idx,exListener)
+            if (mViewType == VIEW_TYPE_ADD_OPPORTUNITY ||
+                mViewType == VIEW_TYPE_EDIT_OPPORTUNITY
+            ) {
+                DAClient.opportunityExampleImage(ex_idx, exListener)
+            } else {
+                DAClient.abilityExampleImage(ex_idx, exListener)
             }
-        }else{
-            DAClient.objectExampleImage(ex_idx,exListener)
+        } else {
+            DAClient.objectExampleImage(ex_idx, exListener)
         }
 
     }
@@ -276,10 +287,12 @@ class FragmentAddPage : BaseFragment() {
             tv_default.visibility = View.GONE
         }
 
-        if(mContents != null){
+        if (mContents != null) {
             et_contents.setText(mContents)
             tv_default.visibility = GONE
         }
+
+        Utils.setImageViewSquare(context!!, rl_images, 3, 4)
     }
 
     /**
@@ -333,7 +346,7 @@ class FragmentAddPage : BaseFragment() {
                     addObjectStepDetail(mObjectIdx, contents)
                 }
                 VIEW_TYPE_EDIT_STEP -> {
-                    updateObjectStep(mObjectIdx,contents)
+                    updateObjectStep(mObjectIdx, contents)
                 }
                 VIEW_TYPE_EDIT_STEP_DETAIL -> {
                     updateObjectStepDetail(mStepIdx, mObjectIdx, contents)

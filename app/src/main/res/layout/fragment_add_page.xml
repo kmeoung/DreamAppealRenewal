@@ -92,7 +92,8 @@
             <!--예시 화면-->
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="375.7dp">
+                    android:layout_height="375.7dp"
+                    android:id="@+id/rl_images">
 
                 <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager_image"

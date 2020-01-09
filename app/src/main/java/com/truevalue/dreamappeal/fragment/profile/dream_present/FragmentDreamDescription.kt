@@ -24,6 +24,10 @@ import kotlinx.android.synthetic.main.action_bar_main.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dream_description.*
+import kotlinx.android.synthetic.main.fragment_dream_description.pager_image
+import kotlinx.android.synthetic.main.fragment_dream_description.rl_images
+import kotlinx.android.synthetic.main.fragment_dream_description.tv_indicator
+import kotlinx.android.synthetic.main.fragment_dream_title.*
 import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONObject
@@ -214,6 +218,8 @@ class FragmentDreamDescription : BaseFragment() {
                 }
             }
         }
+
+        Utils.setImageViewSquare(context!!,rl_images)
     }
 
     /**

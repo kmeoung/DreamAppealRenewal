@@ -50,9 +50,9 @@
                 android:text="@string/str_address"
                 android:textColor="@color/azure"
                 android:textSize="14.8sp"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_birth"
-                android:visibility="gone"/>
+                app:layout_constraintTop_toBottomOf="@+id/linear_birth" />
 
         <TextView
                 android:id="@+id/birthday"
@@ -159,7 +159,7 @@
                     android:layout_width="34.7dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_lock"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
 
         </LinearLayout>
@@ -173,14 +173,14 @@
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/bg_round_rectangle_gray"
                 android:orientation="horizontal"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address"
-                android:visibility="gone">
+                app:layout_constraintTop_toBottomOf="@+id/address">
 
-            <EditText
-                    android:id="@+id/et_address"
+            <TextView
+                    android:id="@+id/tv_address"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -190,8 +190,6 @@
                     android:hint="@string/str_address_hint"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:lines="1"
-                    android:maxLines="1"
                     android:paddingLeft="17.7dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/silver"

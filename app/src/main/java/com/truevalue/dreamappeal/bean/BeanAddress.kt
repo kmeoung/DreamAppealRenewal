@@ -2,11 +2,11 @@ package com.truevalue.dreamappeal.bean
 
 import java.io.Serializable
 
-data class BeanAddress(var addres_name : String?,
+data class BeanAddress(var address_name : String?,
                        var region_1depth_name : String?,
                        var region_2depth_name : String?,
                        var region_3depth_name : String?,
                        var region_3depth_h_name : String?,
                        var x : Double?,
                        var y : Double?,
-                       var zipcode : String?) : Serializable
+                       var zip_code : String?) : Serializable

@@ -30,24 +30,26 @@ import kotlin.collections.ArrayList
 class ActivityCameraGallery : BaseActivity() {
 
 
-    private var mOldPath: ArrayList<BeanGalleryInfo>? = null
-    private var mItemPath: ArrayList<BeanGalleryInfo>? = null
-    private var mBucked: ArrayList<BeanGalleryInfo>? = null
-    private var isMultiMode = false
+    private var mOldPath: ArrayList<BeanGalleryInfo>?
+    private var mItemPath: ArrayList<BeanGalleryInfo>?
+    private var mBucked: ArrayList<BeanGalleryInfo>?
+    private var isMultiMode: Boolean
     private val mMultiImage: ArrayList<BeanGalleryInfo>?
-    private var mCurrentViewImage: File? = null
-    private var mGridAdapter: GridAdapter? = null
+    private var mCurrentViewImage: File?
+    private var mGridAdapter: GridAdapter?
 
     private var mSelectType: String?
     private var mViewType: String?
     private var mBestIdx: Int
 
-    val REQUEST_IMAGE_CAPTURE = 1004
-
-    val REQUEST_ADD_ACTION_POST = 1005
-    val REQUEST_ADD_ACHIEVEMENT_POST = 1006
-
     init {
+        mOldPath = null
+        mItemPath = null
+        mBucked = null
+        isMultiMode = false
+        mCurrentViewImage = null
+        mGridAdapter = null
+
         mMultiImage = ArrayList()
         // 기본 싱글
         mSelectType = EXTRA_IMAGE_SINGLE_SELECT
@@ -58,18 +60,23 @@ class ActivityCameraGallery : BaseActivity() {
     }
 
     companion object {
-        val SELECT_TYPE = "SELECT_TYPE"
-        val VIEW_TYPE = "VIEW_TYPE"
-        val ACHIEVEMENT_POST_BEST_IDX = "ACHIEVEMENT_POST_BEST_IDX"
+        const val REQUEST_IMAGE_CAPTURE = 1004
 
-        val EXTRA_IMAGE_SINGLE_SELECT = "EXTRA_IMAGE_SINGLE_SELECT"
-        val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
-        val EXTRA_ACTION_POST = "EXTRA_ACTION_POST"
-        val EXTRA_ACHIVEMENT_POST = "EXTRA_ACHIVEMENT_POST"
-        val EXTRA_BOARD = "EXTRA_BOARD"
-        val EXTRA_DREAM_PROFILE = "EXTRA_DREAM_PROFILE"
-        val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
-        val REQUEST_BEST_IDX = "REQUEST_BEST_IDX"
+        const val REQUEST_ADD_ACTION_POST = 1005
+        const val REQUEST_ADD_ACHIEVEMENT_POST = 1006
+
+        const val SELECT_TYPE = "SELECT_TYPE"
+        const val VIEW_TYPE = "VIEW_TYPE"
+        const val ACHIEVEMENT_POST_BEST_IDX = "ACHIEVEMENT_POST_BEST_IDX"
+
+        const val EXTRA_IMAGE_SINGLE_SELECT = "EXTRA_IMAGE_SINGLE_SELECT"
+        const val EXTRA_IMAGE_MULTI_SELECT = "EXTRA_IMAGE_MULTI_SELECT"
+        const val EXTRA_ACTION_POST = "EXTRA_ACTION_POST"
+        const val EXTRA_ACHIVEMENT_POST = "EXTRA_ACHIVEMENT_POST"
+        const val EXTRA_BOARD = "EXTRA_BOARD"
+        const val EXTRA_DREAM_PROFILE = "EXTRA_DREAM_PROFILE"
+        const val REQUEST_IMAGE_FILES = "REQUEST_IMAGE_FILES"
+        const val REQUEST_BEST_IDX = "REQUEST_BEST_IDX"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,63 +130,68 @@ class ActivityCameraGallery : BaseActivity() {
             when (it) {
                 iv_check -> {
                     val array = ArrayList<File>()
-                    if (mViewType.equals(EXTRA_ACHIVEMENT_POST)) {
-                        if (isMultiMode) {
-                            // Achievement Post 이미지 추가로 이동
-                            for (i in 0 until mMultiImage!!.size) {
-                                array.add(File(mMultiImage[i].imagePath))
+                    when (mViewType) {
+                        EXTRA_ACHIVEMENT_POST -> {
+                            if (isMultiMode) {
+                                // Achievement Post 이미지 추가로 이동
+                                for (i in 0 until mMultiImage!!.size) {
+                                    array.add(File(mMultiImage[i].imagePath))
+                                }
+                            } else {
+                                if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
                             }
-                        } else {
-                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                            val intent =
+                                Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            intent.putExtra(REQUEST_BEST_IDX, mBestIdx)
+                            intent.putExtra(VIEW_TYPE, EXTRA_ACHIVEMENT_POST)
+                            startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT_POST)
                         }
-                        val intent =
-                            Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
-                        intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        intent.putExtra(REQUEST_BEST_IDX, mBestIdx)
-                        intent.putExtra(VIEW_TYPE, EXTRA_ACHIVEMENT_POST)
-                        startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT_POST)
-                    } else if (mViewType.equals(EXTRA_ACTION_POST)) {
-                        if (isMultiMode) {
-                            // Action Post 이미지 추가로 이동
-                            for (i in 0 until mMultiImage!!.size) {
-                                array.add(File(mMultiImage[i].imagePath))
+                        EXTRA_ACTION_POST -> {
+                            if (isMultiMode) {
+                                // Action Post 이미지 추가로 이동
+                                for (i in 0 until mMultiImage!!.size) {
+                                    array.add(File(mMultiImage[i].imagePath))
+                                }
+                            } else {
+                                if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
                             }
-                        } else {
-                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                            val intent =
+                                Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
+                            intent.putExtra(VIEW_TYPE, EXTRA_ACTION_POST)
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
                         }
-                        val intent =
-                            Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
-                        intent.putExtra(VIEW_TYPE, EXTRA_ACTION_POST)
-                        intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
-                    } else if (mViewType.equals(EXTRA_DREAM_PROFILE)) {
-                        if (isMultiMode) {
-                            // Action Post 이미지 추가로 이동
-                            for (i in 0 until mMultiImage!!.size) {
-                                array.add(File(mMultiImage[i].imagePath))
+                        EXTRA_DREAM_PROFILE -> {
+                            if (isMultiMode) {
+                                // Action Post 이미지 추가로 이동
+                                for (i in 0 until mMultiImage!!.size) {
+                                    array.add(File(mMultiImage[i].imagePath))
+                                }
+                            } else {
+                                if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
                             }
-                        } else {
-                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
-                        }
 
-                        val intent = Intent()
-                        intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
-                    } else if (mViewType.equals(EXTRA_BOARD)) {
-                        if (isMultiMode) {
-                            // Action Post 이미지 추가로 이동
-                            for (i in 0 until mMultiImage!!.size) {
-                                array.add(File(mMultiImage[i].imagePath))
-                            }
-                        } else {
-                            if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                            val intent = Intent()
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
                         }
+                        EXTRA_BOARD -> {
+                            if (isMultiMode) {
+                                // Action Post 이미지 추가로 이동
+                                for (i in 0 until mMultiImage!!.size) {
+                                    array.add(File(mMultiImage[i].imagePath))
+                                }
+                            } else {
+                                if (mCurrentViewImage != null) array.add(mCurrentViewImage!!)
+                            }
 
-                        val intent = Intent()
-                        intent.putExtra(REQUEST_IMAGE_FILES, array)
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
+                            val intent = Intent()
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
                     }
                 }
                 btn_multi_select -> {
@@ -191,7 +203,7 @@ class ActivityCameraGallery : BaseActivity() {
                         else -> true
                     }
                     btn_multi_select.isSelected = isMultiMode
-                    mGridAdapter!!.notifyDataSetChanged()
+                    mGridAdapter?.let { adapter -> adapter.notifyDataSetChanged() }
                 }
                 iv_close -> {
                     finish()
@@ -203,6 +215,9 @@ class ActivityCameraGallery : BaseActivity() {
         btn_multi_select.setOnClickListener(listener)
     }
 
+    /**
+     * 어뎁터 초기화
+     */
     private fun initAdapter() {
         mOldPath = ArrayList()
         mBucked = ArrayList()
@@ -242,8 +257,6 @@ class ActivityCameraGallery : BaseActivity() {
                 Glide.with(applicationContext!!)
                     .load(mItemPath!![0].imagePath)
                     .into(iv_select_image)
-
-//                iv_select_image.setmImageFile(File(mItemPath!!.get(0).imagePath))
                 firstImage = true
             }
         }
@@ -261,8 +274,6 @@ class ActivityCameraGallery : BaseActivity() {
 
             mCurrentViewImage = File(mItemPath!![i].imagePath)
         }
-
-        // todo : 여기에 멀티 셀렉트 모드 추가 Listener 만들어야 함
 
         val spinnerListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -312,7 +323,7 @@ class ActivityCameraGallery : BaseActivity() {
     /**
      * 사진찍어서 가져오기
      */
-    fun onClickedCamera() {
+    private fun onClickedCamera() {
         val intent = Intent()
         intent.action = MediaStore.ACTION_IMAGE_CAPTURE
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
@@ -353,14 +364,13 @@ class ActivityCameraGallery : BaseActivity() {
 
                     val array = ArrayList<File>()
                     array.add(file!!)
-                    // todo : 이미지
+                    // : 이미지
                     val intent = Intent()
                     intent.putExtra(REQUEST_IMAGE_FILES, array)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
                 REQUEST_ADD_ACTION_POST, REQUEST_ADD_ACHIEVEMENT_POST -> {
-                    // todo : 여기에는 확인이 필요합니다.
                     setResult(RESULT_OK)
                     finish()
                 }
@@ -398,46 +408,40 @@ class ActivityCameraGallery : BaseActivity() {
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            var convertView = convertView
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.listitem_gallery, parent, false)
-            }
+            val convertView =
+                convertView ?: inflater.inflate(R.layout.listitem_gallery, parent, false)
 
             val bean = pictureList[position]
 
-            val imageView = convertView!!.findViewById<ImageView>(R.id.iv_image)
-            val multiCheck = convertView!!.findViewById<ImageView>(R.id.iv_multi)
-            val tvMulti = convertView!!.findViewById<TextView>(R.id.tv_multi)
-            val rlMulti = convertView!!.findViewById<RelativeLayout>(R.id.rl_multi)
+            val imageView = convertView.findViewById<ImageView>(R.id.iv_image)
+            val multiCheck = convertView.findViewById<ImageView>(R.id.iv_multi)
+            val tvMulti = convertView.findViewById<TextView>(R.id.tv_multi)
+            val rlMulti = convertView.findViewById<RelativeLayout>(R.id.rl_multi)
+
+            val mMultiImage = mMultiImage!!
 
             if (isMultiMode) {
                 rlMulti.visibility = VISIBLE
                 multiCheck.isSelected = bean.imageCheck
-                if (bean.imageCheck) {
-                    tvMulti.text = (mMultiImage!!.indexOf(bean) + 1).toString()
-                } else {
-                    tvMulti.text = ""
-                }
+                tvMulti.text =
+                    if (bean.imageCheck) (mMultiImage.indexOf(bean) + 1).toString() else ""
             } else {
                 rlMulti.visibility = GONE
                 pictureList[position].imageCheck = false
             }
 
-            rlMulti.setOnClickListener(View.OnClickListener {
-                // todo : 멀티 버튼 테스트
+            rlMulti.setOnClickListener {
                 if (bean.imageCheck) {
                     pictureList[position].imageCheck = false
-                    mMultiImage!!.remove(bean)
-//                    pictureList[position].imageSelectedIdx = -1
+                    mMultiImage.remove(bean)
                 } else {
-                    if (mMultiImage!!.size < 10) {
+                    if (mMultiImage.size < 10) {
                         pictureList[position].imageCheck = true
-                        mMultiImage!!.add(bean)
-//                        pictureList[position].imageSelectedIdx = mMultiImage!!.indexOf(bean) + 1
+                        mMultiImage.add(bean)
                     }
                 }
-                mGridAdapter!!.notifyDataSetChanged()
-            })
+                notifyDataSetChanged()
+            }
 
             //onCreate에서 정해준 크기로 이미지를 붙인다.
             Glide.with(mContext)

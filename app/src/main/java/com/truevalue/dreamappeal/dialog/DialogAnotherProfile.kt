@@ -69,13 +69,15 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
      * RecyclerView Data 설정
      */
     private fun initData() {
-        if (bean != null) {
+        bean?.let {
             mAdapter!!.clear()
-            mAdapter!!.add(bean!!)
+            mAdapter!!.add(it)
 
-            if (bean!!.group != null && bean!!.group!!.size > 0) {
-                for (i in 0 until bean!!.group!!.size) {
-                    mAdapter!!.add(bean!!.group!![i])
+            it.group?.let {group->
+                if(group.size > 0){
+                    for (i in 0 until group.size) {
+                        mAdapter!!.add(group[i])
+                    }
                 }
             }
         }

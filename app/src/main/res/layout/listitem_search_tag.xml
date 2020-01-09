@@ -8,7 +8,7 @@
     <ImageView
             android:layout_width="49dp"
             android:layout_height="49dp"
-            android:src="@drawable/drawer_user"
+            android:src="@drawable/ic_hash"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="15dp"/>
 

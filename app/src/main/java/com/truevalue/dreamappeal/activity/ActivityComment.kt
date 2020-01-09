@@ -36,33 +36,41 @@ import okhttp3.Call
 import org.json.JSONObject
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
-    private val RV_TYPE_COMMENT = 0
-    private val RV_TYPE_REPLY = 1
+    private var mIndex : Int
+    private var mViewType: String?
+    private var mParentIdx : Int
+    private var mIsEdit : Boolean
 
-    private var mIndex = -1
-    private var mViewType: String? = null
-    private var mParentIdx = -1
-    private var mIsEdit = false
+    init {
+        mIndex = -1
+        mViewType = null
+        mParentIdx = -1
+        mIsEdit = false
+    }
 
     companion object {
-        val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
+        private const val RV_TYPE_COMMENT = 0
+        private const val RV_TYPE_REPLY = 1
+        
+        const val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
 
-        val EXTRA_TYPE_PROFILE = "EXTRA_TYPE_PROFILE"
-        val EXTRA_TYPE_BLUEPRINT = "EXTRA_TYPE_BLUEPRINT"
-        val EXTRA_TYPE_ACHIEVEMENT_POST = "EXTRA_TYPE_ACHIEVEMENT_POST"
-        val EXTRA_TYPE_ACTION_POST = "EXTRA_TYPE_ACTION_POST"
+        const val EXTRA_TYPE_PROFILE = "EXTRA_TYPE_PROFILE"
+        const val EXTRA_TYPE_BLUEPRINT = "EXTRA_TYPE_BLUEPRINT"
+        const val EXTRA_TYPE_ACHIEVEMENT_POST = "EXTRA_TYPE_ACHIEVEMENT_POST"
+        const val EXTRA_TYPE_ACTION_POST = "EXTRA_TYPE_ACTION_POST"
 
-        val EXTRA_INDEX = "EXTRA_INDEX"
-        val EXTRA_OFF_KEYBOARD = "EXTRA_OFF_KEYBOARD"
+        const val EXTRA_INDEX = "EXTRA_INDEX"
+        const val EXTRA_OFF_KEYBOARD = "EXTRA_OFF_KEYBOARD"
 
-        val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
-        val REQUEST_REPLACE_USER_IDX = 2000
-        val RESULT_CODE = 1004
+        const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+        const val REQUEST_REPLACE_USER_IDX = 2000
+        const val RESULT_CODE = 1004
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,8 +93,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     private fun initView() {
         tv_title.text = getString(R.string.str_title_comment_detail)
 
-        if (intent.getStringExtra(EXTRA_VIEW_TYPE) != null) {
-            mViewType = intent.getStringExtra(EXTRA_VIEW_TYPE)
+        intent.getStringExtra(EXTRA_VIEW_TYPE)?.let {
+            mViewType = it
             mIndex = intent.getIntExtra(EXTRA_INDEX, -1)
         }
 
@@ -94,14 +102,14 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         rl_comment.visibility = GONE
         btn_commit_comment.visibility = VISIBLE
 
-        if (intent.getStringExtra(EXTRA_OFF_KEYBOARD) == null) {
+        intent.getStringExtra(EXTRA_OFF_KEYBOARD)?.let {
+            bottom_comment.visibility = VISIBLE
+        }?:kotlin.run {
             et_comment.isFocusableInTouchMode = true
             et_comment.requestFocus()
             val imm =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(et_comment, 0)
-            bottom_comment.visibility = VISIBLE
-        } else {
             bottom_comment.visibility = VISIBLE
         }
 
@@ -111,8 +119,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 i: Int,
                 i1: Int,
                 i2: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 charSequence: CharSequence,
@@ -132,8 +139,10 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
-        rv_comments.adapter = mAdapter
-        rv_comments.layoutManager = LinearLayoutManager(this@ActivityComment)
+        rv_comments.run {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(this@ActivityComment)
+        }
     }
 
     /**
@@ -497,39 +506,48 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             .placeholder(R.drawable.drawer_user)
             .circleCrop()
             .into(iv_profile)
-        mAdapter!!.clear()
-        val gson = Gson()
-        val parent: ArrayList<BeanCommentDetail> =
-            ArrayList()
-        val reply: LinkedHashMap<Int, ArrayList<BeanCommentDetail>> =
-            LinkedHashMap()
-        for (i in 0 until comments.length()) {
-            val bean: BeanCommentDetail = gson.fromJson<BeanCommentDetail>(
-                comments.getJSONObject(i).toString(),
-                BeanCommentDetail::class.java
-            )
-            if (bean.parent_idx === 0) {
-                parent.add(bean)
-            } else {
-                if (reply[bean.parent_idx] == null) reply[bean.parent_idx] =
-                    ArrayList()
-                reply[bean.parent_idx]!!.add(bean)
-            }
-        }
 
-        for (i in parent.indices) {
-            val bean: BeanCommentDetail = parent[i]
-            mAdapter!!.add(bean)
-            if (reply[bean.idx] != null) {
-                for (j in reply[bean.idx]!!.indices) {
-                    val replyBean: BeanCommentDetail = reply[bean.idx]!![j]
-                    replyBean.parent_name = bean.name
-                    mAdapter!!.add(replyBean)
+        mAdapter?.let { mAdapter->
+            mAdapter.clear()
+            val parent: ArrayList<BeanCommentDetail> =
+                ArrayList()
+            val reply: LinkedHashMap<Int, ArrayList<BeanCommentDetail>> =
+                LinkedHashMap()
+            for (i in 0 until comments.length()) {
+                val bean: BeanCommentDetail = Gson().fromJson<BeanCommentDetail>(
+                    comments.getJSONObject(i).toString(),
+                    BeanCommentDetail::class.java
+                )
+                if (bean.parent_idx === 0) {
+                    parent.add(bean)
+                } else {
+                    reply[bean.parent_idx] = reply[bean.parent_idx] ?: ArrayList()
+
+                    reply[bean.parent_idx]?.let {
+                        it.add(bean)
+                    }
                 }
             }
+
+            for (i in parent.indices) {
+                val bean: BeanCommentDetail = parent[i]
+                mAdapter.add(bean)
+
+                reply[bean.idx]?.let {
+                    for (j in it.indices) {
+                        val replyBean: BeanCommentDetail = it[j]
+                        replyBean.parent_name = bean.name
+                        mAdapter.add(replyBean)
+                    }
+                }
+
+                if (reply[bean.idx] != null) {
+
+                }
+            }
+            if (isScroll && mAdapter.size() > 0)
+                rv_comments.scrollToPosition(mAdapter.size())
         }
-        if (isScroll && mAdapter != null && mAdapter!!.size() > 0)
-            rv_comments.scrollToPosition(mAdapter!!.size())
     }
 
     /**
@@ -595,7 +613,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.size() else 0
+            get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             if (RV_TYPE_COMMENT == viewType) {
@@ -605,8 +623,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            if (mAdapter != null) {
-                val bean = mAdapter!!.get(i) as BeanCommentDetail
+            mAdapter?.let {
+                val bean = it.get(i) as BeanCommentDetail
                 val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
                 val tvComment = h.getItemView<TextView>(R.id.tv_comment)
                 val tvTime = h.getItemView<TextView>(R.id.tv_time)
@@ -642,12 +660,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 }
 
                 if (mIndex != Comm_Prefs.getUserProfileIndex()) {
-                    ivProfile.setOnClickListener(View.OnClickListener {
+                    ivProfile.setOnClickListener{
                         val intent = Intent()
                         intent.putExtra(RESULT_REPLACE_USER_IDX, bean.writer_idx)
                         setResult(RESULT_CODE, intent)
                         finish()
-                    })
+                    }
                 }
 
                 tvTime.text = Utils.convertFromDate(bean.register_date)
@@ -662,22 +680,23 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 ivLike.setOnClickListener(likeClickListener)
                 tvLike.setOnClickListener(likeClickListener)
 
-                tvAddReply.setOnClickListener(View.OnClickListener {
+                tvAddReply.setOnClickListener{
                     setReplyComment(bean)
-                })
+                }
 
-                h.itemView.setOnLongClickListener(View.OnLongClickListener {
+                h.itemView.setOnLongClickListener{
                     showPopupMenu(tvComment, bean)
                     true
-                })
+                }
             }
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mAdapter != null) {
-                val bean = mAdapter!!.get(i) as BeanCommentDetail
+            mAdapter?.let {
+                val bean = it.get(i) as BeanCommentDetail
                 return if (bean.parent_idx === 0) RV_TYPE_COMMENT else RV_TYPE_REPLY
             }
+
             return 0
         }
     }
@@ -701,13 +720,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val status = json.getBoolean("status")
-                    bean.status = status
-                    if (bean.status) {
-                        bean.like_count += 1
-                    } else {
-                        bean.like_count -= 1
+                   bean.status = status
+                    bean.like_count = if (bean.status) { bean.like_count + 1 } else { bean.like_count - 1 }
+
+                    mAdapter?.let {
+                        it.notifyDataSetChanged()
                     }
-                    mAdapter!!.notifyDataSetChanged()
                 }
             }
         }
