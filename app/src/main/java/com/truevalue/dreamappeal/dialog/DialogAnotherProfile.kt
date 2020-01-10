@@ -8,13 +8,11 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter2
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
-import com.truevalue.dreamappeal.bean.BeanAnotherProfileInfo
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.dialog_another_profile.*
 import java.text.SimpleDateFormat

@@ -32,7 +32,6 @@ class FragmentChangePassword : BaseFragment() {
             fragment.mBean = bean
             return fragment
         }
-
     }
 
     override fun onCreateView(
@@ -126,8 +125,5 @@ class FragmentChangePassword : BaseFragment() {
                 }
             })
         }
-
     }
-
-
 }

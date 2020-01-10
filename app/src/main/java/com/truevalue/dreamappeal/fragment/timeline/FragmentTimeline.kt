@@ -15,7 +15,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -33,7 +32,6 @@ import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
-import kotlinx.android.synthetic.main.fragment_action_post.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -44,8 +42,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdatper: BaseRecyclerViewAdapter? = null
 
-    private val RV_TYPE_TIMELINE = 0
-    private val RV_TYPE_TIMELINE_MORE = 1
+    companion object{
+        private const val RV_TYPE_TIMELINE = 0
+        private const val RV_TYPE_TIMELINE_MORE = 1
+    }
 
     private var isLast = false
 
@@ -191,7 +191,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             if (RV_TYPE_TIMELINE == viewType) {
                 return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
             } else if (RV_TYPE_TIMELINE_MORE == viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_timeline_more, parent, false)
+                return BaseViewHolder.newInstance(R.layout.listitem_white_more, parent, false)
             }
             return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
         }

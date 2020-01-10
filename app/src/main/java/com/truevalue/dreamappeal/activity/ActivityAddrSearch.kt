@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
@@ -157,8 +158,17 @@ class ActivityAddrSearch : BaseActivity() {
                                 val addrName = address.getString("address_name")
 
                                 val region_1depth_name = address.getString("region_1depth_name")
-                                val region_2depth_name = address.getString("region_2depth_name")
-                                val region_3depth_name = address.getString("region_3depth_name")
+                                val region_2depth_name: String? = try {
+                                    address.getString("region_2depth_name")
+                                }catch (e: Exception){
+                                    ""
+                                }
+                                val region_3depth_name: String? = try {
+                                    address.getString("region_3depth_name")
+                                }catch (e: Exception){
+                                    ""
+                                }
+
                                 var region_3depth_h_name: String? = try {
                                     address.getString("region_3depth_h_name")
                                 } catch (e: Exception) {
@@ -212,10 +222,15 @@ class ActivityAddrSearch : BaseActivity() {
                 val bean = it.get(i) as BeanAddress
                 tvAddr.text = bean.address_name
                 tvAddr.setOnClickListener {
-                    val intent = Intent()
-                    intent.putExtra(RESULT_ADDRESS, bean)
-                    setResult(RESULT_OK, intent)
-                    finish()
+                    if(!bean.region_2depth_name.isNullOrEmpty() &&
+                            !bean.region_3depth_name.isNullOrEmpty()) {
+                        val intent = Intent()
+                        intent.putExtra(RESULT_ADDRESS, bean)
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }else{
+                        Toast.makeText(applicationContext,getString(R.string.str_addr_error),Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

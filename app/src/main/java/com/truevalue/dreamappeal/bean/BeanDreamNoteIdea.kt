@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.base
+package com.truevalue.dreamappeal.bean
 
 data class BeanDreamNoteIdea(var idx : Int,
                              var thumbnail_image : String)

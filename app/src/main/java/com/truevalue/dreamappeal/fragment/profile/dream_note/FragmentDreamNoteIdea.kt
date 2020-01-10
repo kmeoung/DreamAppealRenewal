@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.bean.BeanDreamNoteIdea
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback

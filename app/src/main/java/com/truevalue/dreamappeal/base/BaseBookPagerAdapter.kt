@@ -63,5 +63,4 @@ class BaseBookPagerAdapter(
         container.addView(view, 0)
         return view
     }
-
 }

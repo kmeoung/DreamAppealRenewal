@@ -107,7 +107,7 @@ class FragmentAddBoard : BaseFragment() {
             get() = if (mAdapter != null) mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            return BaseViewHolder.newInstance(R.layout.listitem_object_step_image, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {

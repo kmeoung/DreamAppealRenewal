@@ -12,7 +12,7 @@ class BaseGridItemDecorate(context: Context, divDp: Float, columnCount: Int) :It
     val div : Int
     val itemCount : Int
     init {
-        div = Utils.DpToPixel(context,divDp)
+        div = Utils.dpToPixel(context,divDp)
         itemCount = columnCount
     }
 

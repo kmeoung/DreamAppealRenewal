@@ -30,18 +30,24 @@ import org.json.JSONObject
 
 class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
 
-    private val TYPE_LOCATION = 0
-    private val TYPE_MODIFIER = 1
-
-    private var mSearchType = TYPE_LOCATION
-
-    private var mAdapter: BaseRecyclerViewAdapter? = null
+    private var mAdapter: BaseRecyclerViewAdapter?
+    private var mAddr : String?
 
     companion object {
+        private const val TYPE_LOCATION = 0
+        private const val TYPE_MODIFIER = 1
+
         private const val RESULT_CODE = 1004
         private const val REQUEST_ADDR = 1005
     }
 
+    private var mSearchType : Int
+
+    init {
+        mSearchType = TYPE_LOCATION
+        mAdapter = null
+        mAddr = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,8 +82,10 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
      */
     private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
-        rv_appealer.adapter = mAdapter
-        rv_appealer.layoutManager = LinearLayoutManager(context!!)
+        rv_appealer.run {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     /**
@@ -134,7 +142,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.size() else 0
+            get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             return BaseViewHolder.newInstance(R.layout.listitem_search_appealer, parent, false)
@@ -160,17 +168,18 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
             tvJob.text = if (bean.job.isNullOrEmpty()) "" else bean.job
             tvName.text = if (bean.nickname.isNullOrEmpty()) "" else bean.nickname
 
-            ivDelete.setOnClickListener(View.OnClickListener {
+            ivDelete.setOnClickListener {
                 // todo : 역할을 잘 모르겠습니다.
-            })
+            }
 
             if (bean.idx != Comm_Prefs.getUserProfileIndex()) {
-                h.itemView.setOnClickListener(View.OnClickListener {
+
+                h.itemView.setOnClickListener {
                     val intent = Intent()
                     intent.putExtra(ActivitySearch.RESULT_REPLACE_USER_IDX, bean.idx)
                     activity!!.setResult(RESULT_CODE, intent)
                     activity!!.finish()
-                })
+                }
             }
         }
 
@@ -195,20 +204,27 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
             ) {
 
                 if (code == DAClient.SUCCESS) {
-                    val json = JSONObject(body)
-                    val appealers = json.getJSONArray("appealers")
-                    mAdapter!!.clear()
-                    for (i in 0 until appealers.length()) {
-                        val appealer = appealers.getJSONObject(i)
-                        val bean = Gson().fromJson<BeanAppealer>(
-                            appealer.toString(),
-                            BeanAppealer::class.java
-                        )
-                        if (bean.idx != null)
-                            mAdapter!!.add(bean)
+
+                    mAdapter?.let {mAdapter->
+                        val json = JSONObject(body)
+                        mAddr = json.getString("address")
+                        tv_addr.text = mAddr
+                        val appealers = json.getJSONArray("appealers")
+                        mAdapter.clear()
+                        for (i in 0 until appealers.length()) {
+                            val appealer = appealers.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanAppealer>(
+                                appealer.toString(),
+                                BeanAppealer::class.java
+                            )
+                            if (bean.idx != null)
+                                mAdapter.add(bean)
+                        }
                     }
                 } else {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -228,19 +244,23 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
                 if (code == DAClient.SUCCESS) {
-                    val json = JSONObject(body)
-                    val appealers = json.getJSONArray("appealers")
-                    mAdapter!!.clear()
-                    for (i in 0 until appealers.length()) {
-                        val appealer = appealers.getJSONObject(i)
-                        val bean = Gson().fromJson<BeanAppealer>(
-                            appealer.toString(),
-                            BeanAppealer::class.java
-                        )
-                        mAdapter!!.add(bean)
+                    mAdapter?.let {
+                        val json = JSONObject(body)
+                        val appealers = json.getJSONArray("appealers")
+                        it.clear()
+                        for (i in 0 until appealers.length()) {
+                            val appealer = appealers.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanAppealer>(
+                                appealer.toString(),
+                                BeanAppealer::class.java
+                            )
+                            it.add(bean)
+                        }
+                    }
+                }else{
+                    context?.let {
+                        Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -263,9 +283,11 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
 
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_ADDR) {
-                val bean =
-                    data!!.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
-                setUserAddress(bean)
+                data?.let {
+                    val bean =
+                        it.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
+                    setUserAddress(bean)
+                }
             }
         }
     }
@@ -294,8 +316,9 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
                         .show()
                     if (code == DAClient.SUCCESS) {
-                        tv_addr.text =
-                            "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
+                        mAddr = "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
+                        tv_addr.text = mAddr
+
                     }
                 }
             })

@@ -352,9 +352,8 @@ class ActivityCameraGallery : BaseActivity() {
                     if (extras != null) {
                         val photo = extras.getParcelable<Bitmap>("data")
                         val filePath = Environment.getExternalStorageDirectory().path + "/"
-                        val fileName: String
-                        fileName = Date().time.toString() + ".jpeg"
-                        Utils.SaveBitmapToFileCache(photo!!, filePath, fileName)
+                        val fileName = Date().time.toString() + ".jpeg"
+                        Utils.saveBitmapToFileCache(photo!!, filePath, fileName)
                         file = File(filePath + fileName)
                     }
                     if (uri != null) {

@@ -49,18 +49,22 @@ object Utils {
         tv: TextView,
         changeText: String
     ): SpannableStringBuilder {
-        if (context == null) return SpannableStringBuilder()
-        val str = tv.text.toString()
-        val first = str.indexOf(changeText)
-        val last = str.lastIndexOf(changeText) + changeText.length
-        val ssb = SpannableStringBuilder(str)
-        ssb.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(context, R.color.main_blue)),
-            first,
-            last,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return ssb
+
+        context?.let {
+            val str = tv.text.toString()
+            val first = str.indexOf(changeText)
+            val last = str.lastIndexOf(changeText) + changeText.length
+            val ssb = SpannableStringBuilder(str)
+            ssb.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(it, R.color.main_blue)),
+                first,
+                last,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return ssb
+        } ?: kotlin.run {
+            return SpannableStringBuilder()
+        }
     }
 
     /**
@@ -93,17 +97,20 @@ object Utils {
         color: Int,
         changeText: String
     ): SpannableStringBuilder {
-        if (context == null) return SpannableStringBuilder()
-        val first = str.indexOf(changeText)
-        val last = str.lastIndexOf(changeText) + changeText.length
-        val ssb = SpannableStringBuilder(str)
-        ssb.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(context, color)),
-            first,
-            last,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return ssb
+        context?.let {
+            val first = str.indexOf(changeText)
+            val last = str.lastIndexOf(changeText) + changeText.length
+            val ssb = SpannableStringBuilder(str)
+            ssb.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(it, color)),
+                first,
+                last,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return ssb
+        } ?: kotlin.run {
+            return SpannableStringBuilder()
+        }
     }
 
     /**
@@ -114,18 +121,21 @@ object Utils {
         tv: TextView,
         changeText: String
     ): SpannableStringBuilder {
-        if (context == null) return SpannableStringBuilder()
-        val str = tv.text.toString()
-        val first = str.indexOf(changeText)
-        val last = str.lastIndexOf(changeText) + changeText.length
-        val ssb = SpannableStringBuilder(str)
-        ssb.setSpan(
-            StyleSpan(Typeface.BOLD),
-            first,
-            last,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        return ssb
+        context?.let {
+            val str = tv.text.toString()
+            val first = str.indexOf(changeText)
+            val last = str.lastIndexOf(changeText) + changeText.length
+            val ssb = SpannableStringBuilder(str)
+            ssb.setSpan(
+                StyleSpan(Typeface.BOLD),
+                first,
+                last,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return ssb
+        } ?: kotlin.run {
+            return SpannableStringBuilder()
+        }
     }
 
     /**
@@ -194,14 +204,14 @@ object Utils {
 
         val cursor = context.contentResolver.query(contentUri, null, null, null, null)
 
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentUri.path
-        } else {
+        cursor?.let {
             if (cursor.moveToFirst()) {
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 result = cursor.getString(idx)
             }
             cursor.close()
+        } ?: kotlin.run {
+            result = contentUri.path
         }
         return result
 
@@ -214,7 +224,7 @@ object Utils {
      * @param strFilePath
      * @param filename
      */
-    fun SaveBitmapToFileCache(
+    fun saveBitmapToFileCache(
         bitmap: Bitmap, strFilePath: String,
         filename: String
     ): File {
@@ -272,8 +282,8 @@ object Utils {
             null,
             MediaStore.MediaColumns.DATE_ADDED + " desc"
         )
-        val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-        val columnDisplayname = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME)
+        val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+//        val columnDisplayname = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME)
         val columnBucketID = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID)
         val columnBucketName =
             cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
@@ -286,18 +296,18 @@ object Utils {
         bucketNameList.add("All")
         bucketIdList.add("All")
 
-        var lastIndex: Int
+//        var lastIndex: Int
         while (cursor.moveToNext()) {
             val absolutePathOfImage = cursor.getString(columnIndex)
-            val nameOfFile = cursor.getString(columnDisplayname)
+//            val nameOfFile = cursor.getString(columnDisplayname)
             val bucketName = cursor.getString(columnBucketName)
             val bucketId = cursor.getString(columnBucketID)
 
             var equal = false
 
             for (i in bucketNameList.indices) {
-                val name = bucketNameList.get(i)
-                if (TextUtils.equals(name, bucketName)) {
+                val name = bucketNameList[i]
+                if (name == bucketName) {
                     equal = true
                 }
             }
@@ -307,11 +317,10 @@ object Utils {
                 bucketIdList.add(bucketId)
             }
 
-            lastIndex = absolutePathOfImage.lastIndexOf(nameOfFile)
-            lastIndex = if (lastIndex >= 0) lastIndex else nameOfFile.length - 1
+//            lastIndex = absolutePathOfImage.lastIndexOf(nameOfFile)
+//            lastIndex = if (lastIndex >= 0) lastIndex else nameOfFile.length - 1
 
-            if (!TextUtils.isEmpty(absolutePathOfImage)) {
-
+            if (!absolutePathOfImage.isNullOrEmpty()) {
                 val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage, false, -1)
                 imageInfoList.add(info)
             }
@@ -327,7 +336,6 @@ object Utils {
 
         if (endDate.isNullOrEmpty()) return ""
 
-        var strDate = ""
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val endDate = sdf.parse(endDate)
         val curDate = Date()
@@ -341,12 +349,11 @@ object Utils {
         time -= min * (60 * 1000)
         val sec: Long = (time / 1000)
 
-        strDate = if (day > 0) {
+        return if (day > 0) {
             "${day}일 ${hour}시간 ${min}분"
         } else {
             "${hour}시간 ${min}분 ${sec}초"
         }
-        return strDate
     }
 
 
@@ -357,7 +364,7 @@ object Utils {
 
         var strDate = ""
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val sdf2 = SimpleDateFormat("yyyy. MM. dd")
+//        val sdf2 = SimpleDateFormat("yyyy. MM. dd")
         val cal = Calendar.getInstance()
 
         val nowHour = cal.get(Calendar.HOUR_OF_DAY)
@@ -385,19 +392,19 @@ object Utils {
 
             val postDate = cal.time
 
-            if (nowDate.compareTo(postDate) > 0) {
+            if (nowDate > postDate) {
                 val viewSdf = SimpleDateFormat("yy. MM. dd")
                 strDate = viewSdf.format(postDate)
             } else {
                 if (postHour < nowHour) {
-                    strDate = String.format("%d시간전", nowHour - postHour)
+                    strDate = "${nowHour - postHour}시간전"
                 } else {
                     if (postMinute < nowMinute) {
-                        strDate = String.format("%d분전", nowMinute - postMinute)
+                        strDate = "${nowMinute - postMinute}분전"
                     } else {
                         var second = nowSeconds - postSeconds
                         if (second < 0) second = 0
-                        strDate = String.format("%d초전", second)
+                        strDate = "${second}초전"
                     }
                 }
             }
@@ -436,7 +443,7 @@ object Utils {
         // Attach a listener to the observer
         uploadObserver.setTransferListener(object : TransferListener {
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
+//                val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
             }
 
             override fun onStateChanged(id: Int, state: TransferState?) {
@@ -455,7 +462,7 @@ object Utils {
             /* Handle completion */
         }
 
-        val bytesTransferred = uploadObserver.bytesTransferred
+//        val bytesTransferred = uploadObserver.bytesTransferred
     }
 
     /**
@@ -492,7 +499,7 @@ object Utils {
             // Attach a listener to the observer
             uploadObserver.setTransferListener(object : TransferListener {
                 override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
-                    val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
+//                    val done = (((bytesCurrent.toDouble() / bytesTotal) * 100.0).toInt())
                 }
 
                 override fun onStateChanged(id: Int, state: TransferState?) {
@@ -513,7 +520,7 @@ object Utils {
                 /* Handle completion */
             }
 
-            val bytesTransferred = uploadObserver.bytesTransferred
+//            val bytesTransferred = uploadObserver.bytesTransferred
         }
     }
 
@@ -521,9 +528,9 @@ object Utils {
      * 이미지 뷰 정사각형 처리
      */
     fun setImageViewSquare(context: Context?, view: View) {
-        if (context != null) {
+        context?.let {
             val params = view.layoutParams
-            val display = context!!.resources.displayMetrics
+            val display = it.resources.displayMetrics
             val swidth = display.widthPixels
             params.width = swidth
             params.height = swidth
@@ -535,9 +542,9 @@ object Utils {
      * 이미지 뷰 크기 처리
      */
     fun setImageViewSquare(context: Context?, view: View, column: Int, row: Int) {
-        if (context != null) {
+        context?.let {
             val params = view.layoutParams
-            val display = context!!.resources.displayMetrics
+            val display = it.resources.displayMetrics
             val swidth = display.widthPixels
             params.width = swidth
             val standard = (swidth / column) * row
@@ -550,9 +557,9 @@ object Utils {
      * 이미지 아이템 뷰 정사각형 처리
      */
     fun setImageItemViewSquare(context: Context?, view: View) {
-        if (context != null) {
+        context?.let {
             val params = view.layoutParams
-            val display = context!!.resources.displayMetrics
+            val display = it.resources.displayMetrics
             val swidth = display.widthPixels
             params.width = swidth / 3 + swidth % 3
             params.height = swidth / 3 + swidth % 3
@@ -564,16 +571,16 @@ object Utils {
      * replace Comment Count text
      */
     fun getCommentView(count: Int): String {
-        var strCommentCount = ""
-        if (count < 1000) {
-            strCommentCount = count.toString()
+        var strCommentCount : String
+        strCommentCount = if (count < 1000) {
+            count.toString()
         } else {
             val k = count / 1000
             if (k < 1000) {
-                strCommentCount = "${k}K"
+                "${k}K"
             } else {
                 val m = k / 1000
-                strCommentCount = "${m}M"
+                "${m}M"
             }
         }
         return strCommentCount
@@ -643,13 +650,13 @@ object Utils {
     }
 
     /**
-     * DpToPixel 코드
+     * dpToPixel 코드
      *
      * @param context
      * @param DP
      * @return
      */
-    fun DpToPixel(context: Context, DP: Float): Int {
+    fun dpToPixel(context: Context, DP: Float): Int {
         val px = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, DP, context.resources
                 .displayMetrics

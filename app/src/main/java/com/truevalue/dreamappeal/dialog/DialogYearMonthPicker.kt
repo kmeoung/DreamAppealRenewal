@@ -60,7 +60,6 @@ class DialogYearMonthPicker(context: Context, min_year: Int, min_month: Int) : D
     private fun initData(){
         var minYear = 1900
 
-
         if(minYear != INIT_NUM){
             np_year.minValue = minYear
             if(minMonth != INIT_NUM){
