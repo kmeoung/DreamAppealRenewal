@@ -26,6 +26,7 @@ import com.truevalue.dreamappeal.activity.*
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
@@ -500,19 +501,20 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             ) {
 
             }
-        } else if (resultCode == ActivityComment.RESULT_CODE ||
-            resultCode == ActivityFollowCheering.RESULT_CODE
-        ) {
+        } else if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
                 requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX ||
                 requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX
             ) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
                     FragmentProfile.newInstance(view_user_idx),
                     true
                 )
             }
+        } else if(resultCode == ActivitySearch.RESULT_CODE_BOARD){
+            val board_idx = data!!.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX, -1)
+//            (activity as ActivityMain).replaceFragment(FragmentActionPost.newInstance(board_idx,Comm_Prefs.getUserProfileIndex()))
         }
     }
 

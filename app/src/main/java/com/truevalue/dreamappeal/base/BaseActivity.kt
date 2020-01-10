@@ -1,10 +1,14 @@
 package com.truevalue.dreamappeal.base
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 open class BaseActivity : AppCompatActivity(){
+
+    companion object{
+        const val RESULT_CODE = 1004
+        const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+    }
 
     /**
      * Fragment Replace

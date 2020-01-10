@@ -3,20 +3,22 @@ package com.truevalue.dreamappeal.utils
 import com.truevalue.dreamappeal.BuildConfig
 
 object Comm_Param {
+
+
     val REAL = !BuildConfig.DEBUG
 //    val REAL = true
-    val APP_NAME = "DreamAppeal"
+    const val APP_NAME = "DreamAppeal"
 
     // DEV 서버
-    private val DEV_API = "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
+    private const val DEV_API = "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버
-    private val REAL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
+    private const val REAL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
     // Kakao Addr
-    val KAKAO_ADDRESS_API = "https://dapi.kakao.com/v2/local/search/address.json"
+    const val KAKAO_ADDRESS_API = "https://dapi.kakao.com/v2/local/search/address.json"
     // API
     val URL_API = if (REAL) REAL_API else DEV_API
 
-    val PROFILE_INDEX = "PROFILE_INDEX"
+    const val PROFILE_INDEX = "PROFILE_INDEX"
 
     // 이미지 업로드
     val URL_UPLOADS = "$URL_API/uploads/"
@@ -30,7 +32,7 @@ object Comm_Param {
     val URL_USERS_ADDRESS = "$URL_USERS/address"
 
     // 소속
-    val GROUP_INDEX = "GROUP_INDEX"
+    const val GROUP_INDEX = "GROUP_INDEX"
     val URL_USERS_GROUP = "$URL_USERS/group"
     val URL_USERS_GROUP_IDX = "$URL_USERS_GROUP/$GROUP_INDEX"
 
@@ -59,9 +61,9 @@ object Comm_Param {
     val URL_PROFILES_LIST = "$URL_PROFILES/list"
 
     // 주요성과
-    val BEST_POST_NUMBER = "BEST_POST_NUMBER"
-    val POST_SIZE = "POST_SIZE"
-    val POST_INDEX = "POST_INDEX"
+    const val BEST_POST_NUMBER = "BEST_POST_NUMBER"
+    const val POST_SIZE = "POST_SIZE"
+    const val POST_INDEX = "POST_INDEX"
     val URL_ACHIEVEMENT_POSTS = "$URL_API/achievement_posts"
     val URL_ACHIEVEMENT_POSTS_BEST_POST_NUMBER = "$URL_ACHIEVEMENT_POSTS/$BEST_POST_NUMBER"
     val URL_ACHIEVEMENT_POSTS_PROFILE = "$URL_ACHIEVEMENT_POSTS/profile"
@@ -90,7 +92,7 @@ object Comm_Param {
  * @GET {'/list/achievement/:idx'} : lookup list of achievement post likes**/
 
     // 응원해준 어필러
-    val CHEERING_INDEX = "CHEERING_INDEX"
+    const val CHEERING_INDEX = "CHEERING_INDEX"
     val URL_LIST = "$URL_API/likes/list"
     val URL_LIST_PROFILE = "$URL_LIST/profile"
     val URL_LIST_PROFILE_IDX = "$URL_LIST_PROFILE/$CHEERING_INDEX"
@@ -100,7 +102,7 @@ object Comm_Param {
     val URL_LIST_ACHIEVEMENT_IDX = "$URL_LIST_ACHIEVEMENT/$CHEERING_INDEX"
 
     // 드림포인트
-    val MISSION_INDEX = "MISSION_INDEX"
+    const val MISSION_INDEX = "MISSION_INDEX"
     val URL_DREAMPOINT = "$URL_API/dreampoint"
     val URL_DREAMPOINT_MISSION_IDX = "$URL_DREAMPOINT/$MISSION_INDEX"
     val URL_DREAMPOINT_HISTORY = "$URL_DREAMPOINT/history"
@@ -119,26 +121,26 @@ object Comm_Param {
     val URL_DREAMNOTE_IDEA_PROFILE_PROFILE_IDX = "$URL_DREAMNOTE_IDEA_PROFILE/$PROFILE_INDEX"
 
     // 능력
-    val ABILITY_INDEX = "ABILITY_INDEX"
+    const val ABILITY_INDEX = "ABILITY_INDEX"
     val URL_ABILITIES = "$URL_API/abilities"
     val URL_ABILITIES_PROFILE = "$URL_ABILITIES/profile"
     val URL_ABILITIES_PROFILE_IDX = "$URL_ABILITIES_PROFILE/$PROFILE_INDEX"
     val URL_ABILITIES_IDX = "$URL_ABILITIES/$ABILITY_INDEX"
 
     // 기회
-    val OPPORTUNITY_INDEX = "OPPORTUNITY_INDEX"
+    const val OPPORTUNITY_INDEX = "OPPORTUNITY_INDEX"
     val URL_OPPORTUNITIES = "$URL_API/opportunities"
     val URL_OPPORTUNITIES_PROFILE = "$URL_OPPORTUNITIES/profile"
     val URL_OPPORTUNITIES_PROFILE_IDX = "$URL_OPPORTUNITIES_PROFILE/$PROFILE_INDEX"
     val URL_OPPORTUNITIES_IDX = "$URL_OPPORTUNITIES/$OPPORTUNITY_INDEX"
 
     // 목표
-    val OBJECT_INDEX = "OBJECT_INDEX"
+    const val OBJECT_INDEX = "OBJECT_INDEX"
     val URL_OBJECTS = "$URL_API/objects"
     val URL_OBJECTS_OBJECT_IDX = "$URL_OBJECTS/$OBJECT_INDEX"
 
     // 세부단계
-    val STEP_INDEX = "STEP_INDEX"
+    const val STEP_INDEX = "STEP_INDEX"
     val URL_OBJECT_STEPS = "$URL_API/object_steps"
     val URL_OBJECT_STEPS_OBJECT = "$URL_OBJECT_STEPS/object"
     val URL_OBJECT_STEPS_OBJECT_IDX = "$URL_OBJECT_STEPS_OBJECT/$OBJECT_INDEX"
@@ -146,7 +148,7 @@ object Comm_Param {
     val URL_OBJECT_STEPS_IDX_OBJECT_IDX = "$URL_OBJECT_STEPS_IDX/object/$OBJECT_INDEX"
 
     // 광고 및 예시
-    val EX_INDEX = "EX_INDEX"
+    const val EX_INDEX = "EX_INDEX"
     val URL_EXAMPLE = "$URL_API/example"
     val URL_EXAMPLE_PROFILE = "$URL_EXAMPLE/profile"
     val URL_EXAMPLE_PROFILE_EX_IDX = "$URL_EXAMPLE_PROFILE/$EX_INDEX"
@@ -167,8 +169,8 @@ object Comm_Param {
     val URL_ACTION_POSTS_POST_IDX = "$URL_ACTION_POSTS/$POST_INDEX"
 
     //댓글
-    val DST_RPOFILE_INDEX = "DST_RPOFILE_INDEX"
-    val COMMENT_INDEX = "COMMENT_INDEX"
+    const val DST_RPOFILE_INDEX = "DST_RPOFILE_INDEX"
+    const val COMMENT_INDEX = "COMMENT_INDEX"
     val URL_PRESENT_COMMENTS = "$URL_API/present_comments"
     val URL_PRESENT_COMMENTS_PROFILE = "$URL_PRESENT_COMMENTS/profile"
     val URL_PRESENT_COMMENTS_PROFILE_IDX = "$URL_PRESENT_COMMENTS_PROFILE/$DST_RPOFILE_INDEX"
@@ -193,7 +195,7 @@ object Comm_Param {
     val URL_SEARCH = "$URL_API/search"
     val URL_SEARCH_POPULAR = "$URL_SEARCH/popular"
     val URL_SEARCH_APPEALER = "$URL_SEARCH/appealer"
-    val URL_SEARCH_ACTION_POST = "$URL_SEARCH/action-post"
+    val URL_SEARCH_ACTION_POST = "$URL_SEARCH/action"
     val URL_SEARCH_TAG = "$URL_SEARCH/tag"
 
     //타임라인

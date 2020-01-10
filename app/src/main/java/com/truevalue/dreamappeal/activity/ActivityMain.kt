@@ -248,9 +248,9 @@ class ActivityMain : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == ActivityFollowCheering.RESULT_CODE) {
+        if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 replaceFragment(FragmentProfile.newInstance(view_user_idx), true)
             }
         }

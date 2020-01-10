@@ -68,9 +68,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         const val EXTRA_INDEX = "EXTRA_INDEX"
         const val EXTRA_OFF_KEYBOARD = "EXTRA_OFF_KEYBOARD"
 
-        const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
         const val REQUEST_REPLACE_USER_IDX = 2000
-        const val RESULT_CODE = 1004
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -26,9 +26,12 @@ class ActivitySearch : BaseActivity() {
         private const val TYPE_BOARD = 1
         private const val TYPE_TAG = 2
         private const val SEARCH_DELAY = 1000L
-        
-        var RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
-        var REQUEST_REPLACE_USER_IDX = 3000
+
+        const val RESULT_REPLACE_BOARD_IDX = "RESULT_REPLACE_BOARD_IDX"
+        const val REQUEST_REPLACE_USER_IDX = 3000
+
+        const val RESULT_CODE_BOARD = 1005
+        const val REQUEST_ADDR = 1015
     }
 
     init {

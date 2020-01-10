@@ -1,8 +1,11 @@
 package com.truevalue.dreamappeal.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,6 +18,7 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAppealer
+import com.truevalue.dreamappeal.bean.BeanSearchBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.fragment_search_board.*
@@ -23,7 +27,13 @@ import org.json.JSONObject
 
 class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
 
-    private var mAdapter: BaseRecyclerViewAdapter? = null
+    private var mAdapter: BaseRecyclerViewAdapter?
+    private var mKeywordTag : String?
+
+    init {
+        mAdapter = null
+        mKeywordTag = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +48,6 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
         initAdapter()
         // 데이터 초기화
         initData()
-        // 임시 데이터 추가
-        bindTempData()
         // 초반 데이터 가져오기
         getBoardSearch()
     }
@@ -49,15 +57,6 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
      */
     private fun initData() {
         (activity as ActivitySearch).mSearchListener = this
-    }
-
-    /**
-     * 임시 데이터 추가
-     */
-    private fun bindTempData() {
-        for (i in 0 until 100) {
-            mAdapter!!.add("")
-        }
     }
 
     /**
@@ -87,8 +86,27 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
 
                 if (code == DAClient.SUCCESS) {
 
+                    val json = JSONObject(body)
+                    val posts = json.getJSONArray("posts")
+                    mAdapter?.let {
+                        it.clear()
+                        for (i in 0 until posts.length()) {
+                            val post = posts.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanSearchBoard>(
+                                post.toString(),
+                                BeanSearchBoard::class.java
+                            )
+
+                            // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
+                            if(!bean.tags.isNullOrEmpty() && !mKeywordTag.isNullOrEmpty()) bean.tags = mKeywordTag
+                            it.add(bean)
+                        }
+                    }
+
                 } else {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -108,10 +126,29 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
                 if (code == DAClient.SUCCESS) {
 
+                    val json = JSONObject(body)
+                    val posts = json.getJSONArray("posts")
+                    mAdapter?.let {
+                        it.clear()
+                        for (i in 0 until posts.length()) {
+                            val post = posts.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanSearchBoard>(
+                                post.toString(),
+                                BeanSearchBoard::class.java
+                            )
+
+                            // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
+                            if(!bean.tags.isNullOrEmpty() && !mKeywordTag.isNullOrEmpty()) bean.tags = mKeywordTag
+                            it.add(bean)
+                        }
+                    }
+
+                } else {
+                    context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -134,12 +171,32 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
             val tvTitle = h.getItemView<TextView>(R.id.tv_title)
             val tvSubTitle = h.getItemView<TextView>(R.id.tv_sub_title)
 
-            Glide.with(context!!)
-                .load(R.drawable.ic_image_black)
-                .into(ivImage)
+            mAdapter?.let {
+                val bean = it.get(i) as BeanSearchBoard
 
-            tvTitle.text = "TEMP"
-            tvSubTitle.text = "TEMP"
+                if(bean.object_name.isNullOrEmpty()){ // 태그
+                    llTitle.visibility = GONE
+                    tvSubTitle.text = "#${bean.tags}"
+                }else{ // 게시글
+                    llTitle.visibility = VISIBLE
+                    tvTitle.text = bean.object_name
+                    tvSubTitle.text = "${bean.value_style} ${bean.job}"
+                }
+
+                Glide.with(context!!)
+                    .load(bean.thumbnail_image)
+                    .centerCrop()
+                    .into(ivImage)
+
+                h.itemView.setOnClickListener {
+                    val intent = Intent()
+                    intent.putExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX,bean.idx)
+                    activity!!.setResult(ActivitySearch.RESULT_CODE_BOARD,intent)
+                    activity!!.finish()
+                }
+            }
+
+
         }
 
         override fun getItemViewType(i: Int): Int {
@@ -154,6 +211,7 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
         if (keyword.isNullOrEmpty()) {
             getBoardSearch()
         } else {
+            mKeywordTag = keyword
             getBoardSearch(keyword)
         }
     }

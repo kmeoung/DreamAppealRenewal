@@ -19,6 +19,7 @@ import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BasePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail
@@ -43,11 +44,12 @@ class FragmentActionPost : BaseFragment() {
     private var mBean: BeanActionPostDetail? = null
     private var isDreamNoteType: String? = null
     private var mTags : String? = null
-    private val EXTRA_CHANGE_CATEGORY = 3030
+
 
     companion object {
-        val TYPE_DREAM_NOTE_IDEA = "TYPE_DREAM_NOTE_IDEA"
-        val TYPE_DREAM_NOTE_LIFE = "TYPE_DREAM_NOTE_LIFE"
+        private const val EXTRA_CHANGE_CATEGORY = 3030
+        const val TYPE_DREAM_NOTE_IDEA = "TYPE_DREAM_NOTE_IDEA"
+        const val TYPE_DREAM_NOTE_LIFE = "TYPE_DREAM_NOTE_LIFE"
 
         fun newInstance(post_idx: Int, view_user_idx: Int): FragmentActionPost {
             val fragment = FragmentActionPost()
@@ -316,13 +318,12 @@ class FragmentActionPost : BaseFragment() {
             } else if (requestCode == EXTRA_CHANGE_CATEGORY) {
                 (activity as ActivityMain).onBackPressed(false)
             }
-        } else if (resultCode == ActivityComment.RESULT_CODE ||
-            resultCode == ActivityFollowCheering.RESULT_CODE
+        } else if (resultCode == RESULT_CODE
         ) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
                 requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
             ) {
-                val view_user_idx = data!!.getIntExtra(ActivityComment.RESULT_REPLACE_USER_IDX, -1)
+                val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
                     FragmentProfile.newInstance(view_user_idx),
                     true

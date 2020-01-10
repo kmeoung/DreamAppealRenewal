@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.BaseFragment
@@ -14,10 +15,15 @@ import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAddress
+import com.truevalue.dreamappeal.bean.BeanHistoryTag
+import com.truevalue.dreamappeal.bean.BeanPopularTag
+import com.truevalue.dreamappeal.bean.BeanSearchBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_search_board.*
 import okhttp3.Call
+import org.json.JSONObject
 
 class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
 
@@ -25,7 +31,8 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
 
     companion object {
         private const val RV_TYPE_HEADER = 0
-        private const val RV_TYPE_ITEM = 1
+        private const val RV_TYPE_POPULAR_ITEM = 1
+        private const val RV_TYPE_HISTORY_ITEM = 2
     }
 
     override fun onCreateView(
@@ -41,8 +48,6 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
         initAdapter()
         // 데이터 초기화
         initData()
-        // 임시 데이터 추가
-        bindTempData()
         // 초반 데이터 가져오기
         getTagSearch()
     }
@@ -69,25 +74,33 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
     private fun bindTempData() {
         mAdapter!!.add("Temp")
         for (i in 0 until 5) {
-            mAdapter!!.add(BeanAddress(null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null))
+            mAdapter!!.add(
+                BeanAddress(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
         }
         mAdapter!!.add("Temp")
         for (i in 0 until 5) {
-            mAdapter!!.add(BeanAddress(null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null))
+            mAdapter!!.add(
+                BeanAddress(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
         }
     }
 
@@ -107,9 +120,37 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
             ) {
 
                 if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
+
+                    mAdapter?.let {
+                        it.clear()
+                        it.add(getString(R.string.str_popular_tag))
+                        val tag_popular = json.getJSONArray("tag_popular")
+
+                        for (i in 0 until tag_popular.length()) {
+                            val tag = tag_popular.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanPopularTag>(
+                                tag.toString(),
+                                BeanPopularTag::class.java
+                            )
+                            it.add(bean)
+                        }
+                        it.add(getString(R.string.str_recent_search))
+                        val tag_history = json.getJSONArray("tag_history")
+                        for (i in 0 until tag_history.length()) {
+                            val tag = tag_history.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanHistoryTag>(
+                                tag.toString(),
+                                BeanHistoryTag::class.java
+                            )
+                            it.add(bean)
+                        }
+                    }
 
                 } else {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -129,10 +170,27 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
                 if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
 
+                    mAdapter?.let {
+                        it.clear()
+//                        val tag_popular = json.getJSONArray("tag_popular")
+//
+//                        for (i in 0 until tag_popular.length()) {
+//                            val tag = tag_popular.getJSONObject(i)
+//                            val bean = Gson().fromJson<BeanPopularTag>(
+//                                tag.toString(),
+//                                BeanPopularTag::class.java
+//                            )
+//                            it.add(bean)
+//                        }
+                    }
+
+                } else {
+                    context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -143,7 +201,7 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.size() else 0
+            get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             when (viewType) {
@@ -152,7 +210,8 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
                     parent,
                     false
                 )
-                RV_TYPE_ITEM -> return BaseViewHolder.newInstance(
+                RV_TYPE_POPULAR_ITEM,
+                RV_TYPE_HISTORY_ITEM -> return BaseViewHolder.newInstance(
                     R.layout.listitem_search_tag,
                     parent,
                     false
@@ -162,20 +221,45 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            if(getItemViewType(i) == RV_TYPE_HEADER){
-                val title = mAdapter!!.get(i) as String
-                val tvTitle = h.getItemView<TextView>(R.id.tv_title)
-                tvTitle.text = title
-            }else if(getItemViewType(i) == RV_TYPE_ITEM){
-                val bean = mAdapter!!.get(i)
-                val tvTag = h.getItemView<TextView>(R.id.tv_tag)
-                val tvSize = h.getItemView<TextView>(R.id.tv_size)
+            mAdapter?.let {
+                if (getItemViewType(i) == RV_TYPE_HEADER) {
+                    val title = it.get(i) as String
+                    val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+                    tvTitle.text = title
+                } else if (getItemViewType(i) == RV_TYPE_POPULAR_ITEM) {
+
+                    val tvTag = h.getItemView<TextView>(R.id.tv_tag)
+                    val tvSize = h.getItemView<TextView>(R.id.tv_size)
+
+                    val bean = it.get(i) as BeanPopularTag
+
+                    tvTag.text = "#${bean.tag_name}"
+                    tvSize.text = "${Utils.getCommentView(bean.cnt)}개 게시물"
+
+                } else if(getItemViewType(i) == RV_TYPE_HISTORY_ITEM){
+                    val tvTag = h.getItemView<TextView>(R.id.tv_tag)
+                    val tvSize = h.getItemView<TextView>(R.id.tv_size)
+
+                    val bean = it.get(i) as BeanHistoryTag
+
+                    tvTag.text = "#${bean.keyword}"
+                    // todo : 검색기록은 갯수가 나오지 않음 ;;
+                    tvSize.text = "준비중입니다."
+                }
             }
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mAdapter!!.get(i) is String) return RV_TYPE_HEADER
-            return RV_TYPE_ITEM
+            mAdapter?.let {
+                when (it.get(i)) {
+                    is String -> return RV_TYPE_HEADER
+                    is BeanPopularTag -> return RV_TYPE_POPULAR_ITEM
+                    is BeanHistoryTag -> return RV_TYPE_HISTORY_ITEM
+                    else -> {
+                    }
+                }
+            }
+            return RV_TYPE_HEADER
         }
     }
 

@@ -12,7 +12,7 @@
                 android:id="@+id/iv_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/greyish"/>
+                android:background="@color/black"/>
 
         <LinearLayout
                 android:id="@+id/ll_title"
@@ -29,7 +29,10 @@
                     android:fontFamily="@font/nanum_square_round_b"
                     android:lineSpacingExtra="@dimen/text_line_spacing"
                     android:textColor="@color/white"
-                    android:textSize="14.5sp" />
+                    android:gravity="center"
+                    android:textSize="14.5sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"/>
 
         </LinearLayout>
 
@@ -42,10 +45,9 @@
             android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center"
-            android:lines="1"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="14.5sp"
-            android:background="@color/white"/>
+            android:background="@color/white_three"/>
 
 </LinearLayout>

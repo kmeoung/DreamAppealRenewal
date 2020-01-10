@@ -21,6 +21,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanFollow
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_follow.*
@@ -50,7 +51,6 @@ class ActivityFollowCheering : BaseActivity() {
         const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
         const val REQUEST_REPLACE_USER_IDX = 4000
         const val REQUEST_VIEW_LIST_IDX = "REQUEST_VIEW_LIST_IDX"
-        const val RESULT_CODE = 1004
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

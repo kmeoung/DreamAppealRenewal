@@ -5,6 +5,11 @@ import androidx.fragment.app.FragmentManager
 
 open class BaseFragment : Fragment(){
 
+    companion object{
+        const val RESULT_CODE = 1004
+        const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+    }
+
     /**
      * Fragment Replace
      */

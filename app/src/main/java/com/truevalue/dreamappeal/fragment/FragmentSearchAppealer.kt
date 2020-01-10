@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,9 +37,6 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
     companion object {
         private const val TYPE_LOCATION = 0
         private const val TYPE_MODIFIER = 1
-
-        private const val RESULT_CODE = 1004
-        private const val REQUEST_ADDR = 1005
     }
 
     private var mSearchType : Int
@@ -109,7 +107,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                 }
                 tv_addr -> {
                     val intent = Intent(context!!, ActivityAddrSearch::class.java)
-                    startActivityForResult(intent, REQUEST_ADDR)
+                    startActivityForResult(intent, ActivitySearch.REQUEST_ADDR)
                 }
             }
         }
@@ -168,15 +166,17 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
             tvJob.text = if (bean.job.isNullOrEmpty()) "" else bean.job
             tvName.text = if (bean.nickname.isNullOrEmpty()) "" else bean.nickname
 
+            // todo : 추후 기능 추가
+            ivDelete.visibility = GONE
             ivDelete.setOnClickListener {
-                // todo : 역할을 잘 모르겠습니다.
+
             }
 
             if (bean.idx != Comm_Prefs.getUserProfileIndex()) {
 
                 h.itemView.setOnClickListener {
                     val intent = Intent()
-                    intent.putExtra(ActivitySearch.RESULT_REPLACE_USER_IDX, bean.idx)
+                    intent.putExtra(RESULT_REPLACE_USER_IDX, bean.idx)
                     activity!!.setResult(RESULT_CODE, intent)
                     activity!!.finish()
                 }
@@ -282,7 +282,7 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_ADDR) {
+            if (requestCode == ActivitySearch.REQUEST_ADDR) {
                 data?.let {
                     val bean =
                         it.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
