@@ -4,15 +4,16 @@ import com.truevalue.dreamappeal.BuildConfig
 
 object Comm_Param {
 
-
     val REAL = !BuildConfig.DEBUG
-//    val REAL = true
+    //    val REAL = true
     const val APP_NAME = "DreamAppeal"
 
     // DEV 서버
-    private const val DEV_API = "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
+    private const val DEV_API =
+        "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버
-    private const val REAL_API = "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
+    private const val REAL_API =
+        "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
     // Kakao Addr
     const val KAKAO_ADDRESS_API = "https://dapi.kakao.com/v2/local/search/address.json"
     // API
@@ -68,7 +69,8 @@ object Comm_Param {
     val URL_ACHIEVEMENT_POSTS_BEST_POST_NUMBER = "$URL_ACHIEVEMENT_POSTS/$BEST_POST_NUMBER"
     val URL_ACHIEVEMENT_POSTS_PROFILE = "$URL_ACHIEVEMENT_POSTS/profile"
     val URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX = "$URL_ACHIEVEMENT_POSTS_PROFILE/$PROFILE_INDEX"
-    val URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX_POST_SIZE = "$URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX/POST_SIZE"
+    val URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX_POST_SIZE =
+        "$URL_ACHIEVEMENT_POSTS_PROFILE_PROFILE_IDX/POST_SIZE"
     val URL_ACHIEVEMENT_POSTS_POST_IDX = "$URL_ACHIEVEMENT_POSTS/$POST_INDEX"
 
     // 대표성과
@@ -86,10 +88,10 @@ object Comm_Param {
     val URL_FOLLOW = "$URL_API/follow"
     val URL_FOLLOW_PROFILE_IDX = "$URL_FOLLOW/$PROFILE_INDEX"
 
-/**
- * @GET {'/list/profile/:idx'} : lookup list of profile likes
- * @GET {'/list/action/:idx'} : lookup list of action post likes
- * @GET {'/list/achievement/:idx'} : lookup list of achievement post likes**/
+    /**
+     * @GET {'/list/profile/:idx'} : lookup list of profile likes
+     * @GET {'/list/action/:idx'} : lookup list of action post likes
+     * @GET {'/list/achievement/:idx'} : lookup list of achievement post likes**/
 
     // 응원해준 어필러
     const val CHEERING_INDEX = "CHEERING_INDEX"
@@ -202,7 +204,7 @@ object Comm_Param {
     val URL_TIMELINES = "$URL_API/timelines"
 
     //좋아요
-    val URL_LIKES = "$URL_API/likes"
+    private val URL_LIKES = "$URL_API/likes"
     val URL_LIKES_PROFILE = "$URL_LIKES/profile"
     val URL_LIKES_PROFILE_IDX = "$URL_LIKES_PROFILE/$PROFILE_INDEX"
     val URL_LIKES_ACTION = "$URL_LIKES/action"

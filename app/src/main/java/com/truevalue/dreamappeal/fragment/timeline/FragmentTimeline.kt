@@ -43,7 +43,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdatper: BaseRecyclerViewAdapter? = null
 
-    companion object{
+    companion object {
         private const val RV_TYPE_TIMELINE = 0
         private const val RV_TYPE_TIMELINE_MORE = 1
     }
@@ -512,9 +512,34 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     true
                 )
             }
-        } else if(resultCode == ActivitySearch.RESULT_CODE_BOARD){
-            val board_idx = data!!.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX, -1)
-//            (activity as ActivityMain).replaceFragment(FragmentActionPost.newInstance(board_idx,Comm_Prefs.getUserProfileIndex()))
+        } else if (resultCode == ActivitySearch.RESULT_CODE_BOARD) {
+            data?.let {
+                val boardIdx = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX, -1)
+                val boardType = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_TYPE, -1)
+                when(boardType){
+                    0->(activity as ActivityMain).replaceFragment(
+                        FragmentActionPost.newInstance(
+                            boardIdx,
+                            Comm_Prefs.getUserProfileIndex()
+                        ), addToBack = true, isMainRefresh = false
+                    )
+                    1->(activity as ActivityMain).replaceFragment(
+                        FragmentActionPost.newInstance(
+                            boardIdx,
+                            Comm_Prefs.getUserProfileIndex(),
+                            FragmentActionPost.TYPE_DREAM_NOTE_LIFE
+                        ), addToBack = true, isMainRefresh = false
+                    )
+                    2->(activity as ActivityMain).replaceFragment(
+                        FragmentActionPost.newInstance(
+                            boardIdx,
+                            Comm_Prefs.getUserProfileIndex(),
+                            FragmentActionPost.TYPE_DREAM_NOTE_IDEA
+                        ), addToBack = true, isMainRefresh = false
+                    )
+                }
+            }
+
         }
     }
 

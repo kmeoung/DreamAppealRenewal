@@ -28,6 +28,7 @@ class ActivitySearch : BaseActivity() {
         private const val SEARCH_DELAY = 1000L
 
         const val RESULT_REPLACE_BOARD_IDX = "RESULT_REPLACE_BOARD_IDX"
+        const val RESULT_REPLACE_BOARD_TYPE = "RESULT_REPLACE_BOARD_TYPE"
         const val REQUEST_REPLACE_USER_IDX = 3000
 
         const val RESULT_CODE_BOARD = 1005

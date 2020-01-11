@@ -7,4 +7,6 @@ data class BeanSearchBoard(var idx : Int,
                            var thumbnail_image : String?,
                            var value_style : String?,
                            var job : String?,
-                           var tags : String?) : Serializable
+                           var tags : String?,
+                           var post_type : Int?,
+                           var content : String?) : Serializable

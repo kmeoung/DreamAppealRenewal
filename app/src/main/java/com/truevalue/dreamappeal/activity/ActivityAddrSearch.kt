@@ -102,7 +102,7 @@ class ActivityAddrSearch : BaseActivity() {
         btn_cancel.setOnClickListener(listener)
         iv_cancel.setOnClickListener(listener)
 
-        et_search.setOnEditorActionListener{ _, i, _ ->
+        et_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 if (!et_search.text.toString().isNullOrEmpty()) {
                     getAddrPost(et_search.text.toString())
@@ -160,12 +160,12 @@ class ActivityAddrSearch : BaseActivity() {
                                 val region_1depth_name = address.getString("region_1depth_name")
                                 val region_2depth_name: String? = try {
                                     address.getString("region_2depth_name")
-                                }catch (e: Exception){
+                                } catch (e: Exception) {
                                     ""
                                 }
                                 val region_3depth_name: String? = try {
                                     address.getString("region_3depth_name")
-                                }catch (e: Exception){
+                                } catch (e: Exception) {
                                     ""
                                 }
 
@@ -222,14 +222,19 @@ class ActivityAddrSearch : BaseActivity() {
                 val bean = it.get(i) as BeanAddress
                 tvAddr.text = bean.address_name
                 tvAddr.setOnClickListener {
-                    if(!bean.region_2depth_name.isNullOrEmpty() &&
-                            !bean.region_3depth_name.isNullOrEmpty()) {
+                    if (!bean.region_2depth_name.isNullOrEmpty() &&
+                        !bean.region_3depth_name.isNullOrEmpty()
+                    ) {
                         val intent = Intent()
                         intent.putExtra(RESULT_ADDRESS, bean)
                         setResult(RESULT_OK, intent)
                         finish()
-                    }else{
-                        Toast.makeText(applicationContext,getString(R.string.str_addr_error),Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            getString(R.string.str_addr_error),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
