@@ -243,8 +243,7 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
                     val bean = it.get(i) as BeanHistoryTag
 
                     tvTag.text = "#${bean.keyword}"
-                    // todo : 검색기록은 갯수가 나오지 않음 ;;
-                    tvSize.text = "준비중입니다."
+                    tvSize.text = "${Utils.getCommentView(bean.cnt)}개 게시물"
                 }
             }
         }
