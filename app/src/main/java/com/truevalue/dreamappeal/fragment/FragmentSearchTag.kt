@@ -3,7 +3,10 @@ package com.truevalue.dreamappeal.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +27,7 @@ import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_search_board.*
 import okhttp3.Call
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 
 class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
 
@@ -66,42 +70,6 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
         rv_board.adapter = mAdapter
         rv_board.layoutManager = LinearLayoutManager(context!!)
-    }
-
-    /**
-     * 임시 데이터 추가
-     */
-    private fun bindTempData() {
-        mAdapter!!.add("Temp")
-        for (i in 0 until 5) {
-            mAdapter!!.add(
-                BeanAddress(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                )
-            )
-        }
-        mAdapter!!.add("Temp")
-        for (i in 0 until 5) {
-            mAdapter!!.add(
-                BeanAddress(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                )
-            )
-        }
     }
 
     /**
@@ -175,16 +143,15 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
 
                     mAdapter?.let {
                         it.clear()
-//                        val tag_popular = json.getJSONArray("tag_popular")
-//
-//                        for (i in 0 until tag_popular.length()) {
-//                            val tag = tag_popular.getJSONObject(i)
-//                            val bean = Gson().fromJson<BeanPopularTag>(
-//                                tag.toString(),
-//                                BeanPopularTag::class.java
-//                            )
-//                            it.add(bean)
-//                        }
+                        val tags = json.getJSONArray("tags")
+                        for (i in 0 until tags.length()) {
+                            val tag = tags.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanPopularTag>(
+                                tag.toString(),
+                                BeanPopularTag::class.java
+                            )
+                            it.add(bean)
+                        }
                     }
 
                 } else {
@@ -227,7 +194,7 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
                     val tvTitle = h.getItemView<TextView>(R.id.tv_title)
                     tvTitle.text = title
                 } else if (getItemViewType(i) == RV_TYPE_POPULAR_ITEM) {
-
+                    val ivDelete = h.getItemView<ImageView>(R.id.iv_delete)
                     val tvTag = h.getItemView<TextView>(R.id.tv_tag)
                     val tvSize = h.getItemView<TextView>(R.id.tv_size)
 
@@ -235,15 +202,30 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
 
                     tvTag.text = "#${bean.tag_name}"
                     tvSize.text = "${Utils.getCommentView(bean.cnt)}개 게시물"
+                    ivDelete.visibility = GONE
+
+                    h.itemView.setOnClickListener {
+                        (activity as ActivitySearch).replaceFragment(FragmentSearchBoard.newInstance(bean.tag_name),true,bean.tag_name)
+                    }
 
                 } else if(getItemViewType(i) == RV_TYPE_HISTORY_ITEM){
+
+                    val ivDelete = h.getItemView<ImageView>(R.id.iv_delete)
                     val tvTag = h.getItemView<TextView>(R.id.tv_tag)
                     val tvSize = h.getItemView<TextView>(R.id.tv_size)
 
                     val bean = it.get(i) as BeanHistoryTag
 
+                    ivDelete.visibility = VISIBLE
                     tvTag.text = "#${bean.keyword}"
                     tvSize.text = "${Utils.getCommentView(bean.cnt)}개 게시물"
+                    ivDelete.setOnClickListener {
+                        deleteTagHistory(bean)
+                    }
+
+                    h.itemView.setOnClickListener {
+                        (activity as ActivitySearch).replaceFragment(FragmentSearchBoard.newInstance(bean.keyword),true,bean.keyword)
+                    }
                 }
             }
         }
@@ -260,6 +242,32 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
             }
             return RV_TYPE_HEADER
         }
+    }
+
+    /**
+     * 태그 검색기록 제거
+     */
+    private fun deleteTagHistory(bean : BeanHistoryTag){
+
+        DAClient.deleteTagHistory(bean.keyword,bean.register_date,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if(code == DAClient.SUCCESS){
+                    mAdapter?.let {
+                        it.remove(bean)
+                    }
+                }else{
+                    context?.let {
+                        Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
     }
 
     /**

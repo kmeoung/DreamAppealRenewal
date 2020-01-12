@@ -41,18 +41,6 @@
                     android:textSize="17.2sp" />
         </LinearLayout>
 
-
-        <ImageView
-                android:id="@+id/iv_search"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_search_white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:scaleY="0.65"
-                android:scaleX="0.65"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

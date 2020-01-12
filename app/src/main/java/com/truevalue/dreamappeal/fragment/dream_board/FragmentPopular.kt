@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.dream_board
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanAttenAction
 import com.truevalue.dreamappeal.bean.BeanAttenAppealer
@@ -44,8 +46,10 @@ class FragmentPopular : BaseFragment() {
 
         // rv adapter 초기화
         initAdapter()
+        // View Click Listener
+        onClickView()
         // Data bind
-        bindData()
+        getBoardPopular()
     }
 
     /**
@@ -63,9 +67,24 @@ class FragmentPopular : BaseFragment() {
     }
 
     /**
+     * View Click listener
+     */
+    private fun onClickView(){
+        val listener = View.OnClickListener{
+            when(it){
+                ll_search->{
+                    val intent = Intent(context,ActivitySearch::class.java)
+                    startActivityForResult(intent,ActivitySearch.REQUEST_SEARCH)
+                }
+            }
+        }
+        ll_search.setOnClickListener(listener)
+    }
+
+    /**
      * Popular Bind Data
      */
-    private fun bindData() {
+    private fun getBoardPopular() {
 
         DAClient.getDreamBoardPopular(object : DAHttpCallback {
             override fun onResponse(
@@ -152,6 +171,56 @@ class FragmentPopular : BaseFragment() {
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // 어필러 검색
+        if (resultCode == RESULT_CODE) {
+            if (requestCode == ActivitySearch.REQUEST_SEARCH) {
+                data?.let {
+                    val viewUserIdx = it.getIntExtra(RESULT_REPLACE_USER_IDX,-1)
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentProfile.newInstance(viewUserIdx),
+                        true
+                    )
+                }
+            }
+        } else if (resultCode == ActivitySearch.RESULT_CODE_BOARD) { // 게시물 / 태그 검색
+            if (requestCode == ActivitySearch.REQUEST_SEARCH) {
+                data?.let {
+                    val boardIdx = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX, -1)
+                    val boardType = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_TYPE, -1)
+                    when (boardType) {
+                        FragmentActionPost.ACTION_POST -> (activity as ActivityMain).replaceFragment(
+                            FragmentActionPost.newInstance(
+                                boardIdx,
+                                Comm_Prefs.getUserProfileIndex()
+                            ), addToBack = true, isMainRefresh = false
+                        )
+                        FragmentActionPost.ACTION_LIFE -> (activity as ActivityMain).replaceFragment(
+                            FragmentActionPost.newInstance(
+                                boardIdx,
+                                Comm_Prefs.getUserProfileIndex(),
+                                FragmentActionPost.TYPE_DREAM_NOTE_LIFE
+                            ), addToBack = true, isMainRefresh = false
+                        )
+                        FragmentActionPost.ACTION_IDEA -> (activity as ActivityMain).replaceFragment(
+                            FragmentActionPost.newInstance(
+                                boardIdx,
+                                Comm_Prefs.getUserProfileIndex(),
+                                FragmentActionPost.TYPE_DREAM_NOTE_IDEA
+                            ), addToBack = true, isMainRefresh = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * RecyclerView Listener
+     */
     private val rvPopularListener = object : IORecyclerViewListener {
         override val itemCount: Int
             get() = if (mAdapter != null) mAdapter!!.size() else 0
@@ -199,10 +268,12 @@ class FragmentPopular : BaseFragment() {
 
                                     view.setOnClickListener(View.OnClickListener {
                                         (activity as ActivityMain)
-                                            .replaceFragment(FragmentProfile
-                                                .newInstance(pagerBean.idx),
+                                            .replaceFragment(
+                                                FragmentProfile
+                                                    .newInstance(pagerBean.idx),
                                                 addToBack = true,
-                                                isMainRefresh = false)
+                                                isMainRefresh = false
+                                            )
                                     })
                                 }
                                 is BeanAttenAction -> {
@@ -222,11 +293,15 @@ class FragmentPopular : BaseFragment() {
 
                                     view.setOnClickListener(View.OnClickListener {
                                         (activity as ActivityMain)
-                                            .replaceFragment(FragmentActionPost
-                                                .newInstance(pagerBean.idx,
-                                                    Comm_Prefs.getUserProfileIndex()),
+                                            .replaceFragment(
+                                                FragmentActionPost
+                                                    .newInstance(
+                                                        pagerBean.idx,
+                                                        Comm_Prefs.getUserProfileIndex()
+                                                    ),
                                                 addToBack = true,
-                                                isMainRefresh = false)
+                                                isMainRefresh = false
+                                            )
                                     })
                                 }
                                 is BeanAttenIdea -> {
@@ -244,12 +319,16 @@ class FragmentPopular : BaseFragment() {
 
                                     view.setOnClickListener(View.OnClickListener {
                                         (activity as ActivityMain)
-                                            .replaceFragment(FragmentActionPost
-                                                .newInstance(pagerBean.idx,
-                                                    Comm_Prefs.getUserProfileIndex(),
-                                                    FragmentActionPost.TYPE_DREAM_NOTE_IDEA),
+                                            .replaceFragment(
+                                                FragmentActionPost
+                                                    .newInstance(
+                                                        pagerBean.idx,
+                                                        Comm_Prefs.getUserProfileIndex(),
+                                                        FragmentActionPost.TYPE_DREAM_NOTE_IDEA
+                                                    ),
                                                 addToBack = true,
-                                                isMainRefresh = false)
+                                                isMainRefresh = false
+                                            )
                                     })
                                 }
                             }

@@ -92,16 +92,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-                iv_search -> {
-                    val intent = Intent(context!!, ActivitySearch::class.java)
-                    startActivityForResult(intent, ActivitySearch.REQUEST_REPLACE_USER_IDX)
-                }
                 ll_timeline -> {
                     rv_timeline.smoothScrollToPosition(0)
                 }
             }
         }
-        iv_search.setOnClickListener(listener)
         ll_timeline.setOnClickListener(listener)
     }
 
@@ -290,7 +285,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             pagerAdapter.notifyDataSetChanged()
 
             when (bean.post_type) {
-                0 -> {
+                FragmentActionPost.ACTION_POST -> {
                     ivCircle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -305,7 +300,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         )
                     )
                 }
-                1 -> {
+                FragmentActionPost.ACTION_LIFE -> {
                     ivCircle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -320,7 +315,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         )
                     )
                 }
-                2 -> {
+                FragmentActionPost.ACTION_IDEA -> {
                     ivCircle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -496,15 +491,13 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX
+            if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX
             ) {
 
             }
         } else if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivitySearch.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
@@ -512,34 +505,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     true
                 )
             }
-        } else if (resultCode == ActivitySearch.RESULT_CODE_BOARD) {
-            data?.let {
-                val boardIdx = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX, -1)
-                val boardType = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_TYPE, -1)
-                when(boardType){
-                    0->(activity as ActivityMain).replaceFragment(
-                        FragmentActionPost.newInstance(
-                            boardIdx,
-                            Comm_Prefs.getUserProfileIndex()
-                        ), addToBack = true, isMainRefresh = false
-                    )
-                    1->(activity as ActivityMain).replaceFragment(
-                        FragmentActionPost.newInstance(
-                            boardIdx,
-                            Comm_Prefs.getUserProfileIndex(),
-                            FragmentActionPost.TYPE_DREAM_NOTE_LIFE
-                        ), addToBack = true, isMainRefresh = false
-                    )
-                    2->(activity as ActivityMain).replaceFragment(
-                        FragmentActionPost.newInstance(
-                            boardIdx,
-                            Comm_Prefs.getUserProfileIndex(),
-                            FragmentActionPost.TYPE_DREAM_NOTE_IDEA
-                        ), addToBack = true, isMainRefresh = false
-                    )
-                }
-            }
-
         }
     }
 

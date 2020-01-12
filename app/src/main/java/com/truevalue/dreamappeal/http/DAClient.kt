@@ -2268,12 +2268,53 @@ object DAClient {
         keyword: String,
         callback: DAHttpCallback
     ) {
-
         val params = DAHttpParams()
         params.put("keyword", keyword)
 
         BaseOkhttpClient.request(
             HttpType.POST,
+            Comm_Param.URL_SEARCH_TAG_TAG,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 태그 게시물 검색
+     */
+    fun searchTagPost(
+        keyword: String,
+        callback: DAHttpCallback
+    ) {
+        val params = DAHttpParams()
+        params.put("keyword", keyword)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_SEARCH_TAG_POST,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 태그 검색 기록 제거
+     */
+    fun deleteTagHistory(
+        keyword: String,
+        register_date : String?,
+        callback: DAHttpCallback
+    ) {
+        val params = DAHttpParams()
+        params.put("keyword", keyword)
+        if(!register_date.isNullOrEmpty()) params.put("register_date",register_date)
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
             Comm_Param.URL_SEARCH_TAG,
             getHttpHeader(),
             params,

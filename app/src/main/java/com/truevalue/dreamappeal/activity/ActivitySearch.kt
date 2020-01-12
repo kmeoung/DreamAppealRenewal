@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.FragmentSearchAppealer
@@ -20,7 +21,7 @@ class ActivitySearch : BaseActivity() {
 
     private var mSearchType : Int
     var mSearchListener: IOSearchListener? = null
-    val handler: Handler
+    private val handler: Handler
     companion object {
         private const val TYPE_APPEALER = 0
         private const val TYPE_BOARD = 1
@@ -29,7 +30,7 @@ class ActivitySearch : BaseActivity() {
 
         const val RESULT_REPLACE_BOARD_IDX = "RESULT_REPLACE_BOARD_IDX"
         const val RESULT_REPLACE_BOARD_TYPE = "RESULT_REPLACE_BOARD_TYPE"
-        const val REQUEST_REPLACE_USER_IDX = 3000
+        const val REQUEST_SEARCH = 3000
 
         const val RESULT_CODE_BOARD = 1005
         const val REQUEST_ADDR = 1015
@@ -123,10 +124,30 @@ class ActivitySearch : BaseActivity() {
     }
 
     /**
+     * SearchActivity Replace Fragment
+     */
+    fun replaceFragment(fragment : Fragment,addToBack : Boolean){
+        replaceFragment(R.id.search_container, fragment, addToBack)
+    }
+
+    /**
+     * SearchActivity Replace Fragment (set Tag Keyword
+     */
+    fun replaceFragment(fragment : Fragment,addToBack : Boolean,tag_keyword : String){
+        replaceFragment(fragment, addToBack)
+        searchSetText(tag_keyword,false)
+    }
+
+    private fun searchSetText(keyword : String, send_handler : Boolean){
+        et_search.setText(keyword)
+        if(!send_handler) handler.removeMessages(0)
+    }
+
+    /**
      * Set Search View Type
      */
     private fun setSearchType(search_type: Int) {
-
+        searchSetText("",false)
         when (search_type) {
             TYPE_APPEALER -> {
                 tv_appealer.isSelected = true
@@ -135,14 +156,12 @@ class ActivitySearch : BaseActivity() {
                 replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
             }
             TYPE_BOARD -> {
-//                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
                 tv_appealer.isSelected = false
                 tv_board.isSelected = true
                 tv_tag.isSelected = false
                 replaceFragment(R.id.search_container, FragmentSearchBoard(), false)
             }
             TYPE_TAG -> {
-//                Toast.makeText(applicationContext,getString(R.string.str_not_ready_yet),Toast.LENGTH_SHORT).show()
                 tv_appealer.isSelected = false
                 tv_board.isSelected = false
                 tv_tag.isSelected = true

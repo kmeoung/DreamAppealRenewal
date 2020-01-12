@@ -48,6 +48,11 @@ class FragmentActionPost : BaseFragment() {
 
     companion object {
         private const val EXTRA_CHANGE_CATEGORY = 3030
+
+        const val ACTION_POST = 0
+        const val ACTION_LIFE = 1
+        const val ACTION_IDEA = 2
+
         const val TYPE_DREAM_NOTE_IDEA = "TYPE_DREAM_NOTE_IDEA"
         const val TYPE_DREAM_NOTE_LIFE = "TYPE_DREAM_NOTE_LIFE"
 

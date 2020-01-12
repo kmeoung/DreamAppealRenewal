@@ -17,7 +17,6 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivitySearch
 import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.bean.BeanAppealer
 import com.truevalue.dreamappeal.bean.BeanSearchBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -28,11 +27,23 @@ import org.json.JSONObject
 class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
 
     private var mAdapter: BaseRecyclerViewAdapter?
-    private var mKeywordTag : String?
-
+    private var mInputTag : String?
+    private var mSearchTag : String?
     init {
         mAdapter = null
-        mKeywordTag = null
+        mInputTag = null
+        mSearchTag = null
+    }
+
+    companion object{
+        /**
+         * Tag 게시물 검색용
+         */
+        fun newInstance(tag_keyword :String) : FragmentSearchBoard{
+            val fragment = FragmentSearchBoard()
+            fragment.mSearchTag = tag_keyword
+            return fragment
+        }
     }
 
     override fun onCreateView(
@@ -49,7 +60,8 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
         // 데이터 초기화
         initData()
         // 초반 데이터 가져오기
-        getBoardSearch()
+        if(mSearchTag.isNullOrEmpty()) getBoardSearch()
+        else getTagBoardSearch()
     }
 
     /**
@@ -98,7 +110,7 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
                             )
 
                             // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
-                            if(!bean.tags.isNullOrEmpty() && !mKeywordTag.isNullOrEmpty()) bean.tags = mKeywordTag
+                            if(!bean.tags.isNullOrEmpty() && !mInputTag.isNullOrEmpty()) bean.tags = mInputTag
                             it.add(bean)
                         }
                     }
@@ -111,6 +123,53 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
             }
         })
     }
+
+    /**
+     * Http
+     * 태그 게시물 검색
+     */
+    private fun getTagBoardSearch() {
+
+        mSearchTag?.let {
+            DAClient.searchTagPost(it,object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+
+                    if (code == DAClient.SUCCESS) {
+
+                        val json = JSONObject(body)
+                        val posts = json.getJSONArray("posts")
+                        mAdapter?.let {
+                            it.clear()
+                            for (i in 0 until posts.length()) {
+                                val post = posts.getJSONObject(i)
+                                val bean = Gson().fromJson<BeanSearchBoard>(
+                                    post.toString(),
+                                    BeanSearchBoard::class.java
+                                )
+
+                                // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
+                                if(!bean.tags.isNullOrEmpty() && !mInputTag.isNullOrEmpty()) bean.tags = mInputTag
+                                it.add(bean)
+                            }
+                        }
+
+                    } else {
+                        context?.let {
+                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+
+        }
+    }
+
 
     /**
      * Http
@@ -140,7 +199,7 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
                             )
 
                             // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
-                            if(!bean.tags.isNullOrEmpty() && !mKeywordTag.isNullOrEmpty()) bean.tags = mKeywordTag
+                            if(!bean.tags.isNullOrEmpty() && !mInputTag.isNullOrEmpty()) bean.tags = mInputTag
                             it.add(bean)
                         }
                     }
@@ -210,9 +269,10 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
      */
     override fun onSearch(keyword: String) {
         if (keyword.isNullOrEmpty()) {
-            getBoardSearch()
+            if(mSearchTag.isNullOrEmpty()) getBoardSearch()
+            else activity!!.onBackPressed()
         } else {
-            mKeywordTag = keyword
+            mInputTag = keyword
             getBoardSearch(keyword)
         }
     }

@@ -24,7 +24,8 @@
                     android:layout_marginBottom="13.3dp"
                     android:background="@drawable/bg_search"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_search">
 
                 <ImageView
                         android:layout_width="20dp"
@@ -32,29 +33,20 @@
                         android:layout_marginLeft="10dp"
                         android:src="@drawable/ic_search_gray" />
 
-                <EditText
-                        android:id="@+id/et_search"
+                <TextView
+                        android:id="@+id/tv_search"
+                        android:gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
                         android:fontFamily="@font/nanum_square_round_r"
                         android:hint="@string/str_hint_search"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:lines="1"
                         android:paddingLeft="5dp"
                         android:text=""
                         android:textColor="@color/black"
                         android:textColorHint="@color/cool_grey"
                         android:textSize="14.7sp" />
-
-                <ImageView
-                        android:id="@+id/iv_cancel"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="7dp"
-                        android:src="@drawable/ic_cancel" />
 
             </LinearLayout>
 
