@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -94,11 +95,15 @@ class FragmentEvent : BaseFragment() {
         val listener = View.OnClickListener {
             when (it) {
                 iv_refresh -> {
-
+                    getEvent()
+                }
+                tv_show_all->{
+                    (activity as ActivityMain).replaceFragment(FragmentPromotionAll(),addToBack = true,isMainRefresh = false)
                 }
             }
         }
         iv_refresh.setOnClickListener(listener)
+        tv_show_all.setOnClickListener(listener)
     }
 
     private fun bindTempData() {
@@ -153,6 +158,7 @@ class FragmentEvent : BaseFragment() {
                             it.add(bean)
                         }
                     }
+
                 } else {
                     context?.let {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
@@ -195,6 +201,10 @@ class FragmentEvent : BaseFragment() {
                         .centerCrop()
                         .thumbnail(0.1f)
                         .into(ivEvent)
+                }
+
+                h.itemView.setOnClickListener {
+                    (activity as ActivityMain).replaceFragment(FragmentEventDetail.newInstance(bean.idx),addToBack = true,isMainRefresh = false)
                 }
 
             } else if (RV_TYPE_LOADING == getItemViewType(i)) {

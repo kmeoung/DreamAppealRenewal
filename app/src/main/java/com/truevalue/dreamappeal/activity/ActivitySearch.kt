@@ -2,13 +2,11 @@ package com.truevalue.dreamappeal.activity
 
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
