@@ -74,6 +74,8 @@ class ActivityAddrSearch : BaseActivity() {
                 } else iv_cancel.visibility = VISIBLE
             }
         })
+
+
     }
 
     /**
@@ -102,7 +104,7 @@ class ActivityAddrSearch : BaseActivity() {
         btn_cancel.setOnClickListener(listener)
         iv_cancel.setOnClickListener(listener)
 
-        et_search.setOnEditorActionListener { _, i, _ ->
+        et_search.setOnEditorActionListener {  _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 if (!et_search.text.toString().isNullOrEmpty()) {
                     getAddrPost(et_search.text.toString())

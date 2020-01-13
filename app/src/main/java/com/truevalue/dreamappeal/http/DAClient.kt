@@ -240,13 +240,16 @@ object DAClient {
         if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname!!)
         params.put("gender", bean.gender)
 
-        if(bean.address != null){
-            when(bean.address!!){
-                is JSONObject->{
+        if (bean.address != null) {
+            when (bean.address!!) {
+                is JSONObject -> {
                     params.put("address", bean.address!! as JSONObject)
                 }
-                is String->{
-                    if(!(bean.address as String).isNullOrEmpty()) params.put("address", bean.address!! as String)
+                is String -> {
+                    if (!(bean.address as String).isNullOrEmpty()) params.put(
+                        "address",
+                        bean.address!! as String
+                    )
                 }
             }
         }
@@ -2306,12 +2309,12 @@ object DAClient {
      */
     fun deleteTagHistory(
         keyword: String,
-        register_date : String?,
+        register_date: String?,
         callback: DAHttpCallback
     ) {
         val params = DAHttpParams()
         params.put("keyword", keyword)
-        if(!register_date.isNullOrEmpty()) params.put("register_date",register_date)
+        if (!register_date.isNullOrEmpty()) params.put("register_date", register_date)
 
         BaseOkhttpClient.request(
             HttpType.DELETE,
@@ -2513,7 +2516,10 @@ object DAClient {
     ) {
 
         val params = DAHttpParams()
-        if (!address_name.isNullOrEmpty()) params.put("address_name", address_name) else params.put("address_name", "")
+        if (!address_name.isNullOrEmpty()) params.put("address_name", address_name) else params.put(
+            "address_name",
+            ""
+        )
         if (!region_1depth_name.isNullOrEmpty()) params.put(
             "region_1depth_name",
             region_1depth_name
@@ -2544,13 +2550,64 @@ object DAClient {
         )
         if (x != null) params.put("x", x) else params.put("x", 0)
         if (y != null) params.put("y", y) else params.put("y", 0)
-        if (!zip_code.isNullOrEmpty()) params.put("zip_code", zip_code) else params.put("zip_code", "")
+        if (!zip_code.isNullOrEmpty()) params.put("zip_code", zip_code) else params.put(
+            "zip_code",
+            ""
+        )
 
         BaseOkhttpClient.request(
             HttpType.POST,
             Comm_Param.URL_USERS_ADDRESS,
             getHttpHeader(),
             params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 이벤트 - 기본 조회
+     */
+    fun getBoardEvent(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_BOARD_EVENT,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 이벤트 - 프로모션 전체조회
+     */
+    fun getBoardEventAll(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_BOARD_EVENT_PROMOTIONS,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 이벤트 - 프로모션 전체조회 - 상세조회
+     */
+    fun getBoardEventDetail(promotion_idx : Int,
+                            callback: DAHttpCallback) {
+
+        val url = Comm_Param.URL_BOARD_EVENT_PROMOTIONS_IDX.replace(Comm_Param.PROMOTION_INDEX,promotion_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
             callback
         )
     }

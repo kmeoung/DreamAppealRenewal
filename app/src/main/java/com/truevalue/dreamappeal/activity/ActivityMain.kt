@@ -1,7 +1,10 @@
 package com.truevalue.dreamappeal.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -11,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.kakao.util.helper.Utility
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
@@ -30,6 +34,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
 import okhttp3.Call
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class ActivityMain : BaseActivity() {
     var mActionListener: IOActionBarListener? = null
@@ -81,6 +87,7 @@ class ActivityMain : BaseActivity() {
             Log.d("AWS_LOG", "AWS INITIALIZED")
         }.execute()
     }
+
 
     fun initAllView() {
         val fm = supportFragmentManager

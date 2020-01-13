@@ -322,6 +322,4 @@
     <string name="str_add_wish">이 달의 내 소원 빌기</string>
 
     <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
-
-    <string name="kakao_rest_api_key">df31c29507a9f167d92975172772f1da</string>
 </resources>

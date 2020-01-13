@@ -81,13 +81,15 @@ class FragmentDreamDescription : BaseFragment() {
      */
     private fun initAdapter() {
         mAdapter = BasePagerAdapter(context!!, true)
-        pager_image.adapter = mAdapter
-        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
-            }
-        })
+        pager_image.run {
+            adapter = mAdapter
+            addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+                }
+            })
+        }
 
         getExampleIamges()
     }

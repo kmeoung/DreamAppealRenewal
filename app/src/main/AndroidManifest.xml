@@ -141,6 +141,9 @@
                 android:name="io.fabric.ApiKey"
                 android:value="500e2bccf72f3906c4aee099eb1056b51a28f127" />
 
+        <meta-data
+                android:name="com.kakao.sdk.AppKey"
+                android:value="@string/kakao_native_api_key" />
     </application>
 
 </manifest>

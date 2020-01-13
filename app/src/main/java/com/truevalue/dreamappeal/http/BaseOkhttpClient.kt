@@ -162,14 +162,16 @@ object BaseOkhttpClient : OkHttpClient() {
         header: DAHttpHeader?,
         params: DAHttpParams?
     ): Request {
+
         var requestBody: RequestBody = DAHttpParams.toRequestType(JSONObject())
-        if (params != null) {
-            requestBody = params.bodyParams()
+        params?.let {
+            requestBody = it.bodyParams()
         }
 
         var builder: Request.Builder = Request.Builder()
-        if (header != null)
-            builder = header.getBuilder()
+        header?.let {
+            builder = it.getBuilder()
+        }
 
         return builder.url(url)
             .patch(requestBody)
@@ -185,13 +187,15 @@ object BaseOkhttpClient : OkHttpClient() {
         params: DAHttpParams?
     ): Request {
         var requestBody: RequestBody = DAHttpParams.toRequestType(JSONObject())
-        if (params != null) {
-            requestBody = params.bodyParams()
+        params?.let {
+            requestBody = it.bodyParams()
         }
 
         var builder: Request.Builder = Request.Builder()
-        if (header != null)
-            builder = header.getBuilder()
+
+        header?.let {
+            builder = it.getBuilder()
+        }
 
         return builder.url(url)
             .delete(requestBody)

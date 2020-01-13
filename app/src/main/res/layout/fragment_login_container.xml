@@ -42,12 +42,22 @@
                     android:layout_marginLeft="30.3dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="30.3dp"
-                    android:layout_marginBottom="110dp"
                     android:background="@drawable/bg_round_rectangle_blue"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="@string/str_register"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
+
+            <com.kakao.usermgmt.LoginButton
+                    android:id="@+id/com_kakao_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="30.3dp"
+                    android:layout_marginRight="30.3dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"/>
+
 
         </LinearLayout>
 

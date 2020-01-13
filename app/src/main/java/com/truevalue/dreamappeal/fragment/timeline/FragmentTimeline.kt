@@ -415,7 +415,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             })
 
             ivCheering.isSelected = bean.status
-
         }
     }
 

@@ -228,4 +228,10 @@ object Comm_Param {
     //드림보드 /board/popluar
     val URL_BOARD = "$URL_API/board"
     val URL_BOARD_POPULAR = "$URL_BOARD/popular"
+
+    //이벤트
+    val PROMOTION_INDEX = "PROMOTION_INDEX"
+    val URL_BOARD_EVENT = "$URL_BOARD/event"
+    val URL_BOARD_EVENT_PROMOTIONS = "$URL_BOARD_EVENT/promotions"
+    val URL_BOARD_EVENT_PROMOTIONS_IDX = "$URL_BOARD_EVENT/$PROMOTION_INDEX"
 }

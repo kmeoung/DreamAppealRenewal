@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kakao_rest_api_key">df31c29507a9f167d92975172772f1da</string>
+    <string name="kakao_native_api_key">aab965cd139ba5c8762f577c22f4b59c</string>
+</resources>

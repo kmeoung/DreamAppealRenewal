@@ -32,29 +32,40 @@ class DAHttpParams {
 
     fun urlParams(): String {
         var urlParam: String = ""
-        if (map!!.size > 0) {
-            var i = 0
-            for (key: String in map.keys) {
-                urlParam = when (i) {
-                    0 -> {
-                        i++
-                        urlParam + "?" + key + "=" + map[key]
-                    }
-                    else -> {
-                        urlParam + "&" + key + "=" + map[key]
+
+        map?.let {
+            if(it.size > 0){
+                var i = 0
+                for (key: String in map.keys) {
+                    urlParam = when (i) {
+                        0 -> {
+                            i++
+                            urlParam + "?" + key + "=" + map[key]
+                        }
+                        else -> {
+                            urlParam + "&" + key + "=" + map[key]
+                        }
                     }
                 }
             }
+
         }
+
         return urlParam
     }
 
     fun bodyParams(): RequestBody {
-        if(mJson != null) return toRequestType(mJson!!)
+        mJson?.let {
+            toRequestType(it)
+        }
+
         val json = JSONObject()
-        if (map!!.size > 0) {
-            for (key: String in map.keys) {
-                json.put(key, map[key])
+
+        map?.let {
+            if(it.size > 0){
+                for (key: String in map.keys) {
+                    json.put(key, map[key])
+                }
             }
         }
         return toRequestType(json)
