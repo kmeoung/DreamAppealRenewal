@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.fragment.dream_board.concern.FragmentConcern
+import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEvent
 import kotlinx.android.synthetic.main.fragment_dream_board.*
 
 class FragmentDreamBoard : BaseFragment() {
@@ -72,7 +74,8 @@ class FragmentDreamBoard : BaseFragment() {
                 tv_event.isSelected = true
                 tv_popular.isSelected = false
                 tv_concern.isSelected = false
-                replaceFragment(R.id.board_container,FragmentEvent(),false)
+                replaceFragment(R.id.board_container,
+                    FragmentEvent(),false)
             }
             TAB_TYPE_POPULAR->{
                 tv_event.isSelected = false
@@ -84,6 +87,8 @@ class FragmentDreamBoard : BaseFragment() {
                 tv_event.isSelected = false
                 tv_popular.isSelected = false
                 tv_concern.isSelected = true
+                replaceFragment(R.id.board_container,
+                    FragmentConcern(),false)
             }
         }
     }

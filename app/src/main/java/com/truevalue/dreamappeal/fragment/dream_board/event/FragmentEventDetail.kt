@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.dream_board
+package com.truevalue.dreamappeal.fragment.dream_board.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,12 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanPromotion
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_event_detail.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -24,7 +26,8 @@ class FragmentEventDetail : BaseFragment() {
 
     companion object {
         fun newInstance(promotion_idx: Int): FragmentEventDetail {
-            val fragment = FragmentEventDetail()
+            val fragment =
+                FragmentEventDetail()
             fragment.mPromotionIdx = promotion_idx
             return fragment
         }
@@ -38,7 +41,37 @@ class FragmentEventDetail : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // View 초기화
+        initView()
+        // View Click Listener
+        onClickView()
+        // 프로모션 가져오기
         getPromotions()
+
+    }
+
+    /**
+     * View 초기화
+     */
+    private fun initView() {
+        tv_title.text = getString(R.string.str_event)
+        iv_back_black.visibility = GONE
+        iv_back_blue.visibility = VISIBLE
+    }
+
+    /**
+     * View Click Listener
+     */
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_back_blue -> {
+                    (activity as ActivityMain).onBackPressed(false)
+                }
+            }
+        }
+        iv_back_blue.setOnClickListener(listener)
     }
 
     /**
@@ -66,7 +99,7 @@ class FragmentEventDetail : BaseFragment() {
                             BeanPromotion::class.java
                         )
                         context?.let {
-                            if(bean.url.isNullOrEmpty()) tv_default.visibility = VISIBLE
+                            if (bean.url.isNullOrEmpty()) tv_default.visibility = VISIBLE
                             else {
                                 tv_default.visibility = GONE
                                 Glide.with(it)

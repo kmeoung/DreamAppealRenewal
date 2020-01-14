@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.dream_board
+package com.truevalue.dreamappeal.fragment.dream_board.concern
 
 import android.os.Bundle
 import android.view.LayoutInflater

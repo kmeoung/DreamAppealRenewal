@@ -1,6 +1,5 @@
-package com.truevalue.dreamappeal.fragment.dream_board
+package com.truevalue.dreamappeal.fragment.dream_board.event
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -17,6 +15,7 @@ import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanEventCard
 import com.truevalue.dreamappeal.bean.BeanPromotion
+import com.truevalue.dreamappeal.fragment.dream_board.wish.FragmentWishBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
@@ -250,11 +249,7 @@ class FragmentEvent : BaseFragment() {
                 }
 
                 h.itemView.setOnClickListener {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentEventDetail.newInstance(bean.idx),
-                        addToBack = true,
-                        isMainRefresh = false
-                    )
+                    // todo : 추후 추가
                 }
 
             } else if (RV_TYPE_LOADING == getItemViewType(i)) {

@@ -2616,15 +2616,20 @@ object DAClient {
      * GET
      * 소원 기본 조회
      */
-    fun getWish(callback: DAHttpCallback){
+    fun getWish(refresh : Boolean,
+                last_idx : Int,
+                callback: DAHttpCallback){
 
         val url = Comm_Param.URL_WISH
 
+        val params = DAHttpParams()
+        if (refresh) params.put("refresh", refresh)
+        if (last_idx > -1) params.put("last_idx", last_idx)
         BaseOkhttpClient.request(
             HttpType.GET,
             url,
             getHttpHeader(),
-            null,
+            params,
             callback
         )
     }

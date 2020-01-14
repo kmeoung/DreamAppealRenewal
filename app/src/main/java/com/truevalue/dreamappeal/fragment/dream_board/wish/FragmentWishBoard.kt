@@ -1,10 +1,13 @@
-package com.truevalue.dreamappeal.fragment.dream_board
+package com.truevalue.dreamappeal.fragment.dream_board.wish
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -13,13 +16,14 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.bean.BeanEventCard
 import com.truevalue.dreamappeal.bean.BeanPromotion
+import com.truevalue.dreamappeal.bean.BeanWish
+import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEventDetail
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
+import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_wish_board.*
-import kotlinx.android.synthetic.main.fragment_wish_board.tv_indicator
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -27,13 +31,12 @@ class FragmentWishBoard : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter?
     private var mPagerAdapter: BasePagerAdapter?
-    private var isLast : Boolean
+    private var isLast: Boolean
 
     companion object {
         private const val RV_TYPE_ITEM = 0
         private const val RV_TYPE_LOADING = 1
     }
-
 
     init {
         mAdapter = null
@@ -50,10 +53,23 @@ class FragmentWishBoard : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // View 초기화
+        initView()
         // Adapter 초기화
         initAdapter()
+        // View Click Listener
+        onClickView()
         // 소원 게시판 가져오기
-        getWish()
+        getWish(false, -1, true)
+    }
+
+    /**
+     * View 초기화
+     */
+    private fun initView(){
+        tv_title.text = getString(R.string.str_wish_main_title)
+        iv_back_black.visibility = GONE
+        iv_back_blue.visibility = VISIBLE
     }
 
     /**
@@ -79,7 +95,14 @@ class FragmentWishBoard : BaseFragment() {
 
 
                     view.setOnClickListener {
-                        
+                        (activity as ActivityMain)
+                            .replaceFragment(
+                                FragmentEventDetail.newInstance(
+                                    bean.idx
+                                ),
+                                addToBack = true,
+                                isMainRefresh = false
+                            )
                     }
                 }
 
@@ -99,11 +122,25 @@ class FragmentWishBoard : BaseFragment() {
     }
 
     /**
+     * View Click Listener
+     */
+    private fun onClickView(){
+        val listener = View.OnClickListener{
+            when(it){
+                iv_back_blue->{
+                    (activity as ActivityMain).onBackPressed(false)
+                }
+            }
+        }
+        iv_back_blue.setOnClickListener(listener)
+    }
+
+    /**
      * Http
      * 소원 게시판 가져오기
      */
-    private fun getWish(){
-        DAClient.getWish(object : DAHttpCallback{
+    private fun getWish(refresh: Boolean, last_idx: Int, isClear: Boolean) {
+        DAClient.getWish(refresh, last_idx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -111,12 +148,12 @@ class FragmentWishBoard : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val promotions = json.getJSONArray("promotions")
                         mPagerAdapter?.let {
-                            it.clear()
+                            if (isClear) it.clear()
                             for (i in 0 until promotions.length()) {
                                 val promotion = promotions.getJSONObject(i)
                                 val bean = Gson().fromJson<BeanPromotion>(
@@ -130,29 +167,33 @@ class FragmentWishBoard : BaseFragment() {
                             tv_indicator.text = (1.toString() + " / " + promotions.length())
                         }
 
-                        val event_cards = json.getJSONArray("event_cards")
+                        val wishes = json.getJSONArray("wishes")
                         mAdapter?.let {
                             it.clear()
-                            for (i in 0 until event_cards.length()) {
-                                val event = event_cards.getJSONObject(i)
-                                val bean = Gson().fromJson<BeanEventCard>(
-                                    event.toString(),
-                                    BeanEventCard::class.java
+                            for (i in 0 until wishes.length()) {
+                                val wish = wishes.getJSONObject(i)
+                                val bean = Gson().fromJson<BeanWish>(
+                                    wish.toString(),
+                                    BeanWish::class.java
                                 )
 
                                 it.add(bean)
                             }
                         }
 
+                    } else if (code == "NO_MORE_POST") {
+                        isLast = true
+                        mAdapter!!.notifyDataSetChanged()
                     } else {
                         context?.let {
-                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
 
-                }else{
+                } else {
                     context?.let {
-                        Toast.makeText(it,message,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -179,34 +220,24 @@ class FragmentWishBoard : BaseFragment() {
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             if (RV_TYPE_ITEM == getItemViewType(i)) {
 
-                val bean = mAdapter?.get(i) as BeanEventCard
+                val bean = mAdapter?.get(i) as BeanWish
 
-                val ivEvent = h.getItemView<ImageView>(R.id.iv_event)
-                Utils.setImageViewSquare(context, ivEvent, 100, 23)
+                val tvLikeCount = h.getItemView<TextView>(R.id.tv_like_count)
+                val tvTitle = h.getItemView<TextView>(R.id.tv_title)
 
-                context?.let {
-                    Glide.with(it)
-                        .load(bean.url)
-                        .placeholder(R.drawable.ic_image_white)
-                        .centerCrop()
-                        .thumbnail(0.1f)
-                        .into(ivEvent)
-                }
+                tvTitle.text = bean.title
+                tvLikeCount.text = Utils.getCommentView(bean.count)
 
                 h.itemView.setOnClickListener {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentEventDetail.newInstance(bean.idx),
-                        addToBack = true,
-                        isMainRefresh = false
-                    )
+                    // todo : 페이지 이동
                 }
 
             } else if (RV_TYPE_LOADING == getItemViewType(i)) {
-//                getTimeLineData(
-//                    true,
-//                    (mAdatper!!.get(mAdatper!!.size() - 1) as BeanTimeline).idx,
-//                    false
-//                )
+                getWish(
+                    true,
+                    (mAdapter!!.get(mAdapter!!.size() - 1) as BeanWish).idx,
+                    false
+                )
             }
         }
 

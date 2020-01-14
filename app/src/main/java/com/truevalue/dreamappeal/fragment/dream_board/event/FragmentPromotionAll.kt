@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.dream_board
+package com.truevalue.dreamappeal.fragment.dream_board.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,12 +15,11 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.BeanEventCard
 import com.truevalue.dreamappeal.bean.BeanPromotion
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.fragment_event.*
+import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_promotion.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -53,6 +52,9 @@ class FragmentPromotionAll : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
+        tv_title.text = getString(R.string.str_event)
+        iv_back_black.visibility = View.GONE
+        iv_back_blue.visibility = View.VISIBLE
     }
 
     /**
@@ -72,9 +74,12 @@ class FragmentPromotionAll : BaseFragment() {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-
+                iv_back_blue -> {
+                    (activity as ActivityMain).onBackPressed(false)
+                }
             }
         }
+        iv_back_blue.setOnClickListener(listener)
     }
 
     /**
