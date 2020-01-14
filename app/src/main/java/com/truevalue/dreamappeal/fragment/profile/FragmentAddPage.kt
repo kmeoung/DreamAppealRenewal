@@ -16,7 +16,7 @@ import androidx.viewpager.widget.ViewPager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanBlueprintAnO
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.fragment_add_page.*
 import kotlinx.android.synthetic.main.fragment_add_page.pager_image
 import kotlinx.android.synthetic.main.fragment_add_page.rl_images
 import kotlinx.android.synthetic.main.fragment_add_page.tv_indicator
-import kotlinx.android.synthetic.main.fragment_dream_title.*
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -37,7 +36,7 @@ class FragmentAddPage : BaseFragment() {
     private var mBeanAnO: BeanBlueprintAnO? = null
     private var mObjectIdx: Int = -1
     private var mStepIdx: Int = -1
-    private var mAdapter: BasePagerAdapter<String>? = null
+    private var mAdapterImage: BaseImagePagerAdapter<String>? = null
     private var mContents: String? = null
 
     companion object {
@@ -147,12 +146,12 @@ class FragmentAddPage : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!, true)
-        pager_image.adapter = mAdapter
+        mAdapterImage = BaseImagePagerAdapter(context!!, true)
+        pager_image.adapter = mAdapterImage
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+                tv_indicator.text = ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
             }
         })
 
@@ -178,13 +177,13 @@ class FragmentAddPage : BaseFragment() {
 
                     tv_indicator.text = (1.toString() + " / " + exUrl.length())
 
-                    mAdapter!!.clear()
+                    mAdapterImage!!.clear()
                     for (i in 0 until exUrl.length()) {
                         val image = exUrl.getJSONObject(i)
                         val url = image.getString("url")
-                        mAdapter!!.add(url)
+                        mAdapterImage!!.add(url)
                     }
-                    mAdapter!!.notifyDataSetChanged()
+                    mAdapterImage!!.notifyDataSetChanged()
                 }
             }
         }

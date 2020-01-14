@@ -14,9 +14,8 @@ import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -33,7 +32,7 @@ import org.json.JSONObject
 class FragmentMeritAndMotive : BaseFragment() {
 
     private var mBean: BeanDreamPresent? = null
-    private var mAdapter : BasePagerAdapter<String>? = null
+    private var mAdapterImage : BaseImagePagerAdapter<String>? = null
     companion object {
 
         /**
@@ -76,12 +75,12 @@ class FragmentMeritAndMotive : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!, true)
-        pager_image.adapter = mAdapter
+        mAdapterImage = BaseImagePagerAdapter(context!!, true)
+        pager_image.adapter = mAdapterImage
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+                tv_indicator.text = ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
             }
         })
 
@@ -107,13 +106,13 @@ class FragmentMeritAndMotive : BaseFragment() {
 
                     tv_indicator.text = (1.toString() + " / " + exUrl.length())
 
-                    mAdapter!!.clear()
+                    mAdapterImage!!.clear()
                     for(i in 0 until exUrl.length()){
                         val image = exUrl.getJSONObject(i)
                         val url = image.getString("url")
-                        mAdapter!!.add(url)
+                        mAdapterImage!!.add(url)
                     }
-                    mAdapter!!.notifyDataSetChanged()
+                    mAdapterImage!!.notifyDataSetChanged()
                 }
             }
         })

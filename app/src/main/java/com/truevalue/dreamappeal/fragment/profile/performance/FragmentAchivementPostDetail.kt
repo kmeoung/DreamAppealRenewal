@@ -12,7 +12,7 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
 import com.truevalue.dreamappeal.bean.BeanImages
 import com.truevalue.dreamappeal.http.DAClient
@@ -31,7 +31,7 @@ class FragmentAchivementPostDetail : BaseFragment() {
 
     private var mPostIndx = -1
     private var mBean : BeanAchivementPostDetail? = null
-    private var mAdapter : BasePagerAdapter<String>? = null
+    private var mAdapterImage : BaseImagePagerAdapter<String>? = null
 
     companion object {
         fun newInstance(idx: Int): FragmentAchivementPostDetail {
@@ -73,12 +73,12 @@ class FragmentAchivementPostDetail : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter(){
-        mAdapter = BasePagerAdapter(context!!)
-        pager_image.adapter = mAdapter
+        mAdapterImage = BaseImagePagerAdapter(context!!)
+        pager_image.adapter = mAdapterImage
         pager_image.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+                tv_indicator.text = ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
             }
         })
     }
@@ -169,9 +169,9 @@ class FragmentAchivementPostDetail : BaseFragment() {
         tv_indicator.setText("1 / " + bean.Images.size)
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
-            //mAdapter!!.add(image.image_url)
+            //mAdapterImage!!.add(image.image_url)
         }
-        mAdapter!!.notifyDataSetChanged()
+        mAdapterImage!!.notifyDataSetChanged()
     }
 
     /**

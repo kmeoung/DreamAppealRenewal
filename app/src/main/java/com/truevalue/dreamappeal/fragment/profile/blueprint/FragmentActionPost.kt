@@ -19,9 +19,8 @@ import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanActionPostDetail
 import com.truevalue.dreamappeal.bean.BeanActionPostImage
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
@@ -38,7 +37,7 @@ import org.json.JSONObject
 
 class FragmentActionPost : BaseFragment() {
 
-    private var mAdapter: BasePagerAdapter<String>? = null
+    private var mAdapterImage: BaseImagePagerAdapter<String>? = null
     private var mPostIdx = -1
     private var mViewUserIdx = -1
     private var mBean: BeanActionPostDetail? = null
@@ -265,7 +264,7 @@ class FragmentActionPost : BaseFragment() {
                     )
                     intent.putExtra(ActivityAddPost.REQUEST_TAGS,mTags)
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mPostIdx)
-                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapter!!.getAll())
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapterImage!!.getAll())
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, tv_contents.text.toString())
                     startActivity(intent)
                 }
@@ -369,12 +368,12 @@ class FragmentActionPost : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!)
-        pager_image.adapter = mAdapter
+        mAdapterImage = BaseImagePagerAdapter(context!!)
+        pager_image.adapter = mAdapterImage
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = if(mAdapter!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapter!!.getCount()) else "0 / 0"
+                tv_indicator.text = if(mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
             }
         })
     }
@@ -439,7 +438,7 @@ class FragmentActionPost : BaseFragment() {
                         )
 
                         try {
-                            mAdapter!!.clear()
+                            mAdapterImage!!.clear()
                             val images = actionPost.getJSONArray("images")
                             for (i in 0 until images.length()) {
                                 val image = images.getJSONObject(i)
@@ -447,11 +446,11 @@ class FragmentActionPost : BaseFragment() {
                                     image.toString(),
                                     BeanActionPostImage::class.java
                                 )
-                                mAdapter!!.add(beanImage.image_url)
+                                mAdapterImage!!.add(beanImage.image_url)
                                 tv_indicator.text = "0 / 0"
                                 tv_indicator.text = "1 / " + images.length()
                             }
-                            mAdapter!!.notifyDataSetChanged()
+                            mAdapterImage!!.notifyDataSetChanged()
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {

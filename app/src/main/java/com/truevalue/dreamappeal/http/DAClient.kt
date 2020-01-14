@@ -2612,4 +2612,58 @@ object DAClient {
         )
     }
 
+    /**
+     * GET
+     * 소원 기본 조회
+     */
+    fun getWish(callback: DAHttpCallback){
+
+        val url = Comm_Param.URL_WISH
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 소원 추가 조회
+     */
+    fun getMoreWish(row_num : Int,
+                    callback: DAHttpCallback){
+
+        val url = Comm_Param.URL_WISH_MORE_ROW_NUM.replace(Comm_Param.ROW_NUM,row_num.toString())
+
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 소원 게시글 조회
+     */
+    fun getWish(wish_idx : Int,
+                    callback: DAHttpCallback){
+
+        val url = Comm_Param.URL_WISH_IDX.replace(Comm_Param.WISH_INDEX,wish_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
 }

@@ -234,4 +234,17 @@ object Comm_Param {
     val URL_BOARD_EVENT = "$URL_BOARD/event"
     val URL_BOARD_EVENT_PROMOTIONS = "$URL_BOARD_EVENT/promotions"
     val URL_BOARD_EVENT_PROMOTIONS_IDX = "$URL_BOARD_EVENT/$PROMOTION_INDEX"
+
+    // 소원
+    val ROW_NUM = "ROW_NUM"
+    val WISH_INDEX = "WISH_INDEX"
+    val URL_WISH = "$URL_API/wish"
+    private val URL_WISH_MORE = "$URL_WISH/more"
+    val URL_WISH_MORE_ROW_NUM = "$URL_WISH_MORE/$ROW_NUM"
+    val URL_WISH_IDX = "$URL_WISH/$WISH_INDEX"
+
+    private val URL_WISH_LIKE = "$URL_WISH/like"
+    val URL_WISH_LIKE_IDX = "$URL_WISH_LIKE/$WISH_INDEX"
+
+
 }

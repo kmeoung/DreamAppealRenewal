@@ -5,6 +5,11 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_promotion"

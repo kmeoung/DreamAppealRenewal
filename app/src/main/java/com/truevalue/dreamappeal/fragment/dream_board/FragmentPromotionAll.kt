@@ -141,8 +141,12 @@ class FragmentPromotionAll : BaseFragment() {
                     .into(ivPromotion)
             }
 
-            h.itemView.setOnClickListener{
-                (activity as ActivityMain).replaceFragment(FragmentEventDetail.newInstance(bean.idx),addToBack = true,isMainRefresh = false)
+            h.itemView.setOnClickListener {
+                (activity as ActivityMain).replaceFragment(
+                    FragmentEventDetail.newInstance(bean.idx),
+                    addToBack = true,
+                    isMainRefresh = false
+                )
             }
         }
 

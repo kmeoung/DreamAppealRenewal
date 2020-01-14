@@ -70,11 +70,11 @@ object BaseOkhttpClient : OkHttpClient() {
                         message = json.getString("message")
                     } catch (e: JSONException) {
                     } finally {
-                        handler.post(Runnable {
+                        handler.post {
                             if (callback != null) {
                                 if (isJson) {
                                     if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                                        handler.post(Runnable {
+                                        handler.post {
                                             callback.onResponse(
                                                 call,
                                                 response.code,
@@ -82,7 +82,7 @@ object BaseOkhttpClient : OkHttpClient() {
                                                 code,
                                                 message
                                             )
-                                        })
+                                        }
                                     } else {
                                         callback!!.onResponse(
                                             call,
@@ -102,7 +102,7 @@ object BaseOkhttpClient : OkHttpClient() {
                                     )
                                 }
                             }
-                        })
+                        }
 
                     }
                 }

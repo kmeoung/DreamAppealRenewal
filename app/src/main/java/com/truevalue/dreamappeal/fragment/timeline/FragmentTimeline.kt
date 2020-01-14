@@ -41,7 +41,7 @@ import java.io.IOException
 
 class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    private var mAdatper: BaseRecyclerViewAdapter? = null
+    private var mAdapter: BaseRecyclerViewAdapter? = null
 
     companion object {
         private const val RV_TYPE_TIMELINE = 0
@@ -81,8 +81,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * Init RecyclerView Adapter
      */
     private fun initAdapter() {
-        mAdatper = BaseRecyclerViewAdapter(rvListener)
-        rv_timeline.adapter = mAdatper
+        mAdapter = BaseRecyclerViewAdapter(rvListener)
+        rv_timeline.adapter = mAdapter
         rv_timeline.layoutManager = LinearLayoutManager(context!!)
     }
 
@@ -123,13 +123,13 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
-                        if (isClear) mAdatper!!.clear()
+                        if (isClear) mAdapter!!.clear()
                         try {
                             val posts = json.getJSONArray("posts")
 
                             if (posts.length() < 1) {
                                 isLast = true
-                                mAdatper!!.notifyDataSetChanged()
+                                mAdapter!!.notifyDataSetChanged()
                             }
                             for (i in 0 until posts.length()) {
 
@@ -151,7 +151,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                     imageList.add(url)
                                 }
                                 bean.imageList = imageList
-                                mAdatper!!.add(bean)
+                                mAdapter!!.add(bean)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -160,7 +160,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     } else {
                         if (code == "NO_MORE_POST") {
                             isLast = true
-                            mAdatper!!.notifyDataSetChanged()
+                            mAdapter!!.notifyDataSetChanged()
                         } else if (code == DAClient.FAIL) {
                             ActivityCompat.finishAffinity(activity!!)
                             val intent = Intent(context!!, ActivityIntro::class.java)
@@ -181,7 +181,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdatper != null) if (mAdatper!!.size() > 4 && !isLast) mAdatper!!.size() + 1 else mAdatper!!.size() else 0
+            get() = if (mAdapter != null) if (mAdapter!!.size() > 4 && !isLast) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             if (RV_TYPE_TIMELINE == viewType) {
@@ -198,14 +198,14 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             } else if (RV_TYPE_TIMELINE_MORE == getItemViewType(i)) {
                 getTimeLineData(
                     true,
-                    (mAdatper!!.get(mAdatper!!.size() - 1) as BeanTimeline).idx,
+                    (mAdapter!!.get(mAdapter!!.size() - 1) as BeanTimeline).idx,
                     false
                 )
             }
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mAdatper!!.size() > 4 && mAdatper!!.size() == i && !isLast) {
+            if (mAdapter!!.size() > 4 && mAdapter!!.size() == i && !isLast) {
                 return RV_TYPE_TIMELINE_MORE
             }
             return RV_TYPE_TIMELINE
@@ -215,7 +215,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
          * Timeline Bind View Holder
          */
         private fun onTimelineBindViewHolder(h: BaseViewHolder, i: Int) {
-            val bean = mAdatper!!.get(i) as BeanTimeline
+            val bean = mAdapter!!.get(i) as BeanTimeline
             val ivProfile = h.getItemView<ImageView>(R.id.iv_dream_profile)
             val ivMore = h.getItemView<ImageView>(R.id.iv_action_more)
             val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
@@ -244,7 +244,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llCommentDetail = h.getItemView<LinearLayout>(R.id.ll_comment_detail)
             val tvTag = h.getItemView<TextView>(R.id.tv_tag)
 
-            val pagerAdapter = BasePagerAdapter<String>(context!!)
+            val pagerAdapter = BaseImagePagerAdapter<String>(context!!)
             pagerImages.adapter = pagerAdapter
             pagerImages.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
@@ -479,8 +479,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
-                        mAdatper!!.remove(bean)
-                        mAdatper!!.notifyDataSetChanged()
+                        mAdapter!!.remove(bean)
+                        mAdapter!!.notifyDataSetChanged()
                     }
                 }
             }
@@ -529,7 +529,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         bean.status = status
                         val count = json.getInt("count")
                         bean.like_count = count
-                        mAdatper!!.notifyDataSetChanged()
+                        mAdapter!!.notifyDataSetChanged()
                     }
                 }
             }

@@ -16,9 +16,8 @@ import com.truevalue.dreamappeal.activity.ActivityComment
 import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanAchivementPostDetail
-import com.truevalue.dreamappeal.bean.BeanImages
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -37,7 +36,7 @@ class FragmentBestPost : BaseFragment() {
     private var mPostIdx = -1
     private var mBestIdx = -1
     private var mBean: BeanAchivementPostDetail? = null
-    private var mAdapter: BasePagerAdapter<String>? = null
+    private var mAdapterImage: BaseImagePagerAdapter<String>? = null
     private var mViewUserIdx = -1
 
     companion object {
@@ -87,12 +86,12 @@ class FragmentBestPost : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!)
-        pager_image.adapter = mAdapter
+        mAdapterImage = BaseImagePagerAdapter(context!!)
+        pager_image.adapter = mAdapterImage
         pager_image.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = if(mAdapter!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapter!!.getCount()) else "0 / 0"
+                tv_indicator.text = if(mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
             }
         })
     }
@@ -268,7 +267,7 @@ class FragmentBestPost : BaseFragment() {
                         ActivityAddPost.EDIT_ACHIEVEMENT_POST
                     )
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mBestIdx)
-                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapter!!.getAll())
+                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapterImage!!.getAll())
                     intent.putExtra(ActivityAddPost.REQUEST_TITLE, mBean!!.title)
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, mBean!!.content)
                     startActivityForResult(intent, REQUEST_EDIT_PAGE)
@@ -336,8 +335,8 @@ class FragmentBestPost : BaseFragment() {
         tv_indicator.text = "1 / " + bean.Images.size
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
-            mAdapter!!.add(image)
+            mAdapterImage!!.add(image)
         }
-        mAdapter!!.notifyDataSetChanged()
+        mAdapterImage!!.notifyDataSetChanged()
     }
 }

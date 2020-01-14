@@ -5,32 +5,44 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.Glide
-import com.truevalue.dreamappeal.R
-import java.util.*
-import kotlin.collections.ArrayList
+import com.truevalue.dreamappeal.bean.BeanPromotion
 
-class BasePagerAdapter<String>(private val mContext: Context,private var isCrop : Boolean? = false) :
+/**
+ * Promotion Pager Adapter
+ */
+class BasePagerAdapter(context: Context?, listener: IOBasePagerListener) :
     PagerAdapter() {
-    private val mArray: ArrayList<String>
+
+    private val mContext: Context?
+    private val mArray: ArrayList<Any>
+    private val mListener: IOBasePagerListener?
+
+    interface IOBasePagerListener {
+        fun onBindViewPager(bean: Any, view: ImageView, position: Int)
+    }
+
+    init {
+        mContext = context
+        mListener = listener
+    }
 
     override fun getCount(): Int {
         return mArray.size
     }
 
-    fun add(item: String) {
+    fun add(item: Any) {
         mArray.add(item)
     }
 
-    fun clear(){
+    fun clear() {
         mArray.clear()
     }
 
-    operator fun get(i: Int): String {
+    operator fun get(i: Int): Any {
         return mArray[i]
     }
 
-    fun getAll() : ArrayList<String>{
+    fun getAll(): ArrayList<Any> {
         return mArray
     }
 
@@ -50,23 +62,16 @@ class BasePagerAdapter<String>(private val mContext: Context,private var isCrop 
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val imageView = ImageView(mContext)
-        val url = mArray[position]
-        if(isCrop == false) {
-            Glide.with(mContext)
-                .load(url)
-                .placeholder(R.drawable.ic_image_white)
-                .centerCrop()
-                .thumbnail(0.1f)
-                .into(imageView)
-        }else{
-            Glide.with(mContext)
-                .load(url)
-                .placeholder(R.drawable.ic_image_white)
-                .into(imageView)
+        val view = ImageView(mContext)
+        val bean = mArray[position]
+
+        mListener?.let { listener ->
+            listener.onBindViewPager(bean, view, position)
         }
-        container.addView(imageView, 0)
-        return imageView
+//
+
+        container.addView(view, 0)
+        return view
     }
 
     init {

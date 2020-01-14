@@ -316,10 +316,12 @@
     <string name="str_attention_idea">주목받는 영감 자료</string>
 
     <string name="str_cancel">취소</string>
+    <string name="str_write">글쓰기</string>
 
     <string name="str_no_address">주소지가 없습니다</string>
 
-    <string name="str_add_wish">이 달의 내 소원 빌기</string>
+    <string name="str_add_wish">소원 빌기</string>
+    <string name="str_wish_title">소원 담벼락</string>
 
     <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
 </resources>

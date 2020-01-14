@@ -1,6 +1,5 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present
 
-import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -9,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
 import com.truevalue.dreamappeal.bean.BeanDreamPresent
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -27,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_dream_description.*
 import kotlinx.android.synthetic.main.fragment_dream_description.pager_image
 import kotlinx.android.synthetic.main.fragment_dream_description.rl_images
 import kotlinx.android.synthetic.main.fragment_dream_description.tv_indicator
-import kotlinx.android.synthetic.main.fragment_dream_title.*
 import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONObject
@@ -36,7 +33,7 @@ import org.json.JSONObject
 class FragmentDreamDescription : BaseFragment() {
 
     private var mBean: BeanDreamPresent? = null
-    private var mAdapter: BasePagerAdapter<String>? = null
+    private var mAdapterImage: BaseImagePagerAdapter<String>? = null
 
     companion object {
 
@@ -80,13 +77,13 @@ class FragmentDreamDescription : BaseFragment() {
      * Pager Adapter 초기화
      */
     private fun initAdapter() {
-        mAdapter = BasePagerAdapter(context!!, true)
+        mAdapterImage = BaseImagePagerAdapter(context!!, true)
         pager_image.run {
-            adapter = mAdapter
+            adapter = mAdapterImage
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    tv_indicator.text = ((position + 1).toString() + " / " + mAdapter!!.getCount())
+                    tv_indicator.text = ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
                 }
             })
         }
@@ -113,13 +110,13 @@ class FragmentDreamDescription : BaseFragment() {
 
                     tv_indicator.text = (1.toString() + " / " + exUrl.length())
 
-                    mAdapter!!.clear()
+                    mAdapterImage!!.clear()
                     for (i in 0 until exUrl.length()) {
                         val image = exUrl.getJSONObject(i)
                         val url = image.getString("url")
-                        mAdapter!!.add(url)
+                        mAdapterImage!!.add(url)
                     }
-                    mAdapter!!.notifyDataSetChanged()
+                    mAdapterImage!!.notifyDataSetChanged()
                 }
             }
         })
