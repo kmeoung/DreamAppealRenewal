@@ -66,4 +66,11 @@
     <color name="warm_grey_two">#999999</color>
     <color name="cool_grey">#a4a7ab</color>
     <color name="amethyst">#9e5ece</color>
+    <color name="off_white_two">#fdf7e4</color>
+    <color name="blueberry">#443290</color>
+    <color name="yellow_orange_two">#febb00</color>
+    <color name="pinkish_grey">#c0c0c0</color>
+    <color name="dull_orange">#dd773b</color>
+    <color name="emerald">#00a654</color>
+    <color name="battleship_grey">#6a737c</color>
 </resources>

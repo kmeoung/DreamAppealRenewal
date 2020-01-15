@@ -93,6 +93,7 @@
     <string name="str_best_performance">대표 성과</string>
     <string name="str_default_best_performance">대표로 지정한 성과가\n여기에 표시됩니다</string>
     <string name="str_comment_hint">댓글 남기기</string>
+    <string name="str_comment">댓글</string>
     <string name="str_input_comment">코멘트 입력..</string>
     <string name="str_input_tag">태그 입력..</string>
     <string name="str_commit">등록</string>
@@ -323,6 +324,13 @@
     <string name="str_add_wish">소원 빌기</string>
     <string name="str_wish_title">소원 담벼락</string>
     <string name="str_wish_main_title">소원을 말해봐</string>
+    <string name="str_wish_detail_title">소원 게시글</string>
+    <string name="str_wish_add_title">소원 등록하기</string>
+    <string name="str_concern_add_title">고민 / 질문 등록하기</string>
 
     <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
+
+    <string name="str_adoption">채택</string>
+    <string name="str_recommand">추천</string>
+    <string name="str_re_concern">답글</string>
 </resources>

@@ -348,7 +348,7 @@ class ActivityMain : BaseActivity() {
         }
     }
 
-    fun onBackPressed(isMainRefresh: Boolean) {
+    fun onBackPressed(isMainRefresh: Boolean = false) {
         ActivityMain.isMainRefresh = isMainRefresh
         onBackPressed()
     }

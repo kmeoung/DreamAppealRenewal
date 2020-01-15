@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white_six">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:layout_marginTop="1px"
+                    android:layout_marginBottom="1px"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="1px"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                    <ImageView
+                            android:id="@+id/iv_like_up"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:src="@drawable/ic_concern_like" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:text="0"
+                            android:textColor="@color/nice_blue"
+                            android:textSize="16sp" />
+
+                    <ImageView
+                            android:id="@+id/iv_like_down"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:src="@drawable/ic_concern_like" />
+
+
+                </LinearLayout>
+
+                <TextView
+                        android:id="@+id/tv_concern_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:maxLines="3"
+                        android:ellipsize="end"
+                        android:lineSpacingExtra="@dimen/text_line_spacing"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp"
+                        android:background="@color/white"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/tv_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:minHeight="180dp"
+                    android:paddingLeft="19.7dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="40dp"
+                    android:paddingBottom="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="13.3sp" />
+
+            <!-- 유저 -->
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical|right"
+                    android:orientation="horizontal"
+                    android:paddingTop="6.7dp"
+                    android:paddingBottom="6.7dp">
+
+                <ImageView
+                        android:id="@+id/iv_profile"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="12.3dp"
+                        android:layout_marginRight="11dp"
+                        android:src="@drawable/drawer_user" />
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/tv_user"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="12.3sp" />
+
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="17dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="0"
+                                android:textColor="@color/blueberry"
+                                android:textSize="12.3sp" />
+
+                        <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:layout_marginRight="7dp"
+                                android:src="@drawable/ic_circle_gold" />
+
+                        <TextView
+                                android:id="@+id/tv_gold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="15.3dp"
+                                android:fontFamily="@font/nanum_square_round_r"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="12.3sp" />
+
+                        <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:layout_marginRight="7dp"
+                                android:src="@drawable/ic_circle_silver" />
+
+                        <TextView
+                                android:id="@+id/tv_silver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="15.3dp"
+                                android:fontFamily="@font/nanum_square_round_r"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="12.3sp" />
+
+                        <ImageView
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:layout_marginRight="7dp"
+                                android:src="@drawable/ic_circle_bronze" />
+
+                        <TextView
+                                android:id="@+id/tv_bronze"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="15.3dp"
+                                android:fontFamily="@font/nanum_square_round_r"
+                                android:text="0"
+                                android:textColor="@color/black"
+                                android:textSize="12.3sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <!-- 유저 -->
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@color/azure"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="13.3dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="11dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/str_comment"
+                        android:textColor="@color/white"
+                        android:textSize="12.3sp" />
+
+                <TextView
+                        android:id="@+id/tv_comment_cnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="12.3sp" />
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_re_concern"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

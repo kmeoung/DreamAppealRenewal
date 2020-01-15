@@ -221,10 +221,10 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 tv_add_follow.visibility = GONE
             }
             tv_follwer.text = bean.follow_count.toString()
-            tv_cheering.text = "${bean.like_count}개"
             tv_comment.text = "${bean.comment_count}개"
             tv_achievement_post_count.text = "${bean.achievement_post_count} / 3"
             tv_action_post_count.text = bean.action_post_count.toString()
+            tv_cheering.text = "${bean.like_count}개"
             iv_cheering.isSelected = bean.status
             tv_dream_level.text = String.format("Lv.%02d", bean.level)
             tv_dream_name.text = when (bean.profile_order) {

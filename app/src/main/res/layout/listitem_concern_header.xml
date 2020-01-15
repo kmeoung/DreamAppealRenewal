@@ -1,8 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/nice_blue"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="5.3dp">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_title"
+            android:text="text"
+            android:layout_marginLeft="16.3dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:textColor="@color/white"
+            android:textSize="14.7sp"/>
+
+    <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/ll_btns"
+            android:gravity="center">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/tv_weekly"
+                android:text="WEEKLY"
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/tv_today"
+                android:gravity="center"
+                android:text="TODAY"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"/>
 
 
+
+    </LinearLayout>
 
 </LinearLayout>

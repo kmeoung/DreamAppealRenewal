@@ -18,6 +18,7 @@ import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanPromotion
 import com.truevalue.dreamappeal.bean.BeanWish
+import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
 import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEventDetail
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -66,7 +67,7 @@ class FragmentWishBoard : BaseFragment() {
     /**
      * View 초기화
      */
-    private fun initView(){
+    private fun initView() {
         tv_title.text = getString(R.string.str_wish_main_title)
         iv_back_black.visibility = GONE
         iv_back_blue.visibility = VISIBLE
@@ -124,15 +125,23 @@ class FragmentWishBoard : BaseFragment() {
     /**
      * View Click Listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                iv_back_blue->{
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                iv_back_blue -> {
                     (activity as ActivityMain).onBackPressed(false)
+                }
+                ll_add_wish -> {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentAddBoard(),
+                        addToBack = true,
+                        isMainRefresh = false
+                    )
                 }
             }
         }
         iv_back_blue.setOnClickListener(listener)
+        ll_add_wish.setOnClickListener(listener)
     }
 
     /**
@@ -229,7 +238,11 @@ class FragmentWishBoard : BaseFragment() {
                 tvLikeCount.text = Utils.getCommentView(bean.count)
 
                 h.itemView.setOnClickListener {
-                    // todo : 페이지 이동
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentWishDetail.newInstance(bean.idx),
+                        addToBack = true,
+                        isMainRefresh = false
+                    )
                 }
 
             } else if (RV_TYPE_LOADING == getItemViewType(i)) {

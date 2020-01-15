@@ -12,10 +12,15 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 
 class FragmentConcern : BaseFragment() {
 
-    private var mAdapter : BaseRecyclerViewAdapter?
+    private var mAdapter: BaseRecyclerViewAdapter?
 
     init {
         mAdapter = null
+    }
+
+    companion object {
+        const val TYPE_HEADER = 0
+        const val TYPE_ITEM = 1
     }
 
     override fun onCreateView(
@@ -34,23 +39,28 @@ class FragmentConcern : BaseFragment() {
     /**
      * RecyclerView Adapter 초기화
      */
-    private fun initAdapter(){
+    private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
     }
 
     /**
      * Concern RecyclerView Listener
      */
-    private val rvListener = object : IORecyclerViewListener{
+    private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
             get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            if (viewType == TYPE_HEADER) return BaseViewHolder.newInstance(
+                R.layout.listitem_concern_header,
+                parent,
+                false
+            )
+            return BaseViewHolder.newInstance(R.layout.fragment_concern, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         override fun getItemViewType(i: Int): Int {
