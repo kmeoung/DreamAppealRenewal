@@ -54,7 +54,7 @@
                 android:lineSpacingExtra="@dimen/text_line_spacing"
                 android:maxLines="2"
                 android:paddingRight="20dp"
-                android:text="aksdjklasjdjaklsdjklajdkljkasjdlkajsdjkalsdjkasjkdljlaksjdkljaskldjaklsdjklajklasjdlkjaskldjklasjdkljalksdjlkasjdlkjaskldjlkasjdlkajsdkljaslkdj"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="13.3sp" />
 

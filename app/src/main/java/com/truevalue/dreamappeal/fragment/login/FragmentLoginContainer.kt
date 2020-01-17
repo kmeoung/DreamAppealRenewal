@@ -28,6 +28,8 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 
+
+
 class FragmentLoginContainer : BaseFragment() {
 
     private var callback: SessionCallback
@@ -142,22 +144,20 @@ class FragmentLoginContainer : BaseFragment() {
         }
 
         override fun onSessionOpened() {
-            UserManagement.getInstance().me(object : MeV2ResponseCallback() {
-                override fun onSuccessForUiThread(result: MeV2Response?) {
-                    super.onSuccessForUiThread(result)
-                }
+            val keys = ArrayList<String>()
+            keys.add("emailNeedsAgreement")
+            keys.add("ageRangeNeedsAgreement")
+            keys.add("birthdayNeedsAgreement")
+            keys.add("genderNeedsAgreement")
 
-                override fun onDidEnd() {
-                    super.onDidEnd()
-                }
+            keys.add("properties.nickname")
+            keys.add("properties.profile_image")
+            keys.add("kakao_account.email")
+            keys.add("kakao_account.age_range")
+            keys.add("kakao_account.birthday")
+            keys.add("kakao_account.gender")
 
-                override fun onDidStart() {
-                    super.onDidStart()
-                }
-
-                override fun onFailureForUiThread(errorResult: ErrorResult?) {
-                    super.onFailureForUiThread(errorResult)
-                }
+            UserManagement.getInstance().me(keys,object : MeV2ResponseCallback() {
 
                 override fun onFailure(errorResult: ErrorResult?) {
                     Log.d(TAG, "Session Call back :: on failed ${errorResult?.errorMessage}")

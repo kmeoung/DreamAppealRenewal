@@ -78,8 +78,8 @@ class FragmentEvent : BaseFragment() {
         }
 
         mPagerAdapter = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(bean: Any, view: ImageView, position: Int) {
-                val bean = bean as BeanPromotion
+            override fun onBindViewPager(any: Any, view: ImageView, position: Int) {
+                val bean = any as BeanPromotion
                 context?.let {
                     Glide.with(it)
                         .load(bean.thumbnail_url)

@@ -45,6 +45,8 @@ object DAClient {
     val IMAGE_TYPE_PROFILE = "profiles"
     val IMAGE_TYPE_ACTION_POST = "action_posts"
     val IMAGE_TYPE_ACHIVEMENT_POST = "achievement_posts"
+    val IMAGE_TYPE_WISH = "wish"
+    val IMAGE_TYPE_CONCERN = "concern"
 
     val POST_TYPE_ACTION = 0
     val POST_TYPE_LIFE = 1
@@ -98,6 +100,8 @@ object DAClient {
         val params = DAHttpParams()
         val jsonObject = JSONObject()
         val numType = when (type) {
+            IMAGE_TYPE_CONCERN -> 4
+            IMAGE_TYPE_WISH -> 3
             IMAGE_TYPE_ACHIVEMENT_POST -> 2
             IMAGE_TYPE_ACTION_POST -> 1
             IMAGE_TYPE_PROFILE -> 0
@@ -2652,7 +2656,6 @@ object DAClient {
 
         val url = Comm_Param.URL_WISH_MORE_ROW_NUM.replace(Comm_Param.ROW_NUM, row_num.toString())
 
-
         BaseOkhttpClient.request(
             HttpType.GET,
             url,
@@ -2857,7 +2860,10 @@ object DAClient {
         callback: DAHttpCallback
     ) {
 
-        val url = Comm_Param.URL_BOARD_CONCERN_IDX.replace(Comm_Param.CONCERN_INDEX,concern_idx.toString())
+        val url = Comm_Param.URL_BOARD_CONCERN_IDX.replace(
+            Comm_Param.CONCERN_INDEX,
+            concern_idx.toString()
+        )
         val params = DAHttpParams()
 
         params.put("title", title)
@@ -2880,7 +2886,10 @@ object DAClient {
         concern_idx: Int,
         callback: DAHttpCallback
     ) {
-        val url = Comm_Param.URL_BOARD_CONCERN_IDX.replace(Comm_Param.CONCERN_INDEX,concern_idx.toString())
+        val url = Comm_Param.URL_BOARD_CONCERN_IDX.replace(
+            Comm_Param.CONCERN_INDEX,
+            concern_idx.toString()
+        )
 
         BaseOkhttpClient.request(
             HttpType.DELETE,
@@ -2890,7 +2899,6 @@ object DAClient {
             callback
         )
     }
-
 
 
 }

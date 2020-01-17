@@ -84,8 +84,8 @@ class FragmentWishBoard : BaseFragment() {
         }
 
         mPagerAdapter = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(bean: Any, view: ImageView, position: Int) {
-                val bean = bean as BeanPromotion
+            override fun onBindViewPager(any: Any, view: ImageView, position: Int) {
+                val bean = any as BeanPromotion
                 context?.let {
                     Glide.with(it)
                         .load(bean.thumbnail_url)
@@ -133,7 +133,7 @@ class FragmentWishBoard : BaseFragment() {
                 }
                 ll_add_wish -> {
                     (activity as ActivityMain).replaceFragment(
-                        FragmentAddBoard(),
+                        FragmentAddBoard.newInstance(FragmentAddBoard.TYPE_ADD_WISH),
                         addToBack = true,
                         isMainRefresh = false
                     )

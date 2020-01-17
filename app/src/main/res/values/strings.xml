@@ -333,4 +333,8 @@
     <string name="str_adoption">채택</string>
     <string name="str_recommand">추천</string>
     <string name="str_re_concern">답글</string>
+    <string name="str_check_rank">랭킹 확인</string>
+    <string name="str_my_fame">내 명성도</string>
+    <string name="str_popular_text">주목받는 글</string>
+    <string name="str_recent_text">최신 글</string>
 </resources>

@@ -18,7 +18,7 @@ class BasePagerAdapter(context: Context?, listener: IOBasePagerListener) :
     private val mListener: IOBasePagerListener?
 
     interface IOBasePagerListener {
-        fun onBindViewPager(bean: Any, view: ImageView, position: Int)
+        fun onBindViewPager(any: Any, view: ImageView, position: Int)
     }
 
     init {
