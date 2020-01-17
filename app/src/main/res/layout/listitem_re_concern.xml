@@ -4,7 +4,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:id="@+id/ll_bg">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -14,7 +15,6 @@
         <LinearLayout
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:gravity="center"
                 android:minHeight="85dp"
                 android:orientation="vertical"
@@ -37,7 +37,8 @@
                     android:maxLines="1"
                     android:text="0"
                     android:textColor="@color/nice_blue"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:id="@+id/tv_like_cnt"/>
 
             <ImageView
                     android:id="@+id/iv_like_down"
@@ -73,7 +74,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/white"
                 android:fontFamily="@font/nanum_square_round_r"
                 android:textColor="@color/black"
                 android:textSize="12.3sp"
@@ -92,7 +92,6 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingTop="6.7dp"
@@ -135,7 +134,8 @@
                         android:fontFamily="@font/nanum_square_round_b"
                         android:text="0"
                         android:textColor="@color/blueberry"
-                        android:textSize="12.3sp" />
+                        android:textSize="12.3sp"
+                        android:id="@+id/tv_fame"/>
 
                 <ImageView
                         android:layout_width="13dp"

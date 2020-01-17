@@ -9,9 +9,9 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:minHeight="50dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:orientation="horizontal">
 
         <LinearLayout
                 android:layout_width="wrap_content"
@@ -50,21 +50,20 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:fontFamily="@font/nanum_square_round_r"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:lineSpacingExtra="@dimen/text_line_spacing"
                 android:maxLines="2"
                 android:paddingRight="20dp"
-                android:text=""
                 android:textColor="@color/black"
                 android:textSize="13.3sp" />
 
         <LinearLayout
                 android:layout_width="41dp"
                 android:layout_height="41dp"
-                android:background="@drawable/bg_concern_item"
                 android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:background="@drawable/bg_concern_item"
+                android:gravity="center"
+                android:orientation="vertical">
 
             <TextView
                     android:id="@+id/tv_re_concern"

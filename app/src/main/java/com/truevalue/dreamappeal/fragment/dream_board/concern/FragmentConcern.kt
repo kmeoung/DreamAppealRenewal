@@ -4,36 +4,55 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanConcern
+import com.truevalue.dreamappeal.bean.BeanFragmentConcern
+import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
+import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.fragment_concern.*
 import okhttp3.Call
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import java.lang.Exception
 
 class FragmentConcern : BaseFragment() {
 
     private var mPopularAdapter: BaseRecyclerViewAdapter?
     private var mRecentAdapter: BaseRecyclerViewAdapter?
     private var mPostType: Int
+    private var mBeanFragment: BeanFragmentConcern?
+    private var isLast: Boolean
 
     init {
         mPopularAdapter = null
         mRecentAdapter = null
         mPostType = POST_TYPE_WEEKLY
+        mBeanFragment = null
+        isLast = false
+
     }
 
     companion object {
         const val POST_TYPE_WEEKLY = 0
         const val POST_TYPE_TODAY = 1
+
+        const val RV_TYPE_ITEM = 0
+        const val RV_TYPE_ITEM_MORE = 1
     }
 
     override fun onCreateView(
@@ -53,6 +72,7 @@ class FragmentConcern : BaseFragment() {
         getConcern()
     }
 
+
     /**
      * Concern 기본 조회
      */
@@ -66,9 +86,117 @@ class FragmentConcern : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
+                    isLast = false
+                    ll_popular.visibility = VISIBLE
+                    ll_recent.visibility = VISIBLE
+
+                    rv_popular.visibility = VISIBLE
+                    rv_recent.visibility = VISIBLE
+
+                    val json = JSONObject(body)
+                    var popularWList: ArrayList<BeanConcern>? = null
+                    var popularDList: ArrayList<BeanConcern>? = null
+                    var recentList: ArrayList<BeanConcern>? = null
+                    try {
+                        val popular_w = json.getJSONArray("popular_w")
+                        popularWList = ArrayList()
+                        for (i in 0 until popular_w.length()) {
+                            val jItem = popular_w.get(i)
+                            val bean = Gson().fromJson<BeanConcern>(
+                                jItem.toString(),
+                                BeanConcern::class.java
+                            )
+                            popularWList.add(bean)
+                        }
+                    } catch (e: JSONException) {
+                    }
+                    try {
+                        val popular_d = json.getJSONArray("popular_d")
+                        popularDList = ArrayList()
+                        for (i in 0 until popular_d.length()) {
+                            val jItem = popular_d.get(i)
+                            val bean = Gson().fromJson<BeanConcern>(
+                                jItem.toString(),
+                                BeanConcern::class.java
+                            )
+                            popularDList.add(bean)
+                        }
+                    } catch (e: JSONException) {
+                    }
+                    try {
+                        val recent = json.getJSONArray("recent")
+                        recentList = ArrayList()
+                        for (i in 0 until recent.length()) {
+                            val jItem = recent.get(i)
+                            val bean = Gson().fromJson<BeanConcern>(
+                                jItem.toString(),
+                                BeanConcern::class.java
+                            )
+                            recentList.add(bean)
+                        }
+                    } catch (e: JSONException) {
+                    }
+
+                    mBeanFragment = BeanFragmentConcern(popularWList, popularDList, recentList)
+
+                    setPopularType(mPostType)
+
+                    mBeanFragment?.let { bean ->
+                        bean.recent?.let {
+                            mRecentAdapter?.let { adapter ->
+                                adapter.clear()
+                                for (i in 0 until it.size) {
+                                    adapter.add(it[i])
+                                }
+                            }
+                        }
+                    }
 
                 } else {
                     context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
+     * 추가 조회
+     */
+    private fun getMoreConcern(last_concern_idx: Int) {
+        DAClient.getConcernMore(last_concern_idx, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
+                    try {
+                        val recent_more = json.getJSONArray("recent_more")
+                        mRecentAdapter?.let {
+                            for (i in 0 until recent_more.length()) {
+                                val obj = recent_more.get(i)
+                                val bean = Gson().fromJson<BeanConcern>(
+                                    obj.toString(),
+                                    BeanConcern::class.java
+                                )
+                                it.add(bean)
+                            }
+                        }
+                    } catch (e: Exception) {
+                    }
+                } else if (code == "NO_MORE_POST") {
+                    isLast = true
+                    mRecentAdapter!!.notifyDataSetChanged()
+                } else {
+                    context?.let {
+                        isLast = true
+                        mRecentAdapter!!.notifyDataSetChanged()
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -110,23 +238,55 @@ class FragmentConcern : BaseFragment() {
         }
         iv_my.setOnClickListener(listener)
         ll_write.setOnClickListener(listener)
+        tv_weekly.setOnClickListener(listener)
+        tv_today.setOnClickListener(listener)
     }
 
     /**
      * 주목받는 글 설정
      */
-    private fun setPopularType(post_type : Int){
+    private fun setPopularType(post_type: Int) {
         mPostType = post_type
         when (mPostType) {
             POST_TYPE_WEEKLY -> {
                 tv_weekly.setTextColor(Color.YELLOW)
                 tv_today.setTextColor(Color.WHITE)
-
+                mBeanFragment?.let { bean ->
+                    bean.popular_w?.let {
+                        mPopularAdapter?.let { adapter ->
+                            adapter.clear()
+                            for (i in 0 until it.size) {
+                                adapter.add(it[i])
+                            }
+                        }
+                    } ?: kotlin.run {
+                        Toast.makeText(
+                            context!!.applicationContext,
+                            getString(R.string.str_no_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
             POST_TYPE_TODAY -> {
                 tv_weekly.setTextColor(Color.WHITE)
                 tv_today.setTextColor(Color.YELLOW)
-
+                mBeanFragment?.let { bean ->
+                    bean.popular_d?.let {
+                        mPopularAdapter?.let { adapter ->
+                            adapter.clear()
+                            for (i in 0 until it.size) {
+                                adapter.add(it[i])
+                            }
+                        }
+                    } ?: kotlin.run {
+                        Toast.makeText(
+                            context!!.applicationContext,
+                            getString(R.string.str_no_data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
     }
@@ -161,7 +321,22 @@ class FragmentConcern : BaseFragment() {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
+            val bean = mPopularAdapter?.get(i) as BeanConcern
+            val tvRecommand = h.getItemView<TextView>(R.id.tv_recommand)
+            val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+            val tvReConcern = h.getItemView<TextView>(R.id.tv_re_concern)
+            val tvStrReConcern = h.getItemView<TextView>(R.id.tv_str_re_concern)
+            tvRecommand.text = bean.adopted.toString()
+            tvTitle.text = bean.title
+            tvReConcern.text = bean.count.toString()
 
+            h.itemView.setOnClickListener {
+                (activity as ActivityMain).replaceFragment(
+                    FragmentConcernDetail.newInstance(bean.idx),
+                    addToBack = true,
+                    isMainRefresh = false
+                )
+            }
         }
 
         override fun getItemViewType(i: Int): Int {
@@ -175,18 +350,50 @@ class FragmentConcern : BaseFragment() {
      */
     private val rvRecentListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = mRecentAdapter?.size() ?: 0
+            get() = if (mRecentAdapter != null) if (mRecentAdapter!!.size() > 4 && !isLast) mRecentAdapter!!.size() + 1 else mRecentAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            return BaseViewHolder.newInstance(R.layout.listitem_concern_item, parent, false)
+            if (RV_TYPE_ITEM_MORE == viewType)
+                return BaseViewHolder.newInstance(R.layout.listitem_white_more, parent, false)
+            else
+                return BaseViewHolder.newInstance(R.layout.listitem_concern_item, parent, false)
+
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
 
+            // todo : 답글 채택여부 없음
+
+            if (RV_TYPE_ITEM_MORE == getItemViewType(i)) {
+                mRecentAdapter?.let {
+                    val bean = mRecentAdapter?.get(mRecentAdapter?.size()!!.minus(1)) as BeanConcern
+                    getMoreConcern(bean.idx)
+                }
+            } else {
+                val bean = mRecentAdapter?.get(i) as BeanConcern
+                val tvRecommand = h.getItemView<TextView>(R.id.tv_recommand)
+                val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+                val tvReConcern = h.getItemView<TextView>(R.id.tv_re_concern)
+                val tvStrReConcern = h.getItemView<TextView>(R.id.tv_str_re_concern)
+                tvRecommand.text = bean.adopted.toString()
+                tvTitle.text = bean.title
+                tvReConcern.text = bean.count.toString()
+
+                h.itemView.setOnClickListener {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentConcernDetail.newInstance(
+                            bean.idx
+                        ), addToBack = true, isMainRefresh = false
+                    )
+                }
+            }
         }
 
         override fun getItemViewType(i: Int): Int {
-            return 0
+            if (mRecentAdapter!!.size() > 4 && mRecentAdapter!!.size() == i && !isLast) {
+                return RV_TYPE_ITEM_MORE
+            }
+            return RV_TYPE_ITEM
         }
     }
 }

@@ -250,7 +250,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     tvIndicator.text =
-                        ((position + 1).toString() + " / " + pagerAdapter!!.getCount())
+                        ((position + 1).toString() + " / " + pagerAdapter!!.count)
                 }
             })
 
@@ -260,7 +260,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 if (bean.tags!!.contains(",".toRegex())) {
 
                     val tags = bean.tags!!.split(",".toRegex())
-                    for (i in 0 until tags.size) {
+                    for (i in tags.indices) {
                         strTags = "$strTags #${tags[i]} "
                     }
                 } else {
@@ -342,17 +342,17 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             if (bean.profile_idx != Comm_Prefs.getUserProfileIndex()) {
-                ivProfile.setOnClickListener(View.OnClickListener {
+                ivProfile.setOnClickListener{
                     (activity as ActivityMain).replaceFragment(
                         FragmentProfile.newInstance(bean.profile_idx),
                         true
                     )
-                })
+                }
             }
 
-            ivMore.setOnClickListener(View.OnClickListener {
+            ivMore.setOnClickListener{
                 showPopupMenu(ivMore, bean)
-            })
+            }
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
             tvJob.text =
@@ -380,7 +380,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             tvCheering.text = "${bean.like_count}개"
             tvComment.text = "${bean.comment_count}개"
 
-            llCommentDetail.setOnClickListener(View.OnClickListener {
+            llCommentDetail.setOnClickListener {
                 val intent = Intent(context!!, ActivityComment::class.java)
                 intent.putExtra(
                     ActivityComment.EXTRA_VIEW_TYPE,
@@ -389,8 +389,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
                 intent.putExtra(ActivityComment.EXTRA_OFF_KEYBOARD, "OFF")
                 startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
-            })
-            llComment.setOnClickListener(View.OnClickListener {
+            }
+            llComment.setOnClickListener {
                 val intent = Intent(context!!, ActivityComment::class.java)
                 intent.putExtra(
                     ActivityComment.EXTRA_VIEW_TYPE,
@@ -398,13 +398,13 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 )
                 intent.putExtra(ActivityComment.EXTRA_INDEX, bean.idx)
                 startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
-            })
+            }
 
-            llCheering.setOnClickListener(View.OnClickListener {
+            llCheering.setOnClickListener{
                 actionLike(bean)
-            })
+            }
 
-            llCheeringDetail.setOnClickListener(View.OnClickListener {
+            llCheeringDetail.setOnClickListener{
                 val intent = Intent(context, ActivityFollowCheering::class.java)
                 intent.putExtra(
                     ActivityFollowCheering.EXTRA_VIEW_TYPE,
@@ -412,7 +412,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 )
                 intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, bean.idx)
                 startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
-            })
+            }
 
             ivCheering.isSelected = bean.status
         }

@@ -2803,6 +2803,24 @@ object DAClient {
 
     /**
      * GET
+     * 질문 게시판 추가 조회
+     */
+    fun getConcernMore(concern_idx: Int,
+                   callback: DAHttpCallback) {
+
+        val url = Comm_Param.URL_BOARD_MORE_IDX.replace(Comm_Param.CONCERN_INDEX,concern_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
      * 질문 게시판 게시글 조회
      */
     fun getConcern(
@@ -2898,6 +2916,20 @@ object DAClient {
             null,
             callback
         )
+    }
+
+    /**
+     * GET
+     * 질문
+     * 내 활동내역 조회
+     */
+    fun getConcernStatus(callback: DAHttpCallback){
+
+        BaseOkhttpClient.request(HttpType.GET,
+            Comm_Param.URL_BOARD_CONCERN_STATUS,
+            getHttpHeader(),
+            null,
+            callback)
     }
 
 

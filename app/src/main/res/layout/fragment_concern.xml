@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white_six" >
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -98,7 +99,8 @@
                     android:layout_marginBottom="5.3dp"
                     android:background="@color/nice_blue"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_popular">
 
                 <TextView
                         android:id="@+id/tv_title"
@@ -151,6 +153,12 @@
 
             </LinearLayout>
 
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/warm_grey_two" />
+
+
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_popular"
                     android:layout_width="match_parent"
@@ -162,9 +170,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginBottom="5.3dp"
+                    android:layout_marginTop="5.3dp"
                     android:background="@color/nice_blue"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_recent">
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -182,6 +192,12 @@
 
 
             </LinearLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/warm_grey_two" />
+
 
 
             <androidx.recyclerview.widget.RecyclerView

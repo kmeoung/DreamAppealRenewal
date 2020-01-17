@@ -43,6 +43,7 @@
                             android:src="@drawable/ic_concern_like" />
 
                     <TextView
+                            android:id="@+id/tv_like_cnt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -68,29 +69,29 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:maxLines="3"
+                        android:background="@color/white"
                         android:ellipsize="end"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:gravity="center"
                         android:lineSpacingExtra="@dimen/text_line_spacing"
+                        android:maxLines="3"
                         android:paddingLeft="14dp"
                         android:paddingRight="14dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/nanum_square_round_b"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
             </LinearLayout>
 
             <RelativeLayout
+                    android:id="@+id/rl_images"
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:id="@+id/rl_images">
+                    android:layout_height="360dp">
 
                 <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/black"/>
+                        android:background="@color/black" />
 
                 <LinearLayout
                         android:id="@+id/ll_indicator"
@@ -180,7 +181,8 @@
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:text="0"
                                 android:textColor="@color/blueberry"
-                                android:textSize="12.3sp" />
+                                android:textSize="12.3sp"
+                                android:id="@+id/tv_fame"/>
 
                         <ImageView
                                 android:layout_width="13dp"

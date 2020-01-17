@@ -10,8 +10,10 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityCameraGallery
 import com.truevalue.dreamappeal.activity.ActivityMain
@@ -173,7 +175,9 @@ class FragmentAddBoard : BaseFragment() {
                                     checkCallbackListener)
                             }
                             TYPE_ADD_CONCERN->{
-
+                                DAClient.addConcern(et_title.text.toString(),
+                                    et_contents.text.toString(),
+                                    checkCallbackListener)
                             }
                             TYPE_EDIT_WISH->{
                                 val bean = mBean as BeanWishPost
@@ -250,7 +254,15 @@ class FragmentAddBoard : BaseFragment() {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-
+            val file = mAdapter?.get(i) as File
+            val image = h.getItemView<ImageView>(R.id.iv_achivement)
+            val delete = h.getItemView<ImageView>(R.id.iv_delete)
+            delete.visibility = GONE
+            Glide.with(context!!)
+                .load(file)
+                .placeholder(R.drawable.ic_image_gray)
+                .centerCrop()
+                .into(image)
         }
 
         override fun getItemViewType(i: Int): Int {

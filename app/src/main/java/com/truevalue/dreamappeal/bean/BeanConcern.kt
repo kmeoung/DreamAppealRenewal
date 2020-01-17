@@ -6,4 +6,5 @@ data class BeanConcern(var idx : Int,
                        var content : String,
                        var votes : Int,
                        var register_date : String,
-                       var count  : Int)
+                       var count  : Int,
+                       var adopted : Int)

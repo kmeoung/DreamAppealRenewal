@@ -65,7 +65,8 @@
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:text="0"
                                 android:textColor="@color/blueberry"
-                                android:textSize="12.3sp" />
+                                android:textSize="12.3sp"
+                                android:id="@+id/tv_fame"/>
 
                         <ImageView
                                 android:layout_width="13dp"

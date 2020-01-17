@@ -9,7 +9,8 @@
     <string name="str_did">했습니다</string>
     <string name="str_go_view">보러가기 >></string>
     <string name="str_dream_profile">드림프로필</string>
-    <string name="str_error_server">서버에 에러가 발생하였습니다.</string>
+    <string name="str_error_server">서버에 에러가 발생하였습니다</string>
+    <string name="str_no_data">데이터가 없습니다</string>
 
     <string name="str_not_ready_yet">준비중입니다.</string>
 
@@ -327,6 +328,7 @@
     <string name="str_wish_detail_title">소원 게시글</string>
     <string name="str_wish_add_title">소원 등록하기</string>
     <string name="str_concern_add_title">고민 / 질문 등록하기</string>
+    <string name="str_concern_title">고민 / 질문</string>
 
     <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
 
@@ -337,4 +339,7 @@
     <string name="str_my_fame">내 명성도</string>
     <string name="str_popular_text">주목받는 글</string>
     <string name="str_recent_text">최신 글</string>
+
+    <string name="str_fame_text">작성한 게시글</string>
+    <string name="str_fame_comment">작성한 댓글</string>
 </resources>
