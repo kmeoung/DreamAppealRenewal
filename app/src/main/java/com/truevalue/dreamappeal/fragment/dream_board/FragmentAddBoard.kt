@@ -48,8 +48,8 @@ class FragmentAddBoard : BaseFragment() {
         const val TYPE_ADD_WISH = "TYPE_ADD_WISH"
         const val TYPE_ADD_CONCERN = "TYPE_ADD_CONCERN"
 
-        const val TYPE_EDIT_WISH = "TYPE_ADD_WISH"
-        const val TYPE_EDIT_CONCERN = "TYPE_ADD_CONCERN"
+        const val TYPE_EDIT_WISH = "TYPE_EDIT_WISH"
+        const val TYPE_EDIT_CONCERN = "TYPE_EDIT_CONCERN"
 
         fun newInstance(view_type : String, bean : Any? = null) : FragmentAddBoard{
             val fragment = FragmentAddBoard()

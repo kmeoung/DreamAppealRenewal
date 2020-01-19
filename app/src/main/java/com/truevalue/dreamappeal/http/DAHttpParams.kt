@@ -55,12 +55,10 @@ class DAHttpParams {
     }
 
     fun bodyParams(): RequestBody {
+        var json = JSONObject()
         mJson?.let {
-            toRequestType(it)
+            json = it
         }
-
-        val json = JSONObject()
-
         map?.let {
             if(it.size > 0){
                 for (key: String in map.keys) {

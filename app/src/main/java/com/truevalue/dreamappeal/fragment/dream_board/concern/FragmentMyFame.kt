@@ -138,7 +138,7 @@ class FragmentMyFame : BaseFragment() {
                 mBean?.let { bean ->
                     mAdapter?.let { adapter ->
                         adapter.clear()
-                        for (i in bean.concern_history.indices) {
+                        for (i in bean.re_concern_history.indices) {
                             val bean = bean.re_concern_history[i]
                             adapter.add(bean)
                         }
