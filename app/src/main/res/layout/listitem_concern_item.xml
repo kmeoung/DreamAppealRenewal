@@ -63,7 +63,8 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/bg_concern_item"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/ll_concern_item_bg">
 
             <TextView
                     android:id="@+id/tv_re_concern"

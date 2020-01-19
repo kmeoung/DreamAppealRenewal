@@ -174,6 +174,8 @@ class FragmentEvent : BaseFragment() {
             ) {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
+                    val value = json.getString("value")
+                    tv_event_title.text = "${value}에 도움될만한 소식"
                     val promotions = json.getJSONArray("promotions")
                     mPagerAdapter?.let {
                         it.clear()

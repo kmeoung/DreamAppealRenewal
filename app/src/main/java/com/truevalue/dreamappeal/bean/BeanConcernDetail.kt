@@ -12,6 +12,7 @@ data class AdoptedRePost(
     val adopted: Int,
     val content: String,
     val idx: Int,
+    val image: String?,
     val job: String,
     val nickname: String,
     val register_date: String,
@@ -36,6 +37,7 @@ data class Post(
 )
 
 data class PostWriter(
+    val image: String?,
     val job: String,
     val nickname: String,
     val reputation: String,
@@ -43,9 +45,10 @@ data class PostWriter(
 )
 
 data class RePost(
-    val adopted: Int,
+    val adopted: Int?,
     val content: String,
     val idx: Int,
+    val image: String?,
     val job: String,
     val nickname: String,
     val register_date: String,

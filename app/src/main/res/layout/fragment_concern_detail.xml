@@ -40,6 +40,7 @@
                             android:id="@+id/iv_like_up"
                             android:layout_width="19dp"
                             android:layout_height="19dp"
+                            android:rotation="180"
                             android:src="@drawable/ic_concern_like" />
 
                     <TextView
@@ -79,6 +80,22 @@
                         android:paddingRight="14dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center">
+
+                    <ImageView
+                            android:id="@+id/iv_post_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/bg_concern_more" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -125,7 +142,6 @@
                     android:layout_marginBottom="1dp"
                     android:background="@color/white"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:minHeight="180dp"
                     android:paddingLeft="19.7dp"
                     android:paddingTop="16dp"
                     android:paddingRight="40dp"
@@ -175,14 +191,14 @@
                             android:orientation="horizontal">
 
                         <TextView
+                                android:id="@+id/tv_fame"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="17dp"
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:text="0"
                                 android:textColor="@color/blueberry"
-                                android:textSize="12.3sp"
-                                android:id="@+id/tv_fame"/>
+                                android:textSize="12.3sp" />
 
                         <ImageView
                                 android:layout_width="13dp"
@@ -276,6 +292,13 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
+    <include
+            android:id="@+id/bottom_comment"
+            layout="@layout/bottom_comment_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
 
 </LinearLayout>

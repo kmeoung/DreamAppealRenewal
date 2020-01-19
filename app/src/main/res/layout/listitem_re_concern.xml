@@ -25,7 +25,8 @@
                     android:id="@+id/iv_like_up"
                     android:layout_width="19dp"
                     android:layout_height="19dp"
-                    android:src="@drawable/ic_concern_like" />
+                    android:src="@drawable/ic_concern_like"
+                    android:rotation="180"/>
 
             <TextView
                     android:layout_width="wrap_content"

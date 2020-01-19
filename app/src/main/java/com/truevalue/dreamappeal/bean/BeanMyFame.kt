@@ -7,22 +7,25 @@ data class BeanMyFame(
 )
 
 data class ConcernHistory(
-    val count: Int,
     val idx: Int,
+    val count: Int,
+    val adopted : Int,
     val title: String,
     val votes: String
 )
 
 data class ReConcernHistory(
-    val count: Int,
     val idx: Int,
+    val count: Int,
+    val adopted : Int,
     val title: String,
     val votes: String
 )
 
 data class User(
-    val idx: Int,
+    val image: String?,
     val nickname: String,
-    val point: Int,
+    val reputation: Int,
     val user_idx: Int
 )
+

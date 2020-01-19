@@ -21,6 +21,7 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.bean.BeanConcernDetail
 import com.truevalue.dreamappeal.bean.BeanWish
 import com.truevalue.dreamappeal.bean.BeanWishPost
 import com.truevalue.dreamappeal.http.DAClient
@@ -127,7 +128,9 @@ class FragmentAddBoard : BaseFragment() {
         mBean?.let {
             when(mViewType){
                 TYPE_EDIT_CONCERN->{
-
+                    val bean = mBean as BeanConcernDetail
+                    et_title.setText(bean.post.title)
+                    et_contents.setText(bean.post.content)
                 }
                 TYPE_EDIT_WISH->{
                     val bean = mBean as BeanWishPost
@@ -186,7 +189,10 @@ class FragmentAddBoard : BaseFragment() {
                                     checkCallbackListener)
                             }
                             TYPE_EDIT_CONCERN->{
-
+                                val bean = mBean as BeanConcernDetail
+                                DAClient.updateConcern(bean.post.idx,et_title.text.toString(),
+                                    et_contents.text.toString(),
+                                    checkCallbackListener)
                             }
                         }
                     }

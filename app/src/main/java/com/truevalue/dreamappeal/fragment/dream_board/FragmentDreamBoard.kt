@@ -12,11 +12,13 @@ import kotlinx.android.synthetic.main.fragment_dream_board.*
 
 class FragmentDreamBoard : BaseFragment() {
 
-    private val TAB_TYPE_EVENT = 0
-    private val TAB_TYPE_POPULAR = 1
-    private val TAB_TYPE_CONCERN = 2
+    companion object{
+        private const val TAB_TYPE_EVENT = 0
+        private const val TAB_TYPE_POPULAR = 1
+        private const val TAB_TYPE_CONCERN = 2
+    }
 
-    private var mTabViewType = TAB_TYPE_EVENT
+    private var mTabViewType = TAB_TYPE_POPULAR
 
     override fun onCreateView(
         inflater: LayoutInflater,

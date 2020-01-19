@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,17 +19,13 @@ import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanConcern
 import com.truevalue.dreamappeal.bean.BeanFragmentConcern
-import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
-import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.fragment_concern.*
 import okhttp3.Call
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.Exception
 
 class FragmentConcern : BaseFragment() {
 
@@ -326,9 +323,14 @@ class FragmentConcern : BaseFragment() {
             val tvTitle = h.getItemView<TextView>(R.id.tv_title)
             val tvReConcern = h.getItemView<TextView>(R.id.tv_re_concern)
             val tvStrReConcern = h.getItemView<TextView>(R.id.tv_str_re_concern)
-            tvRecommand.text = bean.adopted.toString()
+            val llConcernItemBg = h.getItemView<LinearLayout>(R.id.ll_concern_item_bg)
+            tvRecommand.text = bean.votes.toString()
             tvTitle.text = bean.title
             tvReConcern.text = bean.count.toString()
+
+            llConcernItemBg.isSelected = (bean.adopted == 1)
+            tvStrReConcern.isSelected = (bean.adopted == 1)
+            tvReConcern.isSelected = (bean.adopted == 1)
 
             h.itemView.setOnClickListener {
                 (activity as ActivityMain).replaceFragment(
@@ -362,8 +364,6 @@ class FragmentConcern : BaseFragment() {
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
 
-            // todo : 답글 채택여부 없음
-
             if (RV_TYPE_ITEM_MORE == getItemViewType(i)) {
                 mRecentAdapter?.let {
                     val bean = mRecentAdapter?.get(mRecentAdapter?.size()!!.minus(1)) as BeanConcern
@@ -375,9 +375,15 @@ class FragmentConcern : BaseFragment() {
                 val tvTitle = h.getItemView<TextView>(R.id.tv_title)
                 val tvReConcern = h.getItemView<TextView>(R.id.tv_re_concern)
                 val tvStrReConcern = h.getItemView<TextView>(R.id.tv_str_re_concern)
+                val llConcernItemBg = h.getItemView<LinearLayout>(R.id.ll_concern_item_bg)
+
                 tvRecommand.text = bean.adopted.toString()
                 tvTitle.text = bean.title
                 tvReConcern.text = bean.count.toString()
+
+                llConcernItemBg.isSelected = (bean.adopted == 1)
+                tvStrReConcern.isSelected = (bean.adopted == 1)
+                tvReConcern.isSelected = (bean.adopted == 1)
 
                 h.itemView.setOnClickListener {
                     (activity as ActivityMain).replaceFragment(

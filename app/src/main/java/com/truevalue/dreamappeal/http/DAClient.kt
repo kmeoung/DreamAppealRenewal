@@ -89,7 +89,7 @@ object DAClient {
      * PATCH
      * 이미지 업로드
      * idx -> profile_idx | achievement_post_idx | action_post_idx
-     * type -> 0 : profile | 1 : action_post | 2 : achievement_post
+     * type -> 0 : profile | 1 : action_post | 2 : achievement_post | 3 : wish_post | 4 : concern_post
      */
     fun uploadsImage(
         idx: Int,
@@ -2805,10 +2805,13 @@ object DAClient {
      * GET
      * 질문 게시판 추가 조회
      */
-    fun getConcernMore(concern_idx: Int,
-                   callback: DAHttpCallback) {
+    fun getConcernMore(
+        concern_idx: Int,
+        callback: DAHttpCallback
+    ) {
 
-        val url = Comm_Param.URL_BOARD_MORE_IDX.replace(Comm_Param.CONCERN_INDEX,concern_idx.toString())
+        val url =
+            Comm_Param.URL_BOARD_MORE_IDX.replace(Comm_Param.CONCERN_INDEX, concern_idx.toString())
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -2923,14 +2926,167 @@ object DAClient {
      * 질문
      * 내 활동내역 조회
      */
-    fun getConcernStatus(callback: DAHttpCallback){
+    fun getConcernStatus(callback: DAHttpCallback) {
 
-        BaseOkhttpClient.request(HttpType.GET,
+        BaseOkhttpClient.request(
+            HttpType.GET,
             Comm_Param.URL_BOARD_CONCERN_STATUS,
             getHttpHeader(),
             null,
-            callback)
+            callback
+        )
     }
 
+    /**
+     * POST
+     * 질문 - 답글작성
+     */
+    fun addReConcern(
+        concern_idx: Int,
+        content: String?,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BOARD_RE_CONCERN_IDX.replace(
+            Comm_Param.CONCERN_INDEX,
+            concern_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        if (!content.isNullOrEmpty()) params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 질문 - 답글수정
+     */
+    fun updateReConcern(
+        re_idx: Int,
+        content: String?,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BOARD_RE_CONCERN_RE_IDX.replace(
+            Comm_Param.RE_INDEX,
+            re_idx.toString()
+        )
+
+        val params = DAHttpParams()
+        if (!content.isNullOrEmpty()) params.put("content", content)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * DELETE
+     * 질문 - 답글삭제
+     */
+    fun deleteReConcern(
+        re_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_BOARD_RE_CONCERN_RE_IDX.replace(
+            Comm_Param.RE_INDEX,
+            re_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    val VOTE_UP = "up"
+    val VOTE_DOWN = "down"
+
+    /**
+     * PATCH
+     * 질문 게시글 추천 / 비추천
+     */
+    fun updateConcernVote(
+        concern_idx: Int,
+        side: String,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_BOARD_VOTE_CONCERN_IDX.replace(
+            Comm_Param.CONCERN_INDEX,
+            concern_idx.toString()
+        )
+        val params = DAHttpParams()
+        params.put("side", side)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 질문 게시글 답글 추천 / 비추천
+     */
+    fun updateReConcernVote(
+        re_idx: Int,
+        side: String,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_BOARD_VOTE_RE_CONCERN_IDX.replace(
+            Comm_Param.RE_INDEX,
+            re_idx.toString()
+        )
+        val params = DAHttpParams()
+        params.put("side", side)
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * PATCH
+     * 질문 게시글 답글 채택 / 미채택
+     */
+    fun updateReConcernAdoptVote(
+        re_idx: Int,
+        callback: DAHttpCallback
+    ) {
+        val url = Comm_Param.URL_BOARD_ADOPT_RE_CONCERN_IDX.replace(
+            Comm_Param.RE_INDEX,
+            re_idx.toString()
+        )
+
+        BaseOkhttpClient.request(
+            HttpType.PATCH,
+            url,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
 
 }

@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
@@ -28,13 +29,14 @@ import okhttp3.Call
 import org.json.JSONObject
 
 class FragmentMyFame : BaseFragment() {
-    private var mAdapter : BaseRecyclerViewAdapter?
-    private var mBean : BeanMyFame?
+    private var mAdapter: BaseRecyclerViewAdapter?
+    private var mBean: BeanMyFame?
 
-    companion object{
+    private var mViewType = VIEW_TYPE_TEXT
 
-        private const val RV_TYPE_ITEM = 0
-        private const val RV_TYPE_HEADER = 1
+    companion object {
+        private const val VIEW_TYPE_TEXT = 0
+        private const val VIEW_TYPE_COMMENT = 1
     }
 
     init {
@@ -57,6 +59,8 @@ class FragmentMyFame : BaseFragment() {
         initAdapter()
         // View Click Listener
         onClickView()
+        // 상단바 설정
+        setTabView(mViewType)
         // 활동내역 조회
         getStatus()
     }
@@ -66,8 +70,8 @@ class FragmentMyFame : BaseFragment() {
      * Http
      * 내 활동내역 조회
      */
-    private fun getStatus(){
-        DAClient.getConcernStatus(object : DAHttpCallback{
+    private fun getStatus() {
+        DAClient.getConcernStatus(object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -75,36 +79,73 @@ class FragmentMyFame : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val bean = Gson().fromJson<BeanMyFame>(json.toString(), BeanMyFame::class.java)
                     mBean = bean
-                    // todo : User Profile 없음
-//                    iv_profile
-                    tv_user.text = bean.user.nickname
-                    tv_fame.text = bean.user.point.toString()
 
-                    mAdapter?.let {adapter->
-                        adapter.clear()
-
-                        adapter.add(getString(R.string.str_fame_text))
-                        for(i in bean.concern_history.indices){
-                            val bean = bean.concern_history[i]
-                            adapter.add(bean)
-                        }
-                        adapter.add(getString(R.string.str_fame_text))
-                        for(i in bean.concern_history.indices){
-                            val bean = bean.re_concern_history[i]
-                            adapter.add(bean)
-                        }
+                    bean.user.image?.let { image ->
+                        Glide.with(context!!)
+                            .load(image)
+                            .circleCrop()
+                            .placeholder(R.drawable.drawer_user)
+                            .into(iv_profile)
                     }
-                }else{
+
+                    tv_user.text = "${bean.user.nickname} 님"
+                    tv_fame.text = bean.user.reputation.toString()
+
+                    setTabView(mViewType)
+                } else {
                     context?.let {
-                        Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         })
+    }
+
+    /**
+     * 상단 Tab 설정
+     */
+    private fun setTabView(view_type: Int) {
+        mViewType = view_type
+        when (view_type) {
+            VIEW_TYPE_TEXT -> {
+                tv_fame_text.isSelected = true
+                tv_fame_comment.isSelected = false
+                iv_fame_text.visibility = VISIBLE
+                iv_fame_comment.visibility = View.INVISIBLE
+                tv_sub_title.text = getString(R.string.str_fame_text)
+
+                mBean?.let { bean ->
+                    mAdapter?.let { adapter ->
+                        adapter.clear()
+                        for (i in bean.concern_history.indices) {
+                            val bean = bean.concern_history[i]
+                            adapter.add(bean)
+                        }
+                    }
+                }
+            }
+            VIEW_TYPE_COMMENT -> {
+                tv_fame_text.isSelected = false
+                tv_fame_comment.isSelected = true
+                iv_fame_text.visibility = View.INVISIBLE
+                iv_fame_comment.visibility = VISIBLE
+                tv_sub_title.text = getString(R.string.str_fame_comment)
+
+                mBean?.let { bean ->
+                    mAdapter?.let { adapter ->
+                        adapter.clear()
+                        for (i in bean.concern_history.indices) {
+                            val bean = bean.re_concern_history[i]
+                            adapter.add(bean)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -119,9 +160,9 @@ class FragmentMyFame : BaseFragment() {
     /**
      * RecyclerView Adapter 초기화
      */
-    private fun initAdapter(){
+    private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(rvListener)
-        rv_cycle.run {
+        rv_fame.run {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -136,43 +177,79 @@ class FragmentMyFame : BaseFragment() {
                 iv_back_blue -> {
                     (activity as ActivityMain).onBackPressed(false)
                 }
+                tv_fame_text -> {
+                    if (VIEW_TYPE_TEXT != mViewType) {
+                        setTabView(VIEW_TYPE_TEXT)
+                    }
+                }
+                tv_fame_comment -> {
+                    if (VIEW_TYPE_COMMENT != mViewType) {
+                        setTabView(VIEW_TYPE_COMMENT)
+                    }
+                }
             }
         }
         iv_back_blue.setOnClickListener(listener)
+        tv_fame_text.setOnClickListener(listener)
+        tv_fame_comment.setOnClickListener(listener)
     }
 
-    private val rvListener = object : IORecyclerViewListener{
+    private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
             get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            if(viewType == RV_TYPE_HEADER) return BaseViewHolder.newInstance(R.layout.listitem_my_fame_header,parent,false)
-            return BaseViewHolder.newInstance(R.layout.listitem_my_fame,parent,false)
+            return BaseViewHolder.newInstance(R.layout.listitem_concern_item, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
+            val tvRecommand = h.getItemView<TextView>(R.id.tv_recommand)
+            val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+            val tvReConcern = h.getItemView<TextView>(R.id.tv_re_concern)
+            val tvStrReConcern = h.getItemView<TextView>(R.id.tv_str_re_concern)
+            val llConcernItemBg = h.getItemView<LinearLayout>(R.id.ll_concern_item_bg)
 
-            if(getItemViewType(i) == RV_TYPE_HEADER){
-                val tvTitle = h.getItemView<TextView>(R.id.tv_title)
-                val bean = mAdapter?.get(i) as String
-                tvTitle.text = bean
-            }else{
-                val tvcontents = h.getItemView<TextView>(R.id.tv_contents)
+            if (mAdapter?.get(i) is ConcernHistory) {
+                val bean = mAdapter?.get(i) as ConcernHistory
 
-                if(mAdapter?.get(i) is ConcernHistory){
-                    val bean = mAdapter?.get(i) as ConcernHistory
-                    tvcontents.text = bean.title
-                }else if(mAdapter?.get(i) is ReConcernHistory){
-                    val bean = mAdapter?.get(i) as ReConcernHistory
-                    tvcontents.text = bean.title
+                tvRecommand.text = bean.adopted.toString()
+                tvTitle.text = bean.title
+                tvReConcern.text = bean.count.toString()
+
+                llConcernItemBg.isSelected = (bean.adopted == 1)
+                tvStrReConcern.isSelected = (bean.adopted == 1)
+                tvReConcern.isSelected = (bean.adopted == 1)
+
+                h.itemView.setOnClickListener {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentConcernDetail.newInstance(
+                            bean.idx
+                        ), addToBack = true, isMainRefresh = false
+                    )
+                }
+            } else if (mAdapter?.get(i) is ReConcernHistory) {
+                val bean = mAdapter?.get(i) as ReConcernHistory
+
+                tvRecommand.text = bean.adopted.toString()
+                tvTitle.text = bean.title
+                tvReConcern.text = bean.count.toString()
+
+                llConcernItemBg.isSelected = (bean.adopted == 1)
+                tvStrReConcern.isSelected = (bean.adopted == 1)
+                tvReConcern.isSelected = (bean.adopted == 1)
+
+                h.itemView.setOnClickListener {
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentConcernDetail.newInstance(
+                            bean.idx
+                        ), addToBack = true, isMainRefresh = false
+                    )
                 }
             }
         }
 
         override fun getItemViewType(i: Int): Int {
-            if(mAdapter?.get(i) is String)
-            return RV_TYPE_HEADER
-            return RV_TYPE_ITEM
+            return 0
         }
     }
 }

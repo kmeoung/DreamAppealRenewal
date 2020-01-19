@@ -25,12 +25,15 @@ import java.util.*
 
 class FragmentDreamPointUsage : BaseFragment() {
 
-    private val VIEW_TYPE_GET = 0
-    private val VIEW_TYPE_USE = 1
-
     private var mViewType = VIEW_TYPE_GET
 
     private var mAdapter: BaseRecyclerViewAdapter2<BeanDreamPointGetUsage>? = null
+
+    companion object{
+        private const val VIEW_TYPE_GET = 0
+        private const val VIEW_TYPE_USE = 1
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,7 +87,6 @@ class FragmentDreamPointUsage : BaseFragment() {
                 iv_get_list.visibility = VISIBLE
                 iv_use_list.visibility = INVISIBLE
                 tv_accumulate.text = getString(R.string.str_accumulate_get)
-                // todo : 여기가 정말 적당한 위치인지 추후에 확인 필요
                 getHistory()
             }
             VIEW_TYPE_USE -> {
@@ -93,7 +95,6 @@ class FragmentDreamPointUsage : BaseFragment() {
                 iv_get_list.visibility = INVISIBLE
                 iv_use_list.visibility = VISIBLE
                 tv_accumulate.text = getString(R.string.str_accumulate_use)
-                // todo : 현재 정책이 나온것이 없습니다.
                 if(mAdapter != null){
                     mAdapter!!.clear()
                     tv_point.text = 0.toString()
