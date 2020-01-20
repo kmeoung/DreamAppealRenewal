@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.dream_board
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -13,45 +14,48 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
 import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityCameraGallery
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
-import com.truevalue.dreamappeal.base.BaseViewHolder
-import com.truevalue.dreamappeal.base.IORecyclerViewListener
+import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanConcernDetail
 import com.truevalue.dreamappeal.bean.BeanWish
 import com.truevalue.dreamappeal.bean.BeanWishPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_board.*
 import okhttp3.Call
+import org.json.JSONObject
 import java.io.File
+import java.io.IOException
 
 class FragmentAddBoard : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    private val REQUEST_ADD_IMAGES = 1003
+    private lateinit var mDialog: ProgressDialog
 
-    private var mViewType : String?
-    private var mBean : Any?
+    private var mViewType: String?
+    private var mBean: Any?
+
     init {
         mViewType = TYPE_ADD_WISH
         mBean = null
     }
 
-    companion object{
+    companion object {
+        private const val REQUEST_ADD_IMAGES = 1003
         const val TYPE_ADD_WISH = "TYPE_ADD_WISH"
         const val TYPE_ADD_CONCERN = "TYPE_ADD_CONCERN"
 
         const val TYPE_EDIT_WISH = "TYPE_ADD_WISH"
         const val TYPE_EDIT_CONCERN = "TYPE_ADD_CONCERN"
 
-        fun newInstance(view_type : String, bean : Any? = null) : FragmentAddBoard{
+        fun newInstance(view_type: String, bean: Any? = null): FragmentAddBoard {
             val fragment = FragmentAddBoard()
             fragment.mViewType = view_type
             fragment.mBean = bean
@@ -91,17 +95,20 @@ class FragmentAddBoard : BaseFragment() {
      * View 초기화
      */
     private fun initView() {
-        when(mViewType){
-            TYPE_ADD_WISH, TYPE_EDIT_WISH->{
+        mDialog = ProgressDialog(context!!)
+        mDialog.setCancelable(false)
+
+        when (mViewType) {
+            TYPE_ADD_WISH, TYPE_EDIT_WISH -> {
                 tv_title.text = getString(R.string.str_wish_add_title)
             }
-            TYPE_ADD_CONCERN, TYPE_EDIT_CONCERN->{
+            TYPE_ADD_CONCERN, TYPE_EDIT_CONCERN -> {
                 tv_title.text = getString(R.string.str_concern_add_title)
             }
         }
         iv_check.visibility = VISIBLE
 
-        val watcher = object : TextWatcher{
+        val watcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -116,7 +123,7 @@ class FragmentAddBoard : BaseFragment() {
     /**
      * Check 버튼 설정
      */
-    private fun check() : Boolean{
+    private fun check(): Boolean {
         return (!et_title.text.toString().isNullOrEmpty()) &&
                 (!et_contents.text.toString().isNullOrEmpty())
     }
@@ -124,15 +131,15 @@ class FragmentAddBoard : BaseFragment() {
     /**
      * 초기 데이터 셋팅
      */
-    private fun bindInitData(){
+    private fun bindInitData() {
         mBean?.let {
-            when(mViewType){
-                TYPE_EDIT_CONCERN->{
+            when (mViewType) {
+                TYPE_EDIT_CONCERN -> {
                     val bean = mBean as BeanConcernDetail
                     et_title.setText(bean.post.title)
                     et_contents.setText(bean.post.content)
                 }
-                TYPE_EDIT_WISH->{
+                TYPE_EDIT_WISH -> {
                     val bean = mBean as BeanWishPost
                     et_title.setText(bean.title)
                     et_contents.setText(bean.content)
@@ -169,35 +176,43 @@ class FragmentAddBoard : BaseFragment() {
                     )
                     startActivityForResult(intent, REQUEST_ADD_IMAGES)
                 }
-                iv_check->{
-                    if(iv_check.isSelected){
-                        when(mViewType){
-                            TYPE_ADD_WISH->{
-                                DAClient.addWish(et_title.text.toString(),
+                iv_check -> {
+                    if (iv_check.isSelected) {
+                        when (mViewType) {
+                            TYPE_ADD_WISH -> {
+                                DAClient.addWish(
+                                    et_title.text.toString(),
                                     et_contents.text.toString(),
-                                    checkCallbackListener)
+                                    checkCallbackListener
+                                )
                             }
-                            TYPE_ADD_CONCERN->{
-                                DAClient.addConcern(et_title.text.toString(),
+                            TYPE_ADD_CONCERN -> {
+                                DAClient.addConcern(
+                                    et_title.text.toString(),
                                     et_contents.text.toString(),
-                                    checkCallbackListener)
+                                    checkCallbackListener
+                                )
                             }
-                            TYPE_EDIT_WISH->{
+                            TYPE_EDIT_WISH -> {
                                 val bean = mBean as BeanWishPost
-                                DAClient.updateWish(bean.idx,et_title.text.toString(),
+                                DAClient.updateWish(
+                                    bean.idx, et_title.text.toString(),
                                     et_contents.text.toString(),
-                                    checkCallbackListener)
+                                    checkCallbackListener
+                                )
                             }
-                            TYPE_EDIT_CONCERN->{
+                            TYPE_EDIT_CONCERN -> {
                                 val bean = mBean as BeanConcernDetail
-                                DAClient.updateConcern(bean.post.idx,et_title.text.toString(),
+                                DAClient.updateConcern(
+                                    bean.post.idx, et_title.text.toString(),
                                     et_contents.text.toString(),
-                                    checkCallbackListener)
+                                    checkCallbackListener
+                                )
                             }
                         }
                     }
                 }
-                iv_back_black->{
+                iv_back_black -> {
                     (activity as ActivityMain).onBackPressed(false)
                 }
             }
@@ -213,12 +228,11 @@ class FragmentAddBoard : BaseFragment() {
             if (requestCode == REQUEST_ADD_IMAGES) {
                 val fileArray =
                     data!!.getSerializableExtra(ActivityCameraGallery.REQUEST_IMAGE_FILES) as ArrayList<File>
-
-                if (fileArray != null) {
-                    if (fileArray.size > 0) {
-                        if (mAdapter != null) {
-                            for (file in fileArray) {
-                                mAdapter!!.add(file)
+                fileArray?.let { files ->
+                    if (files.size > 0) {
+                        mAdapter?.let { adapter ->
+                            for (file in files) {
+                                adapter.add(file)
                             }
                         }
                     }
@@ -230,7 +244,7 @@ class FragmentAddBoard : BaseFragment() {
     /**
      * Check Callback Listener
      */
-    private val checkCallbackListener = object : DAHttpCallback{
+    private val checkCallbackListener = object : DAHttpCallback {
         override fun onResponse(
             call: Call,
             serverCode: Int,
@@ -238,14 +252,106 @@ class FragmentAddBoard : BaseFragment() {
             code: String,
             message: String
         ) {
-            if(code == DAClient.SUCCESS){
-                (activity as ActivityMain).onBackPressed(false)
-            }else{
+            if (code == DAClient.SUCCESS) {
+
+                if (mViewType == TYPE_ADD_CONCERN) {
+                    val json = JSONObject(body)
+                    val insertId = json.getInt("concern_idx")
+                    uploadImage(insertId)
+                } else if (mViewType == TYPE_ADD_WISH) {
+                    val json = JSONObject(body)
+                    val insertId = json.getInt("post_idx")
+                    uploadImage(insertId)
+                } else {
+                    (activity as ActivityMain).onBackPressed(false)
+                }
+            } else {
                 context?.let {
-                    Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    /**
+     * Http
+     * 이미지 업로드
+     */
+    private fun uploadImage(idx: Int) {
+        val type: String = when (mViewType) {
+            TYPE_ADD_WISH -> {
+                DAClient.IMAGE_TYPE_WISH
+            }
+            TYPE_ADD_CONCERN -> {
+                DAClient.IMAGE_TYPE_CONCERN
+            }
+            else -> ""
+        }
+        var isCalled = false
+
+        mAdapter?.let { adapter ->
+            val imgs = (adapter.mArray as ArrayList<File>)
+            Utils.multiUploadWithTransferUtility(
+                context!!.applicationContext,
+                imgs,
+                "$type/$idx",
+                object :
+                    IOS3ImageUploaderListener {
+                    override fun onMutiStateCompleted(adressList: ArrayList<String>) {
+                        super.onMutiStateCompleted(adressList)
+                        if (!isCalled) {
+                            updateProfileImage(idx, type, adressList)
+                            isCalled = true
+                        }
+                    }
+
+                    override fun onStateCompleted(
+                        id: Int,
+                        state: TransferState,
+                        imageBucketAddress: String
+                    ) {
+
+                    }
+
+                    override fun onError(id: Int, ex: java.lang.Exception?) {
+                        if (mDialog.isShowing) mDialog.dismiss()
+                    }
+                })
+        }
+    }
+
+    /**
+     * Http
+     * Image Update
+     */
+    private fun updateProfileImage(idx: Int, type: String, url: ArrayList<String>) {
+        val list = ArrayList<String>()
+        for (s in url) {
+            list.add(s)
+        }
+        DAClient.uploadsImage(idx, type, list, object : DAHttpCallback {
+            override fun onFailure(call: Call, e: IOException) {
+                super.onFailure(call, e)
+                if (mDialog.isShowing) mDialog.dismiss()
+            }
+
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (mDialog.isShowing) mDialog.dismiss()
+                if (context != null) {
+                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                    if (code == DAClient.SUCCESS) {
+                        (activity as ActivityMain).onBackPressed(false)
+                    }
+                }
+            }
+        })
     }
 
     /**
@@ -253,7 +359,7 @@ class FragmentAddBoard : BaseFragment() {
      */
     private val rvImageListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) mAdapter!!.size() else 0
+            get() = mAdapter?.size() ?: 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             return BaseViewHolder.newInstance(R.layout.listitem_achivement_list, parent, false)

@@ -316,6 +316,37 @@ class FragmentLevelChoice : BaseFragment() {
     }
 
     /**
+     * Http
+     * 수정
+     */
+    private fun updateActionPost() {
+        DAClient.updateActionPosts(
+            mPostIdx,
+            selectedCategoryIdx,
+            selectedCategoryDetailIdx,
+            null,
+            null,
+            null,
+            object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+                        if (code == DAClient.SUCCESS) {
+                            activity!!.onBackPressed()
+                        }
+                    }
+                }
+            })
+    }
+
+    /**
      * Action Post 추가
      */
     private fun addActionPost() {
@@ -373,37 +404,6 @@ class FragmentLevelChoice : BaseFragment() {
                             uploadImage(insertId)
                         } else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                     } else if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
-                }
-            })
-    }
-
-    /**
-     * Http
-     * 수정
-     */
-    private fun updateActionPost() {
-        DAClient.updateActionPosts(
-            mPostIdx,
-            selectedCategoryIdx,
-            selectedCategoryDetailIdx,
-            null,
-            null,
-            null,
-            object : DAHttpCallback {
-                override fun onResponse(
-                    call: Call,
-                    serverCode: Int,
-                    body: String,
-                    code: String,
-                    message: String
-                ) {
-                    if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
-                        if (code == DAClient.SUCCESS) {
-                            activity!!.onBackPressed()
-                        }
-                    }
                 }
             })
     }
