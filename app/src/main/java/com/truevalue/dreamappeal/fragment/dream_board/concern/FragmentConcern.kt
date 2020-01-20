@@ -176,6 +176,11 @@ class FragmentConcern : BaseFragment() {
                     try {
                         val recent_more = json.getJSONArray("recent_more")
                         mRecentAdapter?.let {
+                            if(1 > recent_more.length()){
+                                isLast = true
+                                it.notifyDataSetChanged()
+                            }
+
                             for (i in 0 until recent_more.length()) {
                                 val obj = recent_more.get(i)
                                 val bean = Gson().fromJson<BeanConcern>(

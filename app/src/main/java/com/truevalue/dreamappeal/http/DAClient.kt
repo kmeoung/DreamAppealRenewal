@@ -2811,7 +2811,7 @@ object DAClient {
     ) {
 
         val url =
-            Comm_Param.URL_BOARD_MORE_IDX.replace(Comm_Param.CONCERN_INDEX, concern_idx.toString())
+            Comm_Param.URL_BOARD_CONECERN_MORE_IDX.replace(Comm_Param.CONCERN_INDEX, concern_idx.toString())
 
         BaseOkhttpClient.request(
             HttpType.GET,

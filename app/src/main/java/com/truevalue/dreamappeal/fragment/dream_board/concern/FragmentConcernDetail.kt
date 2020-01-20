@@ -22,22 +22,18 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.bean.*
+import com.truevalue.dreamappeal.bean.AdoptedRePost
+import com.truevalue.dreamappeal.bean.BeanConcernDetail
+import com.truevalue.dreamappeal.bean.Image
+import com.truevalue.dreamappeal.bean.RePost
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
-import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_comment_view.*
-import kotlinx.android.synthetic.main.fragment_add_board.*
 import kotlinx.android.synthetic.main.fragment_concern_detail.*
-import kotlinx.android.synthetic.main.fragment_concern_detail.iv_profile
-import kotlinx.android.synthetic.main.fragment_concern_detail.pager_image
-import kotlinx.android.synthetic.main.fragment_concern_detail.rl_images
-import kotlinx.android.synthetic.main.fragment_concern_detail.tv_contents
-import kotlinx.android.synthetic.main.fragment_concern_detail.tv_indicator
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -101,6 +97,7 @@ class FragmentConcernDetail : BaseFragment() {
 
         rl_comment.visibility = GONE
         btn_commit_comment.visibility = VISIBLE
+        iv_profile.visibility = GONE
         et_comment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 charSequence: CharSequence,
@@ -176,13 +173,24 @@ class FragmentConcernDetail : BaseFragment() {
             }
         }
 
+        if(bean.post.vote_type == DAClient.VOTE_UP){
+            iv_like_up.isSelected = true
+            iv_like_down.isSelected = false
+        }else if(bean.post.vote_type == DAClient.VOTE_DOWN){
+            iv_like_up.isSelected = false
+            iv_like_down.isSelected = true
+        }else{
+            iv_like_up.isSelected = false
+            iv_like_down.isSelected = false
+        }
+
         tv_contents.text = bean.post.content
         bean.post_writer.image?.let { image ->
             Glide.with(context!!)
                 .load(image)
                 .circleCrop()
                 .placeholder(R.drawable.drawer_user)
-                .into(iv_profile)
+                .into(iv_post_profile)
         }
         tv_user.text =
             "${bean.post_writer.value_style} ${bean.post_writer.job} ${bean.post_writer.nickname}"
@@ -201,12 +209,15 @@ class FragmentConcernDetail : BaseFragment() {
         mAdapter?.let { adapter ->
             adapter.clear()
             bean.adopted_re_post?.let { adopted ->
-                adapter.add(adopted)
+                adopted.idx?.let {
+                    adapter.add(adopted)
+                }
+
             }
 
             bean.re_posts?.let {
-                for (i in it.iterator()) {
-                    adapter.add(it)
+                for (i in it.indices) {
+                    adapter.add(it[i])
                 }
             }
         }
@@ -259,10 +270,14 @@ class FragmentConcernDetail : BaseFragment() {
             when (it) {
                 iv_back_black -> (activity as ActivityMain).onBackPressed(false)
                 iv_like_up -> {
-                    updateConcernVote(DAClient.VOTE_UP)
+                    if(mBean!!.post.vote_type != DAClient.VOTE_UP) {
+                        updateConcernVote(DAClient.VOTE_UP)
+                    }
                 }
                 iv_like_down -> {
-                    updateConcernVote(DAClient.VOTE_DOWN)
+                    if(mBean!!.post.vote_type != DAClient.VOTE_DOWN) {
+                        updateConcernVote(DAClient.VOTE_DOWN)
+                    }
                 }
                 iv_post_more -> {
                     showMoreDialog()
@@ -298,7 +313,7 @@ class FragmentConcernDetail : BaseFragment() {
                     message: String
                 ) {
                     if (code == DAClient.SUCCESS) {
-
+                        getConcernDetail()
                     } else {
                         context?.let { context ->
                             Toast.makeText(
@@ -326,7 +341,7 @@ class FragmentConcernDetail : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
-
+                    getConcernDetail()
                 } else {
                     context?.let { context ->
                         Toast.makeText(
@@ -353,7 +368,7 @@ class FragmentConcernDetail : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
-
+                    getConcernDetail()
                 } else {
                     context?.let { context ->
                         Toast.makeText(
@@ -382,9 +397,10 @@ class FragmentConcernDetail : BaseFragment() {
                 ) {
                     if (code == DAClient.SUCCESS) {
                         initComment()
+                        getConcernDetail()
                     } else {
-                        context?.let {
-                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                        context?.let {context->
+                            Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -411,8 +427,8 @@ class FragmentConcernDetail : BaseFragment() {
                         initComment()
                         getConcernDetail()
                     } else {
-                        context?.let {
-                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                        context?.let {context->
+                            Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -436,11 +452,10 @@ class FragmentConcernDetail : BaseFragment() {
                     message: String
                 ) {
                     if (code == DAClient.SUCCESS) {
-                        initComment()
                         getConcernDetail()
                     } else {
-                        context?.let {
-                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                        context?.let {context->
+                            Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -497,7 +512,7 @@ class FragmentConcernDetail : BaseFragment() {
     /**
      * Show PopupMenu
      */
-    private fun showReConcernPopup(ivMore: View, re_idx: Int, contents: String) {
+    private fun showReConcernPopup(ivMore: View, re_idx: Int,writer: String, contents: String) {
         val popupMenu = PopupMenu(context!!, ivMore)
         popupMenu.menu.add(getString(R.string.str_edit))
         popupMenu.menu.add(getString(R.string.str_delete))
@@ -505,7 +520,8 @@ class FragmentConcernDetail : BaseFragment() {
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
                 getString(R.string.str_edit) -> {
-                    setReplyComment(re_idx, contents)
+                    mIsEdit = true
+                    setReplyComment(re_idx,writer, contents)
                 }
                 getString(R.string.str_delete) -> {
                     val builder =
@@ -533,9 +549,10 @@ class FragmentConcernDetail : BaseFragment() {
     /**
      * Comment Reply 설정
      */
-    private fun setReplyComment(re_idx: Int, contents: String) {
+    private fun setReplyComment(re_idx: Int,writer : String, contents: String) {
         ll_writer.visibility = VISIBLE
-        tv_writer.text = contents
+        tv_writer.text = writer
+        et_comment.setText(contents)
         mUpdateIdx = re_idx
     }
 
@@ -571,6 +588,7 @@ class FragmentConcernDetail : BaseFragment() {
     private fun initComment() {
         mUpdateIdx = -1
         tv_writer.text = ""
+        et_comment.setText("")
         mIsEdit = false
         ll_writer.visibility = GONE
     }
@@ -627,26 +645,41 @@ class FragmentConcernDetail : BaseFragment() {
                             .into(ivProfile)
                     }
 
-
-                    // todo : 본인확인 후 수정 및 삭제 띄우기
-                    h.itemView.setOnClickListener {
-                        showReConcernPopup(tvContents, bean.idx, bean.content)
+                    if(bean.auth) {
+                        h.itemView.setOnLongClickListener {
+                            showReConcernPopup(tvContents, bean.idx!!, bean.nickname, bean.content)
+                            true
+                        }
                     }
 
                     tvUser.text = "${bean.value_style} ${bean.job} ${bean.nickname}"
                     tvFame.text = bean.reputation
 
-                    iv_like_up.setOnClickListener {
-                        updateReConcernVote(DAClient.VOTE_UP,bean.idx)
-                    }
 
-                    iv_like_down.setOnClickListener {
-                        updateReConcernVote(DAClient.VOTE_DOWN,bean.idx)
+                    if(bean.vote_type == DAClient.VOTE_UP){
+                        ivLikeDown.isSelected = false
+                        ivLikeUp.isSelected = true
+                    }else if(bean.vote_type == DAClient.VOTE_DOWN){
+                        ivLikeDown.isSelected = true
+                        ivLikeUp.isSelected = false
+                    }else{
+                        ivLikeDown.isSelected = false
+                        ivLikeUp.isSelected = false
+                    }
+                    if(bean.vote_type != DAClient.VOTE_UP) {
+                        ivLikeUp.setOnClickListener {
+                            updateReConcernVote(DAClient.VOTE_UP, bean.idx!!)
+                        }
+                    }
+                    if(bean.vote_type != DAClient.VOTE_DOWN) {
+                        ivLikeDown.setOnClickListener {
+                            updateReConcernVote(DAClient.VOTE_DOWN, bean.idx!!)
+                        }
                     }
 
                     tvAdoption.setOnClickListener {
                         // 채택 / 채택해제 해제
-                        updateReConcernAdopt(bean.idx)
+                        updateReConcernAdopt(bean.idx!!)
                     }
 
                 } else {
@@ -654,7 +687,7 @@ class FragmentConcernDetail : BaseFragment() {
 
                     if (Comm_Prefs.getUserProfileIndex() == mBean?.post?.profile_idx) {
                         tvAdoption.visibility =
-                            if (mBean?.adopted_re_post == null) VISIBLE else GONE
+                            if (mBean?.adopted_re_post?.idx == null) VISIBLE else GONE
                     } else {
                         tvAdoption.visibility = GONE
                     }
@@ -662,6 +695,7 @@ class FragmentConcernDetail : BaseFragment() {
                     llBg.setBackgroundColor(ContextCompat.getColor(it, R.color.white))
 
                     tvLikeCnt.text = bean.votes
+                    tvContents.text = bean.content
 
                     bean.image?.let { image ->
                         Glide.with(it)
@@ -671,21 +705,36 @@ class FragmentConcernDetail : BaseFragment() {
                             .into(ivProfile)
                     }
 
-                    // todo : 본인확인 후 수정 및 삭제 띄우기
-                    h.itemView.setOnClickListener {
-                        showReConcernPopup(tvContents, bean.idx, bean.content)
+                    if(bean.auth) {
+                        h.itemView.setOnLongClickListener {
+                            showReConcernPopup(tvContents, bean.idx, bean.nickname, bean.content)
+                            true
+                        }
+                    }
+
+                    if(bean.vote_type == DAClient.VOTE_UP){
+                        ivLikeDown.isSelected = false
+                        ivLikeUp.isSelected = true
+                    }else if(bean.vote_type == DAClient.VOTE_DOWN){
+                        ivLikeDown.isSelected = true
+                        ivLikeUp.isSelected = false
+                    }else{
+                        ivLikeDown.isSelected = false
+                        ivLikeUp.isSelected = false
+                    }
+                    if(bean.vote_type != DAClient.VOTE_UP) {
+                        ivLikeUp.setOnClickListener {
+                            updateReConcernVote(DAClient.VOTE_UP, bean.idx)
+                        }
+                    }
+                    if(bean.vote_type != DAClient.VOTE_DOWN) {
+                        ivLikeDown.setOnClickListener {
+                            updateReConcernVote(DAClient.VOTE_DOWN, bean.idx)
+                        }
                     }
 
                     tvUser.text = "${bean.value_style} ${bean.job} ${bean.nickname}"
                     tvFame.text = bean.reputation
-
-                    iv_like_up.setOnClickListener {
-                        updateReConcernVote(DAClient.VOTE_UP,bean.idx)
-                    }
-
-                    iv_like_down.setOnClickListener {
-                        updateReConcernVote(DAClient.VOTE_DOWN,bean.idx)
-                    }
 
                     tvAdoption.setOnClickListener {
                         // 채택 / 채택해제 해제
