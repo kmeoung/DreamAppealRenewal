@@ -16,9 +16,11 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.bean.BeanConcern
 import com.truevalue.dreamappeal.bean.BeanPromotion
 import com.truevalue.dreamappeal.bean.BeanWish
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
+import com.truevalue.dreamappeal.fragment.dream_board.concern.FragmentConcern
 import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEventDetail
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -61,7 +63,7 @@ class FragmentWishBoard : BaseFragment() {
         // View Click Listener
         onClickView()
         // 소원 게시판 가져오기
-        getWish(false, -1, true)
+        getWish()
     }
 
     /**
@@ -148,8 +150,8 @@ class FragmentWishBoard : BaseFragment() {
      * Http
      * 소원 게시판 가져오기
      */
-    private fun getWish(refresh: Boolean, last_idx: Int, isClear: Boolean) {
-        DAClient.getWish(refresh, last_idx, object : DAHttpCallback {
+    private fun getWish() {
+        DAClient.getWish(object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -158,51 +160,45 @@ class FragmentWishBoard : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
-                    if (code == DAClient.SUCCESS) {
-                        val json = JSONObject(body)
-                        val promotions = json.getJSONArray("promotions")
-                        mPagerAdapter?.let {
-                            if (isClear) it.clear()
-                            for (i in 0 until promotions.length()) {
-                                val promotion = promotions.getJSONObject(i)
-                                val bean = Gson().fromJson<BeanPromotion>(
-                                    promotion.toString(),
-                                    BeanPromotion::class.java
-                                )
+                    isLast = false
+                    val json = JSONObject(body)
+                    val promotions = json.getJSONArray("promotions")
+                    mPagerAdapter?.let {
+                        it.clear()
+                        for (i in 0 until promotions.length()) {
+                            val promotion = promotions.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanPromotion>(
+                                promotion.toString(),
+                                BeanPromotion::class.java
+                            )
 
-                                it.add(bean)
-                            }
-                            it.notifyDataSetChanged()
-                            tv_indicator.text = (1.toString() + " / " + promotions.length())
+                            it.add(bean)
                         }
+                        it.notifyDataSetChanged()
+                        tv_indicator.text = (1.toString() + " / " + promotions.length())
+                    }
 
-                        val wishes = json.getJSONArray("wishes")
-                        mAdapter?.let {
-                            it.clear()
-                            for (i in 0 until wishes.length()) {
-                                val wish = wishes.getJSONObject(i)
-                                val bean = Gson().fromJson<BeanWish>(
-                                    wish.toString(),
-                                    BeanWish::class.java
-                                )
+                    val wishes = json.getJSONArray("wishes")
+                    mAdapter?.let {
+                        it.clear()
+                        for (i in 0 until wishes.length()) {
+                            val wish = wishes.getJSONObject(i)
+                            val bean = Gson().fromJson<BeanWish>(
+                                wish.toString(),
+                                BeanWish::class.java
+                            )
 
-                                it.add(bean)
-                            }
-                        }
-
-                    } else if (code == "NO_MORE_POST") {
-                        isLast = true
-                        mAdapter!!.notifyDataSetChanged()
-                    } else {
-                        context?.let {
-                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
+                            it.add(bean)
                         }
                     }
 
+                } else if (code == "NO_MORE_POST") {
+                    isLast = true
+                    mAdapter!!.notifyDataSetChanged()
                 } else {
                     context?.let {
-                        Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -210,11 +206,60 @@ class FragmentWishBoard : BaseFragment() {
     }
 
     /**
+     * Http
+     * 추가 조회
+     */
+    private fun getMoreWish(row_num: Int) {
+        DAClient.getMoreWish(row_num, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
+                    try {
+                        val wishes = json.getJSONArray("wishes")
+                        mAdapter?.let {
+                            if(1 > wishes.length()){
+                                isLast = true
+                                it.notifyDataSetChanged()
+                            }
+
+                            for (i in 0 until wishes.length()) {
+                                val obj = wishes.get(i)
+                                val bean = Gson().fromJson<BeanWish>(
+                                    obj.toString(),
+                                    BeanWish::class.java
+                                )
+                                it.add(bean)
+                            }
+                        }
+                    } catch (e: Exception) {
+                    }
+                } else if (code == "NO_MORE_POST") {
+                    isLast = true
+                    mAdapter!!.notifyDataSetChanged()
+                } else {
+                    context?.let {
+                        isLast = true
+                        mAdapter!!.notifyDataSetChanged()
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+    }
+
+
+    /**
      * RecyclerView Listener
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) if (mAdapter!!.size() > 4 && !isLast) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
+            get() = if (mAdapter != null) if (mAdapter!!.size() > 19 && !isLast) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             when (viewType) {
@@ -246,16 +291,16 @@ class FragmentWishBoard : BaseFragment() {
                 }
 
             } else if (RV_TYPE_LOADING == getItemViewType(i)) {
-                getWish(
-                    true,
-                    (mAdapter!!.get(mAdapter!!.size() - 1) as BeanWish).idx,
-                    false
-                )
+                val bean = (mAdapter?.size()!!.minus(1)) as BeanWish
+                getMoreWish(bean.row_num)
             }
         }
 
         override fun getItemViewType(i: Int): Int {
-            return 0
+            if (mAdapter!!.size() > 19 && mAdapter!!.size() == i && !isLast) {
+                return FragmentConcern.RV_TYPE_ITEM_MORE
+            }
+            return FragmentConcern.RV_TYPE_ITEM
         }
     }
 }

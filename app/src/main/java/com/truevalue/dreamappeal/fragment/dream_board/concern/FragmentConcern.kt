@@ -357,7 +357,7 @@ class FragmentConcern : BaseFragment() {
      */
     private val rvRecentListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mRecentAdapter != null) if (mRecentAdapter!!.size() > 4 && !isLast) mRecentAdapter!!.size() + 1 else mRecentAdapter!!.size() else 0
+            get() = if (mRecentAdapter != null) if (mRecentAdapter!!.size() > 19 && !isLast) mRecentAdapter!!.size() + 1 else mRecentAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             if (RV_TYPE_ITEM_MORE == viewType)
@@ -401,7 +401,7 @@ class FragmentConcern : BaseFragment() {
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mRecentAdapter!!.size() > 4 && mRecentAdapter!!.size() == i && !isLast) {
+            if (mRecentAdapter!!.size() > 19 && mRecentAdapter!!.size() == i && !isLast) {
                 return RV_TYPE_ITEM_MORE
             }
             return RV_TYPE_ITEM

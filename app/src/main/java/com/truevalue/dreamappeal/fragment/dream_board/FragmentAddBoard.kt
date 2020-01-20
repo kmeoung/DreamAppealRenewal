@@ -253,16 +253,21 @@ class FragmentAddBoard : BaseFragment() {
             message: String
         ) {
             if (code == DAClient.SUCCESS) {
-
-                if (mViewType == TYPE_ADD_CONCERN) {
-                    val json = JSONObject(body)
-                    val insertId = json.getInt("concern_idx")
-                    uploadImage(insertId)
-                } else if (mViewType == TYPE_ADD_WISH) {
-                    val json = JSONObject(body)
-                    val insertId = json.getInt("post_idx")
-                    uploadImage(insertId)
-                } else {
+                if(mAdapter!!.size() > 0) {
+                    if (mViewType == TYPE_ADD_CONCERN) {
+                        val json = JSONObject(body)
+                        val insertId = json.getInt("concern_idx")
+                        mDialog.show()
+                        uploadImage(insertId)
+                    } else if (mViewType == TYPE_ADD_WISH) {
+                        val json = JSONObject(body)
+                        val insertId = json.getInt("post_idx")
+                        mDialog.show()
+                        uploadImage(insertId)
+                    } else {
+                        (activity as ActivityMain).onBackPressed(false)
+                    }
+                }else{
                     (activity as ActivityMain).onBackPressed(false)
                 }
             } else {

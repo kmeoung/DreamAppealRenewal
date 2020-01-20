@@ -156,7 +156,7 @@ class FragmentWishDetail : BaseFragment() {
                     message: String
                 ) {
                     context?.let {
-                        Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
 
                     if (code == DAClient.SUCCESS) {
@@ -189,7 +189,7 @@ class FragmentWishDetail : BaseFragment() {
                         iv_cheering.isSelected = status
                     } else {
                         context?.let {
-                            Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -243,7 +243,7 @@ class FragmentWishDetail : BaseFragment() {
                     tv_time.text = Utils.convertFromDate(beanWish.register_date)
                 } else {
                     context?.let {
-                        Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
