@@ -24,34 +24,34 @@ object Comm_Prefs {
     /**
      * Token
      */
-    fun setToken(token : String?){
-        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_USER_TOKEN,token).commit()
+    fun setToken(token: String?) {
+        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_USER_TOKEN, token).commit()
     }
 
-    fun getToken() : String?{
-        return prefs!!.getString(Comm_Prefs_Param.PREFS_USER_TOKEN,null)
+    fun getToken(): String? {
+        return prefs!!.getString(Comm_Prefs_Param.PREFS_USER_TOKEN, null)
     }
 
     /**
      * Push Token
      */
-    fun setPushToken(token : String?){
-        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_PUSH_TOKEN,token).commit()
+    fun setPushToken(token: String?) {
+        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_PUSH_TOKEN, token).commit()
     }
 
-    fun getPushToken() : String?{
-        return prefs!!.getString(Comm_Prefs_Param.PREFS_PUSH_TOKEN,null)
+    fun getPushToken(): String? {
+        return prefs!!.getString(Comm_Prefs_Param.PREFS_PUSH_TOKEN, null)
     }
 
     /**
      * Profile Index
      */
-    fun setUserProfileIndex(idx : Int){
-        prefs!!.edit().putInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX,idx).commit()
+    fun setUserProfileIndex(idx: Int) {
+        prefs!!.edit().putInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, idx).commit()
     }
 
-    fun getUserProfileIndex() : Int{
-        return prefs!!.getInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX,-1)
+    fun getUserProfileIndex(): Int {
+        return prefs!!.getInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, -1)
     }
 
 }

@@ -1,10 +1,7 @@
 package com.truevalue.dreamappeal.activity
 
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -14,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.kakao.util.helper.Utility
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.base.IOActionBarListener
@@ -28,14 +24,11 @@ import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.service.ServiceFirebaseMsg
-import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
 import okhttp3.Call
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 class ActivityMain : BaseActivity() {
     var mActionListener: IOActionBarListener? = null
@@ -51,9 +44,6 @@ class ActivityMain : BaseActivity() {
         const val MAIN_TYPE_ADD_BOARD = "MAIN_TYPE_ADD_BOARD"
         const val MAIN_TYPE_NOTIFICATION = "MAIN_TYPE_NOTIFICATION"
         const val MAIN_TYPE_PROFILE = "MAIN_TYPE_PROFILE"
-
-        const val ACTION_BAR_TYPE_PROFILE_MAIN = "ACTION_BAR_TYPE_PROFILE_MAIN"
-        const val ACTION_BAR_TYPE_PROFILE_OTHER = "ACTION_BAR_TYPE_PROFILE_OTHER"
     }
 
     data class BeanDrawerData(var following: Int, var dream_point: Int)
@@ -68,13 +58,12 @@ class ActivityMain : BaseActivity() {
             if (Comm_Prefs.getUserProfileIndex() > -1) MAIN_TYPE_HOME else MAIN_TYPE_PROFILE
     }
 
-    private var mActionBarType = ACTION_BAR_TYPE_PROFILE_MAIN
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        intent.getStringExtra(ServiceFirebaseMsg.TYPE)?.let{
+        if ((intent.getStringExtra(ServiceFirebaseMsg.FIREBASE_NORIFICATION_CALLED) != null)
+        ) {
             mMainViewType = MAIN_TYPE_NOTIFICATION
         }
 
@@ -115,7 +104,43 @@ class ActivityMain : BaseActivity() {
         onClickDrawerView()
         // Drawer
         setDrawer()
+        // Push Token
+        setPushToken()
+    }
 
+    /**
+     * Http
+     * 푸시토근 설정
+     */
+    private fun setPushToken() {
+        Comm_Prefs.getPushToken() ?: kotlin.run {
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("ActivityMain", "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    // Get new Instance ID token
+                    val token = task.result?.token
+                    Comm_Prefs.setPushToken(token)
+                    DAClient.updatePushToken(token, object : DAHttpCallback {
+                        override fun onResponse(
+                            call: Call,
+                            serverCode: Int,
+                            body: String,
+                            code: String,
+                            message: String
+                        ) {
+                            Toast.makeText(
+                                applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
+                })
+        }
     }
 
     /**
@@ -221,6 +246,7 @@ class ActivityMain : BaseActivity() {
                 ll_logout -> {
                     Comm_Prefs.setUserProfileIndex(-1)
                     Comm_Prefs.setToken(null)
+                    Comm_Prefs.setPushToken(null)
 
                     val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
                     startActivity(intent)

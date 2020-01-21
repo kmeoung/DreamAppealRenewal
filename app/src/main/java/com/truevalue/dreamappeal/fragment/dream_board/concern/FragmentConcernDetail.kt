@@ -16,16 +16,14 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
-import com.truevalue.dreamappeal.bean.AdoptedRePost
-import com.truevalue.dreamappeal.bean.BeanConcernDetail
-import com.truevalue.dreamappeal.bean.Image
-import com.truevalue.dreamappeal.bean.RePost
+import com.truevalue.dreamappeal.bean.*
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -34,8 +32,17 @@ import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.bottom_comment_view.*
 import kotlinx.android.synthetic.main.fragment_concern_detail.*
+import kotlinx.android.synthetic.main.fragment_concern_detail.ll_indicator
+import kotlinx.android.synthetic.main.fragment_concern_detail.pager_image
+import kotlinx.android.synthetic.main.fragment_concern_detail.rl_images
+import kotlinx.android.synthetic.main.fragment_concern_detail.srl_refresh
+import kotlinx.android.synthetic.main.fragment_concern_detail.tv_contents
+import kotlinx.android.synthetic.main.fragment_concern_detail.tv_indicator
+import kotlinx.android.synthetic.main.fragment_timeline.*
+import kotlinx.android.synthetic.main.fragment_wish_board_detail.*
 import okhttp3.Call
 import org.json.JSONObject
+import java.io.IOException
 
 class FragmentConcernDetail : BaseFragment() {
 
@@ -127,6 +134,11 @@ class FragmentConcernDetail : BaseFragment() {
     private fun getConcernDetail() {
         mConcernIdx?.let {
             DAClient.getConcern(it, object : DAHttpCallback {
+                override fun onFailure(call: Call, e: IOException) {
+                    super.onFailure(call, e)
+                    srl_refresh.isRefreshing = false
+                }
+
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -134,6 +146,7 @@ class FragmentConcernDetail : BaseFragment() {
                     code: String,
                     message: String
                 ) {
+                    srl_refresh.isRefreshing = false
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val bean = Gson().fromJson<BeanConcernDetail>(
@@ -163,6 +176,8 @@ class FragmentConcernDetail : BaseFragment() {
         tv_indicator.text = "0 / 0"
         bean.images?.let {
             if (it.isNotEmpty()) {
+                if(it.size < 2) ll_indicator.visibility = GONE
+                else ll_indicator.visibility = VISIBLE
                 rl_images.visibility = VISIBLE
                 tv_indicator.text = "1 / " + it.size
                 for (i in it.indices) {
@@ -213,7 +228,6 @@ class FragmentConcernDetail : BaseFragment() {
                 adopted.idx?.let {
                     adapter.add(adopted)
                 }
-
             }
 
             bean.re_posts?.let {
@@ -261,6 +275,10 @@ class FragmentConcernDetail : BaseFragment() {
                 }
             })
         }
+
+        Utils.setSwipeRefreshLayout(srl_refresh, SwipeRefreshLayout.OnRefreshListener {
+            getConcernDetail()
+        })
     }
 
     /**
@@ -622,12 +640,12 @@ class FragmentConcernDetail : BaseFragment() {
                 if (getItemViewType(i) == RV_TYPE_ADOPTED) {
                     val bean = mAdapter!!.get(i) as AdoptedRePost
 
-                    if (Comm_Prefs.getUserProfileIndex() == mBean?.post?.profile_idx) {
-                        tvAdoption.visibility = VISIBLE
-                    } else {
-                        tvAdoption.visibility = GONE
-                    }
-
+//                    if (Comm_Prefs.getUserProfileIndex() == mBean?.post?.profile_idx) {
+//                        tvAdoption.visibility = VISIBLE
+//                    } else {
+//
+//                    }
+                    tvAdoption.visibility = GONE
 
                     llBg.setBackgroundColor(ContextCompat.getColor(it, R.color.off_white_two))
 

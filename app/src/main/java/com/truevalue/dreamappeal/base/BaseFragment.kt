@@ -17,7 +17,7 @@ open class BaseFragment : Fragment(){
         val fm = fragmentManager as FragmentManager
         val ft = fm.beginTransaction()
 
-        ft.replace(container, fragment)
+        ft.add(container, fragment)
 
         if (addToStack) {
             ft.addToBackStack(null)

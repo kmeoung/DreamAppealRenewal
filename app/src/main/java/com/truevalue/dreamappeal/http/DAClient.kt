@@ -1,11 +1,9 @@
 package com.truevalue.dreamappeal.http
 
-import android.util.Log
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
-import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -52,37 +50,28 @@ object DAClient {
     val POST_TYPE_LIFE = 1
     val POST_TYPE_IDEA = 2
 
-    fun sendToken(
-        push_token: String?,
-        callback: DAHttpCallback?
+    /**
+     * PATCH
+     * Push Token 업데이트
+     */
+    fun updatePushToken(
+        token: String?,
+        callback: DAHttpCallback
     ) {
-        var nCallback: DAHttpCallback
-        if (callback == null)
-            nCallback = object : DAHttpCallback {
-                override fun onResponse(
-                    call: Call,
-                    serverCode: Int,
-                    body: String,
-                    code: String,
-                    message: String
-                ) {
-                    Log.d("Token Test ", body)
-                }
-            }
-        else
-            nCallback = callback
 
         val params = DAHttpParams()
-        if (push_token.isNullOrEmpty()) return
-        params.put("push_token", push_token!!)
+        token?.let {token->
+            params.put("token", token)
 
-        BaseOkhttpClient.request(
-            HttpType.GET,
-            "${Comm_Param.URL_API}/notification",
-            getHttpHeader(),
-            params,
-            nCallback
-        )
+            BaseOkhttpClient.request(
+                HttpType.PATCH,
+                Comm_Param.URL_NOTIFICATION_TOKEN,
+                getHttpHeader(),
+                params,
+                callback
+            )
+        }
+
     }
 
     /**
@@ -617,12 +606,12 @@ object DAClient {
      * 프로필 변경 (토큰 재생성)
      */
     fun profileChange(
-        profile_order: Int,
+        idx: Int,
         callback: DAHttpCallback
     ) {
 
         val params = DAHttpParams()
-        params.put("profile_order", profile_order)
+        params.put("profile_idx", idx)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,
@@ -2807,7 +2796,10 @@ object DAClient {
     ) {
 
         val url =
-            Comm_Param.URL_BOARD_CONECERN_MORE_IDX.replace(Comm_Param.CONCERN_INDEX, concern_idx.toString())
+            Comm_Param.URL_BOARD_CONECERN_MORE_IDX.replace(
+                Comm_Param.CONCERN_INDEX,
+                concern_idx.toString()
+            )
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -3081,6 +3073,39 @@ object DAClient {
             url,
             getHttpHeader(),
             null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * Notification 가져오기
+     */
+    fun getNotification(callback: DAHttpCallback){
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_NOTIFICATION,
+            getHttpHeader(),
+            null,
+            callback
+
+        )
+    }
+
+    /**
+     * POST
+     * Notification check
+     */
+    fun checkNotification(body : JSONObject,callback: DAHttpCallback){
+
+        val params = DAHttpParams()
+        params.put(body)
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_NOTIFICATION_CHECK,
+            getHttpHeader(),
+            params,
             callback
         )
     }

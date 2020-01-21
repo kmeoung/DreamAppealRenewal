@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
@@ -30,9 +31,17 @@ import java.security.NoSuchAlgorithmException
 
 
 
+
+
+
+
 class FragmentLoginContainer : BaseFragment() {
 
     private var callback: SessionCallback
+
+    companion object{
+        private const val TAG = "MainActivity"
+    }
 
     init {
         callback = SessionCallback()
@@ -50,8 +59,20 @@ class FragmentLoginContainer : BaseFragment() {
         // Click View Listener
         onClickView()
 
+        callback = SessionCallback()
         Session.getCurrentSession().addCallback(callback)
-        Session.getCurrentSession().checkAndImplicitOpen()
+
+        /** 토큰 만료시 갱신을 시켜준다**/
+        if (Session.getCurrentSession().isOpenable) {
+            Session.getCurrentSession().checkAndImplicitOpen()
+        }
+
+        Toast.makeText(context!!.applicationContext,
+            "시작!",Toast.LENGTH_SHORT).show()
+        Log.e(TAG, "해시 : " + getHashKey(context!!))
+        Log.e(TAG, "토큰 : " + Session.getCurrentSession().tokenInfo.accessToken)
+        Log.e(TAG, "토큰 리프레쉬토큰 : " + Session.getCurrentSession().tokenInfo.refreshToken)
+        Log.e(TAG, "토큰 파이어데이트 : " + Session.getCurrentSession().tokenInfo.remainingExpireTime)
     }
 
     /**
@@ -82,15 +103,15 @@ class FragmentLoginContainer : BaseFragment() {
                     true
                 )
                 btn_register -> {
-//                    (activity as ActivityLoginContainer).replaceFragment(
-//                        FragmentRegister(),
-//                        true
-//                    )
-                    UserManagement.getInstance().requestLogout(object : LogoutResponseCallback(){
-                        override fun onCompleteLogout() {
-
-                        }
-                    })
+                    (activity as ActivityLoginContainer).replaceFragment(
+                        FragmentRegister(),
+                        true
+                    )
+//                    UserManagement.getInstance().requestLogout(object : LogoutResponseCallback(){
+//                        override fun onCompleteLogout() {
+//
+//                        }
+//                    })
                 }
             }
         }
@@ -135,15 +156,19 @@ class FragmentLoginContainer : BaseFragment() {
     }
 
 
-    private class SessionCallback : ISessionCallback {
-
-        private val TAG = "SessionCallback"
+    private inner class SessionCallback : ISessionCallback {
 
         override fun onSessionOpenFailed(exception: KakaoException?) {
-            Log.d(TAG, "Session Call back :: onSessionOpenFailed: ${exception?.message}")
+            Log.e(TAG, "Session Call back :: onSessionOpenFailed: ${exception?.message}")
+            Toast.makeText(context!!.applicationContext,
+                "카카오 깡 실패",Toast.LENGTH_SHORT).show()
         }
 
         override fun onSessionOpened() {
+            Log.e(TAG, "카카오 로그인 성공 ")
+            Toast.makeText(context!!.applicationContext,
+                "카카오 로그인 성공",Toast.LENGTH_SHORT).show()
+            /** 사용자에 대한 정보를 가져온다 **/
             val keys = ArrayList<String>()
             keys.add("emailNeedsAgreement")
             keys.add("ageRangeNeedsAgreement")
@@ -160,18 +185,22 @@ class FragmentLoginContainer : BaseFragment() {
             UserManagement.getInstance().me(keys,object : MeV2ResponseCallback() {
 
                 override fun onFailure(errorResult: ErrorResult?) {
-                    Log.d(TAG, "Session Call back :: on failed ${errorResult?.errorMessage}")
+                    Log.e(TAG, "Session Call back :: on failed ${errorResult?.errorMessage}")
+                    Toast.makeText(context!!.applicationContext,
+                        "카카오 사용자 정보 가져오기 실패",Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
-                    Log.d(TAG, "Session Call back :: onSessionClosed ${errorResult?.errorMessage}")
-
+                    Log.e(TAG, "Session Call back :: onSessionClosed ${errorResult?.errorMessage}")
+                    Toast.makeText(context!!.applicationContext,
+                        "카카오 세션 닫힘",Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onSuccess(result: MeV2Response?) {
-                    checkNotNull(result) { "session response null" }
+                    Toast.makeText(context!!.applicationContext,
+                        "카카오 사용자 정보 가져오기 성공",Toast.LENGTH_SHORT).show()
                     // register or login
-                    Log.d(TAG,result.toString())
+                    Log.e(TAG,result.toString())
                 }
 
             })

@@ -34,16 +34,14 @@ import org.json.JSONObject
 class FragmentBestPost : BaseFragment() {
 
     private var mPostIdx = -1
-    private var mBestIdx = -1
     private var mBean: BeanAchivementPostDetail? = null
     private var mAdapterImage: BaseImagePagerAdapter<String>? = null
     private var mViewUserIdx = -1
 
     companion object {
-        fun newInstance(post_idx: Int, best_idx: Int, view_user_idx: Int): FragmentBestPost {
+        fun newInstance(post_idx: Int, view_user_idx: Int): FragmentBestPost {
             val fragment = FragmentBestPost()
             fragment.mPostIdx = post_idx
-            fragment.mBestIdx = best_idx
             fragment.mViewUserIdx = view_user_idx
             return fragment
         }
@@ -266,7 +264,7 @@ class FragmentBestPost : BaseFragment() {
                         ActivityAddPost.EDIT_VIEW_TYPE,
                         ActivityAddPost.EDIT_ACHIEVEMENT_POST
                     )
-                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mBestIdx)
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mPostIdx)
                     intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapterImage!!.getAll())
                     intent.putExtra(ActivityAddPost.REQUEST_TITLE, mBean!!.title)
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, mBean!!.content)

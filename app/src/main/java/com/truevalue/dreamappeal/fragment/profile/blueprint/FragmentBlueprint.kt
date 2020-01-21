@@ -360,7 +360,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         DAClient.getBlueprint(profile_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
-                srl_refresh.isRefreshing = false
+                if(srl_refresh != null) srl_refresh.isRefreshing = false
             }
 
             override fun onResponse(
@@ -370,7 +370,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                srl_refresh.isRefreshing = false
+                if(srl_refresh != null) srl_refresh.isRefreshing = false
                 if (context != null) {
 
                     if (code == DAClient.SUCCESS) {
@@ -538,7 +538,6 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             }
                         } catch (e: JSONException) {
                             e.printStackTrace()
-
                         }
                     } else {
                         Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)

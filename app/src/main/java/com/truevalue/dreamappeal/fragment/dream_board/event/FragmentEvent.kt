@@ -53,7 +53,6 @@ class FragmentEvent : BaseFragment() {
         initAdapter()
         // View Click Listener
         onClickView()
-
         // bind data
         getEvent()
     }
@@ -94,7 +93,11 @@ class FragmentEvent : BaseFragment() {
                         bean.event_type?.let { type ->
                             when (type) {
                                 EVENT_TYPE_DEFAULT -> {
-
+                                    (activity as ActivityMain).replaceFragment(
+                                        FragmentEventDetail.newInstance(bean.idx),
+                                        addToBack = true,
+                                        isMainRefresh = false
+                                    )
                                 }
                                 EVENT_TYPE_WISH -> {
                                     (activity as ActivityMain)
@@ -108,8 +111,6 @@ class FragmentEvent : BaseFragment() {
 
                                 }
                             }
-                        } ?: kotlin.run {
-                            // todo : null 일경우
                         }
                     }
                 }
@@ -126,6 +127,12 @@ class FragmentEvent : BaseFragment() {
                         ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
                 }
             })
+        }
+
+
+        swipy_bottom.setOnRefreshListener{
+            getEvent()
+            swipy_bottom.isRefreshing = false
         }
     }
 

@@ -73,4 +73,5 @@
     <color name="dull_orange">#dd773b</color>
     <color name="emerald">#00a654</color>
     <color name="battleship_grey">#6a737c</color>
+    <color name="noti_no_select">#ddeaf6</color>
 </resources>

@@ -16,6 +16,10 @@ import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanPromotion
+import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEvent.Companion.EVENT_TYPE_DEFAULT
+import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEvent.Companion.EVENT_TYPE_RANK
+import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEvent.Companion.EVENT_TYPE_WISH
+import com.truevalue.dreamappeal.fragment.dream_board.wish.FragmentWishBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
@@ -147,11 +151,28 @@ class FragmentPromotionAll : BaseFragment() {
             }
 
             h.itemView.setOnClickListener {
-                (activity as ActivityMain).replaceFragment(
-                    FragmentEventDetail.newInstance(bean.idx),
-                    addToBack = true,
-                    isMainRefresh = false
-                )
+                bean.event_type?.let { type ->
+                    when (type) {
+                        EVENT_TYPE_DEFAULT -> {
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentEventDetail.newInstance(bean.idx),
+                                addToBack = true,
+                                isMainRefresh = false
+                            )
+                        }
+                        EVENT_TYPE_WISH -> {
+                            (activity as ActivityMain)
+                                .replaceFragment(
+                                    FragmentWishBoard(),
+                                    addToBack = true,
+                                    isMainRefresh = false
+                                )
+                        }
+                        EVENT_TYPE_RANK -> {
+
+                        }
+                    }
+                }
             }
         }
 

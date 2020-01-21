@@ -267,4 +267,10 @@ object Comm_Param {
     val URL_BOARD_ADOPT = "$URL_BOARD/adopt"
     val URL_BOARD_ADOPT_RE_CONCERN = "$URL_BOARD_ADOPT/re-concern"
     val URL_BOARD_ADOPT_RE_CONCERN_IDX = "$URL_BOARD_ADOPT_RE_CONCERN/$RE_INDEX"
+
+    //푸시토큰 등록
+    val URL_NOTIFICATION = "$URL_API/notification"
+    val URL_NOTIFICATION_TOKEN = "$URL_NOTIFICATION/token"
+    val URL_NOTIFICATION_CHECK = "$URL_NOTIFICATION/check"
+
 }

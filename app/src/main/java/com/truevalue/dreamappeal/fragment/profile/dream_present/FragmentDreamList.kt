@@ -163,10 +163,10 @@ class FragmentDreamList : BaseFragment() {
      * Http
      * 프로필 변경
      */
-    private fun changeProfile(profile_order: Int) {
+    private fun changeProfile(idx: Int) {
 
         DAClient.profileChange(
-            profile_order,
+            idx,
             object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,
@@ -176,8 +176,6 @@ class FragmentDreamList : BaseFragment() {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
                             val json = JSONObject(body)
@@ -187,6 +185,9 @@ class FragmentDreamList : BaseFragment() {
                             Comm_Prefs.setToken(token)
 
                             (activity as ActivityMain).initAllView()
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
@@ -257,13 +258,13 @@ class FragmentDreamList : BaseFragment() {
     /**
      * 꿈 목록 변경 팝업
      */
-    private fun showChangeProfileDialog(profile_order: Int) {
+    private fun showChangeProfileDialog(idx: Int) {
         val builder = AlertDialog.Builder(context)
             .setTitle(getString(R.string.str_change_profile_dialog_title))
             .setMessage(getString(R.string.str_change_profile_dialog_contents))
             .setPositiveButton(getString(R.string.str_yes)) { dialog, which ->
                 if (mAdapter != null) {
-                    changeProfile(profile_order)
+                    changeProfile(idx)
                     dialog.dismiss()
                 }
             }
@@ -314,7 +315,7 @@ class FragmentDreamList : BaseFragment() {
 
                     if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                         h.itemView.setOnClickListener(OnClickListener {
-                            showChangeProfileDialog(bean.profile_order)
+                            showChangeProfileDialog(bean.idx)
                         })
                     }
                 }

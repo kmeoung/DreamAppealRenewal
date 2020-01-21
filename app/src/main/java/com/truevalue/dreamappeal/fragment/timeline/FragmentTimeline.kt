@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -18,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.*
@@ -29,7 +26,6 @@ import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
-import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
@@ -342,7 +338,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             if (bean.profile_idx != Comm_Prefs.getUserProfileIndex()) {
-                ivProfile.setOnClickListener{
+                ivProfile.setOnClickListener {
                     (activity as ActivityMain).replaceFragment(
                         FragmentProfile.newInstance(bean.profile_idx),
                         true
@@ -350,7 +346,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             }
 
-            ivMore.setOnClickListener{
+            ivMore.setOnClickListener {
                 showPopupMenu(ivMore, bean)
             }
 
@@ -400,11 +396,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
             }
 
-            llCheering.setOnClickListener{
+            llCheering.setOnClickListener {
                 actionLike(bean)
             }
 
-            llCheeringDetail.setOnClickListener{
+            llCheeringDetail.setOnClickListener {
                 val intent = Intent(context, ActivityFollowCheering::class.java)
                 intent.putExtra(
                     ActivityFollowCheering.EXTRA_VIEW_TYPE,
@@ -540,44 +536,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * On Refresh
      */
     override fun onRefresh() {
-        if (!Comm_Param.REAL) {
-            srl_refresh.isRefreshing = false
-
-            if (true) {
-                FirebaseInstanceId.getInstance().instanceId
-                    .addOnCompleteListener(OnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            Log.w("TEST", "getInstanceId failed", task.exception)
-                            return@OnCompleteListener
-                        }
-
-                        // Get new Instance ID token
-                        val token = task.result?.token
-                        Comm_Prefs.setPushToken(token)
-                        // Log and toast
-                        //val msg = getString(R.string.msg_token_fmt, token)
-                        Log.d("token is this", token)
-                        //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                        DAClient.sendToken(token, object : DAHttpCallback {
-                            override fun onResponse(
-                                call: Call,
-                                serverCode: Int,
-                                body: String,
-                                code: String,
-                                message: String
-                            ) {
-                                Toast.makeText(
-                                    context!!.applicationContext,
-                                    message,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        })
-                    })
-            }
-        } else {
-            isLast = false
-            getTimeLineData(false, -1, true)
-        }
+        isLast = false
+        getTimeLineData(false, -1, true)
     }
 }

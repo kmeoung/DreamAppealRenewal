@@ -1,42 +1,47 @@
 package com.truevalue.dreamappeal.fragment.dream_board.wish
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.bean.BeanWish
+import com.truevalue.dreamappeal.base.BasePagerAdapter
+import com.truevalue.dreamappeal.bean.BeanWishImages
 import com.truevalue.dreamappeal.bean.BeanWishPost
 import com.truevalue.dreamappeal.bean.BeanWriter
+import com.truevalue.dreamappeal.bean.Image
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_wish_board_detail.*
+import kotlinx.android.synthetic.main.fragment_wish_board_detail.rl_images
 import kotlinx.android.synthetic.main.fragment_wish_board_detail.tv_contents
-import kotlinx.android.synthetic.main.fragment_wish_board_detail.tv_value_style
+import kotlinx.android.synthetic.main.fragment_wish_board_detail.tv_indicator
 import okhttp3.Call
 import org.json.JSONObject
 
 class FragmentWishDetail : BaseFragment() {
 
     private var mWishIdx: Int
+    private var mAdapterImage: BasePagerAdapter?
     private var mBean: BeanWishPost?
 
     init {
         mWishIdx = -1
         mBean = null
+        mAdapterImage = null
     }
 
     companion object {
@@ -58,6 +63,8 @@ class FragmentWishDetail : BaseFragment() {
 
         // Init View
         initView()
+        // Pager Adapter 초기화
+        initAdapter()
         // View Click Listener
         onClickView()
         // 소원 게시글 가져오기
@@ -71,6 +78,39 @@ class FragmentWishDetail : BaseFragment() {
         iv_back_black.visibility = GONE
         iv_back_blue.visibility = VISIBLE
         tv_title.text = getString(R.string.str_wish_detail_title)
+    }
+
+    /**
+     * PagerAdapter 초기화
+     */
+    private fun initAdapter() {
+        mAdapterImage = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
+            override fun onBindViewPager(any: Any, view: ImageView, position: Int) {
+                val bean = any as BeanWishImages
+                context?.let {
+                    Glide.with(it)
+                        .load(bean.image_url)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_image_gray)
+                        .into(view)
+                }
+
+            }
+        })
+
+        pager_image.run {
+            adapter = mAdapterImage
+            addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    mAdapterImage?.let {
+                        tv_indicator.text =
+                            if (it.count > 0) ((position + 1).toString() + " / " + it.count) else "0 / 0"
+                    }
+                }
+            })
+        }
     }
 
     /**
@@ -189,7 +229,8 @@ class FragmentWishDetail : BaseFragment() {
                         iv_cheering.isSelected = status
                     } else {
                         context?.let {
-                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
 
@@ -218,6 +259,28 @@ class FragmentWishDetail : BaseFragment() {
                     val action_post_count = json.getInt("action_post_count")
                     val like_count = json.getInt("like_count")
                     val statusOfLike = json.getBoolean("statusOfLike")
+
+                    val wishImages = json.getJSONArray("wish_images")
+
+                    mAdapterImage!!.clear()
+                    tv_indicator.text = "0 / 0"
+                    rl_images.visibility = VISIBLE
+                    if(wishImages.length() < 1) rl_images.visibility = GONE
+                    else if(wishImages.length() < 2){
+                        ll_indicator.visibility = GONE
+                    }else {
+                        ll_indicator.visibility = VISIBLE
+                        tv_indicator.text = "1 / " + wishImages.length()
+                        for (i in 0 until wishImages.length()) {
+                            val wishImage = wishImages.getJSONObject(i)
+                            val beanImage = Gson().fromJson<BeanWishImages>(
+                                wishImage.toString(),
+                                BeanWishImages::class.java
+                            )
+                            mAdapterImage!!.add(beanImage)
+                        }
+                        mAdapterImage!!.notifyDataSetChanged()
+                    }
 
                     val beanWish = Gson().fromJson<BeanWishPost>(
                         wish_post.toString()

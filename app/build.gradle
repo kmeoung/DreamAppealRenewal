@@ -38,9 +38,9 @@ android {
             manifestPlaceholders = [appName: "@string/app_name"]
 
             debug{
-                applicationIdSuffix ".renewaldev"
-                manifestPlaceholders = [appName: "DevAppeal"]
-//                manifestPlaceholders = [appName: "@string/app_name"]
+//                applicationIdSuffix ".renewaldev"
+//                manifestPlaceholders = [appName: "DevAppeal"]
+                manifestPlaceholders = [appName: "@string/app_name"]
             }
 
             signingConfig signingConfigs.release
@@ -84,7 +84,7 @@ dependencies {
     // 구글 로그인
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    // bottom Swipe Refresh
+
     implementation 'com.github.omadahealth:swipy:1.2.3@aar'
 }
 

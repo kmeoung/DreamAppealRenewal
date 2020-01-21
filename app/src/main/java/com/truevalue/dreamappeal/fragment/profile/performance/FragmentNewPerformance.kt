@@ -224,7 +224,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FragmentBestPost.newInstance(bean.idx, i + 1,mViewUserIdx),
+                        FragmentBestPost.newInstance(bean.idx,mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = true
                     )

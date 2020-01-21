@@ -1,15 +1,9 @@
 package com.truevalue.dreamappeal.http
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.util.Log
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.utils.Comm_Param
 import okhttp3.*
 import org.json.JSONException
@@ -74,7 +68,6 @@ object BaseOkhttpClient : OkHttpClient() {
                             if (callback != null) {
                                 if (isJson) {
                                     if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                                        handler.post {
                                             callback.onResponse(
                                                 call,
                                                 response.code,
@@ -82,7 +75,6 @@ object BaseOkhttpClient : OkHttpClient() {
                                                 code,
                                                 message
                                             )
-                                        }
                                     } else {
                                         callback!!.onResponse(
                                             call,

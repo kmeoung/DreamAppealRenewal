@@ -5,7 +5,8 @@
         android:layout_width="@dimen/thumb"
         android:layout_height="@dimen/thumb"
         android:background="@null"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginRight="10dp">
 
 
     <RelativeLayout

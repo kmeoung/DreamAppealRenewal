@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.dream_board
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -50,6 +51,10 @@ class FragmentPopular : BaseFragment() {
         onClickView()
         // Data bind
         getBoardPopular()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
     }
 
     /**
