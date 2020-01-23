@@ -4,19 +4,25 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.github.chrisbanes.photoview.PhotoView
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_img_scaling.*
+import kotlinx.android.synthetic.main.activity_img_scaling.pager_image
+import kotlinx.android.synthetic.main.activity_img_scaling.tv_indicator
+import kotlinx.android.synthetic.main.fragment_post_detail.*
 
 class ActivityImgScaling : BaseActivity() {
 
     private lateinit var mAdapter: ScalingAdapter
     private var mArrayImg: ArrayList<String>
+    private var mPosition = 0
 
     companion object {
-        private const val EXTRA_IMAGES = "EXTRA_IMAGES"
+        const val EXTRA_IMAGES = "EXTRA_IMAGES"
+        const val EXTRA_IMAGE_POSITION = "EXTRA_IMAGE_POSITION"
     }
 
     init {
@@ -30,6 +36,8 @@ class ActivityImgScaling : BaseActivity() {
         initData()
         // View Pager 초기화
         initAdapter()
+
+        onClickView()
     }
 
     /**
@@ -39,6 +47,12 @@ class ActivityImgScaling : BaseActivity() {
         intent.getSerializableExtra(EXTRA_IMAGES)?.let {
             mArrayImg = it as ArrayList<String>
         }
+
+        intent.getIntExtra(EXTRA_IMAGE_POSITION,-1)?.let {
+            mPosition = it
+        }
+
+        tv_indicator.text = "${mPosition + 1} / ${mArrayImg.size}"
     }
 
     /**
@@ -46,7 +60,20 @@ class ActivityImgScaling : BaseActivity() {
      */
     private fun initAdapter() {
         mAdapter = ScalingAdapter()
-        pager_img.adapter = mAdapter
+        pager_image.adapter = mAdapter
+        pager_image.setCurrentItem(mPosition,false)
+        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tv_indicator.text = if(mArrayImg.size > 0) ((position + 1).toString() + " / " + mArrayImg.size) else "0 / 0"
+            }
+        })
+    }
+
+    private fun onClickView(){
+        iv_back.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private inner class ScalingAdapter : PagerAdapter() {

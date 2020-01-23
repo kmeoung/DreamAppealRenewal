@@ -96,7 +96,6 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setColor(ContextCompat.getColor(applicationContext,R.color.azure))
-                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
                 .setContentTitle(CHANNEL_NAME)
                 .setContentText(description)
                 .setAutoCancel(false)

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp">
 
-        <ImageView
+        <com.github.chrisbanes.photoview.PhotoView
                 android:id="@+id/iv_select_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

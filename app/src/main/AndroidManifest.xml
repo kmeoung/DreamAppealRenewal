@@ -118,7 +118,7 @@
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 
-        <!-- Push 연동 -->
+        <!-- 이미지 연동 -->
         <activity
                 android:name=".activity.ActivityImgScaling"
                 android:screenOrientation="portrait" />

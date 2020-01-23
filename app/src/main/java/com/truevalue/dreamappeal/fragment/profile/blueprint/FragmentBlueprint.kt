@@ -1,6 +1,5 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -38,10 +37,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.bottom_comment_view.*
-import kotlinx.android.synthetic.main.bottom_comment_view.tv_comment
 import kotlinx.android.synthetic.main.fragment_blueprint.*
-import kotlinx.android.synthetic.main.fragment_blueprint.srl_refresh
-import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
 import org.json.JSONArray
 import org.json.JSONException
@@ -360,7 +356,9 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         DAClient.getBlueprint(profile_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
-                if(srl_refresh != null) srl_refresh.isRefreshing = false
+                srl_refresh?.run {
+                    isRefreshing = false
+                }
             }
 
             override fun onResponse(
@@ -370,178 +368,184 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                if(srl_refresh != null) srl_refresh.isRefreshing = false
-                if (context != null) {
+                srl_refresh?.run {
+                    isRefreshing = false
+                    if (context != null) {
 
-                    if (code == DAClient.SUCCESS) {
+                        if (code == DAClient.SUCCESS) {
 
-                        val abilityList = ArrayList<BeanBlueprintAnO>()
-                        val opportunityList = ArrayList<BeanBlueprintAnO>()
+                            val abilityList = ArrayList<BeanBlueprintAnO>()
+                            val opportunityList = ArrayList<BeanBlueprintAnO>()
 
-                        val json = JSONObject(body)
+                            val json = JSONObject(body)
 
-                        mBean = BeanBlueprint(0, "", ArrayList(), ArrayList())
+                            mBean = BeanBlueprint(0, "", ArrayList(), ArrayList())
 
-                        try {
-                            val commentCount = json.getInt("comment_count")
-                            mBean!!.comment_count = commentCount
+                            try {
+                                val commentCount = json.getInt("comment_count")
+                                mBean!!.comment_count = commentCount
 
-                            if (commentCount < 1000) {
-                                tv_comment.text = commentCount.toString()
-                            } else {
-                                val k = commentCount / 1000
-                                if (k < 1000) {
-                                    tv_comment.text = "${k}K"
+                                if (commentCount < 1000) {
+                                    tv_comment.text = commentCount.toString()
                                 } else {
-                                    val m = k / 1000
-                                    tv_comment.text = "${m}M"
-                                }
-                            }
-
-                            val image = json.getString("user_image")
-                            mBean!!.user_image = image
-                            if (TextUtils.isEmpty(image))
-                                Glide.with(context!!).load(R.drawable.drawer_user).apply(
-                                    RequestOptions().circleCrop()
-                                ).into(iv_profile)
-                            else
-                                Glide.with(context!!).load(image).placeholder(R.drawable.drawer_user).apply(
-                                    RequestOptions().circleCrop()
-                                ).into(iv_profile)
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-
-                        try {
-                            val abilities = json.getJSONArray("abilities")
-                            for (i in 0 until abilities.length()) {
-                                val ability = abilities.getJSONObject(i)
-                                val idx = ability.getInt("idx")
-                                val profile_index = ability.getInt("profile_idx")
-                                val strAbility = ability.getString("ability")
-                                abilityList.add(
-                                    BeanBlueprintAnO(
-                                        profile_index,
-                                        idx,
-                                        strAbility,
-                                        0
-                                    )
-                                )
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-
-
-                        try {
-                            val opportunities = json.getJSONArray("opportunities")
-                            for (i in 0 until opportunities.length()) {
-                                val opportunity = opportunities.getJSONObject(i)
-                                val idx = opportunity.getInt("idx")
-                                val profile_index = opportunity.getInt("profile_idx")
-                                val strOpportunity = opportunity.getString("opportunity")
-                                opportunityList.add(
-                                    BeanBlueprintAnO(
-                                        profile_index,
-                                        idx,
-                                        strOpportunity,
-                                        1
-                                    )
-                                )
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-                        mAnOAdapter!!.clear()
-                        tv_default_ability_opportunity.visibility = GONE
-                        if (abilityList.size > 0 && opportunityList.size > 0) { // 능력 및 기회가 둘다 1개이상 있을 시
-                            if (abilityList.size > 1) { // 능력이 1개이상 있을 시
-                                for (i in 0..1) {
-                                    mAnOAdapter!!.add(abilityList[i])
-                                    mBean!!.ability_and_opportunity.add(abilityList[i])
-                                }
-
-                                for (i in 0..0) {
-                                    mAnOAdapter!!.add(opportunityList[i])
-                                    mBean!!.ability_and_opportunity.add(opportunityList[i])
-                                }
-                            } else { // 능력이 1개일 시
-                                if (opportunityList.size > 1) { // 기회가 1개 이상일 시
-                                    for (i in 0..0) {
-                                        mAnOAdapter!!.add(abilityList[i])
-                                        mBean!!.ability_and_opportunity.add(abilityList[i])
+                                    val k = commentCount / 1000
+                                    if (k < 1000) {
+                                        tv_comment.text = "${k}K"
+                                    } else {
+                                        val m = k / 1000
+                                        tv_comment.text = "${m}M"
                                     }
+                                }
 
+                                val image = json.getString("user_image")
+                                mBean!!.user_image = image
+                                if (TextUtils.isEmpty(image))
+                                    Glide.with(context!!).load(R.drawable.drawer_user).apply(
+                                        RequestOptions().circleCrop()
+                                    ).into(iv_profile)
+                                else
+                                    Glide.with(context!!).load(image).placeholder(R.drawable.drawer_user).apply(
+                                        RequestOptions().circleCrop()
+                                    ).into(iv_profile)
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                            }
+
+                            try {
+                                val abilities = json.getJSONArray("abilities")
+                                for (i in 0 until abilities.length()) {
+                                    val ability = abilities.getJSONObject(i)
+                                    val idx = ability.getInt("idx")
+                                    val profile_index = ability.getInt("profile_idx")
+                                    val strAbility = ability.getString("ability")
+                                    abilityList.add(
+                                        BeanBlueprintAnO(
+                                            profile_index,
+                                            idx,
+                                            strAbility,
+                                            0
+                                        )
+                                    )
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                            }
+
+
+                            try {
+                                val opportunities = json.getJSONArray("opportunities")
+                                for (i in 0 until opportunities.length()) {
+                                    val opportunity = opportunities.getJSONObject(i)
+                                    val idx = opportunity.getInt("idx")
+                                    val profile_index = opportunity.getInt("profile_idx")
+                                    val strOpportunity = opportunity.getString("opportunity")
+                                    opportunityList.add(
+                                        BeanBlueprintAnO(
+                                            profile_index,
+                                            idx,
+                                            strOpportunity,
+                                            1
+                                        )
+                                    )
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                            }
+                            mAnOAdapter!!.clear()
+                            tv_default_ability_opportunity.visibility = GONE
+                            if (abilityList.size > 0 && opportunityList.size > 0) { // 능력 및 기회가 둘다 1개이상 있을 시
+                                if (abilityList.size > 1) { // 능력이 1개이상 있을 시
                                     for (i in 0..1) {
-                                        mAnOAdapter!!.add(opportunityList[i])
-                                        mBean!!.ability_and_opportunity.add(opportunityList[i])
-                                    }
-                                } else { // 능력 및 기회가 1개일 시
-                                    for (i in abilityList.indices) {
                                         mAnOAdapter!!.add(abilityList[i])
                                         mBean!!.ability_and_opportunity.add(abilityList[i])
                                     }
 
-                                    for (i in opportunityList.indices) {
+                                    for (i in 0..0) {
                                         mAnOAdapter!!.add(opportunityList[i])
                                         mBean!!.ability_and_opportunity.add(opportunityList[i])
                                     }
+                                } else { // 능력이 1개일 시
+                                    if (opportunityList.size > 1) { // 기회가 1개 이상일 시
+                                        for (i in 0..0) {
+                                            mAnOAdapter!!.add(abilityList[i])
+                                            mBean!!.ability_and_opportunity.add(abilityList[i])
+                                        }
+
+                                        for (i in 0..1) {
+                                            mAnOAdapter!!.add(opportunityList[i])
+                                            mBean!!.ability_and_opportunity.add(opportunityList[i])
+                                        }
+                                    } else { // 능력 및 기회가 1개일 시
+                                        for (i in abilityList.indices) {
+                                            mAnOAdapter!!.add(abilityList[i])
+                                            mBean!!.ability_and_opportunity.add(abilityList[i])
+                                        }
+
+                                        for (i in opportunityList.indices) {
+                                            mAnOAdapter!!.add(opportunityList[i])
+                                            mBean!!.ability_and_opportunity.add(opportunityList[i])
+                                        }
+                                    }
                                 }
+                            } else {
+                                if (abilityList.size > 0) { // 능력만 있을 시
+
+                                    var max: Int = 0
+
+                                    if (abilityList.size > 2) {
+                                        max = 3
+                                    } else
+                                        max = abilityList.size
+
+                                    for (i in 0 until max) {
+                                        mAnOAdapter!!.add(abilityList[i])
+                                        mBean!!.ability_and_opportunity.add(abilityList[i])
+                                    }
+
+                                } else if (opportunityList.size > 0) { // 기회만 있을 시
+
+                                    var max = 0
+
+                                    if (opportunityList.size > 2) {
+                                        max = 3
+                                    } else
+                                        max = opportunityList.size
+
+                                    for (i in 0 until max) {
+                                        mAnOAdapter!!.add(opportunityList[i])
+                                        mBean!!.ability_and_opportunity.add(opportunityList[i])
+                                    }
+                                } else { // 둘다 없을 시
+                                    tv_default_ability_opportunity.visibility = VISIBLE
+                                }
+                            }
+                            mObjectAdapter!!.clear()
+                            var objects: JSONArray? = null
+                            try {
+                                objects = json.getJSONArray("objects")
+                                if (objects == null || objects.length() < 1)
+                                    tv_default_object.visibility = VISIBLE
+                                else tv_default_object.visibility = GONE
+
+                                for (i in 0 until objects!!.length()) {
+                                    val bean = Gson().fromJson(
+                                        objects.getJSONObject(i).toString(),
+                                        BeanBlueprintObject::class.java
+                                    )
+                                    mObjectAdapter!!.add(bean)
+                                    mBean!!.objects.add(bean)
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
                             }
                         } else {
-                            if (abilityList.size > 0) { // 능력만 있을 시
-
-                                var max: Int = 0
-
-                                if (abilityList.size > 2) {
-                                    max = 3
-                                } else
-                                    max = abilityList.size
-
-                                for (i in 0 until max) {
-                                    mAnOAdapter!!.add(abilityList[i])
-                                    mBean!!.ability_and_opportunity.add(abilityList[i])
-                                }
-
-                            } else if (opportunityList.size > 0) { // 기회만 있을 시
-
-                                var max = 0
-
-                                if (opportunityList.size > 2) {
-                                    max = 3
-                                } else
-                                    max = opportunityList.size
-
-                                for (i in 0 until max) {
-                                    mAnOAdapter!!.add(opportunityList[i])
-                                    mBean!!.ability_and_opportunity.add(opportunityList[i])
-                                }
-                            } else { // 둘다 없을 시
-                                tv_default_ability_opportunity.visibility = VISIBLE
-                            }
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
-                        mObjectAdapter!!.clear()
-                        var objects: JSONArray? = null
-                        try {
-                            objects = json.getJSONArray("objects")
-                            if (objects == null || objects.length() < 1)
-                                tv_default_object.visibility = VISIBLE
-                            else tv_default_object.visibility = GONE
-
-                            for (i in 0 until objects!!.length()) {
-                                val bean = Gson().fromJson(
-                                    objects.getJSONObject(i).toString(),
-                                    BeanBlueprintObject::class.java
-                                )
-                                mObjectAdapter!!.add(bean)
-                                mBean!!.objects.add(bean)
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-                    } else {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
                     }
                 }
             }
@@ -619,9 +623,9 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llComplete = h.getItemView<LinearLayout>(R.id.ll_complete)
             tvObjectTitle.text = bean.object_name
 
-            if(bean.complete == 1){
+            if (bean.complete == 1) {
                 llComplete.visibility = VISIBLE
-            }else{
+            } else {
                 llComplete.visibility = GONE
             }
 

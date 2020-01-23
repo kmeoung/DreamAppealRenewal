@@ -104,7 +104,9 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         DAClient.getTimeLine(refresh, last_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
-                srl_refresh.isRefreshing = false
+                srl_refresh?.run {
+                    isRefreshing = false
+                }
             }
 
             override fun onResponse(
@@ -115,57 +117,63 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 message: String
             ) {
                 if (context != null) {
-                    srl_refresh.isRefreshing = false
+                    srl_refresh?.run {
+                        isRefreshing = false
 
-                    if (code == DAClient.SUCCESS) {
-                        val json = JSONObject(body)
-                        if (isClear) mAdapter!!.clear()
-                        try {
-                            val posts = json.getJSONArray("posts")
+                        if (code == DAClient.SUCCESS) {
+                            val json = JSONObject(body)
+                            if (isClear) mAdapter!!.clear()
+                            try {
+                                val posts = json.getJSONArray("posts")
 
-                            if (posts.length() < 1) {
+                                if (posts.length() < 1) {
+                                    isLast = true
+                                    mAdapter!!.notifyDataSetChanged()
+                                }
+                                for (i in 0 until posts.length()) {
+
+                                    val post = posts.getJSONObject(i)
+                                    val images = post.getJSONArray("images")
+
+                                    val bean = Gson().fromJson<BeanTimeline>(
+                                        post.toString(),
+                                        BeanTimeline::class.java
+                                    )
+
+                                    var imageList = ArrayList<String>()
+
+                                    for (j in 0 until images.length()) {
+
+                                        val image = images.getJSONObject(j)
+
+                                        val url = image.getString("url")
+                                        imageList.add(url)
+                                    }
+                                    bean.imageList = imageList
+                                    mAdapter!!.add(bean)
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+
+                        } else {
+                            if (code == "NO_MORE_POST") {
                                 isLast = true
                                 mAdapter!!.notifyDataSetChanged()
+                            } else if (code == DAClient.FAIL) {
+                                ActivityCompat.finishAffinity(activity!!)
+                                val intent = Intent(context!!, ActivityIntro::class.java)
+                                Comm_Prefs.setUserProfileIndex(-1)
+                                Comm_Prefs.setToken(null)
+                                startActivity(intent)
                             }
-                            for (i in 0 until posts.length()) {
-
-                                val post = posts.getJSONObject(i)
-                                val images = post.getJSONArray("images")
-
-                                val bean = Gson().fromJson<BeanTimeline>(
-                                    post.toString(),
-                                    BeanTimeline::class.java
-                                )
-
-                                var imageList = ArrayList<String>()
-
-                                for (j in 0 until images.length()) {
-
-                                    val image = images.getJSONObject(j)
-
-                                    val url = image.getString("url")
-                                    imageList.add(url)
-                                }
-                                bean.imageList = imageList
-                                mAdapter!!.add(bean)
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
-
-                    } else {
-                        if (code == "NO_MORE_POST") {
-                            isLast = true
-                            mAdapter!!.notifyDataSetChanged()
-                        } else if (code == DAClient.FAIL) {
-                            ActivityCompat.finishAffinity(activity!!)
-                            val intent = Intent(context!!, ActivityIntro::class.java)
-                            Comm_Prefs.setUserProfileIndex(-1)
-                            Comm_Prefs.setToken(null)
-                            startActivity(intent)
-                        }
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
                     }
                 }
             }
@@ -249,6 +257,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         ((position + 1).toString() + " / " + pagerAdapter!!.count)
                 }
             })
+
 
             var strTags = ""
             if (!bean.tags.isNullOrEmpty()) {

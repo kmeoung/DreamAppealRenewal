@@ -10,7 +10,7 @@ interface DAHttpCallback {
         e.printStackTrace()
     }
 
-    @Throws(IOException::class, JSONException::class)
+    @Throws(IOException::class, Exception::class)
     fun onResponse(
         call: Call,
         serverCode: Int,

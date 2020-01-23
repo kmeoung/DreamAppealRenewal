@@ -41,10 +41,10 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
     private var REQUEST_ADD_ACHIEVEMENT = 2005
 
-    private var mViewUserIdx : Int = -1
+    private var mViewUserIdx: Int = -1
 
-    companion object{
-        fun newInstance(view_user_idx : Int) : FragmentNewPerformance {
+    companion object {
+        fun newInstance(view_user_idx: Int): FragmentNewPerformance {
             val fragment = FragmentNewPerformance()
             fragment.mViewUserIdx = view_user_idx
             return fragment
@@ -134,7 +134,9 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
             object : DAHttpCallback {
                 override fun onFailure(call: Call, e: IOException) {
                     super.onFailure(call, e)
-                    srl_refresh.isRefreshing = false
+                    srl_refresh?.run {
+                        isRefreshing = false
+                    }
                 }
 
                 override fun onResponse(
@@ -144,33 +146,39 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                     code: String,
                     message: String
                 ) {
-                    srl_refresh.isRefreshing = false
-                    if (context != null) {
+                    srl_refresh?.run {
+                        isRefreshing = false
+                        if (context != null) {
 
-                        if (code == DAClient.SUCCESS) {
-                            mBeanPerformance = BeanNewPerformance(ArrayList())
+                            if (code == DAClient.SUCCESS) {
+                                mBeanPerformance = BeanNewPerformance(ArrayList())
 
-                            mBeanPerformance!!.best_posts.clear()
-                            val json = JSONObject(body)
-                            val bestPosts = json.getJSONObject("best_posts")
-                            mAdapter!!.clear()
-                            for (i in 1..3) {
-                                try {
-                                    val bestPost = bestPosts.getJSONObject("best_post_$i")
-                                    val bean = Gson().fromJson<BeanBestPost>(
-                                        bestPost.toString(),
-                                        BeanBestPost::class.java
-                                    )
-                                    mBeanPerformance!!.best_posts.add(bean)
-                                    mAdapter!!.add(bean)
-                                } catch (e: Exception) {
-                                    mBeanPerformance!!.best_posts.add(null)
-                                    mAdapter!!.add(null)
+                                mBeanPerformance!!.best_posts.clear()
+                                val json = JSONObject(body)
+                                val bestPosts = json.getJSONObject("best_posts")
+                                mAdapter!!.clear()
+                                for (i in 1..3) {
+                                    try {
+                                        val bestPost = bestPosts.getJSONObject("best_post_$i")
+                                        val bean = Gson().fromJson<BeanBestPost>(
+                                            bestPost.toString(),
+                                            BeanBestPost::class.java
+                                        )
+                                        mBeanPerformance!!.best_posts.add(bean)
+                                        mAdapter!!.add(bean)
+                                    } catch (e: Exception) {
+                                        mBeanPerformance!!.best_posts.add(null)
+                                        mAdapter!!.add(null)
+                                    }
                                 }
+                            } else {
+                                Toast.makeText(
+                                    context!!.applicationContext,
+                                    message,
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
                             }
-                        }else{
-                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
                 }
@@ -196,8 +204,8 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * RecyclerView Create View Holder
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder{
-        if(TYPE_FULL_ITEM == viewType){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        if (TYPE_FULL_ITEM == viewType) {
             return BaseViewHolder.newInstance(R.layout.listitem_best_post, parent, false)
         }
         return BaseViewHolder.newInstance(R.layout.listitem_best_post_default, parent, false)
@@ -210,7 +218,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
         if (mAdapter != null) {
             val tvPost = h.getItemView<TextView>(R.id.tv_post)
-            if(getItemViewType(i) == TYPE_FULL_ITEM) {
+            if (getItemViewType(i) == TYPE_FULL_ITEM) {
                 val bean = mAdapter!!.get(i) as BeanBestPost
                 val ivPost = h.getItemView<ImageView>(R.id.iv_post)
 
@@ -224,15 +232,16 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
                 h.itemView.setOnClickListener(View.OnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FragmentBestPost.newInstance(bean.idx,mViewUserIdx),
+                        FragmentBestPost.newInstance(bean.idx, mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = true
                     )
                 })
-            }else{
-                tvPost.text = Utils.replaceTextColor(context,tvPost,getString(R.string.str_best_post))
+            } else {
+                tvPost.text =
+                    Utils.replaceTextColor(context, tvPost, getString(R.string.str_best_post))
 
-                if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                     h.itemView.setOnClickListener(View.OnClickListener {
                         val intent = Intent(context!!, ActivityCameraGallery::class.java)
                         intent.putExtra(
@@ -254,8 +263,8 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
     /**
      * RecyclerView Item View Type
      */
-    override fun getItemViewType(i: Int): Int{
-        if(mAdapter!!.get(i) == null) return TYPE_EMPTY_ITEM
+    override fun getItemViewType(i: Int): Int {
+        if (mAdapter!!.get(i) == null) return TYPE_EMPTY_ITEM
         return TYPE_FULL_ITEM
     }
 
@@ -269,7 +278,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_ADD_ACHIEVEMENT) {
                 getAchievementPostMain()
             }

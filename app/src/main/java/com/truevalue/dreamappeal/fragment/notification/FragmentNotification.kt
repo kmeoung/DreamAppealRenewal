@@ -123,7 +123,9 @@ class FragmentNotification : BaseFragment() {
         DAClient.getNotification(object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
-                srl_refresh.isRefreshing = false
+                srl_refresh?.run {
+                    isRefreshing = false
+                }
             }
 
             override fun onResponse(
@@ -132,19 +134,22 @@ class FragmentNotification : BaseFragment() {
                 body: String,
                 code: String,
                 message: String
-            ) {
-                srl_refresh.isRefreshing = false
-                if (code == DAClient.SUCCESS) {
-                    val json = JSONObject(body)
+            )  {
+                srl_refresh?.run {
+                    isRefreshing = false
+                    if (code == DAClient.SUCCESS) {
+                        val json = JSONObject(body)
 
-                    val bean = Gson().fromJson<BeanNotification>(
-                        json.toString(),
-                        BeanNotification::class.java
-                    )
-                    setNotification(bean)
-                } else {
-                    context?.let {
-                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                        val bean = Gson().fromJson<BeanNotification>(
+                            json.toString(),
+                            BeanNotification::class.java
+                        )
+                        setNotification(bean)
+                    } else {
+                        context?.let {
+                            Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
             }

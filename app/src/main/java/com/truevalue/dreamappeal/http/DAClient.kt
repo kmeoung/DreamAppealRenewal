@@ -58,11 +58,9 @@ object DAClient {
         token: String?,
         callback: DAHttpCallback
     ) {
-
         val params = DAHttpParams()
         token?.let {token->
             params.put("token", token)
-
             BaseOkhttpClient.request(
                 HttpType.PATCH,
                 Comm_Param.URL_NOTIFICATION_TOKEN,

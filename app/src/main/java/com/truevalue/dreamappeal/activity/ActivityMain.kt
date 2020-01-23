@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
+import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentDreamBoard
 import com.truevalue.dreamappeal.fragment.notification.FragmentNotification

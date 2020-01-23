@@ -1,10 +1,10 @@
 package com.truevalue.dreamappeal.http
 
-import android.content.Context
 import android.os.Handler
 import android.util.Log
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.utils.Comm_Param
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -12,8 +12,6 @@ import java.io.IOException
 
 
 object BaseOkhttpClient : OkHttpClient() {
-
-    var mContext: Context? = null
 
     private val client: OkHttpClient
     private val handler: Handler
@@ -42,11 +40,10 @@ object BaseOkhttpClient : OkHttpClient() {
         if (!Comm_Param.REAL) Log.d("SERVER REQUEST URL", call.request().url.toString())
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback?.let {
-                    it.onFailure(call,e)
-                } ?: run{
-                    return
+                callback?.let {callback->
+                    callback.onFailure(call, e)
                 }
+
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -58,25 +55,25 @@ object BaseOkhttpClient : OkHttpClient() {
                     var message: String? = null
                     var isJson = false
                     try {
-                        var json = JSONObject(strBody)
+                        val json = JSONObject(strBody)
                         isJson = true
                         code = json.getString("code")
                         message = json.getString("message")
                     } catch (e: JSONException) {
                     } finally {
                         handler.post {
-                            if (callback != null) {
+                            callback?.let { callback ->
                                 if (isJson) {
                                     if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                                            callback.onResponse(
-                                                call,
-                                                response.code,
-                                                strBody,
-                                                code,
-                                                message
-                                            )
+                                        callback.onResponse(
+                                            call,
+                                            response.code,
+                                            strBody,
+                                            code,
+                                            message
+                                        )
                                     } else {
-                                        callback!!.onResponse(
+                                        callback.onResponse(
                                             call,
                                             response.code,
                                             strBody,
@@ -85,12 +82,12 @@ object BaseOkhttpClient : OkHttpClient() {
                                         )
                                     }
                                 } else {
-                                    callback!!.onResponse(
+                                    callback.onResponse(
                                         call,
                                         response.code,
                                         strBody,
                                         DAClient.FAIL,
-                                        mContext!!.getString(R.string.str_error_server)
+                                        "서버에 에러가 발생하였습니다"
                                     )
                                 }
                             }

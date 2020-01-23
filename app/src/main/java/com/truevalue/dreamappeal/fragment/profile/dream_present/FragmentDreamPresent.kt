@@ -137,7 +137,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         DAClient.getProfiles(mViewUserIdx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
-                srl_refresh.isRefreshing = false
+                srl_refresh?.run {
+                    isRefreshing = false
+                }
             }
 
             override fun onResponse(
@@ -147,44 +149,51 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 code: String,
                 message: String
             ) {
-                srl_refresh.isRefreshing = false
-                if (context != null) {
+                srl_refresh?.run {
+                    isRefreshing = false
+                    if (context != null) {
 
-                    if (code == DAClient.SUCCESS) {
-                        val json = JSONObject(body)
-                        val profile = json.getJSONObject("profile")
-                        val gson = Gson()
-                        mBean = gson.fromJson<BeanDreamPresent>(
-                            profile.toString(),
-                            BeanDreamPresent::class.java
-                        )
-                        if (mBean != null) {
-                            mBean!!.descriptions = ArrayList()
-                            try {
-                                val description_spec = profile.getJSONArray("description_spec")
-                                for (i in 0 until description_spec.length()) {
-                                    val jsonObject = description_spec.getJSONObject(i)
-                                    val content = jsonObject.getString("content")
-                                    mBean!!.descriptions.add(content)
+                        if (code == DAClient.SUCCESS) {
+                            val json = JSONObject(body)
+                            val profile = json.getJSONObject("profile")
+                            val gson = Gson()
+                            mBean = gson.fromJson<BeanDreamPresent>(
+                                profile.toString(),
+                                BeanDreamPresent::class.java
+                            )
+                            if (mBean != null) {
+                                mBean!!.descriptions = ArrayList()
+                                try {
+                                    val description_spec = profile.getJSONArray("description_spec")
+                                    for (i in 0 until description_spec.length()) {
+                                        val jsonObject = description_spec.getJSONObject(i)
+                                        val content = jsonObject.getString("content")
+                                        mBean!!.descriptions.add(content)
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                } finally {
+                                    bindData()
                                 }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            } finally {
-                                bindData()
+                            }
+                        } else {
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+
+                            if (code == DAClient.FAIL) {
+                                ActivityCompat.finishAffinity(activity!!)
+                                val intent = Intent(context!!, ActivityIntro::class.java)
+                                Comm_Prefs.setUserProfileIndex(-1)
+                                Comm_Prefs.setToken(null)
+                                startActivity(intent)
                             }
                         }
-                    } else {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
-
-                        if (code == DAClient.FAIL) {
-                            ActivityCompat.finishAffinity(activity!!)
-                            val intent = Intent(context!!, ActivityIntro::class.java)
-                            Comm_Prefs.setUserProfileIndex(-1)
-                            Comm_Prefs.setToken(null)
-                            startActivity(intent)
-                        }
                     }
+
                 }
             }
         })
@@ -426,7 +435,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 tv_add_follow -> {
                     follow()
                 }
-                ll_cheering_detail->{
+                ll_cheering_detail -> {
                     val intent = Intent(context, ActivityFollowCheering::class.java)
                     intent.putExtra(
                         ActivityFollowCheering.EXTRA_VIEW_TYPE,
@@ -487,14 +496,14 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             val content: String = mAdapter!!.mArray[i] as String
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
             tvContents.text = content
-            h.itemView.setOnClickListener(View.OnClickListener {
+            h.itemView.setOnClickListener {
                 if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                     (activity as ActivityMain).replaceFragment(
                         FragmentDreamDescription.newInstance(mBean),
                         true
                     )
                 }
-            })
+            }
 
             if (isMyDreamMore) {
                 tvContents.maxLines = 1000
@@ -641,7 +650,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             ) {
                 getProfile()
             }
-        }else if(resultCode == RESULT_CODE){
+        } else if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
                 requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
             ) {

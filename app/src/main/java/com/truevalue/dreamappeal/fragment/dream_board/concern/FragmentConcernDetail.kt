@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.dream_board.concern
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +22,7 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityImgScaling
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.*
@@ -249,7 +251,7 @@ class FragmentConcernDetail : BaseFragment() {
         }
 
         mAdapterImage = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(any: Any, view: ImageView, position: Int) {
+            override fun onBindViewPager(any: Any, view: ImageView, position: Int, arrayList: ArrayList<Any>) {
                 val url = any as Image
                 context?.let {
                     Glide.with(it)
@@ -257,6 +259,18 @@ class FragmentConcernDetail : BaseFragment() {
                         .centerCrop()
                         .placeholder(R.drawable.ic_image_gray)
                         .into(view)
+
+                    view.setOnClickListener {
+                        val array = ArrayList<String>()
+                        for (item in arrayList) {
+                            val img = item as Image
+                            array.add(img.image_url)
+                        }
+                        val intent = Intent(context, ActivityImgScaling::class.java)
+                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGES,array)
+                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION,position)
+                        startActivity(intent)
+                    }
                 }
 
             }

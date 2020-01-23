@@ -1,12 +1,16 @@
 package com.truevalue.dreamappeal.base
 
 import android.content.Context
+import android.content.Intent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
+import com.github.chrisbanes.photoview.PhotoView
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityImgScaling
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,9 +53,12 @@ class BaseImagePagerAdapter<String>(private val mContext: Context, private var i
         container.removeView(`object` as ImageView)
     }
 
+
+
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(mContext)
         val url = mArray[position]
+
         if(isCrop == false) {
             Glide.with(mContext)
                 .load(url)
@@ -65,6 +72,14 @@ class BaseImagePagerAdapter<String>(private val mContext: Context, private var i
                 .placeholder(R.drawable.ic_image_white)
                 .into(imageView)
         }
+
+        imageView.setOnClickListener {
+            val intent = Intent(mContext,ActivityImgScaling::class.java)
+            intent.putExtra(ActivityImgScaling.EXTRA_IMAGES,mArray)
+            intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION,position)
+            mContext.startActivity(intent)
+        }
+
         container.addView(imageView, 0)
         return imageView
     }

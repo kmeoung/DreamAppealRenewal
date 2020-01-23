@@ -86,7 +86,7 @@ class FragmentWishBoard : BaseFragment() {
         }
 
         mPagerAdapter = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(any: Any, view: ImageView, position: Int) {
+            override fun onBindViewPager(any: Any, view: ImageView, position: Int, arrayList: ArrayList<Any>) {
                 val bean = any as BeanPromotion
                 context?.let {
                     Glide.with(it)

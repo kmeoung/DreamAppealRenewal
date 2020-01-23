@@ -10,6 +10,7 @@ open class BaseFragment : Fragment(){
         const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
     }
 
+
     /**
      * Fragment Replace
      */

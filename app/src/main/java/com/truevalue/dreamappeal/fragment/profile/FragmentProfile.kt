@@ -181,9 +181,6 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
                 tv_title -> {
                     if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
                         showDialog()
-                    }else{
-                        val dialog = DialogYearMonthPicker(context!!,-1,-1)
-                        dialog.show()
                     }
                 }
                 iv_dream_note->{

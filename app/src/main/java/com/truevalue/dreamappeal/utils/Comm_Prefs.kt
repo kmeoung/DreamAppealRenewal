@@ -6,52 +6,48 @@ import android.content.SharedPreferences
 
 object Comm_Prefs {
 
-    private var mContext: Context? = null
-    private var prefs: SharedPreferences?
-
-    init {
-        prefs = null
-    }
+    private lateinit var mContext: Context
+    private lateinit var prefs: SharedPreferences
 
     /**
      * App 실행 시 한번만 실행
      */
     fun init(context: Context) {
         mContext = context
-        prefs = mContext!!.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE)
+        prefs = mContext.getSharedPreferences(Comm_Param.APP_NAME, MODE_PRIVATE)
     }
 
     /**
      * Token
      */
     fun setToken(token: String?) {
-        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_USER_TOKEN, token).commit()
+        prefs.edit().putString(Comm_Prefs_Param.PREFS_USER_TOKEN, token).commit()
     }
 
     fun getToken(): String? {
-        return prefs!!.getString(Comm_Prefs_Param.PREFS_USER_TOKEN, null)
+        return prefs.getString(Comm_Prefs_Param.PREFS_USER_TOKEN, null)
     }
 
     /**
      * Push Token
      */
     fun setPushToken(token: String?) {
-        prefs!!.edit().putString(Comm_Prefs_Param.PREFS_PUSH_TOKEN, token).commit()
+        prefs.edit().putString(Comm_Prefs_Param.PREFS_PUSH_TOKEN, token).commit()
     }
 
     fun getPushToken(): String? {
-        return prefs!!.getString(Comm_Prefs_Param.PREFS_PUSH_TOKEN, null)
+        return prefs.getString(Comm_Prefs_Param.PREFS_PUSH_TOKEN, null)
     }
 
     /**
      * Profile Index
      */
     fun setUserProfileIndex(idx: Int) {
-        prefs!!.edit().putInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, idx).commit()
+        prefs.edit().putInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, idx).commit()
     }
 
     fun getUserProfileIndex(): Int {
-        return prefs!!.getInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, -1)
+        return prefs.getInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, -1)
     }
 
 }

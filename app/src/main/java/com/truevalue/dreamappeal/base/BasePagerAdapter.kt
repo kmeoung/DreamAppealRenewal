@@ -18,7 +18,7 @@ class BasePagerAdapter(context: Context?, listener: IOBasePagerListener) :
     private val mListener: IOBasePagerListener?
 
     interface IOBasePagerListener {
-        fun onBindViewPager(any: Any, view: ImageView, position: Int)
+        fun onBindViewPager(any: Any, view: ImageView, position: Int, array : ArrayList<Any>)
     }
 
     init {
@@ -66,7 +66,7 @@ class BasePagerAdapter(context: Context?, listener: IOBasePagerListener) :
         val bean = mArray[position]
 
         mListener?.let { listener ->
-            listener.onBindViewPager(bean, view, position)
+            listener.onBindViewPager(bean, view, position, mArray)
         }
 //
 
