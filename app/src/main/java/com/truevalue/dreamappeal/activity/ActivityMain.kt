@@ -55,7 +55,7 @@ class ActivityMain : BaseActivity() {
     init {
         // 회원가입시 PROFILE로 이동
         mMainViewType =
-            if (Comm_Prefs.getUserProfileIndex() > -1) MAIN_TYPE_HOME else MAIN_TYPE_PROFILE
+            if (Comm_Prefs.getUserProfileIndex() > -1) MAIN_TYPE_TIMELINE else MAIN_TYPE_PROFILE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

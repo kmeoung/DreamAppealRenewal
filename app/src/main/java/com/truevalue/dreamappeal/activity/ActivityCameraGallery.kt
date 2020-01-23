@@ -363,19 +363,37 @@ class ActivityCameraGallery : BaseActivity() {
 
                     val array = ArrayList<File>()
                     array.add(file!!)
-                    // : 이미지
-                    val intent = Intent()
-                    intent.putExtra(REQUEST_IMAGE_FILES, array)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+
+                    when(mViewType){
+                        EXTRA_ACHIVEMENT_POST -> {
+                            val intent =
+                                Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            intent.putExtra(REQUEST_BEST_IDX, mBestIdx)
+                            intent.putExtra(VIEW_TYPE, EXTRA_ACHIVEMENT_POST)
+                            startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT_POST)
+                        }
+                        EXTRA_ACTION_POST -> {
+                            val intent =
+                                Intent(this@ActivityCameraGallery, ActivityAddPost::class.java)
+                            intent.putExtra(VIEW_TYPE, EXTRA_ACTION_POST)
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            startActivityForResult(intent, REQUEST_ADD_ACTION_POST)
+                        }
+                        else->{
+                            // : 이미지
+                            val intent = Intent()
+                            intent.putExtra(REQUEST_IMAGE_FILES, array)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        }
+                    }
                 }
                 REQUEST_ADD_ACTION_POST, REQUEST_ADD_ACHIEVEMENT_POST -> {
                     setResult(RESULT_OK)
                     finish()
                 }
-
             }
-
         }
     }
 

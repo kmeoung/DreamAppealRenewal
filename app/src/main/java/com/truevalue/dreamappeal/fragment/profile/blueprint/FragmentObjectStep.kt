@@ -127,7 +127,7 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
     private fun showMoreDialog() {
         val list =
             arrayOf(
-                if (mBean!!.complete == 1) getString(R.string.str_do_not_success) else getString(R.string.str_do_success),
+                if (mObjectBean!!.complete == 1) getString(R.string.str_do_not_success) else getString(R.string.str_do_success),
                 getString(R.string.str_edit),
                 getString(R.string.str_delete)
             )

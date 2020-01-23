@@ -74,12 +74,12 @@ class FragmentPopular : BaseFragment() {
     /**
      * View Click listener
      */
-    private fun onClickView(){
-        val listener = View.OnClickListener{
-            when(it){
-                ll_search->{
-                    val intent = Intent(context,ActivitySearch::class.java)
-                    startActivityForResult(intent,ActivitySearch.REQUEST_SEARCH)
+    private fun onClickView() {
+        val listener = View.OnClickListener {
+            when (it) {
+                ll_search -> {
+                    val intent = Intent(context, ActivitySearch::class.java)
+                    startActivityForResult(intent, ActivitySearch.REQUEST_SEARCH)
                 }
             }
         }
@@ -183,7 +183,7 @@ class FragmentPopular : BaseFragment() {
         if (resultCode == RESULT_CODE) {
             if (requestCode == ActivitySearch.REQUEST_SEARCH) {
                 data?.let {
-                    val viewUserIdx = it.getIntExtra(RESULT_REPLACE_USER_IDX,-1)
+                    val viewUserIdx = it.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                     (activity as ActivityMain).replaceFragment(
                         FragmentProfile.newInstance(viewUserIdx),
                         true
@@ -271,7 +271,7 @@ class FragmentPopular : BaseFragment() {
                                     tvName.text = pagerBean.nickname
                                     tvCheering.text = "${Utils.getCommentView(pagerBean.count)}개"
 
-                                    view.setOnClickListener(View.OnClickListener {
+                                    view.setOnClickListener{
                                         (activity as ActivityMain)
                                             .replaceFragment(
                                                 FragmentProfile
@@ -279,7 +279,7 @@ class FragmentPopular : BaseFragment() {
                                                 addToBack = true,
                                                 isMainRefresh = false
                                             )
-                                    })
+                                    }
                                 }
                                 is BeanAttenAction -> {
                                     val ivBookCover =
@@ -296,7 +296,7 @@ class FragmentPopular : BaseFragment() {
                                     tvTitle.text = pagerBean.object_name
                                     tvSubTitle.text = "${pagerBean.value_style} ${pagerBean.job}"
 
-                                    view.setOnClickListener(View.OnClickListener {
+                                    view.setOnClickListener{
                                         (activity as ActivityMain)
                                             .replaceFragment(
                                                 FragmentActionPost
@@ -307,7 +307,7 @@ class FragmentPopular : BaseFragment() {
                                                 addToBack = true,
                                                 isMainRefresh = false
                                             )
-                                    })
+                                    }
                                 }
                                 is BeanAttenIdea -> {
                                     val ivBookCover =
@@ -322,7 +322,7 @@ class FragmentPopular : BaseFragment() {
 
                                     tvTitle.text = "${pagerBean.value_style} ${pagerBean.job}"
 
-                                    view.setOnClickListener(View.OnClickListener {
+                                    view.setOnClickListener {
                                         (activity as ActivityMain)
                                             .replaceFragment(
                                                 FragmentActionPost
@@ -334,7 +334,7 @@ class FragmentPopular : BaseFragment() {
                                                 addToBack = true,
                                                 isMainRefresh = false
                                             )
-                                    })
+                                    }
                                 }
                             }
                         }

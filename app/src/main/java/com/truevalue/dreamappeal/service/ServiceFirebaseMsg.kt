@@ -22,8 +22,6 @@ import org.json.JSONObject
 
 class ServiceFirebaseMsg : FirebaseMessagingService() {
 
-
-
     companion object {
         private const val TAG = "FirebaseService"
         const val FIREBASE_NORIFICATION_CALLED = "FIREBASE NORIFICATION CALLED"
@@ -108,6 +106,4 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
             notificationManager.notify(0, notificationBuilder.build())
         }
     }
-
-
 }

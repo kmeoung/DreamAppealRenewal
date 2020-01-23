@@ -22,6 +22,8 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.fragment_search_board.*
 import okhttp3.Call
+import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
@@ -99,22 +101,27 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
                 if (code == DAClient.SUCCESS) {
 
                     val json = JSONObject(body)
-                    val posts = json.getJSONArray("posts")
-                    mAdapter?.let {
-                        it.clear()
-                        for (i in 0 until posts.length()) {
-                            val post = posts.getJSONObject(i)
-                            val bean = Gson().fromJson<BeanSearchBoard>(
-                                post.toString(),
-                                BeanSearchBoard::class.java
-                            )
+                    try {
 
-                            // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
-                            if(!bean.tags.isNullOrEmpty() && !mInputTag.isNullOrEmpty()) bean.tags = mInputTag
-                            it.add(bean)
+                        val posts: JSONArray = json.getJSONArray("posts")
+                        mAdapter?.let {
+                            it.clear()
+                            for (i in 0 until posts.length()) {
+                                val post: JSONObject = posts.getJSONObject(i)
+                                val bean = Gson().fromJson<BeanSearchBoard>(
+                                    post.toString(),
+                                    BeanSearchBoard::class.java
+                                )
+
+                                // 사용자가 검색한 태그를 사용자 화면에 표시하는 과정
+                                if (!bean.tags.isNullOrEmpty() && !mInputTag.isNullOrEmpty()) bean.tags =
+                                    mInputTag
+                                it.add(bean)
+                            }
                         }
+                    }catch (e : JSONException){
+                        e.printStackTrace()
                     }
-
                 } else {
                     context?.let {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()

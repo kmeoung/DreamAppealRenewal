@@ -5,13 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
+import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
@@ -47,7 +44,7 @@ class FragmentNotification : BaseFragment() {
 
     private var mBean: BeanNotification?
 
-    private var mViewType = VIEW_TYPE_FOLLOWING
+    private var mViewType = VIEW_TYPE_MY_NOTI
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
@@ -183,8 +180,6 @@ class FragmentNotification : BaseFragment() {
                 }
             }
         }
-
-
     }
 
     /**
@@ -196,15 +191,15 @@ class FragmentNotification : BaseFragment() {
             VIEW_TYPE_FOLLOWING -> {
                 tv_following.isSelected = true
                 tv_my_noti.isSelected = false
-                iv_following.visibility = View.VISIBLE
-                iv_my_noti.visibility = View.INVISIBLE
+                iv_following.visibility = VISIBLE
+                iv_my_noti.visibility = INVISIBLE
                 setNotification(mBean)
             }
             VIEW_TYPE_MY_NOTI -> {
                 tv_following.isSelected = false
                 tv_my_noti.isSelected = true
-                iv_following.visibility = View.INVISIBLE
-                iv_my_noti.visibility = View.VISIBLE
+                iv_following.visibility = INVISIBLE
+                iv_my_noti.visibility = VISIBLE
                 setNotification(mBean)
             }
         }
@@ -261,7 +256,7 @@ class FragmentNotification : BaseFragment() {
             val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
             val ivFlame = h.getItemView<ImageView>(R.id.iv_flame)
             val ivPost = h.getItemView<ImageView>(R.id.iv_post)
-
+            val rlSourceProfile = h.getItemView<RelativeLayout>(R.id.rl_source_profile)
 
             if (!bean.thumbnail_image.isNullOrEmpty()) {
                 ivPost.visibility = VISIBLE
@@ -281,7 +276,39 @@ class FragmentNotification : BaseFragment() {
                     .into(ivProfile)
             }
 
+            rlSourceProfile.setOnClickListener {
+                if (bean.code != Noti_Param.BEST_PROFILE &&
+                    bean.code != Noti_Param.BEST_ACTION &&
+                    bean.code != Noti_Param.BEST_IDEA
+                ) {
+                    if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
+                        profileChange(bean, object : ReplaceListener {
+                            override fun replace() {
+                                (activity as ActivityMain).replaceFragment(
+                                    FragmentProfile.newInstance(bean.source_idx),
+                                    true
+                                )
+                            }
+                        })
+                    } else {
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentProfile.newInstance(bean.source_idx),
+                            true
+                        )
+                    }
+                }
+            }
+
             when (bean.code) {
+                Noti_Param.BEST_PROFILE -> { // todo : 공지
+                    ivFlame.visibility = GONE
+                }
+                Noti_Param.BEST_ACTION -> { // todo : 공지
+                    ivFlame.visibility = GONE
+                }
+                Noti_Param.BEST_IDEA -> { // todo : 공지
+                    ivFlame.visibility = GONE
+                }
 //          LIKE
                 Noti_Param.PROFILE_LIKE -> {
                     ivFlame.visibility = VISIBLE
@@ -291,14 +318,14 @@ class FragmentNotification : BaseFragment() {
                             profileChange(bean, object : ReplaceListener {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
-                                        FragmentProfile.newInstance(bean.profile_idx),
+                                        FragmentProfile.newInstance(bean.item_idx),
                                         true
                                     )
                                 }
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentProfile.newInstance(bean.profile_idx),
+                                FragmentProfile.newInstance(bean.item_idx),
                                 true
                             )
                         }
@@ -734,14 +761,14 @@ class FragmentNotification : BaseFragment() {
                             profileChange(bean, object : ReplaceListener {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
-                                        FragmentProfile.newInstance(bean.profile_idx),
+                                        FragmentProfile.newInstance(bean.item_idx),
                                         true
                                     )
                                 }
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentProfile.newInstance(bean.profile_idx),
+                                FragmentProfile.newInstance(bean.item_idx),
                                 true
                             )
                         }
@@ -756,7 +783,7 @@ class FragmentNotification : BaseFragment() {
                             profileChange(bean, object : ReplaceListener {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
-                                        FragmentProfile.newInstance(bean.profile_idx),
+                                        FragmentProfile.newInstance(bean.item_idx),
                                         true
                                     )
 
@@ -781,7 +808,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentProfile.newInstance(bean.profile_idx),
+                                FragmentProfile.newInstance(bean.item_idx),
                                 true
                             )
 
@@ -1262,7 +1289,7 @@ class FragmentNotification : BaseFragment() {
                             profileChange(bean, object : ReplaceListener {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
-                                        FragmentProfile.newInstance(bean.profile_idx),
+                                        FragmentProfile.newInstance(bean.item_idx),
                                         true
                                     )
 
@@ -1287,7 +1314,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentProfile.newInstance(bean.profile_idx),
+                                FragmentProfile.newInstance(bean.item_idx),
                                 true
                             )
 
@@ -1463,15 +1490,6 @@ class FragmentNotification : BaseFragment() {
                             )
                         }
                     }
-                }
-                Noti_Param.BEST_PROFILE -> { // todo : 공지
-                    ivFlame.visibility = GONE
-                }
-                Noti_Param.BEST_ACTION -> { // todo : 공지
-                    ivFlame.visibility = GONE
-                }
-                Noti_Param.BEST_IDEA -> { // todo : 공지
-                    ivFlame.visibility = GONE
                 }
                 Noti_Param.COMPLETE_PROFILE_OBJECT -> {
                     ivFlame.visibility = GONE
@@ -1769,7 +1787,7 @@ class FragmentNotification : BaseFragment() {
     private fun checkNoti(bean: Item) {
         val strJson = Gson().toJson(bean)
         val json = JSONObject(strJson)
-        DAClient.checkNotification(json,object : DAHttpCallback{
+        DAClient.checkNotification(json, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -1777,9 +1795,9 @@ class FragmentNotification : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(code != DAClient.SUCCESS){
+                if (code != DAClient.SUCCESS) {
                     context?.let {
-                        Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

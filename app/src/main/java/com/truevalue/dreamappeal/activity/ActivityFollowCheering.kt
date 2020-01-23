@@ -329,7 +329,7 @@ class ActivityFollowCheering : BaseActivity() {
 
             ivProfile.setOnClickListener(View.OnClickListener {
                 val intent = Intent()
-                intent.putExtra(ActivityFollowCheering.RESULT_REPLACE_USER_IDX, bean.idx)
+                intent.putExtra(RESULT_REPLACE_USER_IDX, bean.idx)
                 setResult(RESULT_CODE, intent)
                 finish()
             })

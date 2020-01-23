@@ -22,9 +22,11 @@ import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.activity_comment_detail.*
 import kotlinx.android.synthetic.main.fragment_add_action_post.*
 import okhttp3.Call
 import java.io.File
+
 
 
 class FragmentAddActionPost : BaseFragment() {
@@ -35,7 +37,8 @@ class FragmentAddActionPost : BaseFragment() {
     private var mUrls: ArrayList<String>? = null
     private var postIdx = -1
     private var mContents: String? = null
-    private var mTags : String? = null
+    private var mTags: String? = null
+
     companion object {
         fun newInstance(images: ArrayList<File>): FragmentAddActionPost {
             val fragment = FragmentAddActionPost()
@@ -47,7 +50,7 @@ class FragmentAddActionPost : BaseFragment() {
             url: ArrayList<String>,
             post_idx: Int,
             contents: String,
-            tags : String
+            tags: String
         ): FragmentAddActionPost {
             val fragment = FragmentAddActionPost()
             fragment.mUrls = url
@@ -103,22 +106,53 @@ class FragmentAddActionPost : BaseFragment() {
             iv_check.visibility = GONE
         }
 
-        et_tag.setOnEditorActionListener(TextView.OnEditorActionListener { _, i, _ ->
-            if(i == EditorInfo.IME_ACTION_DONE){
-                if(!et_tag.text.toString().isNullOrEmpty()){
-                    if(mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString())
+        et_tag.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                if (!et_tag.text.toString().isNullOrEmpty()) {
+                    if (mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString())
                     et_tag.setText("")
                     rv_tag.visibility = VISIBLE
                     sv_add_post.post(Runnable {
                         sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
                     })
-                    rv_tag.smoothScrollToPosition(mTagAdapter!!.size())
+                    rv_tag.smoothScrollToPosition(mTagAdapter!!.size() - 1)
                 }
-            }else
+            } else
                 false
             true
-        })
+        }
 
+        et_tag.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                try {
+                    s?.let {
+                        if (it[(s.length - 1)].toInt() === 32 || it[(s.length - 1)].toInt() === 9) {
+
+                            if(!et_tag.text.toString().replace(" ","").isNullOrEmpty()) {
+                                if (mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString().replace(" ",""))
+                                rv_tag.visibility = VISIBLE
+                                sv_add_post.post{
+                                    sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
+                                }
+                                rv_tag.smoothScrollToPosition(mTagAdapter!!.size() - 1)
+                                et_tag.setText("")
+                            }else{
+                                et_tag.setText("")
+                            }
+                        }
+                    }
+                } catch (ex: IndexOutOfBoundsException) {
+                    //handle the exception
+                }
+
+            }
+        })
     }
 
     /**
@@ -147,11 +181,11 @@ class FragmentAddActionPost : BaseFragment() {
                 mAdapter!!.add(mUrls!![i])
             }
         }
-        if(!mTags.isNullOrEmpty()){
+        if (!mTags.isNullOrEmpty()) {
             val tags = mTags!!.split(",".toRegex())
 
-            for(i in 0 until tags.size){
-                if(mTagAdapter != null) mTagAdapter!!.add(tags[i])
+            for (i in 0 until tags.size) {
+                if (mTagAdapter != null) mTagAdapter!!.add(tags[i])
             }
             rv_tag.visibility = VISIBLE
         }

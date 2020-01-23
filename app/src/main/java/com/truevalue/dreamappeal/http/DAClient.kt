@@ -43,8 +43,8 @@ object DAClient {
     val IMAGE_TYPE_PROFILE = "profiles"
     val IMAGE_TYPE_ACTION_POST = "action_posts"
     val IMAGE_TYPE_ACHIVEMENT_POST = "achievement_posts"
-    val IMAGE_TYPE_WISH = "wish"
-    val IMAGE_TYPE_CONCERN = "concern"
+    val IMAGE_TYPE_WISH = "wishes"
+    val IMAGE_TYPE_CONCERN = "concerns"
 
     val POST_TYPE_ACTION = 0
     val POST_TYPE_LIFE = 1

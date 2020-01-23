@@ -538,13 +538,14 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                         mAdapter.add(replyBean)
                     }
                 }
-
-                if (reply[bean.idx] != null) {
-
+            }
+            if (isScroll && mAdapter.size() > 0) {
+                if(mAdapter.size() > 15){
+                    rv_comments.scrollToPosition(mAdapter.size() - 1)
+                }else {
+                    rv_comments.smoothScrollToPosition(mAdapter.size() - 1)
                 }
             }
-            if (isScroll && mAdapter.size() > 0)
-                rv_comments.scrollToPosition(mAdapter.size())
         }
     }
 
@@ -747,6 +748,13 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         tv_writer.text = bean.name
         val idx = if (bean.parent_idx > 0) bean.parent_idx else bean.idx
         mParentIdx = idx
+
+        et_comment.isFocusableInTouchMode = true
+        et_comment.requestFocus()
+        val imm =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(et_comment, 0)
+        bottom_comment.visibility = VISIBLE
     }
 
     /**
@@ -759,6 +767,13 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         et_comment.setSelection(et_comment.length())
         mIsEdit = true
         mParentIdx = bean.idx
+
+        et_comment.isFocusableInTouchMode = true
+        et_comment.requestFocus()
+        val imm =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(et_comment, 0)
+        bottom_comment.visibility = VISIBLE
     }
 
     /**

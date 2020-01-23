@@ -60,7 +60,7 @@
                     android:paddingRight="7dp"
                     android:paddingBottom="5dp"
                     android:text="@string/str_adoption"
-                    android:textColor="@color/emerald"
+                    android:textColor="@color/soft_green"
                     android:textSize="11sp" />
 
         </LinearLayout>
