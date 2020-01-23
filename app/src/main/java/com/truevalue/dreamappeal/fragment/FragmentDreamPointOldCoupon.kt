@@ -21,13 +21,13 @@ import kotlinx.android.synthetic.main.fragment_add_coupon.*
 import okhttp3.Call
 
 
-class FragmentDreamPointCoupon : BaseFragment() {
+class FragmentDreamPointOldCoupon : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_add_coupon, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_old_add_coupon, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,9 +112,6 @@ class FragmentDreamPointCoupon : BaseFragment() {
                 (activity as ActivityDreamPoint).iv_close -> activity!!.onBackPressed()
                 btn_input -> {
                     addDreamPointCoupon()
-                }
-                tv_old_coupon->{
-                    (activity as ActivityDreamPoint).replaceFragment(FragmentDreamPointOldCoupon(),true)
                 }
             }
         }

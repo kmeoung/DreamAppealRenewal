@@ -269,8 +269,10 @@
     <string name="str_class_circle">동아리</string>
     <string name="str_class_group">단체</string>
     <string name="str_coupon_info">쿠폰번호를 입력해주세요</string>
+    <string name="str_old_coupon_info">쿠폰번호를 입력해주세요</string>
     <string name="str_coupon_info_2">- 입력 후 확인을 누르면 해당 포인트가 자동으로 추가됩니다.</string>
     <string name="str_coupon_info_3">- 한번 사용하신 쿠폰은 재사용이 불가능합니다.</string>
+    <string name="str_old_coupon">예전 쿠폰을 가지고 계신가요?</string>
     <string name="str_add_object_step_detail">세부단계 +</string>
 
     <string name="str_camera">카메라</string>
