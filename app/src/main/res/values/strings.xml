@@ -34,6 +34,7 @@
     <string name="str_next">다음</string>
 
     <string name="str_setting_permissions">권한 설정</string>
+    <string name="str_setting">설정</string>
     <string name="str_permission_info">2017년 3월 23일부터 시행되는 정보통신망법령에 맞추어 서비스이용에 꼭 필요한 항목만 필수 접근하고 있습니다.</string>
     <string name="str_essential_access">필수적 접근 권한</string>
     <string name="str_storage_permission_info">게시물 생성시 파일첨부를 위해\n저장소 권한이 필요합니다.</string>
@@ -160,8 +161,10 @@
     <string name="str_job">직업명</string>
 
     <string name="str_all_agreement">모두 동의합니다</string>
-    <string name="str_terms_of_use">이용약관 동의</string>
-    <string name="str_privacy_policy">개인정보처리방침 동의</string>
+    <string name="str_agree_terms_of_use">이용약관 동의</string>
+    <string name="str_agree_privacy_policy">개인정보처리방침 동의</string>
+    <string name="str_terms_of_use">이용약관</string>
+    <string name="str_privacy_policy">개인정보처리방침</string>
     <string name="str_receive_marketing">마케팅 정보 수신 동의</string>
     <string name="str_agreement_dtail">상세보기 ></string>
 
@@ -225,7 +228,15 @@
     <string name="str_lifestyle">일상 / 경험</string>
     <string name="str_get_list">획득 내역</string>
     <string name="str_use_list">사용 내역</string>
-    <string name="str_idea">영감 갤러리</string>
+    <string name="str_idea_gallery">영감 갤러리</string>
+
+    <string name="str_idea">영감</string>
+    <string name="str_life">일상</string>
+    <string name="str_accumulate">누적</string>
+
+    <string name="str_synthesis">종합</string>
+    <string name="str_synthesis_rank">종합 랭킹</string>
+
     <string name="str_my_notification">내 소식</string>
     <string name="str_abiity_long">내 꿈에 맞게 갖출 능력</string>
     <string name="str_opportunity_long">내 꿈에 맞게 만들고픈 기회</string>
@@ -344,4 +355,12 @@
 
     <string name="str_fame_text">작성한 게시글</string>
     <string name="str_fame_comment">작성한 댓글</string>
+    
+    <string name="str_notification">알림</string>
+    <string name="str_inquiry">문의</string>
+    <string name="str_version">버전</string>
+    <string name="str_terms_and_policies">약관 및 정책</string>
+
+    <string name="str_leave_member">회원 탈퇴</string>
+    <string name="str_appeal_rank">어필 랭킹</string>
 </resources>

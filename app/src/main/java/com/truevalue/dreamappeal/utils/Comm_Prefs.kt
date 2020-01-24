@@ -50,4 +50,15 @@ object Comm_Prefs {
         return prefs.getInt(Comm_Prefs_Param.PREFS_USER_PROFILE_INDEX, -1)
     }
 
+    /**
+     * Notification 알림 여부 설정
+     */
+    fun setNotification(use : Boolean){
+        prefs.edit().putBoolean(Comm_Prefs_Param.PREFS_IS_NOTIFICATION,use).commit()
+    }
+
+    fun isNotification() : Boolean{
+        return prefs.getBoolean(Comm_Prefs_Param.PREFS_IS_NOTIFICATION,false)
+    }
+
 }

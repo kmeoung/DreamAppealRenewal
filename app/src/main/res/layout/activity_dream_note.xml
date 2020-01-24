@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/str_idea"
+                        android:text="@string/str_idea_gallery"
                         android:textColor="@color/color_dream_note"
                         android:textSize="14sp"
                         android:id="@+id/tv_idea"/>

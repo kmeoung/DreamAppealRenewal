@@ -118,7 +118,6 @@ class FragmentDreamPointOldCoupon : BaseFragment() {
 
         (activity as ActivityDreamPoint).iv_close.setOnClickListener(listener)
         btn_input.setOnClickListener(listener)
-        tv_old_coupon.setOnClickListener(listener)
     }
 
     /**

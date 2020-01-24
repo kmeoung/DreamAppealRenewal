@@ -289,7 +289,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_square_round_r"
-                            android:text="@string/str_terms_of_use"
+                            android:text="@string/str_agree_terms_of_use"
                             android:textColor="@color/black"
                             android:textSize="12.3sp" />
 
@@ -340,7 +340,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_square_round_r"
-                            android:text="@string/str_privacy_policy"
+                            android:text="@string/str_agree_privacy_policy"
                             android:textColor="@color/black"
                             android:textSize="12.3sp" />
 

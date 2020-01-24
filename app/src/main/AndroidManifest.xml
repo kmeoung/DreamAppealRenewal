@@ -123,6 +123,11 @@
                 android:name=".activity.ActivityImgScaling"
                 android:screenOrientation="portrait" />
 
+        <!-- Rank -->
+        <activity
+                android:name=".activity.ActivityRank"
+                android:screenOrientation="portrait" />
+
         <!-- Push 연동 -->
         <service
                 android:name=".service.ServiceFirebaseMsg"

@@ -18,6 +18,7 @@ import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentDreamBoard
 import com.truevalue.dreamappeal.fragment.notification.FragmentNotification
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
+import com.truevalue.dreamappeal.fragment.profile.FragmentSetting
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
@@ -272,12 +273,17 @@ class ActivityMain : BaseActivity() {
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
+                ll_setting->{
+                    dl_drawer.closeDrawer(Gravity.RIGHT)
+                    replaceFragment(FragmentSetting(),addToBack = true,isMainRefresh = false)
+                }
             }
         }
         ll_logout.setOnClickListener(listener)
         ll_profile.setOnClickListener(listener)
         ll_following.setOnClickListener(listener)
         ll_dream_point.setOnClickListener(listener)
+        ll_setting.setOnClickListener(listener)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

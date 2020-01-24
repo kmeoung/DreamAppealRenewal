@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="53.3dp"
+            android:background="@color/yellow_orange_two"
+            android:gravity="center_vertical"
+            android:paddingLeft="18dp"
+            android:text="@string/str_appeal_rank"
+            android:textColor="@color/white"
+            android:textSize="22.3sp"
+            android:fontFamily="@font/jalnan"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="14dp">
+
+        <TextView
+                android:id="@+id/tv_synthesis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="13.3sp"
+                android:text="@string/str_synthesis"
+                android:textColor="@color/color_search"/>
+
+        <TextView
+                android:id="@+id/tv_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="13.3sp"
+                android:text="@string/str_action_post"
+                android:textColor="@color/color_search"/>
+
+        <TextView
+                android:id="@+id/tv_idea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="13.3sp"
+                android:text="@string/str_idea"
+                android:textColor="@color/color_search"/>
+
+        <TextView
+                android:id="@+id/tv_life"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="13.3sp"
+                android:text="@string/str_life"
+                android:textColor="@color/color_search"/>
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        <TextView
+                android:id="@+id/tv_weekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="13.3sp"
+                android:text="@string/str_weekly"
+                android:textColor="@color/color_search"/>
+
+        <TextView
+                android:id="@+id/tv_accumulate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="13.3sp"
+                android:text="@string/str_accumulate"
+                android:textColor="@color/color_search"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/rv_rank"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53.3dp"
+            android:background="@color/yellow_orange_two"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="11.3dp"
+                android:paddingRight="12dp"
+                android:gravity="center">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12.3sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/str_synthesis_rank" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22.3sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_square_round_eb"
+                    android:text="0"
+                    android:id="@+id/tv_synthesis_rank"/>
+
+        </LinearLayout>
+
+        <ImageView
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:src="@drawable/drawer_user"
+                android:id="@+id/iv_my_rank_profile"
+                android:layout_marginRight="10.3dp"/>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13.3sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="#value_style"
+                    android:layout_marginBottom="6dp"
+                    android:id="@+id/tv_value_style_job"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13.3sp"
+                        android:textColor="@color/black"
+                        android:text="#name"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:layout_marginRight="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_contents"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13.3sp"
+                        android:textColor="@color/black"
+                        android:text="#contents"
+                        android:fontFamily="@font/nanum_square_round_b" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

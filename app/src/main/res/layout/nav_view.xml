@@ -83,7 +83,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="19dp"
-                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -109,6 +108,28 @@
                         android:visibility="visible" />
 
             </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_setting">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/str_setting"
+                        android:textColor="@color/text_gray"
+                        android:textSize="16sp" />
+
+            </LinearLayout>
+
 
 
         </LinearLayout>
