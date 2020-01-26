@@ -12,6 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
@@ -39,12 +46,22 @@ class FragmentLoginContainer : BaseFragment() {
 
     private var callback: SessionCallback
 
+    // google login result
+    private var RC_SIGN_IN = 9001
+    // google api client
+    private var googleSignInClient : GoogleSignInClient?
+    // firebase auth
+    private var firebaseAuth : FirebaseAuth?
+
     companion object{
         private const val TAG = "MainActivity"
+
     }
 
     init {
         callback = SessionCallback()
+        googleSignInClient = null
+        firebaseAuth = null
     }
 
     override fun onCreateView(
@@ -73,6 +90,47 @@ class FragmentLoginContainer : BaseFragment() {
         Log.e(TAG, "토큰 : " + Session.getCurrentSession().tokenInfo.accessToken)
         Log.e(TAG, "토큰 리프레쉬토큰 : " + Session.getCurrentSession().tokenInfo.refreshToken)
         Log.e(TAG, "토큰 파이어데이트 : " + Session.getCurrentSession().tokenInfo.remainingExpireTime)
+
+        setGoogleApi()
+    }
+
+    /**
+     * Google 설정
+     */
+    private fun setGoogleApi(){
+        // config signin
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(context!!,gso)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        login_google.setOnClickListener {
+            val signInIntent = googleSignInClient?.signInIntent
+            startActivityForResult(signInIntent,RC_SIGN_IN)
+        }
+
+    }
+
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+
+        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        firebaseAuth!!.signInWithCredential(credential)
+            .addOnCompleteListener(activity!!) {
+                // 성공여부
+                if (it.isSuccessful) {
+
+                    val user = firebaseAuth?.currentUser
+                    Toast.makeText(context!!.applicationContext, "로그인 성공", Toast.LENGTH_SHORT).show()
+
+                } else {
+
+                    Toast.makeText(context!!.applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     /**
@@ -87,6 +145,21 @@ class FragmentLoginContainer : BaseFragment() {
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             Log.d(REQUEST_TAG,"session get current session")
             return
+        }
+
+        // Google 로그인 인텐트 응답
+        if (requestCode === RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)
+                account?.let {
+                    firebaseAuthWithGoogle(it)
+                }
+
+            } catch (e: ApiException) {
+                e.printStackTrace()
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data)

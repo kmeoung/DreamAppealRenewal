@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "332055335433-udk7e73lec5rvlif9shpdhqbr4ts2van.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.truevalue.dreamappeal",
+            "certificate_hash": "97a85e69ccf12034eaa78814598cd7556db5ea65"
+          }
+        },
+        {
           "client_id": "332055335433-q83hkor96mnkpjpn6cdfdcgg557vf73j.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -43,6 +51,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "332055335433-jr7fvt41bmi43btcks6rtfdeqksseen8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.truevalue.dreamappeal.renewaldev",
+            "certificate_hash": "97a85e69ccf12034eaa78814598cd7556db5ea65"
+          }
+        },
         {
           "client_id": "332055335433-q83hkor96mnkpjpn6cdfdcgg557vf73j.apps.googleusercontent.com",
           "client_type": 3

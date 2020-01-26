@@ -1,7 +1,10 @@
 package com.truevalue.dreamappeal.activity
 
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -13,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
-import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentDreamBoard
 import com.truevalue.dreamappeal.fragment.notification.FragmentNotification
@@ -31,6 +33,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
 import okhttp3.Call
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
 
 class ActivityMain : BaseActivity() {
     var mActionListener: IOActionBarListener? = null
@@ -77,6 +82,32 @@ class ActivityMain : BaseActivity() {
         AWSMobileClient.getInstance().initialize(this) {
             Log.d("AWS_LOG", "AWS INITIALIZED")
         }.execute()
+
+        getHashKey()
+    }
+
+    private fun getHashKey() {
+        var packageInfo: PackageInfo? = null
+        try {
+            packageInfo =
+                packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
+        for (signature in packageInfo!!.signatures) {
+            try {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            } catch (e: NoSuchAlgorithmException) {
+                Log.e(
+                    "KeyHash",
+                    "Unable to get MessageDigest. signature=$signature",
+                    e
+                )
+            }
+        }
     }
 
 
