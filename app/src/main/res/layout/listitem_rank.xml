@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53.3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="0"
+                android:id="@+id/tv_rank"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
+
+        <ImageView
+                android:layout_width="41dp"
+                android:layout_height="41dp"
+                android:src="@drawable/drawer_user"
+                android:id="@+id/iv_rank_profile"
+                android:layout_marginRight="10.3dp"/>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13.3sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:text="#value_style"
+                    android:layout_marginBottom="6dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:id="@+id/tv_user"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                        android:id="@+id/tv_contents"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13.3sp"
+                        android:textColor="@color/black"
+                        android:text="#contents"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:visibility="visible"/>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/ll_concern"
+                        android:visibility="gone"
+                        android:gravity="center">
+
+                    <TextView
+                            android:id="@+id/tv_fame"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="17dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text="0"
+                            android:textColor="@color/blueberry"
+                            android:textSize="13.3sp" />
+
+                    <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginRight="7dp"
+                            android:src="@drawable/ic_circle_gold" />
+
+                    <TextView
+                            android:id="@+id/tv_gold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15.3dp"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="13.3sp" />
+
+                    <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginRight="7dp"
+                            android:src="@drawable/ic_circle_silver" />
+
+                    <TextView
+                            android:id="@+id/tv_silver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15.3dp"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="13.3sp"/>
+
+                    <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginRight="7dp"
+                            android:src="@drawable/ic_circle_bronze" />
+
+                    <TextView
+                            android:id="@+id/tv_bronze"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15.3dp"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="13.3sp"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

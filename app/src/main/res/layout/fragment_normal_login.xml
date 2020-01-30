@@ -5,7 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:backgroundTint="@color/white">
 
     <!--툴바-->
     <include
@@ -30,7 +31,7 @@
                     android:layout_marginLeft="57.5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="57.5dp"
-                    android:src="@drawable/login_logo" />
+                    android:src="@drawable/ic_main_logo" />
 
 
             <EditText

@@ -187,7 +187,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 내 꿈 소개 댓글 가져오기
      */
     private fun getPresentComments(isScroll: Boolean) {
-        val dst_profile_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mIndex
         DAClient.getProfileComment(dst_profile_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
@@ -218,7 +218,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 발전계획 댓글 가져오기
      */
     private fun getBlueprintComments(isScroll: Boolean) {
-        val dst_profile_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mIndex
         DAClient.getBlueprintComment(dst_profile_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
@@ -249,7 +249,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실현성과 댓글 가져오기
      */
     private fun getAchievementPostComments(isScroll: Boolean) {
-        val post_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val post_idx = mIndex
         DAClient.getAchievementPostComment(post_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
@@ -280,7 +280,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실천인증 댓글 가져오기
      */
     private fun getActionPostComments(isScroll: Boolean) {
-        val post_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val post_idx = mIndex
         DAClient.getActionPostComment(post_idx, object : DAHttpCallback {
             override fun onFailure(call: Call, e: IOException) {
                 super.onFailure(call, e)
@@ -323,7 +323,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 내 꿈 소개 댓글 추가
      */
     private fun addPresentComment(parent_idx: Int) {
-        val dst_profile_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addProfileComment(
@@ -340,7 +340,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 발전계획 댓글 추가
      */
     private fun addBlueprintComment(parent_idx: Int) {
-        val dst_profile_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val dst_profile_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addBlueprintComment(
@@ -357,7 +357,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실현성과 댓글 추가
      */
     private fun addAchievementPostComment(parent_idx: Int) {
-        val post_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val post_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addAchievementPostComment(
@@ -374,7 +374,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * 실천인증 댓글 추가
      */
     private fun addActionPostComment(parent_idx: Int) {
-        val post_idx = mIndex // todo : 현재 보고있는 profile을 넣어야 함
+        val post_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
         DAClient.addActionPostComment(
@@ -682,10 +682,11 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 tvAddReply.setOnClickListener{
                     setReplyComment(bean)
                 }
-
-                h.itemView.setOnLongClickListener{
-                    showPopupMenu(tvComment, bean)
-                    true
+                if (mIndex == Comm_Prefs.getUserProfileIndex()) {
+                    h.itemView.setOnLongClickListener {
+                        showPopupMenu(tvComment, bean)
+                        true
+                    }
                 }
             }
         }

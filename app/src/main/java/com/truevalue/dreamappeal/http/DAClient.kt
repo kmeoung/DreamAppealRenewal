@@ -59,7 +59,7 @@ object DAClient {
         callback: DAHttpCallback
     ) {
         val params = DAHttpParams()
-        token?.let {token->
+        token?.let { token ->
             params.put("token", token)
             BaseOkhttpClient.request(
                 HttpType.PATCH,
@@ -2295,6 +2295,28 @@ object DAClient {
     }
 
     /**
+     * POST
+     * 질문 - 검색
+     */
+    fun searchConcern(
+        keyword: String,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        params.put("keyword", keyword)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_SEARCH_CONCERN,
+            getHttpHeader(),
+            params,
+            callback
+        )
+
+    }
+
+    /**
      * DELETE
      * 태그 검색 기록 제거
      */
@@ -3079,7 +3101,7 @@ object DAClient {
      * GET
      * Notification 가져오기
      */
-    fun getNotification(callback: DAHttpCallback){
+    fun getNotification(callback: DAHttpCallback) {
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -3095,7 +3117,7 @@ object DAClient {
      * POST
      * Notification check
      */
-    fun checkNotification(body : JSONObject,callback: DAHttpCallback){
+    fun checkNotification(body: JSONObject, callback: DAHttpCallback) {
 
         val params = DAHttpParams()
         params.put(body)
@@ -3104,6 +3126,269 @@ object DAClient {
             Comm_Param.URL_NOTIFICATION_CHECK,
             getHttpHeader(),
             params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 종합
+     */
+    fun getRankTotal(
+        range: String,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_TOTAL,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 실천
+     */
+    fun getRankAction(
+        range: String,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_ACTION,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 영감
+     */
+    fun getRankIdea(
+        range: String,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_IDEA,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 일상
+     */
+    fun getRankLife(
+        range: String,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_LIFE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 명성도
+     */
+    fun getRankReputation(
+        callback: DAHttpCallback
+    ) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_REPUTATION,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 종합 - 추가조회
+     */
+    fun getRankTotal(
+        range: String,
+        LastRowNum: Int,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+        params.put("LastRowNum", LastRowNum)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_TOTAL_MORE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 실천 - 추가조회
+     */
+    fun getRankAction(
+        range: String,
+        LastRowNum: Int,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+        params.put("LastRowNum", LastRowNum)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_ACTION_MORE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 영감 - 추가조회
+     */
+    fun getRankIdea(
+        range: String,
+        LastRowNum: Int,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+        params.put("LastRowNum", LastRowNum)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_IDEA_MORE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 일상 - 추가조회
+     */
+    fun getRankLife(
+        range: String,
+        LastRowNum: Int,
+        callback: DAHttpCallback
+    ) {
+
+
+        val params = DAHttpParams()
+        params.put("range", range)
+        params.put("LastRowNum", LastRowNum)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_LIFE_MORE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * GET
+     * 랭킹 - 명성도 - 추가조회
+     */
+    fun getRankReputation(
+        LastRowNum: Int,
+        callback: DAHttpCallback
+    ) {
+        val params = DAHttpParams()
+        params.put("LastRowNum", LastRowNum)
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_RANK_REPUTATION_MORE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 예전 임시 쿠폰 등록
+     */
+    fun setTempDreamPoint(
+        serial_code: String,
+        callback: DAHttpCallback
+    ) {
+
+        val parasm = DAHttpParams()
+        parasm.put("serial_code", serial_code)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_DREAMPOINT_COUPON_TEMP,
+            getHttpHeader(),
+            parasm,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 영감 게시물 저장
+     */
+    fun saveIdeaPost(
+        post_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val url =
+            Comm_Param.URL_SHARE_IDEA_POST_IDX.replace(Comm_Param.POST_INDEX, post_idx.toString())
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            getHttpHeader(),
+            null,
             callback
         )
     }

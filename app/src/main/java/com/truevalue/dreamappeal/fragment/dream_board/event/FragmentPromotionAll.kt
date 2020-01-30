@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.dream_board.event
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.activity.ActivityRank
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -169,7 +171,8 @@ class FragmentPromotionAll : BaseFragment() {
                                 )
                         }
                         EVENT_TYPE_RANK -> {
-
+                            val intent = Intent(context!!, ActivityRank::class.java)
+                            startActivity(intent)
                         }
                     }
                 }

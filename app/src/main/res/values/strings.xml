@@ -208,6 +208,7 @@
     <string name="str_dream_point_info_get_point">포인트 획득하자</string>
     <string name="str_get_and_usage">획득 및 사용내역 ></string>
     <string name="str_add_coupon">쿠폰 등록</string>
+    <string name="str_add_old_coupon">예전 쿠폰 등록</string>
     <string name="str_daily">일간</string>
     <string name="str_weekly">주간</string>
     <string name="str_monthly">월간</string>
@@ -271,6 +272,7 @@
     <string name="str_no">아니오</string>
     <string name="str_none">없음</string>
     <string name="str_edit">수정</string>
+    <string name="str_save">저장</string>
     <string name="str_delete">삭제</string>
 
     <string name="str_no_select">지정 안함</string>
@@ -280,7 +282,7 @@
     <string name="str_class_circle">동아리</string>
     <string name="str_class_group">단체</string>
     <string name="str_coupon_info">쿠폰번호를 입력해주세요</string>
-    <string name="str_old_coupon_info">쿠폰번호를 입력해주세요</string>
+    <string name="str_old_coupon_info">예전 쿠폰번호를 입력해주세요</string>
     <string name="str_coupon_info_2">- 입력 후 확인을 누르면 해당 포인트가 자동으로 추가됩니다.</string>
     <string name="str_coupon_info_3">- 한번 사용하신 쿠폰은 재사용이 불가능합니다.</string>
     <string name="str_old_coupon">예전 쿠폰을 가지고 계신가요?</string>

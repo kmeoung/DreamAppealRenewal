@@ -112,6 +112,8 @@ object Comm_Param {
     val URL_DREAMPOINT_HISTORY_USE = "$URL_DREAMPOINT_HISTORY/use"
     val URL_DREAMPOINT_COUPON = "$URL_DREAMPOINT/coupon"
 
+    val URL_DREAMPOINT_COUPON_TEMP = "$URL_DREAMPOINT_COUPON/temp"
+
     // 드림노트
     val URL_DREAMNOTE = "$URL_API/dreamnote"
     val URL_DREAMNOTE_LIFE = "$URL_DREAMNOTE/life"
@@ -201,6 +203,7 @@ object Comm_Param {
     val URL_SEARCH_TAG = "$URL_SEARCH/tag"
     val URL_SEARCH_TAG_TAG = "${URL_SEARCH_TAG}-tag"
     val URL_SEARCH_TAG_POST = "${URL_SEARCH_TAG}-post"
+    val URL_SEARCH_CONCERN = "$URL_SEARCH/concern"
 
     //타임라인
     val URL_TIMELINES = "$URL_API/timelines"
@@ -272,5 +275,31 @@ object Comm_Param {
     val URL_NOTIFICATION = "$URL_API/notification"
     val URL_NOTIFICATION_TOKEN = "$URL_NOTIFICATION/token"
     val URL_NOTIFICATION_CHECK = "$URL_NOTIFICATION/check"
+
+    //랭킹
+    private val URL_RANK = "$URL_API/rank"
+    val URL_RANK_TOTAL = "$URL_RANK/total"
+    val URL_RANK_ACTION = "$URL_RANK/action"
+    val URL_RANK_IDEA = "$URL_RANK/idea"
+    val URL_RANK_LIFE = "$URL_RANK/life"
+    val URL_RANK_REPUTATION = "$URL_RANK/reputation"
+
+    val URL_RANK_TOTAL_MORE = "$URL_RANK_TOTAL/more"
+    val URL_RANK_ACTION_MORE = "$URL_RANK_ACTION/more"
+    val URL_RANK_IDEA_MORE = "$URL_RANK_IDEA/more"
+    val URL_RANK_LIFE_MORE = "$URL_RANK_LIFE/more"
+    val URL_RANK_REPUTATION_MORE = "$URL_RANK_REPUTATION/more"
+
+    //약관 조회
+    private val URL_DOCS = "$URL_API/docs"
+    val URL_DOCS_PRIVACY = "$URL_DOCS/privacy"
+    val URL_DOCS_TERMS = "$URL_DOCS/terms"
+
+    //영감 게시물 저장
+    private val URL_SHARE = "$URL_API/share"
+    private val URL_SHARE_IDEA = "$URL_SHARE/idea"
+    val URL_SHARE_IDEA_POST_IDX = "$URL_SHARE_IDEA/$POST_INDEX"
+
+
 
 }

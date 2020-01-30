@@ -1,18 +1,37 @@
 package com.truevalue.dreamappeal.bean
 
-data class BeanTimeline(var idx : Int,
-                        var profile_idx : Int,
-                        var object_title : String?,
-                        var step_title : String?,
-                        var content : String,
-                        var tags : String?,
-                        var post_type : Int,
-                        var value_style : String?,
-                        var job : String?,
-                        var nickname : String,
-                        var profile_image : String?,
-                        var register_date : String,
-                        var comment_count : Int,
-                        var like_count : Int,
-                        var status : Boolean,
-                        var imageList : ArrayList<String>)
+data class BeanTimeline(
+    val achievement_idx: Int?,
+    val action_idx: Int?,
+    val code: String?,
+    val comment_count: Int?,
+    val concern_idx: Int?,
+    val content: String?,
+    val contents_bold: String?,
+    val title : String?,
+    val contents_regular: String?,
+    val idx: Int?,
+    val images: List<TimelineImage>?,
+    val item_idx: Int?,
+    val job: String?,
+    var like_count: Int?,
+    val nickname: String?,
+    val object_title: String?,
+    val post_type: Int?,
+    val present_idx: Int?,
+    val profile_idx: Int?,
+    val profile_image: String?,
+    val register_date: String?,
+    val source_idx: Int?,
+    var status: Boolean?,
+    val step_title: String?,
+    val tags: String?,
+    val type: Int?,
+    val unconfirmed: Int?,
+    val user_idx: Int?,
+    val value_style: String?
+)
+
+data class TimelineImage(
+    val url: String?
+)

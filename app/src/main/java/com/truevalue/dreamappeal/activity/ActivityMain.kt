@@ -251,7 +251,7 @@ class ActivityMain : BaseActivity() {
                     mMainViewType = MAIN_TYPE_TIMELINE
                 iv_add_board ->
                     mMainViewType = MAIN_TYPE_ADD_BOARD
-                iv_notification -> {
+                rl_notification -> {
                     mMainViewType = MAIN_TYPE_NOTIFICATION
                 }
                 iv_profile ->
@@ -266,7 +266,7 @@ class ActivityMain : BaseActivity() {
         iv_home.setOnClickListener(onClickListener)
         iv_timeline.setOnClickListener(onClickListener)
         iv_add_board.setOnClickListener(onClickListener)
-        iv_notification.setOnClickListener(onClickListener)
+        rl_notification.setOnClickListener(onClickListener)
         iv_profile.setOnClickListener(onClickListener)
     }
 

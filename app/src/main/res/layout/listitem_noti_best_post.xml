@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
         android:paddingLeft="14.3dp"
-        android:paddingRight="14.3dp"
-        android:background="@color/white">
+        android:paddingRight="14.3dp">
 
     <ImageView
             android:layout_width="match_parent"
@@ -16,9 +16,9 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginTop="32dp">
+            android:orientation="horizontal">
 
         <TextView
                 android:id="@+id/tv_name"
@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:fontFamily="@font/nanum_square_round_eb"
-                android:maxLength="20"
+                android:maxLines="1"
+                android:text="Google KoreA 서버개발자 서형중"
                 android:textColor="@color/black"
                 android:textSize="14.3sp" />
 
@@ -75,30 +76,30 @@
     </LinearLayout>
 
     <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="18.3dp"
             android:layout_marginRight="15dp"
             android:layout_marginBottom="18dp"
+            android:background="@color/nice_blue"
+            android:elevation="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/bmjua"
             android:gravity="center"
+            android:maxLines="1"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:maxLines="1"
-            android:background="@color/nice_blue"
-            android:fontFamily="@font/bmjua"
             android:textColor="@color/white"
-            android:textSize="22.3sp"
-            android:elevation="5dp"
-            android:layout_marginTop="18.3dp"/>
+            android:textSize="22.3sp" />
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
             android:gravity="bottom"
-            android:layout_marginBottom="10dp">
+            android:orientation="horizontal">
 
         <TextView
                 android:id="@+id/tv_time"
@@ -111,15 +112,15 @@
         <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         <TextView
                 android:id="@+id/tv_go_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_r"
-                android:textColor="@color/nice_blue"
                 android:text="@string/str_go_view"
+                android:textColor="@color/nice_blue"
                 android:textSize="12.3sp" />
 
     </LinearLayout>

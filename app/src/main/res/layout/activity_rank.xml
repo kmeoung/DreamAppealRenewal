@@ -19,10 +19,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="8dp"
-            android:paddingRight="14dp">
+            android:paddingRight="14dp"
+            android:id="@+id/ll_selector">
 
         <TextView
-                android:id="@+id/tv_synthesis"
+                android:id="@+id/tv_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -99,7 +100,8 @@
             android:layout_height="53.3dp"
             android:background="@color/yellow_orange_two"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/ll_my">
 
         <LinearLayout
                 android:layout_width="wrap_content"
@@ -124,7 +126,7 @@
                     android:textColor="@color/black"
                     android:fontFamily="@font/nanum_square_round_eb"
                     android:text="0"
-                    android:id="@+id/tv_synthesis_rank"/>
+                    android:id="@+id/tv_all_rank"/>
 
         </LinearLayout>
 
@@ -150,6 +152,8 @@
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="#value_style"
                     android:layout_marginBottom="6dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:id="@+id/tv_value_style_job"/>
 
             <LinearLayout
@@ -164,6 +168,8 @@
                         android:textSize="13.3sp"
                         android:textColor="@color/black"
                         android:text="#name"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:fontFamily="@font/nanum_square_round_b"
                         android:layout_marginRight="10dp"/>
 
@@ -174,7 +180,77 @@
                         android:textSize="13.3sp"
                         android:textColor="@color/black"
                         android:text="#contents"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:fontFamily="@font/nanum_square_round_b" />
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/ll_concern"
+                        android:visibility="gone"
+                        android:gravity="center">
+
+                    <TextView
+                            android:id="@+id/tv_fame"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text="0"
+                            android:textColor="@color/blueberry"
+                            android:textSize="13.3sp" />
+
+                    <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginRight="7dp"
+                            android:src="@drawable/ic_circle_gold" />
+
+                    <TextView
+                            android:id="@+id/tv_gold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15.3dp"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="13.3sp" />
+
+                    <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginRight="7dp"
+                            android:src="@drawable/ic_circle_silver" />
+
+                    <TextView
+                            android:id="@+id/tv_silver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15.3dp"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="13.3sp"/>
+
+                    <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_marginRight="7dp"
+                            android:src="@drawable/ic_circle_bronze" />
+
+                    <TextView
+                            android:id="@+id/tv_bronze"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15.3dp"
+                            android:fontFamily="@font/nanum_square_round_r"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="13.3sp"/>
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

@@ -20,7 +20,7 @@
                     android:layout_marginLeft="57dp"
                     android:layout_marginTop="112dp"
                     android:layout_marginRight="57dp"
-                    android:src="@drawable/login_logo" />
+                    android:src="@drawable/ic_main_logo" />
 
             <Button
                     android:id="@+id/btn_login"

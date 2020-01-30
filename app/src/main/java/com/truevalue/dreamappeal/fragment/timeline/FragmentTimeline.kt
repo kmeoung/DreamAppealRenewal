@@ -27,8 +27,10 @@ import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_timeline.*
+import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -42,6 +44,15 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     companion object {
         private const val RV_TYPE_TIMELINE = 0
         private const val RV_TYPE_TIMELINE_MORE = 1
+
+        private const val RV_TYPE_BEST_POST = 2
+        private const val RV_TYPE_ABILITY = 3
+        private const val RV_TYPE_DREAM_DESCRIPTION = 4
+        private const val RV_TYPE_MERIT_AND_MOTIVE = 5
+        private const val RV_TYPE_DREAM_TITLE = 6
+        private const val RV_TYPE_OBJECT = 7
+        private const val RV_TYPE_OBJECT_COMPLETE = 8
+        private const val RV_TYPE_OPPORTUNITY = 9
     }
 
     private var isLast = false
@@ -123,6 +134,15 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         if (code == DAClient.SUCCESS) {
                             val json = JSONObject(body)
                             if (isClear) mAdapter!!.clear()
+                            val notiCount = json.getInt("unconfirmed_alert_count")
+                            val tvNoti = (activity as ActivityMain).tv_notification
+
+                            if (notiCount > 0) {
+                                tvNoti.text = notiCount.toString()
+                                tvNoti.visibility = VISIBLE
+                            } else {
+                                tvNoti.visibility = GONE
+                            }
                             try {
                                 val posts = json.getJSONArray("posts")
 
@@ -133,23 +153,12 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                 for (i in 0 until posts.length()) {
 
                                     val post = posts.getJSONObject(i)
-                                    val images = post.getJSONArray("images")
 
                                     val bean = Gson().fromJson<BeanTimeline>(
                                         post.toString(),
                                         BeanTimeline::class.java
                                     )
 
-                                    var imageList = ArrayList<String>()
-
-                                    for (j in 0 until images.length()) {
-
-                                        val image = images.getJSONObject(j)
-
-                                        val url = image.getString("url")
-                                        imageList.add(url)
-                                    }
-                                    bean.imageList = imageList
                                     mAdapter!!.add(bean)
                                 }
                             } catch (e: Exception) {
@@ -188,29 +197,137 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             get() = if (mAdapter != null) if (mAdapter!!.size() > 4 && !isLast) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            if (RV_TYPE_TIMELINE == viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
-            } else if (RV_TYPE_TIMELINE_MORE == viewType) {
-                return BaseViewHolder.newInstance(R.layout.listitem_white_more, parent, false)
+
+            when(viewType){
+                RV_TYPE_TIMELINE->
+                    return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
+                RV_TYPE_TIMELINE_MORE->
+                    return BaseViewHolder.newInstance(R.layout.listitem_white_more, parent, false)
+                RV_TYPE_ABILITY->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_ability, parent, false)
+                RV_TYPE_BEST_POST->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_best_post, parent, false)
+                RV_TYPE_DREAM_DESCRIPTION->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_dream_description, parent, false)
+                RV_TYPE_DREAM_TITLE->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_dream_title, parent, false)
+                RV_TYPE_MERIT_AND_MOTIVE->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_dream_merit_and_motive, parent, false)
+                RV_TYPE_OBJECT->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_object, parent, false)
+                RV_TYPE_OBJECT_COMPLETE->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_object_complete, parent, false)
+                RV_TYPE_OPPORTUNITY->
+                    return BaseViewHolder.newInstance(R.layout.listitem_noti_opportunity, parent, false)
+                else ->
+                    return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
             }
-            return BaseViewHolder.newInstance(R.layout.listitem_timeline, parent, false)
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            if (RV_TYPE_TIMELINE == getItemViewType(i)) {
-                onTimelineBindViewHolder(h, i)
-            } else if (RV_TYPE_TIMELINE_MORE == getItemViewType(i)) {
-                getTimeLineData(
-                    true,
-                    (mAdapter!!.get(mAdapter!!.size() - 1) as BeanTimeline).idx,
-                    false
-                )
+
+            when(getItemViewType(i)){
+                RV_TYPE_TIMELINE->
+                    onTimelineBindViewHolder(h, i)
+                RV_TYPE_TIMELINE_MORE->{
+                    (mAdapter!!.get(mAdapter!!.size() - 1) as BeanTimeline).idx?.let {
+                        getTimeLineData(
+                            true,
+                            it,
+                            false
+                        )
+                    }
+                }
+                RV_TYPE_BEST_POST->{
+                    val bean = mAdapter?.get(i) as BeanTimeline
+                    val tvName = h.getItemView<TextView>(R.id.tv_name)
+                    val tvTitle = h.getItemView<TextView>(R.id.tv_title)
+                    tvName.text = bean.contents_bold ?: ""
+                    bean.title?.let { title->
+                        tvTitle.text = title
+                    }
+                    val tvGoView = h.getItemView<TextView>(R.id.tv_go_view)
+                    tvGoView.setOnClickListener {
+                        bean.item_idx?.let {item_idx->
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentProfile.newInstance(item_idx),
+                                true
+                            )
+                        }
+                    }
+                    val tvTime = h.getItemView<TextView>(R.id.tv_time)
+                    tvTime.text = Utils.convertFromDate(bean.register_date)
+                }
+                RV_TYPE_DREAM_TITLE->{
+                    val bean = mAdapter?.get(i) as BeanTimeline
+                    val tvName = h.getItemView<TextView>(R.id.tv_name)
+                    val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
+                    val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
+                    val tvJob = h.getItemView<TextView>(R.id.tv_job)
+                    val tvTime = h.getItemView<TextView>(R.id.tv_time)
+                    tvTime.text = Utils.convertFromDate(bean.register_date)
+
+                    if(!bean.profile_image.isNullOrEmpty()){
+                        Glide.with(context!!)
+                            .load(bean.profile_image)
+                            .circleCrop()
+                            .placeholder(R.drawable.drawer_user)
+                            .into(ivProfile)
+                    }
+
+                    if(!bean.value_style.isNullOrEmpty()) tvValueStyle.text = bean.value_style
+                    if(!bean.job.isNullOrEmpty()) tvJob.text = bean.job
+
+                    tvName.text = bean.contents_bold ?: ""
+                    val tvGoView = h.getItemView<TextView>(R.id.tv_go_view)
+                    tvGoView.setOnClickListener {
+                        bean.item_idx?.let {item_idx->
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentProfile.newInstance(item_idx),
+                                true
+                            )
+                        }
+                    }
+                }
+                RV_TYPE_ABILITY,
+                RV_TYPE_DREAM_DESCRIPTION,
+                RV_TYPE_MERIT_AND_MOTIVE,
+                RV_TYPE_OBJECT,
+                RV_TYPE_OBJECT_COMPLETE,
+                RV_TYPE_OPPORTUNITY->{
+                    val bean = mAdapter?.get(i) as BeanTimeline
+                    val tvName = h.getItemView<TextView>(R.id.tv_name)
+                    tvName.text = bean.contents_bold ?: ""
+                    val tvGoView = h.getItemView<TextView>(R.id.tv_go_view)
+                    val tvTime = h.getItemView<TextView>(R.id.tv_time)
+                    tvTime.text = Utils.convertFromDate(bean.register_date)
+                    tvGoView.setOnClickListener {
+                        bean.item_idx?.let {item_idx->
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentProfile.newInstance(item_idx),
+                                true
+                            )
+                        }
+                    }
+                }
             }
         }
 
         override fun getItemViewType(i: Int): Int {
             if (mAdapter!!.size() > 4 && mAdapter!!.size() == i && !isLast) {
                 return RV_TYPE_TIMELINE_MORE
+            }else{
+                return when((mAdapter?.get(i) as BeanTimeline).code){
+                    Noti_Param.ABILITY->RV_TYPE_ABILITY
+                    Noti_Param.PROFILE_ACHIEVEMENT_POST->RV_TYPE_BEST_POST
+                    Noti_Param.PROFILE_DESCRIPTION->RV_TYPE_DREAM_DESCRIPTION
+                    Noti_Param.PROFILE_VALUE_STYLE_JOB->RV_TYPE_DREAM_TITLE
+                    Noti_Param.PROFILE_MERIT_MOTIVE->RV_TYPE_MERIT_AND_MOTIVE
+                    Noti_Param.PROFILE_OBJECT->RV_TYPE_OBJECT
+                    Noti_Param.COMPLETE_PROFILE_OBJECT->RV_TYPE_OBJECT_COMPLETE
+                    Noti_Param.OPPORTUNITY->RV_TYPE_OPPORTUNITY
+                    else->RV_TYPE_TIMELINE
+                }
             }
             return RV_TYPE_TIMELINE
         }
@@ -277,20 +394,20 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
             tvTag.text = strTags
 
-
-            if (bean.profile_idx == Comm_Prefs.getUserProfileIndex()) {
-                ivMore.visibility = VISIBLE
-            } else ivMore.visibility = GONE
-
-            tvIndicator.text =
-                if (bean.imageList.size > 0) ((1).toString() + " / " + bean.imageList.size) else ((0).toString() + " / " + bean.imageList.size)
-            for (j in 0 until bean.imageList.size) {
-                pagerAdapter.add(bean.imageList[j])
+            bean.images?.let { imageList ->
+                tvIndicator.text =
+                    if (imageList.isNotEmpty()) ((1).toString() + " / " + imageList.size) else ((0).toString() + " / " + imageList.size)
+                for (j in imageList.indices) {
+                    imageList[j].url?.let { url ->
+                        pagerAdapter.add(url)
+                    }
+                }
             }
             pagerAdapter.notifyDataSetChanged()
 
             when (bean.post_type) {
                 FragmentActionPost.ACTION_POST -> {
+                    ivMore.visibility = VISIBLE
                     ivCircle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -306,6 +423,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     )
                 }
                 FragmentActionPost.ACTION_LIFE -> {
+                    if(Comm_Prefs.getUserProfileIndex() == bean.profile_idx) ivMore.visibility = VISIBLE
+                    else ivMore.visibility = GONE
                     ivCircle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -321,6 +440,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     )
                 }
                 FragmentActionPost.ACTION_IDEA -> {
+                    ivMore.visibility = VISIBLE
                     ivCircle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -348,10 +468,13 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             if (bean.profile_idx != Comm_Prefs.getUserProfileIndex()) {
                 ivProfile.setOnClickListener {
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentProfile.newInstance(bean.profile_idx),
-                        true
-                    )
+                    bean.profile_idx?.let { profile_idx ->
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentProfile.newInstance(profile_idx),
+                            true
+                        )
+                    }
+
                 }
             }
 
@@ -378,7 +501,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             Utils.setImageViewSquare(context!!, rlImages)
 
-            tvTime.text = Utils.convertFromDate(bean.register_date)
+            tvTime.text = Utils.convertFromDate(bean.register_date ?: "")
 
             tvContents.text = bean.content
 
@@ -419,7 +542,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
             }
 
-            ivCheering.isSelected = bean.status
+            ivCheering.isSelected = bean.status ?: false
         }
     }
 
@@ -428,22 +551,45 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun showPopupMenu(ivMore: View, bean: BeanTimeline) {
         val popupMenu = PopupMenu(context!!, ivMore)
-        popupMenu.menu.add(getString(R.string.str_edit))
-        popupMenu.menu.add(getString(R.string.str_delete))
+        popupMenu.menu.add(getString(R.string.str_save))
+
+        if(bean.profile_idx == Comm_Prefs.getUserProfileIndex()) {
+            popupMenu.menu.add(getString(R.string.str_edit))
+            popupMenu.menu.add(getString(R.string.str_delete))
+        }
 
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
+                getString(R.string.str_save)->{
+                    bean.idx?.let {idx->
+                        saveIdeaPost(idx)
+                    }
+                }
                 getString(R.string.str_edit) -> {
-                    val intent = Intent(context!!, ActivityAddPost::class.java)
-                    intent.putExtra(
-                        ActivityAddPost.EDIT_VIEW_TYPE,
-                        ActivityAddPost.EDIT_ACTION_POST
-                    )
-                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
-                    intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, bean.imageList)
-                    intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, bean!!.content)
-                    intent.putExtra(ActivityAddPost.REQUEST_TAGS, bean!!.tags)
-                    startActivity(intent)
+
+                    bean.images?.let { images ->
+                        val intent = Intent(context!!, ActivityAddPost::class.java)
+                        intent.putExtra(
+                            ActivityAddPost.EDIT_VIEW_TYPE,
+                            ActivityAddPost.EDIT_ACTION_POST
+                        )
+
+
+                        val array = ArrayList<String>()
+
+                        for (i in images.indices) {
+                            images[i].url?.let { url ->
+                                array.add(url)
+                            }
+                        }
+
+                        intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
+                        intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES,array)
+                        intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, bean!!.content)
+                        intent.putExtra(ActivityAddPost.REQUEST_TAGS, bean!!.tags)
+                        startActivity(intent)
+                    }
+
                 }
                 getString(R.string.str_delete) -> {
                     val builder =
@@ -468,11 +614,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         popupMenu.show()
     }
 
-    /**
-     * Post 삭제
-     */
-    fun deletePost(bean: BeanTimeline) {
-        DAClient.deleteActionPostsDetail(bean.idx, object : DAHttpCallback {
+    private fun saveIdeaPost(post_idx : Int){
+        DAClient.saveIdeaPost(post_idx,object : DAHttpCallback{
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -480,16 +623,38 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
-                    if (code == DAClient.SUCCESS) {
-                        mAdapter!!.remove(bean)
-                        mAdapter!!.notifyDataSetChanged()
-                    }
+                context?.let {
+                    Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
                 }
             }
         })
+    }
+
+    /**
+     * Post 삭제
+     */
+    private fun deletePost(bean: BeanTimeline) {
+        bean.idx?.let { idx->
+            DAClient.deleteActionPostsDetail(idx, object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                        if (code == DAClient.SUCCESS) {
+                            mAdapter!!.remove(bean)
+                            mAdapter!!.notifyDataSetChanged()
+                        }
+                    }
+                }
+            })
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -517,28 +682,32 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      * 인증 좋아요
      */
     private fun actionLike(bean: BeanTimeline) {
-        DAClient.likeActionPost(bean.idx, object : DAHttpCallback {
-            override fun onResponse(
-                call: Call,
-                serverCode: Int,
-                body: String,
-                code: String,
-                message: String
-            ) {
-                if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
-                    if (code == DAClient.SUCCESS) {
-                        val json = JSONObject(body)
-                        val status = json.getBoolean("status")
-                        bean.status = status
-                        val count = json.getInt("count")
-                        bean.like_count = count
-                        mAdapter!!.notifyDataSetChanged()
+        bean.idx?.let {idx->
+            DAClient.likeActionPost(idx, object : DAHttpCallback {
+                override fun onResponse(
+                    call: Call,
+                    serverCode: Int,
+                    body: String,
+                    code: String,
+                    message: String
+                ) {
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+
+                        if (code == DAClient.SUCCESS) {
+                            val json = JSONObject(body)
+                            val status = json.getBoolean("status")
+                            bean.status = status
+                            val count = json.getInt("count")
+                            bean.like_count = count
+                            mAdapter!!.notifyDataSetChanged()
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
+
     }
 
     /**

@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_action_post.*
 import okhttp3.Call
 import org.json.JSONObject
+import java.util.ArrayList
 
 class FragmentActionPost : BaseFragment() {
 
@@ -103,9 +104,26 @@ class FragmentActionPost : BaseFragment() {
         // text 설정
         tv_title.text = getString(R.string.str_level_choice_action_post)
 
-        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+        if(isDreamNoteType != null) {
+            when (isDreamNoteType) {
+                TYPE_DREAM_NOTE_LIFE -> {
+                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                        iv_action_more.visibility = VISIBLE
+                    } else iv_action_more.visibility = GONE
+                }
+                TYPE_DREAM_NOTE_IDEA -> {
+                    iv_action_more.visibility = VISIBLE
+                }
+                else -> {
+                    iv_action_more.visibility = VISIBLE
+                }
+            }
+        }else{
             iv_action_more.visibility = VISIBLE
-        } else iv_action_more.visibility = GONE
+        }
+
+
+
 
         if (isDreamNoteType != null) {
 
@@ -232,18 +250,44 @@ class FragmentActionPost : BaseFragment() {
      * 더보기 Dialog 띄우기
      */
     private fun showMoreDialog() {
-        val list = if (isDreamNoteType != null) arrayOf(
-            getString(R.string.str_edit),
-            getString(R.string.str_delete)
-        ) else arrayOf(
-            getString(R.string.str_edit_level),
-            getString(R.string.str_edit),
-            getString(R.string.str_delete)
-        )
+        var list : Array<String> =
+        if (isDreamNoteType != null){
+            when (isDreamNoteType) {
+                TYPE_DREAM_NOTE_LIFE -> {
+                    arrayOf(
+                        getString(R.string.str_edit),
+                        getString(R.string.str_delete)
+                    )
+                }
+                TYPE_DREAM_NOTE_IDEA -> {
+                    arrayOf(
+                        getString(R.string.str_save),
+                        getString(R.string.str_edit),
+                        getString(R.string.str_delete)
+                    )
+                }
+                else -> {
+                    arrayOf(
+                        getString(R.string.str_save),
+                        getString(R.string.str_edit),
+                        getString(R.string.str_delete)
+                    )
+                }
+            }
+        }else {
+            arrayOf(
+                getString(R.string.str_edit_level),
+                getString(R.string.str_edit),
+                getString(R.string.str_delete)
+            )
+        }
         val builder =
             AlertDialog.Builder(context)
         builder.setItems(list) { _, i ->
             when (list[i]) {
+                getString(R.string.str_save)->{
+                    saveIdeaPost(mBean!!.idx)
+                }
                 getString(R.string.str_edit_level) -> {
                     val intent = Intent(context!!, ActivityAddPost::class.java)
                     intent.putExtra(
@@ -290,6 +334,23 @@ class FragmentActionPost : BaseFragment() {
         }
         builder.create().show()
     }
+
+    private fun saveIdeaPost(post_idx : Int){
+        DAClient.saveIdeaPost(post_idx,object : DAHttpCallback{
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                context?.let {
+                    Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
 
     /**
      * Post 삭제

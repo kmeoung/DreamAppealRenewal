@@ -298,31 +298,33 @@ object Utils {
 
 //        var lastIndex: Int
         while (cursor.moveToNext()) {
-            val absolutePathOfImage = cursor.getString(columnIndex)
+            val absolutePathOfImage: String? = cursor.getString(columnIndex)
 //            val nameOfFile = cursor.getString(columnDisplayname)
-            val bucketName = cursor.getString(columnBucketName)
-            val bucketId = cursor.getString(columnBucketID)
+            val bucketName: String? = cursor.getString(columnBucketName)
+            val bucketId: String? = cursor.getString(columnBucketID)
 
             var equal = false
 
-            for (i in bucketNameList.indices) {
+            for (i in 0 until bucketNameList.size) {
                 val name = bucketNameList[i]
                 if (name == bucketName) {
                     equal = true
                 }
             }
 
-            if (!equal) {
-                bucketNameList.add(bucketName)
-                bucketIdList.add(bucketId)
-            }
+            if (!bucketName.isNullOrEmpty() && !bucketId.isNullOrEmpty()) {
+
+                if (!equal) {
+                    bucketNameList.add(bucketName)
+                    bucketIdList.add(bucketId)
+                }
 
 //            lastIndex = absolutePathOfImage.lastIndexOf(nameOfFile)
 //            lastIndex = if (lastIndex >= 0) lastIndex else nameOfFile.length - 1
-
-            if (!absolutePathOfImage.isNullOrEmpty()) {
-                val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage, false, -1)
-                imageInfoList.add(info)
+                if (!absolutePathOfImage.isNullOrEmpty()) {
+                    val info = BeanGalleryInfo(bucketName, bucketId, absolutePathOfImage, false, -1)
+                    imageInfoList.add(info)
+                }
             }
         }
 
@@ -360,56 +362,58 @@ object Utils {
     /**
      * 시간 변경
      */
-    fun convertFromDate(strPostDate: String): String {
+    fun convertFromDate(strPostDate: String?): String {
 
         var strDate = ""
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        strPostDate?.let { strPostDate ->
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 //        val sdf2 = SimpleDateFormat("yyyy. MM. dd")
-        val cal = Calendar.getInstance()
+            val cal = Calendar.getInstance()
 
-        val nowHour = cal.get(Calendar.HOUR_OF_DAY)
-        val nowMinute = cal.get(Calendar.MINUTE)
-        val nowSeconds = cal.get(Calendar.SECOND)
-        try {
-            cal.set(Calendar.HOUR_OF_DAY, 0)
-            cal.set(Calendar.MINUTE, 0)
-            cal.set(Calendar.SECOND, 0)
-            cal.set(Calendar.MILLISECOND, 0)
+            val nowHour = cal.get(Calendar.HOUR_OF_DAY)
+            val nowMinute = cal.get(Calendar.MINUTE)
+            val nowSeconds = cal.get(Calendar.SECOND)
+            try {
+                cal.set(Calendar.HOUR_OF_DAY, 0)
+                cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
 
-            val nowDate = cal.time
+                val nowDate = cal.time
 
-            val parseDate = sdf.parse(strPostDate)
-            cal.time = parseDate
+                val parseDate = sdf.parse(strPostDate)
+                cal.time = parseDate
 
-            val postHour = cal.get(Calendar.HOUR_OF_DAY)
-            val postMinute = cal.get(Calendar.MINUTE)
-            val postSeconds = cal.get(Calendar.SECOND)
+                val postHour = cal.get(Calendar.HOUR_OF_DAY)
+                val postMinute = cal.get(Calendar.MINUTE)
+                val postSeconds = cal.get(Calendar.SECOND)
 
-            cal.set(Calendar.HOUR_OF_DAY, 0)
-            cal.set(Calendar.MINUTE, 0)
-            cal.set(Calendar.SECOND, 0)
-            cal.set(Calendar.MILLISECOND, 0)
+                cal.set(Calendar.HOUR_OF_DAY, 0)
+                cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
 
-            val postDate = cal.time
+                val postDate = cal.time
 
-            if (nowDate > postDate) {
-                val viewSdf = SimpleDateFormat("yy. MM. dd")
-                strDate = viewSdf.format(postDate)
-            } else {
-                if (postHour < nowHour) {
-                    strDate = "${nowHour - postHour}시간전"
+                if (nowDate > postDate) {
+                    val viewSdf = SimpleDateFormat("yy. MM. dd")
+                    strDate = viewSdf.format(postDate)
                 } else {
-                    if (postMinute < nowMinute) {
-                        strDate = "${nowMinute - postMinute}분전"
+                    if (postHour < nowHour) {
+                        strDate = "${nowHour - postHour}시간전"
                     } else {
-                        var second = nowSeconds - postSeconds
-                        if (second < 0) second = 0
-                        strDate = "${second}초전"
+                        if (postMinute < nowMinute) {
+                            strDate = "${nowMinute - postMinute}분전"
+                        } else {
+                            var second = nowSeconds - postSeconds
+                            if (second < 0) second = 0
+                            strDate = "${second}초전"
+                        }
                     }
                 }
+            } catch (e: ParseException) {
+                e.printStackTrace()
             }
-        } catch (e: ParseException) {
-            e.printStackTrace()
         }
 
         return strDate
@@ -571,7 +575,7 @@ object Utils {
      * replace Comment Count text
      */
     fun getCommentView(count: Int): String {
-        var strCommentCount : String
+        var strCommentCount: String
         strCommentCount = if (count < 1000) {
             count.toString()
         } else {

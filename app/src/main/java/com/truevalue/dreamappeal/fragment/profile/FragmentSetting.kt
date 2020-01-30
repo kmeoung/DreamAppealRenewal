@@ -1,5 +1,8 @@
 package com.truevalue.dreamappeal.fragment.profile
 
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.utils.Comm_Param
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Comm_Prefs_Param
 import kotlinx.android.synthetic.main.action_bar_other.*
@@ -52,8 +56,14 @@ class FragmentSetting : BaseFragment() {
         val listener = View.OnClickListener {
             when(it){
                 iv_back_blue->{ (activity as ActivityMain).onBackPressed(false) }
-                tv_terms_of_use->{}
-                tv_privacy_policy->{}
+                tv_terms_of_use->{
+                    val intent = Intent(ACTION_VIEW, Uri.parse(Comm_Param.URL_DOCS_TERMS))
+                    startActivity(intent)
+                }
+                tv_privacy_policy->{
+                    val intent = Intent(ACTION_VIEW, Uri.parse(Comm_Param.URL_DOCS_PRIVACY))
+                    startActivity(intent)
+                }
                 tv_leave_member->{
 
                 }

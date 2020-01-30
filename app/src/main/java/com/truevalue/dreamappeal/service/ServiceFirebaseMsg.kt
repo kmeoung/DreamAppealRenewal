@@ -91,7 +91,6 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
 
             var pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             val notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-//            if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) R.mipmap.ic_launcher else if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) R.drawable.ic_noti else R.mipmap.ic_launcher
             var notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher))
                 .setSmallIcon(R.mipmap.ic_launcher)

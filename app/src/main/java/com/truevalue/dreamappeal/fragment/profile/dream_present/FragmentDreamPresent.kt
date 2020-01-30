@@ -492,8 +492,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * RecyclerView Bind View Holder
      */
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-        if (mAdapter != null) {
-            val content: String = mAdapter!!.mArray[i] as String
+        mAdapter?.let {
+            adapter->
+            val content: String = adapter.mArray[i] as String
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
             tvContents.text = content
             h.itemView.setOnClickListener {
@@ -527,15 +528,15 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 code: String,
                 message: String
             ) {
-                if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
+                context?.let {
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
                         tv_cheering.text = "${count}개"
+                    }else{
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -556,8 +557,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 code: String,
                 message: String
             ) {
-                if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                context?.let {
+                    Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
@@ -566,24 +567,24 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         if (status == 1) {
                             tv_add_follow.setTextColor(
                                 ContextCompat.getColor(
-                                    context!!,
+                                    it,
                                     R.color.black
                                 )
                             )
                             tv_add_follow.background = ContextCompat.getDrawable(
-                                context!!,
+                                it,
                                 R.drawable.bg_round_rectangle_gray2
                             )
                             tv_add_follow.text = getString(R.string.str_following)
                         } else {
                             tv_add_follow.setTextColor(
                                 ContextCompat.getColor(
-                                    context!!,
+                                    it,
                                     R.color.white
                                 )
                             )
                             tv_add_follow.background = ContextCompat.getDrawable(
-                                context!!,
+                                it,
                                 R.drawable.bg_round_rectangle_blue_2
                             )
                             tv_add_follow.text = getString(R.string.str_add_follow)
@@ -678,12 +679,9 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 code: String,
                 message: String
             ) {
-                if (context != null) {
-
-                    if (code == DAClient.SUCCESS) {
-
-                    } else {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                context?.let {
+                    if (code != DAClient.SUCCESS) {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }

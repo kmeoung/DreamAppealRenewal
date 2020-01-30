@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.dream_board.concern
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.activity.ActivityRank
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -187,11 +189,17 @@ class FragmentMyFame : BaseFragment() {
                         setTabView(VIEW_TYPE_COMMENT)
                     }
                 }
+                btn_check_rank->{
+                    val intent = Intent(context!!, ActivityRank::class.java)
+                    intent.putExtra(ActivityRank.EXTRA_VIEW_TYPE_REPUTATION,"REPUTATION")
+                    startActivity(intent)
+                }
             }
         }
         iv_back_blue.setOnClickListener(listener)
         tv_fame_text.setOnClickListener(listener)
         tv_fame_comment.setOnClickListener(listener)
+        btn_check_rank.setOnClickListener(listener)
     }
 
     private val rvListener = object : IORecyclerViewListener {

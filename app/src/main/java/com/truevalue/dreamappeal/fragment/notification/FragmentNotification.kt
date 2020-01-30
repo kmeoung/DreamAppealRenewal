@@ -32,6 +32,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
+import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.fragment_concern_detail.*
 import kotlinx.android.synthetic.main.fragment_notification.*
 import kotlinx.android.synthetic.main.fragment_notification.srl_refresh
@@ -134,10 +135,13 @@ class FragmentNotification : BaseFragment() {
                 body: String,
                 code: String,
                 message: String
-            )  {
+            ) {
                 srl_refresh?.run {
                     isRefreshing = false
                     if (code == DAClient.SUCCESS) {
+                        val tvNoti = (activity as ActivityMain).tv_notification
+                        tvNoti.visibility = GONE
+
                         val json = JSONObject(body)
 
                         val bean = Gson().fromJson<BeanNotification>(
@@ -314,7 +318,6 @@ class FragmentNotification : BaseFragment() {
                 Noti_Param.BEST_IDEA -> { // todo : 공지
                     ivFlame.visibility = GONE
                 }
-//          LIKE
                 Noti_Param.PROFILE_LIKE -> {
                     ivFlame.visibility = VISIBLE
                     h.itemView.setOnClickListener {

@@ -2,8 +2,12 @@ package com.truevalue.dreamappeal.fragment.dream_board.concern
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -35,16 +39,23 @@ class FragmentConcern : BaseFragment() {
     private var mBeanFragment: BeanFragmentConcern?
     private var isLast: Boolean
 
+    private val keyboardHandler: Handler
+
     init {
         mPopularAdapter = null
         mRecentAdapter = null
         mPostType = POST_TYPE_WEEKLY
         mBeanFragment = null
         isLast = false
+        keyboardHandler = Handler(Handler.Callback {
+            getConcern(et_search.text.toString())
+            true
+        })
 
     }
 
     companion object {
+        private const val DELAY = 1000L
         const val POST_TYPE_WEEKLY = 0
         const val POST_TYPE_TODAY = 1
 
@@ -63,12 +74,34 @@ class FragmentConcern : BaseFragment() {
 
         // RecyclerView Adapter 초기화
         initAdapter()
+        // View 초기화
+        initView()
         // View Click Listener
         onClickView()
         // 기본 데이터 조회
         getConcern()
     }
 
+
+    /**
+     * View 초기화
+     */
+    private fun initView() {
+        et_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                keyboardHandler.removeMessages(0)
+                if (et_search.text.toString().isNotEmpty()) {
+                    keyboardHandler.sendEmptyMessageDelayed(0, DELAY)
+                } else {
+                    getConcern()
+                }
+            }
+        })
+    }
 
     /**
      * Concern 기본 조회
@@ -160,6 +193,47 @@ class FragmentConcern : BaseFragment() {
 
     /**
      * Http
+     * Concern 검색
+     */
+    private fun getConcern(keyword: String) {
+        DAClient.searchConcern(keyword, object : DAHttpCallback {
+            override fun onResponse(
+                call: Call,
+                serverCode: Int,
+                body: String,
+                code: String,
+                message: String
+            ) {
+                if (code == DAClient.SUCCESS) {
+                    ll_popular.visibility = GONE
+                    ll_recent.visibility = GONE
+
+                    rv_popular.visibility = GONE
+                    rv_recent.visibility = VISIBLE
+
+                    val json = JSONObject(body)
+                    val posts = json.getJSONArray("posts")
+                    mRecentAdapter?.let { adapter ->
+                        adapter.clear()
+                        for (i in 0 until posts.length()) {
+                            val bean = Gson().fromJson<BeanConcern>(
+                                posts.getJSONObject(i).toString(),
+                                BeanConcern::class.java
+                            )
+                            adapter.add(bean)
+                        }
+                    }
+                } else {
+                    context?.let {
+                        Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Http
      * 추가 조회
      */
     private fun getMoreConcern(last_concern_idx: Int) {
@@ -176,7 +250,7 @@ class FragmentConcern : BaseFragment() {
                     try {
                         val recent_more = json.getJSONArray("recent_more")
                         mRecentAdapter?.let {
-                            if(1 > recent_more.length()){
+                            if (1 > recent_more.length()) {
                                 isLast = true
                                 it.notifyDataSetChanged()
                             }
