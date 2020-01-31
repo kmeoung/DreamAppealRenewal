@@ -98,7 +98,7 @@ class ActivityImgScaling : BaseActivity() {
             Glide.with(this@ActivityImgScaling)
                 .load(url)
                 .placeholder(R.drawable.ic_image_white)
-                .centerCrop()
+                .centerInside()
                 .thumbnail(0.1f)
                 .into(imageView)
 

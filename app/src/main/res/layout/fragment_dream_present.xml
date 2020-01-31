@@ -265,52 +265,38 @@
                                 android:layout_marginTop="20dp"
                                 android:orientation="vertical">
 
-                            <!--꿈 소개-->
-                            <TextView
-                                    android:id="@+id/tv_dream_description"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_marginRight="20dp"
-                                    android:fontFamily="@font/nanum_square_round_b"
-                                    android:lineSpacingExtra="@dimen/text_line_spacing"
-                                    android:text=""
-                                    android:textColor="@color/black"
-                                    android:textSize="13sp" />
-                            <!--꿈 소개-->
-
                             <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:paddingBottom="10dp">
+                                    android:orientation="horizontal">
 
                                 <!--내 꿈 설명-->
                                 <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/rv_dream_description"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="13dp"
+                                        android:layout_marginTop="3dp"
                                         android:layout_weight="1"
                                         android:paddingLeft="22dp"
                                         android:paddingRight="20dp" />
 
-                                <Button
-                                        android:id="@+id/btn_dream_description_more"
-                                        android:layout_width="48dp"
-                                        android:layout_height="40dp"
-                                        android:layout_gravity="bottom|end"
-                                        android:background="@null"
-                                        android:fontFamily="@font/nanum_square_round_r"
-                                        android:gravity="bottom|center"
-                                        android:text="@string/str_more_view"
-                                        android:textColor="@color/text_gray"
-                                        android:textSize="12sp"
-                                        android:visibility="gone" />
-
                                 <!--내 꿈 설명-->
 
                             </LinearLayout>
+
+                            <Button
+                                    android:id="@+id/btn_dream_description_more"
+                                    android:layout_width="48dp"
+                                    android:layout_height="30dp"
+                                    android:layout_gravity="bottom|end"
+                                    android:background="@null"
+                                    android:fontFamily="@font/nanum_square_round_r"
+                                    android:gravity="center"
+                                    android:text="@string/str_more_view"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="12sp"
+                                    android:visibility="visible" />
+
 
                         </LinearLayout>
 
@@ -364,8 +350,7 @@
                             android:elevation="5dp"
                             android:orientation="vertical"
                             android:paddingLeft="10dp"
-                            android:paddingTop="6dp"
-                            android:paddingBottom="10dp">
+                            android:paddingTop="6dp">
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
@@ -374,11 +359,11 @@
                             <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:orientation="vertical">
 
                                 <TextView
                                         android:id="@+id/tv_merit_and_motive"
-                                        android:layout_width="0dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
                                         android:layout_weight="1"
@@ -394,16 +379,17 @@
                                 <Button
                                         android:id="@+id/btn_merit_and_motive_more"
                                         android:layout_width="48dp"
-                                        android:layout_height="40dp"
+                                        android:layout_height="30dp"
                                         android:layout_gravity="bottom|end"
                                         android:background="@null"
                                         android:fontFamily="@font/nanum_square_round_r"
-                                        android:gravity="bottom|center"
+                                        android:gravity="center"
                                         android:text="@string/str_more_view"
                                         android:textColor="@color/text_gray"
                                         android:textSize="11sp"
-                                        android:visibility="gone" />
+                                        android:visibility="visible" />
                                 <!--내 꿈 이유 더보기 버튼-->
+
                             </LinearLayout>
                             <!--내 꿈 이유-->
 

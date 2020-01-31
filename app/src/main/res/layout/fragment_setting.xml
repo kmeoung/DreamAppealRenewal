@@ -77,6 +77,7 @@
             android:paddingRight="20dp">
 
         <TextView
+                android:id="@+id/tv_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_r"

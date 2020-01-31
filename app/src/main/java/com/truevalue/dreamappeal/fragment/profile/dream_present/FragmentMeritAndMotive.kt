@@ -32,7 +32,8 @@ import org.json.JSONObject
 class FragmentMeritAndMotive : BaseFragment() {
 
     private var mBean: BeanDreamPresent? = null
-    private var mAdapterImage : BaseImagePagerAdapter<String>? = null
+    private var mAdapterImage: BaseImagePagerAdapter<String>? = null
+
     companion object {
 
         /**
@@ -91,8 +92,8 @@ class FragmentMeritAndMotive : BaseFragment() {
      * Http
      * 예시 이미지 가져오기
      */
-    private fun getExampleIamges(){
-        DAClient.profileExampleImage(3,object : DAHttpCallback{
+    private fun getExampleIamges() {
+        DAClient.profileExampleImage(3, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -100,14 +101,14 @@ class FragmentMeritAndMotive : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(code == DAClient.SUCCESS){
+                if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val exUrl = json.getJSONArray("ex_url")
 
                     tv_indicator.text = (1.toString() + " / " + exUrl.length())
 
                     mAdapterImage!!.clear()
-                    for(i in 0 until exUrl.length()){
+                    for (i in 0 until exUrl.length()) {
                         val image = exUrl.getJSONObject(i)
                         val url = image.getString("url")
                         mAdapterImage!!.add(url)
@@ -132,11 +133,7 @@ class FragmentMeritAndMotive : BaseFragment() {
         val default_merit = getString(R.string.str_default_merit)
         val default_morive = getString(R.string.str_default_motive)
 
-        var spMerit = Utils.replaceTextColor(context, default_merit, getString(R.string.str_merit))
-        var spMotive =
-            Utils.replaceTextColor(context, default_morive, getString(R.string.str_motive))
-
-        tv_title.text = TextUtils.concat(spMerit, " ", spMotive)
+        tv_title.text = "$default_merit $default_morive"
 
         et_merit_and_motive.addTextChangedListener(object : TextWatcher {
 
@@ -152,21 +149,27 @@ class FragmentMeritAndMotive : BaseFragment() {
         })
 
         // 처음 Hint 글자 안보이게 하고 Focus잡기
-        tv_init_merit_and_motive.setOnClickListener(OnClickListener {
-            tv_init_merit_and_motive.isFocusableInTouchMode = true
-            tv_init_merit_and_motive.requestFocus()
+        tv_init_merit_and_motive.setOnClickListener {
+            et_merit_and_motive.isFocusableInTouchMode = true
+            et_merit_and_motive.requestFocus()
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(tv_init_merit_and_motive, 0)
-            tv_init_merit_and_motive.visibility = GONE
-        })
-
-        // 데이터 바인드
-        if (mBean != null) {
-            if (!mBean!!.meritNmotive.isNullOrEmpty()) et_merit_and_motive.setText(mBean!!.meritNmotive)
+            imm.showSoftInput(et_merit_and_motive, 0)
             tv_init_merit_and_motive.visibility = GONE
         }
 
-        Utils.setImageViewSquare(context!!,rl_images)
+        // 데이터 바인드
+        if (mBean != null) {
+            if (!mBean!!.meritNmotive.isNullOrEmpty()) {
+                et_merit_and_motive.setText(mBean!!.meritNmotive)
+                tv_init_merit_and_motive.visibility = GONE
+            }else{
+                tv_init_merit_and_motive.visibility = VISIBLE
+            }
+        } else {
+            tv_init_merit_and_motive.visibility = VISIBLE
+        }
+
+        Utils.setImageViewSquare(context!!, rl_images)
     }
 
     /**
@@ -174,7 +177,7 @@ class FragmentMeritAndMotive : BaseFragment() {
      */
     private fun initRightBtn() {
         iv_check.isSelected = !isAllInput()
-        if(isAllInput()) tv_init_merit_and_motive.visibility = GONE
+        if (isAllInput()) tv_init_merit_and_motive.visibility = GONE
     }
 
     private fun isAllInput(): Boolean {
@@ -208,7 +211,7 @@ class FragmentMeritAndMotive : BaseFragment() {
         DAClient.updateProfiles(null,
             null,
             null,
-           null,
+            null,
             meritAndMotive,
             object : DAHttpCallback {
                 override fun onResponse(

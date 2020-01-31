@@ -3,6 +3,7 @@ package com.truevalue.dreamappeal.fragment.notification
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -241,7 +242,7 @@ class FragmentNotification : BaseFragment() {
                 ) else ContextCompat.getColor(context!!, R.color.white)
             )
 
-            tvContents.text = "${bean.contents_bold}${bean.contents_regular}"
+            tvContents.text = "${bean.contents_bold ?: ""}${bean.contents_regular ?: ""}"
             bean.contents_bold?.let { bold ->
                 bean.contents_regular?.let {
                     var spDreamDescription = Utils.replaceTextType(
@@ -266,7 +267,7 @@ class FragmentNotification : BaseFragment() {
             val ivFlame = h.getItemView<ImageView>(R.id.iv_flame)
             val ivPost = h.getItemView<ImageView>(R.id.iv_post)
             val rlSourceProfile = h.getItemView<RelativeLayout>(R.id.rl_source_profile)
-
+            val tvContents = h.getItemView<TextView>(R.id.tv_contents)
             if (!bean.thumbnail_image.isNullOrEmpty()) {
                 ivPost.visibility = VISIBLE
                 Glide.with(context)
@@ -307,16 +308,22 @@ class FragmentNotification : BaseFragment() {
                     }
                 }
             }
-
+            ivProfile.setBackgroundColor(ContextCompat.getColor(context!!,R.color.transparent))
             when (bean.code) {
-                Noti_Param.BEST_PROFILE -> { // todo : 공지
+                Noti_Param.NOTICES,
+                Noti_Param.BEST_PROFILE,
+                Noti_Param.BEST_ACTION,
+                Noti_Param.BEST_IDEA -> {
                     ivFlame.visibility = GONE
-                }
-                Noti_Param.BEST_ACTION -> { // todo : 공지
-                    ivFlame.visibility = GONE
-                }
-                Noti_Param.BEST_IDEA -> { // todo : 공지
-                    ivFlame.visibility = GONE
+                    tvContents.text = "${bean.contents_regular ?: ""}"
+
+                    ivProfile.setBackgroundResource(R.drawable.bg_stroke_circle)
+                    Glide.with(context)
+                        .load(R.drawable.ic_notification)
+                        .circleCrop()
+                        .into(ivProfile)
+
+                    h.itemView.setOnClickListener (null)
                 }
                 Noti_Param.PROFILE_LIKE -> {
                     ivFlame.visibility = VISIBLE
@@ -1756,6 +1763,9 @@ class FragmentNotification : BaseFragment() {
                             )
                         }
                     }
+
+                }
+                else -> {
 
                 }
             }

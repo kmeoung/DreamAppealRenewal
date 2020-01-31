@@ -134,17 +134,7 @@ class FragmentDreamDescription : BaseFragment() {
 
         // Default View 키워드 색상 변경
         val default_dream_description = getString(R.string.str_default_dream_description)
-        var spDreamDescription = Utils.replaceTextColor(
-            context,
-            default_dream_description,
-            getString(R.string.str_explanation)
-        )
-        tv_title.text = spDreamDescription
-
-        // 하이라이팅 설정
-        val title_highlight = getString(R.string.str_dream_description_highlight)
-        tv_dream_description_info.text =
-            Utils.replaceTextColor(context, tv_dream_description_info, title_highlight)
+        tv_title.text = default_dream_description
 
         val detail_title_highlight = getString(R.string.str_dream_description_detail_highlight)
         tv_dream_description_detail_info.text =
@@ -153,19 +143,6 @@ class FragmentDreamDescription : BaseFragment() {
                 tv_dream_description_detail_info,
                 detail_title_highlight
             )
-
-        et_dream_description.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                initRightBtn()
-            }
-        })
 
         et_dream_description_1.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -205,7 +182,6 @@ class FragmentDreamDescription : BaseFragment() {
 
         // 데이터 바인드
         if (mBean != null) {
-            if (!mBean!!.description.isNullOrEmpty()) et_dream_description.setText(mBean!!.description)
             if (mBean!!.descriptions.size > 0) {
                 for (i in 0 until mBean!!.descriptions.size) {
                     val content = mBean!!.descriptions[i]
@@ -229,10 +205,9 @@ class FragmentDreamDescription : BaseFragment() {
     }
 
     private fun isAllInput(): Boolean {
-        return TextUtils.isEmpty(et_dream_description.text.toString())
-                || (TextUtils.isEmpty(et_dream_description_1.text.toString())
-                && TextUtils.isEmpty(et_dream_description_2.text.toString())
-                && TextUtils.isEmpty(et_dream_description_3.text.toString()))
+        return  (et_dream_description_1.text.toString().isNullOrEmpty()
+                && et_dream_description_2.text.toString().isNullOrEmpty()
+                && et_dream_description_3.text.toString().isNullOrEmpty())
     }
 
     /**
@@ -257,7 +232,7 @@ class FragmentDreamDescription : BaseFragment() {
      * 꿈 / 꿈소개 업데이트
      */
     private fun commitDreamDescription() {
-        val dreamDescription = et_dream_description.text.toString()
+        val dreamDescription = ""
         val dreamDescription1 = et_dream_description_1.text.toString()
         val dreamDescription2 = et_dream_description_2.text.toString()
         val dreamDescription3 = et_dream_description_3.text.toString()

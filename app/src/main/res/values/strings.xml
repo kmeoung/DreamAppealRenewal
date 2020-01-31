@@ -10,6 +10,7 @@
     <string name="str_go_view">보러가기 >></string>
     <string name="str_dream_profile">드림프로필</string>
     <string name="str_error_server">서버에 에러가 발생하였습니다</string>
+    <string name="str_expired_user_data">회원 정보가 만료되었습니다</string>
     <string name="str_no_data">데이터가 없습니다</string>
 
     <string name="str_not_ready_yet">준비중입니다.</string>
@@ -51,7 +52,7 @@
 
 
     <string name="str_default_dream_title">내 꿈에 특색있는 명칭 달기</string>
-    <string name="str_default_dream_description">핵심 문장으로 꿈 설명하기</string>
+    <string name="str_default_dream_description">핵심문장으로 꿈 설명하기</string>
     <string name="str_default_merit_and_motive">꿈의 매력과 계기 표현하기</string>
     <string name="str_default_merit">꿈의 매력과</string>
     <string name="str_default_motive">계기 표현하기</string>
@@ -60,7 +61,7 @@
     <string name="str_default_ability">꿈에 필요한 능력과</string>
     <string name="str_default_oppotunity">기회 정리하기</string>
 
-    <string name="str_default_merit_and_motive_2">꿈의 매력과 계기에는 뭐가 있을까?</string>
+    <string name="str_default_merit_and_motive_2">이 꿈의 어떤 점에 매력을 느꼈을까?\n계기는 무엇이었을까?</string>
 
     <string name="str_designation">명칭</string>
     <string name="str_explanation">설명</string>
@@ -101,10 +102,10 @@
     <string name="str_commit">등록</string>
     <string name="str_ability">갖출 능력</string>
     <string name="str_opportunity">만들어갈 기회</string>
-    <string name="str_add_ability">능력 추가하기</string>
-    <string name="str_default_add_ability">수식어에 맞게 어떤 능력이 필요할까?\n직업명에 맞게 어떤 능력이 필요할까?</string>
-    <string name="str_add_opportunity">기회 추가하기</string>
-    <string name="str_default_add_opportunity">필요한 경험과 실력을 능동적으로 쌓기 위해\n어떤 기회를 만들어볼까?</string>
+    <string name="str_add_opportunity">만들어갈 기회 등록하기</string>
+    <string name="str_add_ability">갖출 능력 등록하기</string>
+    <string name="str_default_add_ability">수식어에 맞게, 직업명에 맞게\n어떤 능력이 필요할까?</string>
+    <string name="str_default_add_opportunity">필요한 경험과 실력을 쌓기 위해\n 어떤 기회를 만들어볼까?</string>
     <string name="str_edit_ability">갖출 능력 수정</string>
     <string name="str_edit_opportunity">만들어갈 기회 수정</string>
 
@@ -115,7 +116,7 @@
 
     <string name="str_add_object_step_detail_title">실천목표에 세부단계 추가하기</string>
     <string name="str_default_object_step_detail">꾸준히 노력하기 쉽도록\n어떤 단계로 나눠서 실천해볼까?</string>
-    <string name="str_edit_object_step_detail">실천목표에 세부단계 수정</string>
+    <string name="str_edit_object_step_detail">세부단계 수정</string>
 
 
     <string name="str_add_reply">답글 달기</string>
@@ -152,7 +153,7 @@
     <string name="str_dream_description_info">뭐하는 사람인지 한 문장으로 표현하면?</string>
     <string name="str_dream_description_highlight">한 문장</string>
 
-    <string name="str_dream_description_detail_info">대표적으로 어떤 일을 하는 걸까? (세가지)</string>
+    <string name="str_dream_description_detail_info">대표적으로 어떤 일을 하는 걸까? (세 가지)</string>
     <string name="str_dream_description_detail_highlight">대표적</string>
 
     <string name="str_input_text_hint">입력해주세요</string>
@@ -343,7 +344,8 @@
     <string name="str_wish_detail_title">소원 게시글</string>
     <string name="str_wish_add_title">소원 등록하기</string>
     <string name="str_concern_add_title">고민 / 질문 등록하기</string>
-    <string name="str_concern_title">고민 / 질문</string>
+    <string name="str_concern_title">내 활동 내역</string>
+
 
     <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
 
@@ -365,4 +367,8 @@
 
     <string name="str_leave_member">회원 탈퇴</string>
     <string name="str_appeal_rank">어필 랭킹</string>
+    <string name="str_fame_rank_title">명성도 랭킹</string>
+
+    <string name="str_no_data_1">내 꿈과 팔로우중인 꿈의 게시물이 나타납니다</string>
+    <string name="str_no_data_2">관심가는 꿈을 팔로우해서 소식을 받아보세요</string>
 </resources>

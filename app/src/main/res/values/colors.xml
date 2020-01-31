@@ -60,6 +60,7 @@
     <color name="faded_orange">#eb6d57</color>
     <color name="greyish_two">#adadad</color>
     <color name="pale_grey">#dfdde2</color>
+    <color name="pale_grey_2">#989599</color>
     <color name="search_box">#e9eef0</color>
     <color name="pale_grey_two">#ebf3f9</color>
     <color name="dark_indigo">#0f2b5b</color>
@@ -69,6 +70,7 @@
     <color name="off_white_two">#fdf7e4</color>
     <color name="blueberry">#443290</color>
     <color name="yellow_orange_two">#febb00</color>
+    <color name="yellow_orange_three">#FEDB66</color>
     <color name="pinkish_grey">#c0c0c0</color>
     <color name="dull_orange">#dd773b</color>
     <color name="soft_green">#61b97f</color>

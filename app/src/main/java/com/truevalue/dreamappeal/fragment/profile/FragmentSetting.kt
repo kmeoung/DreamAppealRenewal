@@ -2,6 +2,7 @@ package com.truevalue.dreamappeal.fragment.profile
 
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
+import android.content.pm.PackageInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Comm_Prefs_Param
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_setting.*
+import java.lang.Exception
 
 class FragmentSetting : BaseFragment() {
     override fun onCreateView(
@@ -46,6 +48,13 @@ class FragmentSetting : BaseFragment() {
 
         sw_notification.setOnCheckedChangeListener { _, isChecked ->
             Comm_Prefs.setNotification(isChecked)
+        }
+
+        try{
+            val pi = activity!!.packageManager.getPackageInfo(activity!!.packageName,0)
+            tv_version.text = "${getString(R.string.str_version)} ${pi.versionName}"
+        }catch (e : Exception){
+
         }
     }
 

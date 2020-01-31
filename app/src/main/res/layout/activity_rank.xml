@@ -6,13 +6,14 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="53.3dp"
-            android:background="@color/yellow_orange_two"
+            android:background="@color/yellow_orange_three"
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
             android:text="@string/str_appeal_rank"
             android:textColor="@color/white"
             android:textSize="22.3sp"
-            android:fontFamily="@font/jalnan"/>
+            android:fontFamily="@font/jalnan"
+            android:id="@+id/tv_rank_title"/>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -98,7 +99,7 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="53.3dp"
-            android:background="@color/yellow_orange_two"
+            android:background="@color/yellow_orange_three"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:id="@+id/ll_my">

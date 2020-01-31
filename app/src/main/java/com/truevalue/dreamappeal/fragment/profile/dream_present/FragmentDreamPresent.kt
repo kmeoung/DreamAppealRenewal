@@ -269,10 +269,8 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
             if (bean.description.isNullOrEmpty()) {
                 tv_init_dream_description.visibility = VISIBLE
-                tv_dream_description.text = ""
                 btn_dream_description_more.visibility = GONE
             } else {
-                tv_dream_description.text = bean.description
                 btn_dream_description_more.visibility = VISIBLE
             }
 
@@ -350,7 +348,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         )
                     }
                 }
-                tv_dream_description,
                 tv_init_dream_description -> {
                     // replace to Dream Description
                     if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
@@ -452,7 +449,6 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         iv_dream_profile.setOnClickListener(listener)
         ll_dream_title.setOnClickListener(listener)
         tv_init_dream_title.setOnClickListener(listener)
-        tv_dream_description.setOnClickListener(listener)
         tv_init_dream_description.setOnClickListener(listener)
         tv_merit_and_motive.setOnClickListener(listener)
         tv_init_merit_and_motive.setOnClickListener(listener)

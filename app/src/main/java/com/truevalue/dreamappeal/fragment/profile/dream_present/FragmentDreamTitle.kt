@@ -139,15 +139,8 @@ class FragmentDreamTitle : BaseFragment() {
         iv_check.visibility = VISIBLE
 
         // Default View 키워드 색상 변경
-        val default_dream_title = getString(R.string.str_default_dream_title)
-
-        var spDreamTitle = Utils.replaceTextColor(
-            context,
-            default_dream_title,
-            getString(R.string.str_designation)
-        )
-
-        tv_title.text = spDreamTitle
+        val dream_title = getString(R.string.str_title_dream_title)
+        tv_title.text = dream_title
 
         // 하이라이팅 설정
         val title_highlight = getString(R.string.str_dream_title_info_highlight)

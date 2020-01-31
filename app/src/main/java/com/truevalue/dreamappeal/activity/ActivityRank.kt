@@ -95,6 +95,9 @@ class ActivityRank : BaseActivity() {
     private fun initData(){
         intent.getStringExtra(EXTRA_VIEW_TYPE_REPUTATION)?.let {
             mViewType = VIEW_TYPE_REPUTATION
+            tv_rank_title.text = getString(R.string.str_fame_rank_title)
+        }?:kotlin.run {
+            tv_rank_title.text = getString(R.string.str_appeal_rank)
         }
     }
 
@@ -425,7 +428,7 @@ class ActivityRank : BaseActivity() {
                 mBean = bean
                 if (bean.high_rank.size < 9) isLast = true
                 setData(bean)
-            } else if (code == "NO_MORE_POST") {
+            } else if (code == DAClient.NO_MORE_POST) {
                 isLast = true
                 mAdapter!!.notifyDataSetChanged()
             } else {
@@ -447,7 +450,7 @@ class ActivityRank : BaseActivity() {
                 val bean = Gson().fromJson(json.toString(), BeanRank::class.java)
                 if (bean.high_rank.size < 9) isLast = true
                 setData(bean, false)
-            } else if (code == "NO_MORE_POST") {
+            } else if (code == DAClient.NO_MORE_POST) {
                 isLast = true
                 mAdapter!!.notifyDataSetChanged()
             } else {

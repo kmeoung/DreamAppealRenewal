@@ -72,7 +72,8 @@
                             android:minHeight="195dp"
                             android:text="@string/str_default_merit_and_motive_2"
                             android:textColor="@color/warm_grey"
-                            android:textSize="14.7sp" />
+                            android:textSize="14.7sp"
+                            android:lineSpacingExtra="@dimen/text_line_spacing"/>
 
                 </RelativeLayout>
 

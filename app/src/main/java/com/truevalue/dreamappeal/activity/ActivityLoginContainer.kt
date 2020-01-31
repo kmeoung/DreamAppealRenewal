@@ -6,6 +6,7 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.login.FragmentLoginContainer
 
+
 class ActivityLoginContainer : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,8 @@ class ActivityLoginContainer : BaseActivity() {
         // 처음 로그인 컨테이너로 이동
         replaceFragment(R.id.base_container, FragmentLoginContainer(), false)
     }
+
+
 
     /**
      * Fragment에서 접근하는 Fragment 변경

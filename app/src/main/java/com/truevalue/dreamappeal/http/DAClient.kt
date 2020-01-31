@@ -22,6 +22,7 @@ object DAClient {
     val EMAIL_NOT_FOUND = "EMAIL_NOT_FOUND"
     val PASSWORD_NOT_MATCHED = "PASSWORD_NOT_MATCHED"
     val DUPLICATED_EMAIL = "DUPLICATED_EMAIL"
+    val NO_MORE_POST = "NO_MORE_POST"
 
     fun getHttpHeader(token: String?): DAHttpHeader {
         val header = DAHttpHeader()

@@ -58,7 +58,7 @@ object Comm_Prefs {
     }
 
     fun isNotification() : Boolean{
-        return prefs.getBoolean(Comm_Prefs_Param.PREFS_IS_NOTIFICATION,false)
+        return prefs.getBoolean(Comm_Prefs_Param.PREFS_IS_NOTIFICATION,true)
     }
 
 }

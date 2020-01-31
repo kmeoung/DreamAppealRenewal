@@ -1,10 +1,7 @@
 package com.truevalue.dreamappeal.activity
 
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -12,7 +9,10 @@ import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.amazonaws.mobile.client.AWSMobileClient
+import com.facebook.AccessToken
+import com.facebook.AccessToken.getCurrentAccessToken
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
@@ -33,8 +33,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
 import okhttp3.Call
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 
 class ActivityMain : BaseActivity() {
@@ -69,6 +67,17 @@ class ActivityMain : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(!checkFacebookToken()){
+            Toast.makeText(applicationContext,getString(R.string.str_expired_user_data),Toast.LENGTH_SHORT).show()
+            Comm_Prefs.setUserProfileIndex(-1)
+            Comm_Prefs.setToken(null)
+            Comm_Prefs.setPushToken(null)
+
+            val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         if ((intent.getStringExtra(ServiceFirebaseMsg.FIREBASE_NORIFICATION_CALLED) != null)
         ) {
             mMainViewType = MAIN_TYPE_NOTIFICATION
@@ -82,34 +91,15 @@ class ActivityMain : BaseActivity() {
         AWSMobileClient.getInstance().initialize(this) {
             Log.d("AWS_LOG", "AWS INITIALIZED")
         }.execute()
-
-        getHashKey()
     }
 
-    private fun getHashKey() {
-        var packageInfo: PackageInfo? = null
-        try {
-            packageInfo =
-                packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
-        for (signature in packageInfo!!.signatures) {
-            try {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            } catch (e: NoSuchAlgorithmException) {
-                Log.e(
-                    "KeyHash",
-                    "Unable to get MessageDigest. signature=$signature",
-                    e
-                )
-            }
-        }
+    /**
+     * Facebook Login 확인
+     */
+    private fun checkFacebookToken() : Boolean{
+        val accessToken : AccessToken? = getCurrentAccessToken()
+        return if(accessToken == null) true else !accessToken.isExpired
     }
-
 
     fun initAllView() {
         val fm = supportFragmentManager
@@ -280,7 +270,8 @@ class ActivityMain : BaseActivity() {
                     Comm_Prefs.setUserProfileIndex(-1)
                     Comm_Prefs.setToken(null)
                     Comm_Prefs.setPushToken(null)
-
+                    // Sns 로그인 로그아웃
+                    FirebaseAuth.getInstance().signOut()
                     val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
                     startActivity(intent)
                     finish()

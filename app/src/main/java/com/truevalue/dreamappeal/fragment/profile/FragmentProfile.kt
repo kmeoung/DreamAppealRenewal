@@ -231,7 +231,11 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
     }
 
     override fun sendName(name: String) {
-        tv_title.text = "$name 드림프로필"
+        tv_title.text = if(name.isNullOrEmpty()){
+            "드림프로필"
+        }else if(name.length > 5){
+            "$name"
+        }else "$name 드림프로필"
     }
 }
 

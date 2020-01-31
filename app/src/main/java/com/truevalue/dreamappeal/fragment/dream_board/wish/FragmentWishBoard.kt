@@ -192,7 +192,7 @@ class FragmentWishBoard : BaseFragment() {
                         }
                     }
 
-                } else if (code == "NO_MORE_POST") {
+                } else if (code == DAClient.NO_MORE_POST) {
                     isLast = true
                     mAdapter!!.notifyDataSetChanged()
                 } else {
@@ -239,7 +239,7 @@ class FragmentWishBoard : BaseFragment() {
                         }
                     } catch (e: Exception) {
                     }
-                } else if (code == "NO_MORE_POST") {
+                } else if (code == DAClient.NO_MORE_POST) {
                     isLast = true
                     mAdapter!!.notifyDataSetChanged()
                 } else {

@@ -266,7 +266,7 @@ class FragmentConcern : BaseFragment() {
                         }
                     } catch (e: Exception) {
                     }
-                } else if (code == "NO_MORE_POST") {
+                } else if (code == DAClient.NO_MORE_POST) {
                     isLast = true
                     mRecentAdapter!!.notifyDataSetChanged()
                 } else {

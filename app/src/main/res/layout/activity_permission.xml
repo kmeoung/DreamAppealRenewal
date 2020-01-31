@@ -40,7 +40,7 @@
                     android:textColor="@color/black"
                     android:textSize="12.3sp"
                     android:layout_gravity="center"
-                    android:lineSpacingExtra="3.3sp"/>
+                    android:lineSpacingExtra="@dimen/text_line_spacing"/>
 
             <TextView
                     android:layout_width="match_parent"
@@ -139,11 +139,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_square_round_r"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:text="@string/str_warning_access_method"
                         android:textColor="@color/black"
                         android:textSize="12.3sp"
-                        android:lineSpacingExtra="3.3sp"/>
+                        android:lineSpacingExtra="@dimen/text_line_spacing"/>
 
                 <TextView
                         android:layout_width="match_parent"

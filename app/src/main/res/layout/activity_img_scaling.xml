@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.viewpager.widget.ViewPager
+        <com.truevalue.dreamappeal.base.BaseViewPager
                 android:id="@+id/pager_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -23,7 +23,8 @@
                 android:scaleY="0.7"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/iv_back"/>
+                android:id="@+id/iv_back"
+                android:scaleType="centerInside"/>
 
         <LinearLayout
                 android:id="@+id/ll_indicator"

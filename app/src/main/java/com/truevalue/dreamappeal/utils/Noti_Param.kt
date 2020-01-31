@@ -27,6 +27,7 @@ object Noti_Param {
     val CONCERN_VOTED = "631"
     val RE_CONCERN_ADOPTED = "632"
     val RE_CONCERN_VOTED = "633"
+    val NOTICES = "101"
     val BEST_PROFILE = "204"
     val BEST_ACTION = "214"
     val BEST_IDEA = "224"

@@ -161,12 +161,18 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
                                     mAdapter!!.add(bean)
                                 }
+
+                                if(mAdapter!!.size() < 1){
+                                    ll_no_data.visibility = VISIBLE
+                                }else{
+                                    ll_no_data.visibility = GONE
+                                }
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
 
                         } else {
-                            if (code == "NO_MORE_POST") {
+                            if (code == DAClient.NO_MORE_POST) {
                                 isLast = true
                                 mAdapter!!.notifyDataSetChanged()
                             } else if (code == DAClient.FAIL) {
