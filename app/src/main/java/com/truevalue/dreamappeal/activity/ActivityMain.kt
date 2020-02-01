@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.facebook.AccessToken
 import com.facebook.AccessToken.getCurrentAccessToken
+import com.facebook.login.LoginManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
@@ -67,17 +68,6 @@ class ActivityMain : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(!checkFacebookToken()){
-            Toast.makeText(applicationContext,getString(R.string.str_expired_user_data),Toast.LENGTH_SHORT).show()
-            Comm_Prefs.setUserProfileIndex(-1)
-            Comm_Prefs.setToken(null)
-            Comm_Prefs.setPushToken(null)
-
-            val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
-            startActivity(intent)
-            finish()
-        }
-
         if ((intent.getStringExtra(ServiceFirebaseMsg.FIREBASE_NORIFICATION_CALLED) != null)
         ) {
             mMainViewType = MAIN_TYPE_NOTIFICATION
@@ -91,14 +81,6 @@ class ActivityMain : BaseActivity() {
         AWSMobileClient.getInstance().initialize(this) {
             Log.d("AWS_LOG", "AWS INITIALIZED")
         }.execute()
-    }
-
-    /**
-     * Facebook Login 확인
-     */
-    private fun checkFacebookToken() : Boolean{
-        val accessToken : AccessToken? = getCurrentAccessToken()
-        return if(accessToken == null) true else !accessToken.isExpired
     }
 
     fun initAllView() {
@@ -272,6 +254,7 @@ class ActivityMain : BaseActivity() {
                     Comm_Prefs.setPushToken(null)
                     // Sns 로그인 로그아웃
                     FirebaseAuth.getInstance().signOut()
+                    LoginManager.getInstance().logOut()
                     val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
                     startActivity(intent)
                     finish()

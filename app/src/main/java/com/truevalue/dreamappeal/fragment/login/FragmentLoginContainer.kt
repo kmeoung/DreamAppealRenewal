@@ -38,12 +38,15 @@ import com.kakao.util.exception.KakaoException
 import com.kakao.util.helper.Utility.getPackageInfo
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
+import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import kotlinx.android.synthetic.main.fragment_login_container.*
 import okhttp3.Call
+import org.json.JSONObject
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
@@ -75,8 +78,8 @@ class FragmentLoginContainer : BaseFragment() {
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = firebaseAuth.currentUser
-        updateUI(currentUser)
+//        val currentUser = firebaseAuth.currentUser
+//        updateUI(currentUser)
 //        FirebaseAuth.getInstance().signOut()
     }
 
@@ -95,14 +98,14 @@ class FragmentLoginContainer : BaseFragment() {
 //        callback = SessionCallback()
 //        Session.getCurrentSession().addCallback(callback)
 
-        /** 토큰 만료시 갱신을 시켜준다**/
-        if (Session.getCurrentSession().isOpenable) {
-            Session.getCurrentSession().checkAndImplicitOpen()
-        }
-        /** 토큰 만료시 갱신을 시켜준다**/
-        if (AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().isExpired) {
-            AccessToken.refreshCurrentAccessTokenAsync()
-        }
+//        /** 토큰 만료시 갱신을 시켜준다**/
+//        if (Session.getCurrentSession().isOpenable) {
+//            Session.getCurrentSession().checkAndImplicitOpen()
+//        }
+//        /** 토큰 만료시 갱신을 시켜준다**/
+//        if (AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().isExpired) {
+//            AccessToken.refreshCurrentAccessTokenAsync()
+//        }
 
         if (!Comm_Param.REAL) {
             Log.e(TAG, "로그인 시작")
@@ -154,49 +157,38 @@ class FragmentLoginContainer : BaseFragment() {
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create()
 
-        LoginManager.getInstance()
-            .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
-        LoginManager.getInstance()
-            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult?) {
-                    //login success
-                    Log.d(TAG, "facebook:onSuccess:$result")
-                    result?.let { result ->
-                        handleFacebookAccessToken(result?.accessToken)
-                    }
+        val listener = object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {
+                //login success
+                Log.d(TAG, "facebook:onSuccess:$result")
+                result?.let { result ->
+                    handleFacebookAccessToken(result?.accessToken)
                 }
-
-                override fun onCancel() {
-                    Log.d(TAG, "facebook:onCancel")
-                    //login cancelled by user
-
-                }
-
-                override fun onError(error: FacebookException?) {
-                    Log.d(TAG, "facebook:onError", error)
-                    //login error handle exception
-                }
-
-            })
-        login_facebook.setPermissions("email", "public_profile")
-        // If using in a fragment
-        login_facebook.fragment = this
-        login_facebook.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                Log.d(TAG, "facebook:onSuccess:$loginResult")
-                handleFacebookAccessToken(loginResult.accessToken)
             }
 
             override fun onCancel() {
                 Log.d(TAG, "facebook:onCancel")
-                // ...
+                //login cancelled by user
+
             }
 
-            override fun onError(error: FacebookException) {
+            override fun onError(error: FacebookException?) {
                 Log.d(TAG, "facebook:onError", error)
-                // ...
+                //login error handle exception
             }
-        })// ...
+
+        }
+
+        /*
+        LoginManager.getInstance()
+            .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+        LoginManager.getInstance()
+            .registerCallback(callbackManager, listener)
+            */
+        login_facebook.setPermissions(Arrays.asList("public_profile", "email"))
+        // If using in a fragment
+        login_facebook.fragment = this
+        login_facebook.registerCallback(callbackManager, listener)// ...
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -230,7 +222,7 @@ class FragmentLoginContainer : BaseFragment() {
                         val idToken = task.result?.token ?: ""
                         // Send token to your backend via HTTPS
                         // ...
-                        Log.d(TAG,"ID TOKEN : $idToken")
+                        Log.d(TAG, "ID TOKEN : $idToken")
                         DAClient.snsLogin(idToken, object : DAHttpCallback {
                             override fun onResponse(
                                 call: Call,
@@ -239,10 +231,25 @@ class FragmentLoginContainer : BaseFragment() {
                                 code: String,
                                 message: String
                             ) {
-                                context?.let {context->
-                                    Toast.makeText(context.applicationContext,message,Toast.LENGTH_SHORT).show()
-                                    if (code == DAClient.SUCCESS) {
+                                context?.let { context ->
 
+                                    if (code == DAClient.SUCCESS) {
+                                        val json = JSONObject(body)
+                                        val token = json.getString("token")
+                                        val profileIdx = json.getInt("profile_idx")
+                                        Comm_Prefs.setToken(token)
+                                        Comm_Prefs.setUserProfileIndex(profileIdx)
+
+                                        val intent = Intent(context, ActivityMain::class.java)
+                                        activity?.startActivity(intent)
+                                        activity?.finish()
+
+                                    } else {
+                                        Toast.makeText(
+                                            context.applicationContext,
+                                            message,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
 
@@ -347,16 +354,10 @@ class FragmentLoginContainer : BaseFragment() {
                     true
                 )
                 btn_register -> {
-//                    (activity as ActivityLoginContainer).replaceFragment(
-//                        FragmentRegister(),
-//                        true
-//                    )
-                    FirebaseAuth.getInstance().signOut()
-                    UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
-                        override fun onCompleteLogout() {
-
-                        }
-                    })
+                    (activity as ActivityLoginContainer).replaceFragment(
+                        FragmentRegister(),
+                        true
+                    )
                 }
             }
         }
