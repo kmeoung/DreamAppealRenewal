@@ -300,6 +300,9 @@ object Comm_Param {
     private val URL_SHARE_IDEA = "$URL_SHARE/idea"
     val URL_SHARE_IDEA_POST_IDX = "$URL_SHARE_IDEA/$POST_INDEX"
 
+    private val URL_USERS_TOKENS_AUTH = "$URL_USERS_TOKENS/auth"
+    val URL_USERS_TOKENS_AUTH_GOOGLE = "$URL_USERS_TOKENS_AUTH/google"
+
 
 
 }

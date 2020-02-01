@@ -39,8 +39,11 @@ import com.kakao.util.helper.Utility.getPackageInfo
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.http.DAClient
+import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
 import kotlinx.android.synthetic.main.fragment_login_container.*
+import okhttp3.Call
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
@@ -89,8 +92,8 @@ class FragmentLoginContainer : BaseFragment() {
         // Click View Listener
         onClickView()
 
-        callback = SessionCallback()
-        Session.getCurrentSession().addCallback(callback)
+//        callback = SessionCallback()
+//        Session.getCurrentSession().addCallback(callback)
 
         /** 토큰 만료시 갱신을 시켜준다**/
         if (Session.getCurrentSession().isOpenable) {
@@ -227,7 +230,25 @@ class FragmentLoginContainer : BaseFragment() {
                         val idToken = task.result?.token ?: ""
                         // Send token to your backend via HTTPS
                         // ...
-                        Log.d(TAG,"this is Token : $idToken")
+                        Log.d(TAG,"ID TOKEN : $idToken")
+                        DAClient.snsLogin(idToken, object : DAHttpCallback {
+                            override fun onResponse(
+                                call: Call,
+                                serverCode: Int,
+                                body: String,
+                                code: String,
+                                message: String
+                            ) {
+                                context?.let {context->
+                                    Toast.makeText(context.applicationContext,message,Toast.LENGTH_SHORT).show()
+                                    if (code == DAClient.SUCCESS) {
+
+                                    }
+                                }
+
+                            }
+                        })
+                        Log.d(TAG, "this is Token : $idToken")
                     } else {
                         // Handle error -> task.getException();
                     }

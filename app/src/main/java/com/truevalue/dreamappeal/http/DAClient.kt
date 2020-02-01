@@ -3394,4 +3394,27 @@ object DAClient {
         )
     }
 
+    /**
+     * POST
+     * sns Login
+     */
+    fun snsLogin(
+        idToken: String,
+        callback: DAHttpCallback
+    ) {
+
+        val url = Comm_Param.URL_USERS_TOKENS_AUTH_GOOGLE
+
+        val params = DAHttpParams()
+        params.put("idToken", idToken)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            url,
+            null,
+            params,
+            callback
+        )
+    }
+
 }

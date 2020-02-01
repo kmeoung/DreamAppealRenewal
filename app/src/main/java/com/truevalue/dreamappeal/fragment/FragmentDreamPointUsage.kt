@@ -32,7 +32,6 @@ class FragmentDreamPointUsage : BaseFragment() {
     companion object{
         private const val VIEW_TYPE_GET = 0
         private const val VIEW_TYPE_USE = 1
-
     }
 
     override fun onCreateView(
@@ -116,7 +115,7 @@ class FragmentDreamPointUsage : BaseFragment() {
      * View Click Listener
      */
     private fun onClickView() {
-        val listener = View.OnClickListener {
+        val listener = OnClickListener {
             when (it) {
                 (activity as ActivityDreamPoint).iv_back_blue -> activity!!.onBackPressed()
                 tv_get_list -> setTabView(VIEW_TYPE_GET)
