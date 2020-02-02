@@ -115,7 +115,7 @@ class ActivityMain : BaseActivity() {
 
     /**
      * Http
-     * 푸시토근 설정
+     * 푸시토큰 설정
      */
     private fun setPushToken() {
         Comm_Prefs.getPushToken() ?: kotlin.run {
@@ -137,11 +137,13 @@ class ActivityMain : BaseActivity() {
                             code: String,
                             message: String
                         ) {
-                            Toast.makeText(
-                                applicationContext,
-                                message,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            if(code != DAClient.SUCCESS){
+                                Toast.makeText(
+                                    applicationContext,
+                                    message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     })
                 })

@@ -187,6 +187,7 @@ class FragmentLoginContainer : BaseFragment() {
             */
         login_facebook.setPermissions(Arrays.asList("public_profile", "email"))
         // If using in a fragment
+        LoginManager.getInstance().logOut()
         login_facebook.fragment = this
         login_facebook.registerCallback(callbackManager, listener)// ...
     }
@@ -281,6 +282,7 @@ class FragmentLoginContainer : BaseFragment() {
         googleSignInClient = GoogleSignIn.getClient(context!!, gso)
 
         login_google.setOnClickListener {
+            googleSignInClient.signOut()
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
@@ -291,7 +293,6 @@ class FragmentLoginContainer : BaseFragment() {
      * Firebase Auth With Google
      */
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth!!.signInWithCredential(credential)
             .addOnCompleteListener(activity!!) { task ->
