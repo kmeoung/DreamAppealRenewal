@@ -3,11 +3,26 @@ package com.truevalue.dreamappeal.utils
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import com.facebook.login.LoginManager
+import com.google.firebase.auth.FirebaseAuth
 
 object Comm_Prefs {
 
     private lateinit var mContext: Context
     private lateinit var prefs: SharedPreferences
+
+    /**
+     * 전부 초기화
+     */
+    fun allReset(){
+        setUserProfileIndex(-1)
+        setToken(null)
+        setPushToken(null)
+        setNotification(true)
+        // Sns 로그인 로그아웃
+        FirebaseAuth.getInstance().signOut()
+        LoginManager.getInstance().logOut()
+    }
 
     /**
      * App 실행 시 한번만 실행

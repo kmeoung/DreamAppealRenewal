@@ -249,12 +249,7 @@ class ActivityMain : BaseActivity() {
         val listener = View.OnClickListener {
             when (it) {
                 ll_logout -> {
-                    Comm_Prefs.setUserProfileIndex(-1)
-                    Comm_Prefs.setToken(null)
-                    Comm_Prefs.setPushToken(null)
-                    // Sns 로그인 로그아웃
-                    FirebaseAuth.getInstance().signOut()
-                    LoginManager.getInstance().logOut()
+                    Comm_Prefs.allReset()
                     val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
                     startActivity(intent)
                     finish()

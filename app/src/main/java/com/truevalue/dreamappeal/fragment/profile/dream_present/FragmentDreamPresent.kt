@@ -187,8 +187,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                             if (code == DAClient.FAIL) {
                                 ActivityCompat.finishAffinity(activity!!)
                                 val intent = Intent(context!!, ActivityIntro::class.java)
-                                Comm_Prefs.setUserProfileIndex(-1)
-                                Comm_Prefs.setToken(null)
+                                Comm_Prefs.allReset()
                                 startActivity(intent)
                             }
                         }
