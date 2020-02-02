@@ -404,7 +404,8 @@
                                     android:text="@string/str_default_merit_and_motive"
                                     android:textColor="@color/black"
                                     android:textSize="12.3sp"
-                                    android:visibility="visible"/>
+                                    android:visibility="visible"
+                                    android:layout_marginBottom="6dp"/>
 
                         </RelativeLayout>
 

@@ -116,7 +116,8 @@ class FragmentMyProfile : BaseFragment() {
                         }
                         tv_gender.text = getString(if(bean.gender == 0) R.string.str_female else R.string.str_male)
                         tv_address.text = if(bean.address == null || (bean.address as String).isNullOrEmpty()) getString(R.string.str_none) else (bean.address as String)
-                        tv_email.text = if(bean.email.isNullOrEmpty()) getString(R.string.str_none) else bean.email
+                        // 이메일 계정은 null이 들어오면 sns 계정입니다.
+                        tv_email.text = if(bean.email.isNullOrEmpty()) getString(R.string.str_sns_login) else bean.email
 
                         val groups = json.getJSONArray("groups")
                         mAdapter!!.clear()

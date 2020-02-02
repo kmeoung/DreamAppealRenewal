@@ -371,4 +371,6 @@
 
     <string name="str_no_data_1">내 꿈과 팔로우중인 꿈의 게시물이 나타납니다</string>
     <string name="str_no_data_2">관심가는 꿈을 팔로우해서 소식을 받아보세요</string>
+
+    <string name="str_sns_login">SNS로 가입된 계정입니다</string>
 </resources>

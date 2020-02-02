@@ -267,12 +267,12 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 tv_job.text = bean.job
             }
 
-            if (bean.description.isNullOrEmpty()) {
-                tv_init_dream_description.visibility = VISIBLE
-                btn_dream_description_more.visibility = GONE
-            } else {
-                btn_dream_description_more.visibility = VISIBLE
-            }
+//            if (bean.description.isNullOrEmpty()) {
+//                tv_init_dream_description.visibility = VISIBLE
+//                btn_dream_description_more.visibility = GONE
+//            } else {
+//                btn_dream_description_more.visibility = VISIBLE
+//            }
 
             if (bean.meritNmotive.isNullOrEmpty()) {
                 tv_init_merit_and_motive.visibility = VISIBLE
@@ -287,6 +287,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             if (mAdapter != null) mAdapter!!.clear()
 
             if (bean.descriptions.size > 0) {
+                btn_dream_description_more.visibility = VISIBLE
                 tv_init_dream_description.visibility = GONE
 
                 for (i in 0 until bean.descriptions.size) {
@@ -294,6 +295,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                     mAdapter!!.add(content)
                 }
             } else {
+                btn_dream_description_more.visibility = GONE
                 tv_init_dream_description.visibility = VISIBLE
             }
         }

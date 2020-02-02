@@ -152,8 +152,9 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
                         tvAddress.text = context.getString(R.string.str_private)
                     }
 
+                    // 이메일 계정은 null이 들어오면 sns 계정입니다.
                     if(privateBean.email == 0){
-                        tvEmail.text = if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.email
+                        tvEmail.text = if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_sns_login) else bean.email
                     }else{
                         tvEmail.text = context.getString(R.string.str_private)
                     }

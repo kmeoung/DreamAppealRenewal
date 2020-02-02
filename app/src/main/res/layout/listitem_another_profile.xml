@@ -140,7 +140,9 @@
             android:textColorHint="@color/warm_grey"
             app:layout_constraintStart_toStartOf="@+id/email"
             app:layout_constraintTop_toBottomOf="@+id/email"
-            tools:text="@string/str_email" />
+            tools:text="@string/str_email"
+            android:maxLength="30"
+            android:ellipsize="end"/>
 
     <TextView
             android:id="@+id/tv_gender"
