@@ -174,9 +174,9 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
 
         override fun getItemViewType(i: Int): Int {
             if (mAdapter != null) {
-                when (mAdapter?.get(i)) {
-                    is BeanAnotherProfile -> return LISTITEM_TYPE_INFO
-                    else -> return LISTITEM_TYPE_GROUP
+                return when (mAdapter?.get(i)) {
+                    is BeanAnotherProfile -> LISTITEM_TYPE_INFO
+                    else -> LISTITEM_TYPE_GROUP
                 }
             }
             return LISTITEM_TYPE_INFO
