@@ -230,19 +230,19 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
 
                 tvPost.text = bean.title
 
-                h.itemView.setOnClickListener(View.OnClickListener {
+                h.itemView.setOnClickListener {
                     (activity as ActivityMain).replaceFragment(
                         FragmentBestPost.newInstance(bean.idx, mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = true
                     )
-                })
+                }
             } else {
                 tvPost.text =
                     Utils.replaceTextColor(context, tvPost, getString(R.string.str_best_post))
 
                 if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
-                    h.itemView.setOnClickListener(View.OnClickListener {
+                    h.itemView.setOnClickListener {
                         val intent = Intent(context!!, ActivityCameraGallery::class.java)
                         intent.putExtra(
                             ActivityCameraGallery.VIEW_TYPE,
@@ -254,7 +254,7 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                         )
                         intent.putExtra(ActivityCameraGallery.ACHIEVEMENT_POST_BEST_IDX, i + 1)
                         startActivityForResult(intent, REQUEST_ADD_ACHIEVEMENT)
-                    })
+                    }
                 }
             }
         }

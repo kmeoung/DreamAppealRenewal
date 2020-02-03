@@ -85,14 +85,17 @@ class FragmentNewAddAchievementPost : BaseFragment() {
         mDialog = ProgressDialog(context!!)
         mDialog!!.setCancelable(false)
 
-        et_comment.addTextChangedListener(object : TextWatcher {
+        val textWatcher = object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 iv_check.isSelected =
                     (!et_comment.text.toString().isNullOrEmpty() && !et_title.text.toString().isNullOrEmpty())
             }
-        })
+        }
+
+        et_title.addTextChangedListener(textWatcher)
+        et_comment.addTextChangedListener(textWatcher)
 
         if(postIdx > -1){
             tv_text_btn.visibility = GONE

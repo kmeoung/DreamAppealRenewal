@@ -10,10 +10,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +29,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.activity_comment_detail.*
 import kotlinx.android.synthetic.main.bottom_comment_view.*
 import kotlinx.android.synthetic.main.fragment_concern_detail.*
 import kotlinx.android.synthetic.main.fragment_concern_detail.ll_indicator
@@ -93,7 +91,12 @@ class FragmentConcernDetail : BaseFragment() {
         // View Click Listener
         onClickView()
         // 게시글 조회
-        getConcernDetail()
+        getConcernDetail(false)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Utils.downKeyBoard(activity!!)
     }
 
     /**
@@ -133,7 +136,7 @@ class FragmentConcernDetail : BaseFragment() {
      * http
      * 게시글 조회
      */
-    private fun getConcernDetail() {
+    private fun getConcernDetail(isScroll: Boolean) {
         mConcernIdx?.let {
             DAClient.getConcern(it, object : DAHttpCallback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -155,7 +158,7 @@ class FragmentConcernDetail : BaseFragment() {
                             json.toString(),
                             BeanConcernDetail::class.java
                         )
-                        setConcernDetail(bean)
+                        setConcernDetail(bean,isScroll)
                     } else {
                         context?.let { context ->
                             Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
@@ -170,7 +173,7 @@ class FragmentConcernDetail : BaseFragment() {
     /**
      * 질문 게시글 데이터 bind
      */
-    private fun setConcernDetail(bean: BeanConcernDetail) {
+    private fun setConcernDetail(bean: BeanConcernDetail, isScroll : Boolean) {
         mBean = bean
         tv_like_cnt.text = bean.post.votes
         tv_concern_title.text = bean.post.title
@@ -237,6 +240,12 @@ class FragmentConcernDetail : BaseFragment() {
                     adapter.add(it[i])
                 }
             }
+
+            if (isScroll && adapter.size() > 0) {
+                nsv_scroll.post{
+                    nsv_scroll.fullScroll(ScrollView.FOCUS_DOWN)
+                }
+            }
         }
     }
 
@@ -291,7 +300,7 @@ class FragmentConcernDetail : BaseFragment() {
         }
 
         Utils.setSwipeRefreshLayout(srl_refresh, SwipeRefreshLayout.OnRefreshListener {
-            getConcernDetail()
+            getConcernDetail(false)
         })
     }
 
@@ -342,7 +351,7 @@ class FragmentConcernDetail : BaseFragment() {
                     message: String
                 ) {
                     if (code == DAClient.SUCCESS) {
-                        getConcernDetail()
+                        getConcernDetail(false)
                     } else {
                         context?.let { context ->
                             Toast.makeText(
@@ -370,7 +379,7 @@ class FragmentConcernDetail : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
-                    getConcernDetail()
+                    getConcernDetail(false)
                 } else {
                     context?.let { context ->
                         Toast.makeText(
@@ -397,7 +406,7 @@ class FragmentConcernDetail : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
-                    getConcernDetail()
+                    getConcernDetail(false)
                 } else {
                     context?.let { context ->
                         Toast.makeText(
@@ -426,7 +435,7 @@ class FragmentConcernDetail : BaseFragment() {
                 ) {
                     if (code == DAClient.SUCCESS) {
                         initComment()
-                        getConcernDetail()
+                        getConcernDetail(true)
                     } else {
                         context?.let { context ->
                             Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
@@ -454,7 +463,7 @@ class FragmentConcernDetail : BaseFragment() {
                 ) {
                     if (code == DAClient.SUCCESS) {
                         initComment()
-                        getConcernDetail()
+                        getConcernDetail(false)
                     } else {
                         context?.let { context ->
                             Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
@@ -481,7 +490,7 @@ class FragmentConcernDetail : BaseFragment() {
                     message: String
                 ) {
                     if (code == DAClient.SUCCESS) {
-                        getConcernDetail()
+                        getConcernDetail(false)
                     } else {
                         context?.let { context ->
                             Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)

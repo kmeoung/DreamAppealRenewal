@@ -185,10 +185,27 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                 .show()
 
                             if (code == DAClient.FAIL) {
-                                ActivityCompat.finishAffinity(activity!!)
-                                val intent = Intent(context!!, ActivityIntro::class.java)
-                                Comm_Prefs.allReset()
-                                startActivity(intent)
+
+                                DAClient.deletePushToken(object : DAHttpCallback{
+                                    override fun onResponse(
+                                        call: Call,
+                                        serverCode: Int,
+                                        body: String,
+                                        code: String,
+                                        message: String
+                                    ) {
+                                        if(code == DAClient.SUCCESS){
+                                            ActivityCompat.finishAffinity(activity!!)
+                                            val intent = Intent(context!!, ActivityIntro::class.java)
+                                            Comm_Prefs.allReset()
+                                            startActivity(intent)
+                                        }else{
+                                            Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                })
+
+
                             }
                         }
                     }

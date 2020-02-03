@@ -260,26 +260,47 @@ class FragmentActionPost : BaseFragment() {
                     )
                 }
                 TYPE_DREAM_NOTE_IDEA -> {
-                    arrayOf(
-                        getString(R.string.str_save),
-                        getString(R.string.str_edit),
-                        getString(R.string.str_delete)
-                    )
+                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                        arrayOf(
+                            getString(R.string.str_save),
+                            getString(R.string.str_edit),
+                            getString(R.string.str_delete)
+                        )
+                    }else{
+                        arrayOf(
+                            getString(R.string.str_save)
+                        )
+                    }
+
                 }
                 else -> {
-                    arrayOf(
-                        getString(R.string.str_save),
-                        getString(R.string.str_edit),
-                        getString(R.string.str_delete)
-                    )
+                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                        arrayOf(
+                            getString(R.string.str_save),
+                            getString(R.string.str_edit),
+                            getString(R.string.str_delete)
+                        )
+                    }else{
+                        arrayOf(
+                            getString(R.string.str_save)
+                        )
+                    }
                 }
             }
         }else {
-            arrayOf(
-                getString(R.string.str_edit_level),
-                getString(R.string.str_edit),
-                getString(R.string.str_delete)
-            )
+            if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+                arrayOf(
+                    getString(R.string.str_save),
+                    getString(R.string.str_edit_level),
+                    getString(R.string.str_edit),
+                    getString(R.string.str_delete)
+                )
+            }else{
+                arrayOf(
+                    getString(R.string.str_save)
+                )
+            }
+
         }
         val builder =
             AlertDialog.Builder(context)

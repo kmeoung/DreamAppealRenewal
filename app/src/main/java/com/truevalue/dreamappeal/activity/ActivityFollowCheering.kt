@@ -327,12 +327,12 @@ class ActivityFollowCheering : BaseActivity() {
                 }
             }
 
-            ivProfile.setOnClickListener(View.OnClickListener {
+            h.itemView.setOnClickListener {
                 val intent = Intent()
                 intent.putExtra(RESULT_REPLACE_USER_IDX, bean.idx)
                 setResult(RESULT_CODE, intent)
                 finish()
-            })
+            }
 
 
             Glide.with(this@ActivityFollowCheering)

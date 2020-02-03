@@ -25,25 +25,31 @@
                 <!--상단 버튼 및 정보들-->
                 <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="7dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:paddingLeft="15.3dp"
-                        android:paddingRight="15.3dp">
+                        android:paddingRight="15.3dp"
+                        android:gravity="center">
                     <!--나의 꿈-->
                     <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
+                            android:layout_height="51dp"
+                            android:layout_weight="0.8"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/bg_round_box_nice_blue"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:elevation="3dp">
 
                         <LinearLayout
                                 android:id="@+id/ll_dreams"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:background="@drawable/blue_box"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
@@ -54,13 +60,8 @@
                                     android:fontFamily="@font/nanum_square_round_b"
                                     android:gravity="center"
                                     android:text="@string/str_first_dream"
-                                    android:textColor="@color/black"
+                                    android:textColor="@color/nice_blue"
                                     android:textSize="13.3sp" />
-
-                            <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1" />
 
                             <TextView
                                     android:id="@+id/tv_dream_level"
@@ -69,20 +70,25 @@
                                     android:fontFamily="@font/nanum_square_round_b"
                                     android:gravity="center"
                                     android:text="@string/lv_00"
-                                    android:textColor="@color/black"
-                                    android:textSize="17.7sp" />
+                                    android:textColor="@color/nice_blue"
+                                    android:textSize="17.7sp"
+                                    android:layout_marginTop="3dp"/>
 
                         </LinearLayout>
 
                     </LinearLayout>
                     <!--나의 꿈-->
+
+                    <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.1"/>
                     <!--팔로워-->
                     <LinearLayout
                             android:id="@+id/ll_follower"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="0.7"
-                            android:background="@drawable/blue_box"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -181,10 +187,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15.3dp"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="6dp"
                         android:layout_marginRight="15.3dp"
                         android:background="@drawable/bg_round_box_gray_2"
-                        android:elevation="5dp"
+                        android:elevation="3dp"
                         android:orientation="vertical">
 
                     <LinearLayout
@@ -295,7 +301,7 @@
                                     android:text="@string/str_more_view"
                                     android:textColor="@color/text_gray"
                                     android:textSize="12sp"
-                                    android:visibility="visible" />
+                                    android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -347,7 +353,7 @@
                             android:layout_marginRight="15.3dp"
                             android:layout_marginBottom="8dp"
                             android:background="@drawable/bg_round_box_gray_2"
-                            android:elevation="5dp"
+                            android:elevation="3dp"
                             android:orientation="vertical"
                             android:paddingLeft="10dp"
                             android:paddingTop="6dp">
@@ -387,7 +393,7 @@
                                         android:text="@string/str_more_view"
                                         android:textColor="@color/text_gray"
                                         android:textSize="11sp"
-                                        android:visibility="visible" />
+                                        android:visibility="gone" />
                                 <!--내 꿈 이유 더보기 버튼-->
 
                             </LinearLayout>

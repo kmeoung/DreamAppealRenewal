@@ -160,6 +160,11 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                     .placeholder(R.drawable.drawer_user)
                     .circleCrop()
                     .into(ivProfile)
+            }else{
+                Glide.with(context!!)
+                    .load(R.drawable.drawer_user)
+                    .circleCrop()
+                    .into(ivProfile)
             }
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style

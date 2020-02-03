@@ -366,7 +366,7 @@ class ActivityRank : BaseActivity() {
                                     R.color.nice_blue
                                 )
                             )
-                            tv_contents.text = "+ ${bean.my_rank.exp}"
+                            tv_contents.text = "+ ${bean.my_rank.exp_sum} exp"
                         }
                     }
                 }
@@ -498,6 +498,11 @@ class ActivityRank : BaseActivity() {
                         .circleCrop()
                         .placeholder(R.drawable.drawer_user)
                         .into(ivRankProfile)
+                }?:kotlin.run {
+                    Glide.with(this@ActivityRank)
+                        .load(R.drawable.drawer_user)
+                        .circleCrop()
+                        .into(ivRankProfile)
                 }
 
                 tvUser.text = "${bean.value_style} ${bean.job} ${bean.nickname}"
@@ -527,7 +532,7 @@ class ActivityRank : BaseActivity() {
                                         R.color.nice_blue
                                     )
                                 )
-                                tvContents.text = "+ ${bean.exp}"
+                                tvContents.text = "+ ${bean.exp_sum} exp"
                             }
                         }
                     }

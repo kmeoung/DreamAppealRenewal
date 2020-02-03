@@ -23,6 +23,12 @@ import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import okhttp3.Call
 import java.text.SimpleDateFormat
 import java.util.*
+import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
+
+
+
+
+
 
 class FragmentEditGroup : BaseFragment() {
 
@@ -115,8 +121,6 @@ class FragmentEditGroup : BaseFragment() {
                 && (!tv_sort.text.toString().isNullOrEmpty())
                 && (!tv_start_year.text.toString().isNullOrEmpty())
                 && (!tv_start_month.text.toString().isNullOrEmpty())
-                && (!tv_end_year.text.toString().isNullOrEmpty())
-                && (!tv_end_month.text.toString().isNullOrEmpty())
     }
 
     /**
@@ -181,35 +185,55 @@ class FragmentEditGroup : BaseFragment() {
     }
 
     /**
-     * 년도 설정
+     * 시작 설정
      */
-    private fun setYear(view: TextView) {
-        val popupMenu = PopupMenu(context!!, view)
-        for (i in Calendar.getInstance().get(Calendar.YEAR)..Calendar.getInstance().get(Calendar.YEAR) + 2) {
-            popupMenu.menu.add(i.toString())
+    private fun setStart() {
+        val yearSelected: Int
+        val monthSelected: Int
+        val customTitle = getString(R.string.str_start_date)
+        val locale = Locale("ko")
+//Set default values
+        val calendar = Calendar.getInstance()
+        yearSelected =
+            if (tv_start_year.text.toString().isNullOrEmpty()) calendar.get(Calendar.YEAR) else tv_start_year.text.toString().toInt()
+        monthSelected =
+            if (tv_start_month.text.toString().isNullOrEmpty()) calendar.get(Calendar.MONTH) else tv_start_month.text.toString().toInt()
+
+        val dialogFragment = MonthYearPickerDialogFragment
+            .getInstance(monthSelected, yearSelected,customTitle,locale)
+
+        dialogFragment.setOnDateSetListener { year, monthOfYear ->
+            tv_start_year.text = year.toString()
+            tv_start_month.text = (monthOfYear + 1).toString()
         }
 
-        popupMenu.setOnMenuItemClickListener {
-            view.text = it.title
-            false
-        }
-        popupMenu.show()
+        dialogFragment.show(fragmentManager, null)
     }
 
     /**
-     * 월 설정
+     * 종료 설정
      */
-    private fun setMonth(view: TextView) {
-        val popupMenu = PopupMenu(context!!, view)
-        for (i in 1..12) {
-            popupMenu.menu.add(i.toString())
+    private fun setEnd() {
+        val yearSelected: Int
+        val monthSelected: Int
+        val customTitle = getString(R.string.str_end_date)
+        val locale = Locale("ko")
+//Set default values
+        val calendar = Calendar.getInstance()
+        yearSelected =
+            if (tv_end_year.text.toString().isNullOrEmpty()) calendar.get(Calendar.YEAR) else tv_end_year.text.toString().toInt()
+        monthSelected =
+            if (tv_end_month.text.toString().isNullOrEmpty()) calendar.get(Calendar.MONTH) else tv_end_month.text.toString().toInt()
+
+        val dialogFragment = MonthYearPickerDialogFragment
+            .getInstance(monthSelected, yearSelected,customTitle,locale)
+
+        dialogFragment.setOnDateSetListener { year, monthOfYear ->
+            tv_end_year.text = year.toString()
+            tv_end_month.text = (monthOfYear + 1).toString()
         }
 
-        popupMenu.setOnMenuItemClickListener {
-            view.text = it.title
-            false
-        }
-        popupMenu.show()
+        dialogFragment.show(fragmentManager, null)
     }
 
     /**
@@ -226,10 +250,10 @@ class FragmentEditGroup : BaseFragment() {
                     }
                 }
                 tv_sort -> setClassView()// 뷴류 설정
-                tv_start_year -> setYear(tv_start_year)
-                tv_end_year -> setYear(tv_end_year)
-                tv_start_month -> setMonth(tv_start_month)
-                tv_end_month -> setMonth(tv_end_month)
+                tv_start_year -> setStart()
+                tv_end_year -> setEnd()
+                tv_start_month -> setStart()
+                tv_end_month -> setEnd()
             }
         }
         (activity as ActivityMyProfileContainer).iv_close.setOnClickListener(listener)
@@ -252,10 +276,13 @@ class FragmentEditGroup : BaseFragment() {
         val Class = mClass
         val start_year = Integer.parseInt(tv_start_year.text.toString())
         val start_month = Integer.parseInt(tv_start_month.text.toString())
-        val end_year = Integer.parseInt(tv_end_year.text.toString())
-        val end_month = Integer.parseInt(tv_end_month.text.toString())
         val start_date = String.format("%04d-%02d", start_year, start_month)
-        val end_date = String.format("%04d-%02d", end_year, end_month)
+        var end_date : String? = null
+        if(!tv_end_year.text.toString().isNullOrEmpty() && !tv_end_month.text.toString().isNullOrEmpty()) {
+            val end_year = Integer.parseInt(tv_end_year.text.toString())
+            val end_month = Integer.parseInt(tv_end_month.text.toString())
+            end_date = String.format("%04d-%02d", end_year, end_month)
+        }
         val description = et_detail_info.text.toString()
 
         // todo : 페이지를 완성해야 합니다

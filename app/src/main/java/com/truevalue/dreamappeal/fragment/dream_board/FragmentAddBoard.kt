@@ -91,6 +91,11 @@ class FragmentAddBoard : BaseFragment() {
         (activity as ActivityMain).bottom_view.visibility = VISIBLE
     }
 
+    override fun onStop() {
+        super.onStop()
+        Utils.downKeyBoard(activity!!)
+    }
+
     /**
      * View 초기화
      */

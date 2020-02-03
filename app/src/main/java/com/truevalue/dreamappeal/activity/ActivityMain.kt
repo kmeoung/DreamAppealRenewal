@@ -251,10 +251,25 @@ class ActivityMain : BaseActivity() {
         val listener = View.OnClickListener {
             when (it) {
                 ll_logout -> {
-                    Comm_Prefs.allReset()
-                    val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
-                    startActivity(intent)
-                    finish()
+
+                    DAClient.deletePushToken(object : DAHttpCallback{
+                        override fun onResponse(
+                            call: Call,
+                            serverCode: Int,
+                            body: String,
+                            code: String,
+                            message: String
+                        ) {
+                            if(code == DAClient.SUCCESS){
+                                Comm_Prefs.allReset()
+                                val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
+                                startActivity(intent)
+                                finish()
+                            }else{
+                                Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
                 }
                 ll_profile -> {
                     val intent = Intent(this@ActivityMain, ActivityMyProfileContainer::class.java)

@@ -74,6 +74,25 @@ object DAClient {
     }
 
     /**
+     * DELETE
+     * push token 제거
+     */
+    fun deletePushToken(
+        callback: DAHttpCallback
+    ) {
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            Comm_Param.URL_NOTIFICATION_TOKEN,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+
+    }
+
+
+    /**
      * PATCH
      * 이미지 업로드
      * idx -> profile_idx | achievement_post_idx | action_post_idx
@@ -142,7 +161,7 @@ object DAClient {
         position: String,
         Class: Int,
         start_date: String,
-        end_date: String,
+        end_date: String?,
         description: String,
         callback: DAHttpCallback
     ) {
@@ -152,7 +171,7 @@ object DAClient {
         params.put("position", position)
         params.put("class", Class)
         params.put("start_date", start_date)
-        params.put("end_date", end_date)
+        if(!end_date.isNullOrEmpty())params.put("end_date", end_date)
         params.put("description", description)
 
         BaseOkhttpClient.request(
@@ -228,19 +247,20 @@ object DAClient {
     ) {
 
         val params = DAHttpParams()
-        if (!bean.name.isNullOrEmpty()) params.put("name", bean.name!!)
-        if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname!!)
+        if (!bean.name.isNullOrEmpty()) params.put("name", bean.name as String)
+        if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname as String)
         params.put("gender", bean.gender)
+        if(!bean.birth.isNullOrEmpty()) params.put("birth",bean.birth as String)
 
         if (bean.address != null) {
-            when (bean.address!!) {
+            when (bean.address) {
                 is JSONObject -> {
-                    params.put("address", bean.address!! as JSONObject)
+                    params.put("address", bean.address as JSONObject)
                 }
                 is String -> {
                     if (!(bean.address as String).isNullOrEmpty()) params.put(
                         "address",
-                        bean.address!! as String
+                        bean.address as String
                     )
                 }
             }

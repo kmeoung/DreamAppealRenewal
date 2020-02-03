@@ -176,10 +176,25 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                 isLast = true
                                 mAdapter!!.notifyDataSetChanged()
                             } else if (code == DAClient.FAIL) {
-                                ActivityCompat.finishAffinity(activity!!)
-                                val intent = Intent(context!!, ActivityIntro::class.java)
-                                Comm_Prefs.allReset()
-                                startActivity(intent)
+
+                                DAClient.deletePushToken(object : DAHttpCallback{
+                                    override fun onResponse(
+                                        call: Call,
+                                        serverCode: Int,
+                                        body: String,
+                                        code: String,
+                                        message: String
+                                    ) {
+                                        if(code == DAClient.SUCCESS){
+                                            ActivityCompat.finishAffinity(activity!!)
+                                            val intent = Intent(context!!, ActivityIntro::class.java)
+                                            Comm_Prefs.allReset()
+                                            startActivity(intent)
+                                        }else{
+                                            Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                })
                             }
                             Toast.makeText(
                                 context!!.applicationContext,
@@ -278,6 +293,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             .circleCrop()
                             .placeholder(R.drawable.drawer_user)
                             .into(ivProfile)
+                    }else{
+                        Glide.with(context!!)
+                            .load(R.drawable.drawer_user)
+                            .circleCrop()
+                            .into(ivProfile)
                     }
 
                     if(!bean.value_style.isNullOrEmpty()) tvValueStyle.text = bean.value_style
@@ -343,6 +363,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         private fun onTimelineBindViewHolder(h: BaseViewHolder, i: Int) {
             val bean = mAdapter!!.get(i) as BeanTimeline
             val ivProfile = h.getItemView<ImageView>(R.id.iv_dream_profile)
+            val llDreamTitle = h.getItemView<LinearLayout>(R.id.ll_dream_title)
             val ivMore = h.getItemView<ImageView>(R.id.iv_action_more)
             val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
             val tvJob = h.getItemView<TextView>(R.id.tv_job)
@@ -472,15 +493,18 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             if (bean.profile_idx != Comm_Prefs.getUserProfileIndex()) {
-                ivProfile.setOnClickListener {
+
+                val changeProfileListener = View.OnClickListener{
                     bean.profile_idx?.let { profile_idx ->
                         (activity as ActivityMain).replaceFragment(
                             FragmentProfile.newInstance(profile_idx),
                             true
                         )
                     }
-
                 }
+
+                ivProfile.setOnClickListener (changeProfileListener)
+                llDreamTitle.setOnClickListener(changeProfileListener)
             }
 
             ivMore.setOnClickListener {

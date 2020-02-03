@@ -10,7 +10,7 @@ data class BeanRank(
 
 data class Rank(
     val action_post_init: Int,
-    val exp: Int,
+    val exp_sum: Int,
     val idx: Int,
     val image: String?,
     val job: String,

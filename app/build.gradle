@@ -89,6 +89,8 @@ dependencies {
 
     // 페이스북 로그인
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    // 년 월 picker
+    implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
 
 }
 

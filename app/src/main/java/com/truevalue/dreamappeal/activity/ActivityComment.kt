@@ -12,6 +12,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
@@ -625,6 +626,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             mAdapter?.let {
                 val bean = it.get(i) as BeanCommentDetail
                 val ivProfile = h.getItemView<ImageView>(R.id.iv_profile)
+                val llProfile = h.getItemView<LinearLayout>(R.id.ll_profile)
                 val tvComment = h.getItemView<TextView>(R.id.tv_comment)
                 val tvTime = h.getItemView<TextView>(R.id.tv_time)
                 val ivLike = h.getItemView<ImageView>(R.id.iv_like)
@@ -658,15 +660,6 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                         .into(ivProfile)
                 }
 
-                if (mIndex != Comm_Prefs.getUserProfileIndex()) {
-                    ivProfile.setOnClickListener{
-                        val intent = Intent()
-                        intent.putExtra(RESULT_REPLACE_USER_IDX, bean.writer_idx)
-                        setResult(RESULT_CODE, intent)
-                        finish()
-                    }
-                }
-
                 tvTime.text = Utils.convertFromDate(bean.register_date)
                 tvLike.text = String.format("%d개", bean.like_count)
 
@@ -682,10 +675,17 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 tvAddReply.setOnClickListener{
                     setReplyComment(bean)
                 }
-                if (mIndex == Comm_Prefs.getUserProfileIndex()) {
+                if (bean.profile_idx == Comm_Prefs.getUserProfileIndex()) {
                     h.itemView.setOnLongClickListener {
                         showPopupMenu(tvComment, bean)
                         true
+                    }
+                }else{
+                    llProfile.setOnClickListener{
+                        val intent = Intent()
+                        intent.putExtra(RESULT_REPLACE_USER_IDX, bean.writer_idx)
+                        setResult(RESULT_CODE, intent)
+                        finish()
                     }
                 }
             }

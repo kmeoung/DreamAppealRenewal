@@ -1,6 +1,9 @@
 package com.truevalue.dreamappeal.fragment.login
 
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -112,12 +115,17 @@ class FragmentRegister : BaseFragment() {
                     mAuthMap[AUTH_PRIVACY_POLICY] = !iv_privacy_policy.isSelected
                     initAuthIcon()
                 }
-                ll_receive_marketing -> {
-                    mAuthMap[AUTH_RECEIVE_MARKETING] = !iv_receive_marketing.isSelected
-                    initAuthIcon()
-                }
                 btn_next -> {
                     checkRegister()
+                }
+                tv_terms_of_use_detail->{
+                    val intent = Intent(ACTION_VIEW, Uri.parse(Comm_Param.URL_DOCS_TERMS))
+                    startActivity(intent)
+
+                }
+                tv_privacy_policy_detail->{
+                    val intent = Intent(ACTION_VIEW, Uri.parse(Comm_Param.URL_DOCS_PRIVACY))
+                    startActivity(intent)
                 }
             }
         }
@@ -129,8 +137,9 @@ class FragmentRegister : BaseFragment() {
         ll_all_agree.setOnClickListener(listener)
         ll_terms_of_use.setOnClickListener(listener)
         ll_privacy_policy.setOnClickListener(listener)
-        ll_receive_marketing.setOnClickListener(listener)
         btn_next.setOnClickListener(listener)
+        tv_terms_of_use_detail.setOnClickListener(listener)
+        tv_privacy_policy_detail.setOnClickListener(listener)
     }
 
     /**
@@ -140,12 +149,10 @@ class FragmentRegister : BaseFragment() {
         if (mAuthMap.isNotEmpty()) {
             iv_terms_of_use.isSelected = mAuthMap[AUTH_TERMS_OF_USE]!!
             iv_privacy_policy.isSelected = mAuthMap[AUTH_PRIVACY_POLICY]!!
-            iv_receive_marketing.isSelected = mAuthMap[AUTH_RECEIVE_MARKETING]!!
 
             iv_all_agree.isSelected =
                 iv_terms_of_use.isSelected &&
-                        iv_privacy_policy.isSelected &&
-                        iv_receive_marketing.isSelected
+                        iv_privacy_policy.isSelected
         }
 
     }
