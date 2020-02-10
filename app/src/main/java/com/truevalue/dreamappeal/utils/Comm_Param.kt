@@ -10,8 +10,8 @@ object Comm_Param {
 
     // DEV 서버
     private const val DEV_API =
-//        "https://www.dreamappeal-mobile.com"
-    "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
+        "https://dev.dreamappeal-mobile.com"
+//    "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버
     private const val REAL_API =
         "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"

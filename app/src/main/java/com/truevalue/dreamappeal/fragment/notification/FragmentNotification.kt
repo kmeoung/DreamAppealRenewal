@@ -1793,7 +1793,8 @@ class FragmentNotification : BaseFragment() {
                     val profile_idx = json.getInt("profile_idx")
                     Comm_Prefs.setUserProfileIndex(profile_idx)
                     Comm_Prefs.setToken(token)
-
+                    Toast.makeText(context!!.applicationContext, getString(R.string.str_notification_change_profile), Toast.LENGTH_SHORT)
+                        .show()
                     listener.replace()
 
                 } else {

@@ -26,6 +26,7 @@ import com.truevalue.dreamappeal.bean.BeanActionPost
 import com.truevalue.dreamappeal.bean.BeanActionPostHeader
 import com.truevalue.dreamappeal.bean.BeanBlueprintObject
 import com.truevalue.dreamappeal.bean.BeanObjectStep
+import com.truevalue.dreamappeal.dialog.DialogObjectSuccess
 import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
@@ -227,11 +228,17 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
+                            if(complete == 1) {
+                                val dialog = DialogObjectSuccess(context!!)
+                                dialog.show()
+                            }
+
                             getObjects(object_idx)
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

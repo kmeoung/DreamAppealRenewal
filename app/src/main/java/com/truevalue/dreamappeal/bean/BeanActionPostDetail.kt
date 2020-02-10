@@ -13,4 +13,5 @@ data class BeanActionPostDetail(var idx : Int,
                                 var step_name : String?,
                                 var comment_count : Int,
                                 var like_count : Int,
+                                val link : String?,
                                 var status : Boolean)

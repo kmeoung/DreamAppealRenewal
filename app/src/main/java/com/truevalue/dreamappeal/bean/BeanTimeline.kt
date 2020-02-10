@@ -14,6 +14,7 @@ data class BeanTimeline(
     val images: List<TimelineImage>?,
     val item_idx: Int?,
     val job: String?,
+    val link : String?,
     var like_count: Int?,
     val nickname: String?,
     val object_title: String?,

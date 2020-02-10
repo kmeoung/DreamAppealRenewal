@@ -7,13 +7,12 @@
         android:id="@+id/ll_bg">
 
     <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
             android:gravity="center_vertical"
-            android:layout_marginLeft="7dp"
-            android:src="@drawable/ic_object"
-            android:layout_marginTop="9dp"
-            android:scaleType="centerCrop"/>
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ic_object_step"
+            android:layout_marginTop="11dp"/>
 
     <TextView
             android:id="@+id/tv_title"

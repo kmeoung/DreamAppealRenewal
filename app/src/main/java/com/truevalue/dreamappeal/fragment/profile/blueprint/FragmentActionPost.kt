@@ -34,7 +34,6 @@ import kotlinx.android.synthetic.main.bottom_post_view.*
 import kotlinx.android.synthetic.main.fragment_action_post.*
 import okhttp3.Call
 import org.json.JSONObject
-import java.util.ArrayList
 
 class FragmentActionPost : BaseFragment() {
 
@@ -127,14 +126,7 @@ class FragmentActionPost : BaseFragment() {
 
             when (isDreamNoteType) {
                 TYPE_DREAM_NOTE_LIFE -> {
-                    tv_title.text = "일상 / 경험"
-                    iv_circle.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context!!,
-                            R.drawable.ic_circle_green
-                        )
-                    )
-                    tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.asparagus))
+                    tv_title.text = "일상과 경험"
                     iv_side_img.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -145,13 +137,6 @@ class FragmentActionPost : BaseFragment() {
                 TYPE_DREAM_NOTE_IDEA -> {
                     // text 설정
                     tv_title.text = "영감"
-                    iv_circle.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context!!,
-                            R.drawable.ic_circle_yellow
-                        )
-                    )
-                    tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.yellow_orange))
                     iv_side_img.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -162,13 +147,6 @@ class FragmentActionPost : BaseFragment() {
                 else -> {
                     // text 설정
                     tv_title.text = getString(R.string.str_level_choice_action_post)
-                    iv_circle.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context!!,
-                            R.drawable.ic_circle_blue
-                        )
-                    )
-                    tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
                     iv_side_img.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -180,13 +158,6 @@ class FragmentActionPost : BaseFragment() {
         } else {
             // text 설정
             tv_title.text = getString(R.string.str_level_choice_action_post)
-            iv_circle.setImageDrawable(
-                ContextCompat.getDrawable(
-                    context!!,
-                    R.drawable.ic_circle_blue
-                )
-            )
-            tv_arrow.setTextColor(ContextCompat.getColor(context!!, R.color.main_blue))
             iv_side_img.setImageDrawable(
                 ContextCompat.getDrawable(
                     context!!,

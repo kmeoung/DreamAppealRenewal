@@ -16,18 +16,18 @@
 
             <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="130dp"
-                    android:layout_marginLeft="57dp"
-                    android:layout_marginTop="112dp"
-                    android:layout_marginRight="57dp"
-                    android:src="@drawable/ic_main_logo" />
+                    android:layout_height="190dp"
+                    android:layout_marginTop="40dp"
+                    android:src="@drawable/ic_login_intro"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
 
             <Button
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="44.7dp"
                     android:layout_marginLeft="30.3dp"
-                    android:layout_marginTop="50.3dp"
+                    android:layout_marginTop="20.3dp"
                     android:layout_marginRight="30.3dp"
                     android:background="@drawable/bg_round_rectangle_blue"
                     android:fontFamily="@font/nanum_square_round_b"

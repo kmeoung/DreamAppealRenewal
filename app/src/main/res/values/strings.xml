@@ -64,6 +64,7 @@
 
 
     <string name="str_default_merit_and_motive_2">이 꿈의 어떤 점에 매력을 느꼈을까?\n계기는 무엇이었을까?</string>
+    <string name="str_default_addr_search">동 / 읍 / 면 / 리 / 도로명\n을(를) 입력해주세요</string>
 
     <string name="str_designation">명칭</string>
     <string name="str_explanation">설명</string>
@@ -198,7 +199,7 @@
     <string name="str_private">비공개</string>
 
     <string name="str_nickname_hint">별명 입력 (중복불가)</string>
-    <string name="str_address_hint">주소 검색</string>
+    <string name="str_address_hint">예) 유성구 어은동, 유성구 과학로</string>
     <string name="str_number_hint">전화번호를 입력해 주세요</string>
 
     <string name="str_reset_password">비밀번호 재설정</string>
@@ -209,6 +210,7 @@
     <string name="str_do_not_success">완료취소하기</string>
     <string name="str_get">획득</string>
     <string name="str_dream_point">드림포인트</string>
+    <string name="str_dream_point_title">드림포인트 현황</string>
     <string name="str_dream_note">드림노트</string>
     <string name="str_dream_point_usage">드림포인트 이용내역</string>
     <string name="str_dream_point_info_mission">미션 달성하고</string>
@@ -233,7 +235,7 @@
     <string name="str_hint_detail_info">소속에 대해 설명해주세요(선택사항)</string>
     <string name="str_accumulate_use">사용 누적</string>
     <string name="str_accumulate_get">획득 누적</string>
-    <string name="str_lifestyle">일상 / 경험</string>
+    <string name="str_lifestyle">일상과 경험</string>
     <string name="str_get_list">획득 내역</string>
     <string name="str_use_list">사용 내역</string>
     <string name="str_idea_gallery">영감 갤러리</string>
@@ -250,7 +252,7 @@
     <string name="str_opportunity_long">내 꿈에 맞게 만들고픈 기회</string>
 
     <string name="str_level_choice_idea">영감 기록</string>
-    <string name="str_level_choice_like">일상/경험 기록</string>
+    <string name="str_level_choice_like">일상과 경험 기록</string>
     <string name="str_level_choice_action_post">실천인증</string>
 
     <string name="str_input_name">이름을 입력해주세요.</string>
@@ -269,8 +271,8 @@
     <string name="str_error_min_profile">최소 1개의 프로필이 있어야 합니다</string>
     <string name="str_error_max_profile">최대 10개의 프로필까지 생성이 가능합니다</string>
 
-    <string name="str_change_profile_dialog_title">프로필 변경</string>
-    <string name="str_change_profile_dialog_contents">프로필을 변경하시겠습니까?</string>
+    <string name="str_change_profile_dialog_title">활동 프로필 변경</string>
+    <string name="str_change_profile_dialog_contents">해당 프로필로 활동하시겠습니까?</string>
     <string name="str_error_change_using_profile">현재 사용중인 프로필은 선택이 불가능 합니다.</string>
 
     <string name="str_add_group_info">소속정보 추가</string>
@@ -279,7 +281,7 @@
     <string name="str_yes">네</string>
     <string name="str_no">아니오</string>
     <string name="str_none">없음</string>
-    <string name="str_edit">수정</string>
+    <string name="str_edit">내용 수정</string>
     <string name="str_save">영감 갤러리에 담기</string>
     <string name="str_delete">삭제</string>
 
@@ -307,8 +309,8 @@
     <string name="str_sleect_best_post_2">대표 성과2 지정</string>
     <string name="str_sleect_best_post_3">대표 성과3 지정</string>
     <string name="str_count">개</string>
-    <string name="str_delete_post_title">게시글 삭제</string>
-    <string name="str_delete_post_contents">게시글을 삭제하시겠습니까?</string>
+    <string name="str_delete_post_title">게시물 삭제</string>
+    <string name="str_delete_post_contents">해당 게시물을 삭제하시겠습니까?</string>
 
     <string name="str_delete_best_post_contents">해당 대표성과를 삭제하시겠습니까?</string>
 
@@ -340,7 +342,7 @@
     <string name="str_timeline">타임라인</string>
 
     <string name="str_new_post">새 게시물</string>
-    <string name="str_edit_post">게시물 수정</string>
+    <string name="str_edit_post">내용 수정하기</string>
     <string name="str_edit_level">실천 목표 / 세부단계 재설정</string>
 
     <string name="str_event">이벤트</string>
@@ -365,7 +367,7 @@
     <string name="str_concern_title">고민 / 질문</string>
 
 
-    <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
+    <string name="str_addr_error">찾으시는 범위가 너무 넓습니다</string>
 
     <string name="str_adoption">채택</string>
     <string name="str_recommand">추천</string>
@@ -391,4 +393,5 @@
     <string name="str_no_data_2">관심가는 꿈을 팔로우해서 소식을 받아보세요</string>
 
     <string name="str_nickname_limit">닉네임은 최대 12자까지 가능합니다</string>
+    <string name="str_notification_change_profile">해당하는 프로필로 변경 후 이동합니다</string>
 </resources>

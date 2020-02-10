@@ -57,6 +57,7 @@ class ActivityAddrSearch : BaseActivity() {
      */
     private fun initView() {
         iv_cancel.visibility = GONE
+        tv_default_addr.visibility = VISIBLE
 
         et_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -149,6 +150,14 @@ class ActivityAddrSearch : BaseActivity() {
                         it.clear()
                         try {
                             val documents = json.getJSONArray("documents")
+
+                            if(documents.length() < 1){
+                                Toast.makeText(applicationContext,"찾으시는 검색결과가 없습니다",Toast.LENGTH_SHORT).show()
+                                tv_default_addr.visibility = VISIBLE
+                            }else{
+                                tv_default_addr.visibility = GONE
+                            }
+
                             for (i in 0 until documents.length()) {
                                 val document = documents.getJSONObject(i)
                                 var address: JSONObject
@@ -199,6 +208,7 @@ class ActivityAddrSearch : BaseActivity() {
                                 it.add(bean)
                             }
                         } catch (e: JSONException) {
+                            Toast.makeText(applicationContext,"찾으시는 검색결과가 없습니다",Toast.LENGTH_SHORT).show()
                             e.printStackTrace()
                         }
                     }

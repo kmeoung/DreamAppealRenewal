@@ -7,10 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -20,6 +17,7 @@ import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanSearchBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_search_board.*
 import okhttp3.Call
 import org.json.JSONArray
@@ -236,6 +234,9 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
             val llTitle = h.getItemView<LinearLayout>(R.id.ll_title)
             val tvTitle = h.getItemView<TextView>(R.id.tv_title)
             val tvSubTitle = h.getItemView<TextView>(R.id.tv_sub_title)
+            val llBg = h.getItemView<LinearLayout>(R.id.ll_bg)
+
+            Utils.setImageItemViewSquare(context,llBg,2)
 
             mAdapter?.let {
                 val bean = it.get(i) as BeanSearchBoard

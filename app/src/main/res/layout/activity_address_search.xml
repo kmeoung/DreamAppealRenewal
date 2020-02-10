@@ -38,7 +38,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:fontFamily="@font/nanum_square_round_r"
-                    android:hint="주소 검색"
+                    android:hint="@string/str_address_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:lines="1"
@@ -72,11 +72,29 @@
     </LinearLayout>
     <!--검색 바-->
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search"
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/white" />
+            android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+        <TextView
+                android:id="@+id/tv_default_addr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/text_line_spacing"
+                android:minHeight="195dp"
+                android:text="@string/str_default_addr_search"
+                android:textColor="@color/warm_grey"
+                android:textSize="14.7sp" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>

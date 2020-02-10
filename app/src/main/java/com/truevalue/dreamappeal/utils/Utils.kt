@@ -572,6 +572,20 @@ object Utils {
     }
 
     /**
+     * 이미지 아이템 뷰 정사각형 처리 갯수
+     */
+    fun setImageItemViewSquare(context: Context?, view: View,itemCount : Int) {
+        context?.let {
+            val params = view.layoutParams
+            val display = it.resources.displayMetrics
+            val swidth = display.widthPixels
+            params.width = swidth / itemCount + swidth % itemCount
+            params.height = swidth / itemCount + swidth % itemCount
+            view.layoutParams = params
+        }
+    }
+
+    /**
      * replace Comment Count text
      */
     fun getCommentView(count: Int): String {

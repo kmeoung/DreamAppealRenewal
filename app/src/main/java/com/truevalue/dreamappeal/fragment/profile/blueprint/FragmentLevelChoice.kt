@@ -510,20 +510,11 @@ class FragmentLevelChoice : BaseFragment() {
             if (mAdapter != null) {
                 val bean = mAdapter!!.get(i) as BeanCategory
                 val llBg = h.getItemView<LinearLayout>(R.id.ll_bg)
-                val tvCircle = h.getItemView<TextView>(R.id.tv_circle)
                 val tvTitle = h.getItemView<TextView>(R.id.tv_title)
 
                 tvTitle.text = bean.object_name
 
-                if (selectedCategoryIdx == bean.idx) {
-                    llBg.setBackgroundColor(ContextCompat.getColor(context!!, R.color.nice_blue))
-                    tvCircle.isSelected = true
-                    tvTitle.isSelected = true
-                } else {
-                    llBg.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-                    tvCircle.isSelected = false
-                    tvTitle.isSelected = false
-                }
+                tvTitle.isSelected = (selectedCategoryIdx == bean.idx)
 
                 llBg.setOnClickListener {
                     if (selectedCategoryIdx != bean.idx) {
@@ -548,7 +539,7 @@ class FragmentLevelChoice : BaseFragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             return BaseViewHolder.newInstance(
-                R.layout.listitem_level_choice,
+                R.layout.listitem_level_choice_detail,
                 parent,
                 false
             )
@@ -558,20 +549,11 @@ class FragmentLevelChoice : BaseFragment() {
             if (mAdapterDetail != null) {
                 val bean = mAdapterDetail!!.get(i) as BeanCategoryDetail
                 val llBg = h.getItemView<LinearLayout>(R.id.ll_bg)
-                val tvCircle = h.getItemView<TextView>(R.id.tv_circle)
                 val tvTitle = h.getItemView<TextView>(R.id.tv_title)
 
                 tvTitle.text = bean.title
 
-                if (selectedCategoryDetailIdx == bean.idx) {
-                    llBg.setBackgroundColor(ContextCompat.getColor(context!!, R.color.nice_blue))
-                    tvCircle.isSelected = true
-                    tvTitle.isSelected = true
-                } else {
-                    llBg.setBackgroundColor(ContextCompat.getColor(context!!, R.color.white))
-                    tvCircle.isSelected = false
-                    tvTitle.isSelected = false
-                }
+                tvTitle.isSelected = (selectedCategoryDetailIdx == bean.idx)
 
                 llBg.setOnClickListener {
                     selectedCategoryDetailIdx = bean.idx
