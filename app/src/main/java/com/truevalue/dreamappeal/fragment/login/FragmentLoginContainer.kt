@@ -409,7 +409,7 @@ class FragmentLoginContainer : BaseFragment() {
             Log.e(TAG, "Session Call back :: onSessionOpenFailed: ${exception?.message}")
             Toast.makeText(
                 context!!.applicationContext,
-                "카카오 깡 실패", Toast.LENGTH_SHORT
+                "카카오 로그인 실패", Toast.LENGTH_SHORT
             ).show()
         }
 

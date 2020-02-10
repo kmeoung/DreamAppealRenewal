@@ -44,7 +44,7 @@ class BaseBookPagerAdapter(
             cellWidth = Math.round(mContext.resources.getDimension(R.dimen.thumb)).toFloat()
         }
         val count = mContext.resources.displayMetrics.widthPixels / cellWidth
-        return 1 / count + 0.03f
+        return 1 / count + 0.001f
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="105dp"
-    android:layout_height="wrap_content"
+    android:layout_height="105dp"
     android:orientation="vertical">
 
     <ImageView
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@drawable/error_btn"
-        android:visibility="visible"
+        android:visibility="gone"
         android:scaleX="0.7"
         android:scaleY="0.7"/>
 

@@ -5,8 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="21dp">
-
+        android:paddingLeft="21dp"
+        android:paddingBottom="15dp">
 
     <TextView
             android:id="@+id/another_profile_info"
@@ -28,7 +28,7 @@
             android:text="@string/str_group"
             android:textColor="@color/azure"
             app:layout_constraintStart_toStartOf="@+id/another_profile_info"
-            app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_number" />
 
     <TextView
             android:id="@+id/name"
@@ -66,6 +66,19 @@
             android:textSize="12.3sp"
             app:layout_constraintStart_toStartOf="@+id/address"
             app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+
+    <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:text="@string/str_number"
+            android:textColor="@color/warm_grey"
+            android:textSize="12.3sp"
+            app:layout_constraintStart_toStartOf="@+id/email"
+            app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
 
     <TextView
             android:id="@+id/gender"
@@ -107,7 +120,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:textColor="@color/black"
@@ -120,7 +133,7 @@
             android:id="@+id/tv_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:textColor="@color/black"
@@ -133,22 +146,38 @@
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
+            android:maxLength="30"
             android:textColor="@color/black"
             android:textColorHint="@color/warm_grey"
             app:layout_constraintStart_toStartOf="@+id/email"
             app:layout_constraintTop_toBottomOf="@+id/email"
-            tools:text="@string/str_email"
+            tools:text="@string/str_email" />
+
+    <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:hint="@string/str_private"
             android:maxLength="30"
-            android:ellipsize="end"/>
+            android:textColor="@color/black"
+            android:textColorHint="@color/warm_grey"
+            app:layout_constraintStart_toStartOf="@+id/number"
+            app:layout_constraintTop_toBottomOf="@+id/number"
+            tools:text="@string/str_number" />
+
 
     <TextView
             android:id="@+id/tv_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:textColor="@color/black"
@@ -161,7 +190,7 @@
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:textColor="@color/black"
@@ -174,7 +203,7 @@
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:textColor="@color/black"

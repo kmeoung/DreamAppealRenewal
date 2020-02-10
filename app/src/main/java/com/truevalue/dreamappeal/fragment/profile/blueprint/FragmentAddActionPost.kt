@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
@@ -24,6 +26,7 @@ import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.activity_comment_detail.*
 import kotlinx.android.synthetic.main.fragment_add_action_post.*
+import kotlinx.android.synthetic.main.fragment_merit_and_motive.*
 import okhttp3.Call
 import java.io.File
 
@@ -110,12 +113,21 @@ class FragmentAddActionPost : BaseFragment() {
             if (i == EditorInfo.IME_ACTION_DONE) {
                 if (!et_tag.text.toString().isNullOrEmpty()) {
                     if (mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString())
-                    et_tag.setText("")
                     rv_tag.visibility = VISIBLE
-                    sv_add_post.post(Runnable {
-                        sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
-                    })
+
                     rv_tag.smoothScrollToPosition(mTagAdapter!!.size() - 1)
+                    et_tag.setText("")
+
+                    sv_add_post.post{
+                        sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
+
+                        et_tag.post {
+                            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.showSoftInput(et_tag, 0)
+                            et_tag.isFocusableInTouchMode = true
+                            et_tag.requestFocus()
+                        }
+                    }
                 }
             } else
                 false
@@ -137,11 +149,20 @@ class FragmentAddActionPost : BaseFragment() {
                             if(!et_tag.text.toString().replace(" ","").isNullOrEmpty()) {
                                 if (mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString().replace(" ",""))
                                 rv_tag.visibility = VISIBLE
-                                sv_add_post.post{
-                                    sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
-                                }
+
                                 rv_tag.smoothScrollToPosition(mTagAdapter!!.size() - 1)
                                 et_tag.setText("")
+
+                                sv_add_post.post{
+                                    sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
+
+                                    et_tag.post {
+                                        val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                        imm.showSoftInput(et_tag, 0)
+                                        et_tag.isFocusableInTouchMode = true
+                                        et_tag.requestFocus()
+                                    }
+                                }
                             }else{
                                 et_tag.setText("")
                             }

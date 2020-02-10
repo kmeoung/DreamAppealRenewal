@@ -102,28 +102,40 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      */
     private fun initView() {
         // Default View 키워드 색상 변경
-        val default_dream_title = getString(R.string.str_default_dream_title)
-        val default_dream_description = getString(R.string.str_default_dream_description)
-        val default_merit = getString(R.string.str_default_merit)
-        val default_morive = getString(R.string.str_default_motive)
 
-        var spDreamTitle = Utils.replaceTextColor(
-            context,
-            default_dream_title,
-            getString(R.string.str_designation)
-        )
-        var spDreamDescription = Utils.replaceTextColor(
-            context,
-            default_dream_description,
-            getString(R.string.str_explanation)
-        )
-        var spMerit = Utils.replaceTextColor(context, default_merit, getString(R.string.str_merit))
-        var spMotive =
-            Utils.replaceTextColor(context, default_morive, getString(R.string.str_motive))
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+            val default_dream_title = getString(R.string.str_default_dream_title)
+            val default_dream_description = getString(R.string.str_default_dream_description)
+            val default_merit = getString(R.string.str_default_merit)
+            val default_morive = getString(R.string.str_default_motive)
 
-        tv_init_dream_title.text = spDreamTitle
-        tv_init_dream_description.text = spDreamDescription
-        tv_init_merit_and_motive.text = TextUtils.concat(spMerit, " ", spMotive)
+            var spDreamTitle = Utils.replaceTextColor(
+                context,
+                default_dream_title,
+                getString(R.string.str_designation)
+            )
+            var spDreamDescription = Utils.replaceTextColor(
+                context,
+                default_dream_description,
+                getString(R.string.str_explanation)
+            )
+            var spMerit =
+                Utils.replaceTextColor(context, default_merit, getString(R.string.str_merit))
+            var spMotive =
+                Utils.replaceTextColor(context, default_morive, getString(R.string.str_motive))
+
+            tv_init_dream_title.text = spDreamTitle
+            tv_init_dream_description.text = spDreamDescription
+            tv_init_merit_and_motive.text = TextUtils.concat(spMerit, " ", spMotive)
+
+            tv_init_dream_title.elevation = Utils.dpToPixel(context!!, 3f).toFloat()
+            tv_init_dream_description.elevation = Utils.dpToPixel(context!!, 3f).toFloat()
+            tv_init_merit_and_motive.elevation = Utils.dpToPixel(context!!, 3f).toFloat()
+        } else {
+            tv_init_dream_title.elevation = Utils.dpToPixel(context!!, 0f).toFloat()
+            tv_init_dream_description.elevation = Utils.dpToPixel(context!!, 0f).toFloat()
+            tv_init_merit_and_motive.elevation = Utils.dpToPixel(context!!, 0f).toFloat()
+        }
         // Swipe Refresh Layout 설정
         Utils.setSwipeRefreshLayout(srl_refresh, this)
     }
@@ -186,7 +198,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
 
                             if (code == DAClient.FAIL) {
 
-                                DAClient.deletePushToken(object : DAHttpCallback{
+                                DAClient.deletePushToken(object : DAHttpCallback {
                                     override fun onResponse(
                                         call: Call,
                                         serverCode: Int,
@@ -194,13 +206,18 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                         code: String,
                                         message: String
                                     ) {
-                                        if(code == DAClient.SUCCESS){
+                                        if (code == DAClient.SUCCESS) {
                                             ActivityCompat.finishAffinity(activity!!)
-                                            val intent = Intent(context!!, ActivityIntro::class.java)
+                                            val intent =
+                                                Intent(context!!, ActivityIntro::class.java)
                                             Comm_Prefs.allReset()
                                             startActivity(intent)
-                                        }else{
-                                            Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(
+                                                context!!.applicationContext,
+                                                message,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 })
@@ -222,10 +239,19 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
     private fun bindData() {
         if (mBean != null) {
             val bean = mBean!!
+            val isMy =
+                if (mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
+                    tv_init_dream_title.text = "상대방의 꿈이\n여기에 표시됩니다"
+                    tv_init_dream_description.text = "상대방의 꿈에 대한 설명이\n여기에 표시됩니다"
+                    tv_init_merit_and_motive.text = "상대방이 이 꿈에 매력을 느낀 이유가\n여기에 표시됩니다"
+                    false
+                } else true
 
-            if (!bean.name.isNullOrEmpty()) {
-                if (mNameListener != null) mNameListener?.sendName(bean.name)
-            }
+
+            if (mNameListener != null) mNameListener?.sendName(
+                if (bean.name.isNullOrEmpty()) "" else bean.name,
+                isMy
+            )
 
             (activity as ActivityMain).mDrawerData =
                 ActivityMain.BeanDrawerData(bean.following_count, bean.point)
@@ -506,8 +532,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
      * RecyclerView Bind View Holder
      */
     override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-        mAdapter?.let {
-            adapter->
+        mAdapter?.let { adapter ->
             val content: String = adapter.mArray[i] as String
             val tvContents = h.getItemView<TextView>(R.id.tv_contents)
             tvContents.text = content
@@ -549,7 +574,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
                         tv_cheering.text = "${count}개"
-                    }else{
+                    } else {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -83,7 +83,10 @@ class FragmentDreamDescription : BaseFragment() {
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    tv_indicator.text = ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
+                    if(mAdapterImage!!.count > 1) {
+                        tv_indicator.text =
+                            ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
+                    }
                 }
             })
         }
@@ -108,7 +111,12 @@ class FragmentDreamDescription : BaseFragment() {
                     val json = JSONObject(body)
                     val exUrl = json.getJSONArray("ex_url")
 
-                    tv_indicator.text = (1.toString() + " / " + exUrl.length())
+                    if(exUrl.length() > 1) {
+                        ll_indicator.visibility = VISIBLE
+                        tv_indicator.text = (1.toString() + " / " + exUrl.length())
+                    }else{
+                        ll_indicator.visibility = GONE
+                    }
 
                     mAdapterImage!!.clear()
                     for (i in 0 until exUrl.length()) {

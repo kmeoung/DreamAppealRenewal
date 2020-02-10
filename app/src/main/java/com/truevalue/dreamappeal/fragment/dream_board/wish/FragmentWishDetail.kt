@@ -25,6 +25,7 @@ import com.truevalue.dreamappeal.bean.Image
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
 import kotlinx.android.synthetic.main.fragment_wish_board_detail.*
@@ -119,8 +120,10 @@ class FragmentWishDetail : BaseFragment() {
                     super.onPageSelected(position)
 
                     mAdapterImage?.let {
-                        tv_indicator.text =
-                            if (it.count > 0) ((position + 1).toString() + " / " + it.count) else "0 / 0"
+                        if(it.count > 1) {
+                            tv_indicator.text =
+                                if (it.count > 0) ((position + 1).toString() + " / " + it.count) else "0 / 0"
+                        }
                     }
                 }
             })
@@ -276,7 +279,6 @@ class FragmentWishDetail : BaseFragment() {
 
                     val wishImages = json.getJSONArray("wish_images")
 
-                    mAdapterImage!!.clear()
                     tv_indicator.text = "0 / 0"
                     rl_images.visibility = VISIBLE
                     if(wishImages.length() < 1) rl_images.visibility = GONE
@@ -285,15 +287,20 @@ class FragmentWishDetail : BaseFragment() {
                     }else {
                         ll_indicator.visibility = VISIBLE
                         tv_indicator.text = "1 / " + wishImages.length()
+                    }
+
+                    mAdapterImage?.let {
+                        adapter->
+                        adapter.clear()
                         for (i in 0 until wishImages.length()) {
                             val wishImage = wishImages.getJSONObject(i)
                             val beanImage = Gson().fromJson<BeanWishImages>(
                                 wishImage.toString(),
                                 BeanWishImages::class.java
                             )
-                            mAdapterImage!!.add(beanImage)
+                            adapter.add(beanImage)
                         }
-                        mAdapterImage!!.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
                     }
 
                     val beanWish = Gson().fromJson<BeanWishPost>(
@@ -311,13 +318,19 @@ class FragmentWishDetail : BaseFragment() {
                     tv_value_style.text = beanWriter.value_style
                     tv_job_name.text = "${beanWriter.job} ${beanWriter.nickname}"
 
-                    tv_achievement_cnt.text = achievement_post_count.toString()
-                    tv_action_cnt.text = action_post_count.toString()
+                    tv_achievement_cnt.text = "성과 $achievement_post_count / 3"
+                    tv_action_cnt.text = "실천 ${action_post_count}개"
 
                     tv_cheering.text = "${like_count}개"
                     iv_cheering.isSelected = statusOfLike
 
                     tv_time.text = Utils.convertFromDate(beanWish.register_date)
+
+                    if(beanWish.profile_idx == Comm_Prefs.getUserProfileIndex()){
+                        iv_action_more.visibility = VISIBLE
+                    }else{
+                        iv_action_more.visibility = GONE
+                    }
                 } else {
                     context?.let {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()

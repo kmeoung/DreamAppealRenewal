@@ -5,8 +5,8 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +21,6 @@ import com.truevalue.dreamappeal.bean.BeanProfileUser
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
-import kotlinx.android.synthetic.main.fragment_ano.*
-import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import kotlinx.android.synthetic.main.fragment_normal_profile_edit.*
 import okhttp3.Call
 import org.json.JSONObject
@@ -35,7 +33,7 @@ class FragmentMyProfileEdit : BaseFragment() {
     private var isGender: Boolean
     private var mCal: Calendar
 
-    private var mAddrBean : BeanAddress? = null
+    private var mAddrBean: BeanAddress? = null
 
     /**
      * privates data
@@ -73,7 +71,7 @@ class FragmentMyProfileEdit : BaseFragment() {
         onClickView()
     }
 
-    private fun isCheck() : Boolean{
+    private fun isCheck(): Boolean {
         return (!et_name.text.toString().isNullOrEmpty())
                 && (!et_nickname.text.toString().isNullOrEmpty())
                 && (!tv_gender.text.toString().isNullOrEmpty())
@@ -102,21 +100,91 @@ class FragmentMyProfileEdit : BaseFragment() {
                 initRightBtn()
             }
         }
+
+
+
         et_name.addTextChangedListener(textWatcher)
-        et_nickname.addTextChangedListener(textWatcher)
         tv_address.addTextChangedListener(textWatcher)
         tv_gender.addTextChangedListener(textWatcher)
         tv_date.addTextChangedListener(textWatcher)
 
+        et_nickname.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrEmpty() && s.length > 12) {
+                    Toast.makeText(
+                        context!!.applicationContext,
+                        getString(R.string.str_nickname_limit),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                initRightBtn()
+            }
+        })
+
+        et_number.addTextChangedListener(object : TextWatcher {
+            private var beforeLength = 0
+            private var afterLength = 0
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0.isNullOrEmpty()) {
+                    beforeLength = 0
+                } else beforeLength = p0!!.length
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (s == null || s.isEmpty()) {
+                    Log.d(
+                        "addTextChangedListener",
+                        "onTextChanged: Intput text is wrong (Type : Length)"
+                    )
+                    return
+                }
+                val inputChar = s[s.length - 1]
+                if (inputChar != '-'
+                    && (inputChar < '0' || inputChar > '9')) {
+                    et_number.text.delete(s.length - 1, s.length)
+                    return
+                }
+
+                afterLength = s.length
+
+                // 삭제 중
+                if (beforeLength > afterLength) {
+                    // 삭제 중에 마지막에 -는 자동으로 지우기
+                    if (s.toString().endsWith("-")) {
+                        et_number.setText(s.toString().substring(0, s.length - 1))
+                    }
+                } else if (beforeLength < afterLength) {
+                    if (afterLength === 4 && s.toString().indexOf("-") < 0) {
+                        et_number.setText("${s.toString().subSequence(0, 3)}-${s.toString().substring(3, s.length)}")
+                    } else if (afterLength === 9) {
+                        et_number.setText("${s.toString().subSequence(0, 8)}-${s.toString().substring(8, s.length)}")
+                    }
+                }// 입력 중
+                et_number.setSelection(et_number.length())
+            }
+        })
+
         if (mBean != null) {
             et_name.setText(mBean!!.name)
             et_nickname.setText(if (mBean!!.nickname.isNullOrEmpty()) "" else mBean!!.nickname)
+            et_number.setText(if (mBean!!.mobile.isNullOrEmpty()) "" else mBean!!.mobile)
             mCal.time = SimpleDateFormat("yyyy-MM-dd").parse(mBean!!.birth)
             tv_date.text = SimpleDateFormat("yyyy. MM. dd").format(mCal.time)
             tv_gender.text =
                 getString(if (mBean!!.gender == 0) R.string.str_female else R.string.str_male)
-            tv_address.text = if (mBean!!.address == null || (mBean!!.address as String).isNullOrEmpty()) "" else (mBean!!.address as String)
-
+            tv_address.text =
+                if (mBean!!.address == null || (mBean!!.address as String).isNullOrEmpty()) "" else (mBean!!.address as String)
             if (mBean!!.private != null) {
                 /**
                  * privates data
@@ -130,8 +198,10 @@ class FragmentMyProfileEdit : BaseFragment() {
                 iv_lock_birth.isSelected = (privates.birth == 1)
                 iv_lock_gender.isSelected = (privates.gender == 1)
                 iv_lock_nickname.isSelected = (privates.nickname == 1)
+                iv_lock_number.isSelected = (privates.mobile == 1)
             }
         }
+        initRightBtn()
     }
 
     /**
@@ -182,35 +252,40 @@ class FragmentMyProfileEdit : BaseFragment() {
     private fun initRightBtn() {
         (activity as ActivityMyProfileContainer).iv_check.isSelected = isCheck()
     }
+
     /**
      * Http
      * 내 정보 수정
      */
-    private fun updateMyUserData(){
+    private fun updateMyUserData() {
         val bean = mBean!!
         bean.name = et_name.text.toString()
         bean.nickname = et_nickname.text.toString()
         bean.birth = SimpleDateFormat("yyyy-MM-dd").format(mCal.time)
-        bean.gender = if(isGender) 0 else 1
+        bean.gender = if (isGender) 0 else 1
+        bean.mobile = et_number.text.toString().replace("-","").replace(" ","").trim()
 
-        bean.address = if(mAddrBean != null){
+        bean.address = if (mAddrBean != null) {
             val json = JSONObject()
-            json.put("address_name",mAddrBean!!.address_name)
-            json.put("region_1depth_name",mAddrBean!!.region_1depth_name)
-            json.put("region_2depth_name",mAddrBean!!.region_2depth_name)
-            json.put("region_3depth_name",mAddrBean!!.region_3depth_name)
-            json.put("region_3depth_h_name",mAddrBean!!.region_3depth_h_name)
-            json.put("x",mAddrBean!!.x)
-            json.put("y",mAddrBean!!.y)
-            json.put("zip_code",mAddrBean!!.zip_code)
+            json.put("address_name", mAddrBean!!.address_name)
+            json.put("region_1depth_name", mAddrBean!!.region_1depth_name)
+            json.put("region_2depth_name", mAddrBean!!.region_2depth_name)
+            json.put("region_3depth_name", mAddrBean!!.region_3depth_name)
+            json.put("region_3depth_h_name", mAddrBean!!.region_3depth_h_name)
+            json.put("x", mAddrBean!!.x)
+            json.put("y", mAddrBean!!.y)
+            json.put("zip_code", mAddrBean!!.zip_code)
             json
-        }else null
+        } else null
 
-        bean.private!!.name = if(iv_lock_name.isSelected) 1 else 0
-        bean.private!!.birth = if(iv_lock_birth.isSelected) 1 else 0
-        bean.private!!.address = if(iv_lock_address.isSelected) 1 else 0
-        bean.private!!.gender = if(iv_lock_gender.isSelected) 1 else 0
-        bean.private!!.nickname = if(iv_lock_nickname.isSelected) 1 else 0
+        bean.private?.let { private->
+            private.name = if (iv_lock_name.isSelected) 1 else 0
+            private.birth = if (iv_lock_birth.isSelected) 1 else 0
+            private.address = if (iv_lock_address.isSelected) 1 else 0
+            private.gender = if (iv_lock_gender.isSelected) 1 else 0
+            private.nickname = if (iv_lock_nickname.isSelected) 1 else 0
+            private.mobile = if(iv_lock_number.isSelected) 1 else 0
+        }
 
         DAClient.updateMyUserData(bean, object : DAHttpCallback {
             override fun onResponse(
@@ -255,8 +330,8 @@ class FragmentMyProfileEdit : BaseFragment() {
                         updateMyUserData()
                     }
                 }
-                tv_address->{
-                    val intent = Intent(context!!,ActivityAddrSearch::class.java)
+                tv_address -> {
+                    val intent = Intent(context!!, ActivityAddrSearch::class.java)
                     startActivityForResult(intent, REQUEST_ADDR)
                 }
             }
@@ -276,11 +351,13 @@ class FragmentMyProfileEdit : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK){
-            if(requestCode == REQUEST_ADDR){
-                val bean = data!!.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ADDR) {
+                val bean =
+                    data!!.getSerializableExtra(ActivityAddrSearch.RESULT_ADDRESS) as BeanAddress
                 mAddrBean = bean
-                tv_address.text = "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
+                tv_address.text =
+                    "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
             }
         }
     }

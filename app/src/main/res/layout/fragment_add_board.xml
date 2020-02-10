@@ -61,7 +61,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_board_img"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="105dp"
                         android:layout_marginBottom="8.3dp" />
 
             </LinearLayout>

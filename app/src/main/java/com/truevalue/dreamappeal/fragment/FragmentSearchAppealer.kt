@@ -324,6 +324,8 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
                         mAddr = "${bean.region_1depth_name} ${bean.region_2depth_name} ${bean.region_3depth_name}"
                         tv_addr.text = mAddr
 
+                        // 초반 데이터 가져오기
+                        getAppealerSearch()
                     }
                 }
             })

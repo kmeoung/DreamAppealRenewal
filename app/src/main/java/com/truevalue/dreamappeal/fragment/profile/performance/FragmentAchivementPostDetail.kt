@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
@@ -78,7 +79,10 @@ class FragmentAchivementPostDetail : BaseFragment() {
         pager_image.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
+                if(mAdapterImage!!.count > 1) {
+                    tv_indicator.text =
+                        ((position + 1).toString() + " / " + mAdapterImage!!.getCount())
+                }
             }
         })
     }
@@ -166,7 +170,12 @@ class FragmentAchivementPostDetail : BaseFragment() {
         ll_cheering.isSelected = bean.status
         tv_time.text = convertFromDate(bean.register_date)
         tv_indicator.setText("0 / 0")
-        tv_indicator.setText("1 / " + bean.Images.size)
+        if(bean.Images.size > 1) {
+            ll_indicator.visibility = VISIBLE
+            tv_indicator.setText("1 / " + bean.Images.size)
+        }else{
+            ll_indicator.visibility = GONE
+        }
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
             //mAdapterImage!!.add(image.image_url)

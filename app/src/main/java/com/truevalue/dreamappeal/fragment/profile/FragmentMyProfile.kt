@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
@@ -28,7 +30,7 @@ class FragmentMyProfile : BaseFragment() {
 
     // Recyclerview Adapter
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    private var mBean : BeanProfileUser? = null
+    private var mBean: BeanProfileUser? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +62,8 @@ class FragmentMyProfile : BaseFragment() {
         (activity as ActivityMyProfileContainer).iv_back_blue.visibility = View.VISIBLE
         (activity as ActivityMyProfileContainer).iv_check.visibility = View.GONE
         (activity as ActivityMyProfileContainer).iv_close.visibility = View.GONE
-        (activity as ActivityMyProfileContainer).tv_title.text = getString(R.string.str_normal_profile)
+        (activity as ActivityMyProfileContainer).tv_title.text =
+            getString(R.string.str_normal_profile)
     }
 
     /**
@@ -71,10 +74,17 @@ class FragmentMyProfile : BaseFragment() {
             when (it) {
                 (activity as ActivityMyProfileContainer).iv_back_blue -> activity!!.onBackPressed()
                 iv_edit_normal_profile -> {
-                    (activity as ActivityMyProfileContainer).replaceFragment(FragmentMyProfileEdit.newInstance(mBean), true)
+                    (activity as ActivityMyProfileContainer).replaceFragment(
+                        FragmentMyProfileEdit.newInstance(
+                            mBean
+                        ), true
+                    )
                 }
                 iv_add_group -> {
-                    (activity as ActivityMyProfileContainer).replaceFragment(FragmentEditGroup(), true)
+                    (activity as ActivityMyProfileContainer).replaceFragment(
+                        FragmentEditGroup(),
+                        true
+                    )
                 }
             }
         }
@@ -88,7 +98,7 @@ class FragmentMyProfile : BaseFragment() {
      * HTTP
      * 개인정보 조회
      */
-    private fun getUserProfile(){
+    private fun getUserProfile() {
         DAClient.getMyUserData(object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
@@ -97,39 +107,55 @@ class FragmentMyProfile : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(context != null){
+                if (context != null) {
 
-                    if(code == DAClient.SUCCESS){
-                        // todo : 데이터 바인딩 필요
+                    if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val user = json.getJSONObject("user")
-                        val profileUser = Gson().fromJson<BeanProfileUser>(user.toString(),BeanProfileUser::class.java)
-                        profileUser.private = Gson().fromJson(user.getJSONObject("privates").toString(),BeanProfileUserPrivates::class.java)
+                        val profileUser = Gson().fromJson<BeanProfileUser>(
+                            user.toString(),
+                            BeanProfileUser::class.java
+                        )
+                        profileUser.private = Gson().fromJson(
+                            user.getJSONObject("privates").toString(),
+                            BeanProfileUserPrivates::class.java
+                        )
                         mBean = profileUser
                         val bean = profileUser
-                        tv_name.text = if(bean.name.isNullOrEmpty()) getString(R.string.str_none) else bean.name
-                        tv_nickname.text = if(bean.nickname.isNullOrEmpty()) getString(R.string.str_none) else bean.nickname
-                        if(!bean.birth.isNullOrEmpty()) {
+                        tv_name.text =
+                            if (bean.name.isNullOrEmpty()) getString(R.string.str_none) else bean.name
+                        tv_nickname.text =
+                            if (bean.nickname.isNullOrEmpty()) getString(R.string.str_none) else bean.nickname
+                        if (!bean.birth.isNullOrEmpty()) {
                             val sdf = SimpleDateFormat("yyyy-MM-dd")
                             val date = sdf.parse(bean.birth)
                             tv_age.text = Utils.dateToAge(date).toString()
                         }
-                        tv_gender.text = getString(if(bean.gender == 0) R.string.str_female else R.string.str_male)
-                        tv_address.text = if(bean.address == null || (bean.address as String).isNullOrEmpty()) getString(R.string.str_none) else (bean.address as String)
-                        // 이메일 계정은 null이 들어오면 sns 계정입니다.
-                        tv_email.text = if(bean.email.isNullOrEmpty()) getString(R.string.str_sns_login) else bean.email
+                        tv_gender.text =
+                            getString(if (bean.gender == 0) R.string.str_female else R.string.str_male)
+                        tv_address.text =
+                            if (bean.address == null || (bean.address as String).isNullOrEmpty()) getString(
+                                R.string.str_none
+                            ) else (bean.address as String)
+                        tv_email.text =
+                            if (bean.email.isNullOrEmpty()) getString(R.string.str_none) else bean.email
+                        tv_number.text =
+                            if (bean.mobile.isNullOrEmpty()) getString(R.string.str_none) else bean.mobile
 
                         val groups = json.getJSONArray("groups")
                         mAdapter!!.clear()
-                        for (i in 0 until groups.length()){
+                        for (i in 0 until groups.length()) {
                             val Object = groups.getJSONObject(i)
-                            val group : BeanProfileGroup = Gson().fromJson(Object.toString(),
-                                BeanProfileGroup::class.java)
+                            val group: BeanProfileGroup = Gson().fromJson(
+                                Object.toString(),
+                                BeanProfileGroup::class.java
+                            )
                             group.Class = Object.getInt("class")
                             mAdapter!!.add(group)
                         }
-                    }else{
-                        Toast.makeText(context!!.applicationContext,message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -148,8 +174,8 @@ class FragmentMyProfile : BaseFragment() {
     /**
      * Bind Temp Data
      */
-    private fun bindTempData(){
-        for(i in 1 .. 10){
+    private fun bindTempData() {
+        for (i in 1..10) {
             mAdapter!!.add("")
         }
     }
@@ -164,21 +190,40 @@ class FragmentMyProfile : BaseFragment() {
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
             val bean = mAdapter!!.get(i) as BeanProfileGroup
-            h.getItemView<TextView>(R.id.tv_rank).text = if(bean.position.isNullOrEmpty()) getString(R.string.str_none) else bean.position
-            h.getItemView<TextView>(R.id.tv_group).text = if(bean.groupName.isNullOrEmpty()) getString(R.string.str_none) else bean.groupName
-            h.getItemView<TextView>(R.id.tv_time).text = "${bean.start_date} ~ ${bean.end_date}"
+            h.getItemView<TextView>(R.id.tv_rank).text =
+                if (bean.position.isNullOrEmpty()) getString(R.string.str_none) else bean.position
+            h.getItemView<TextView>(R.id.tv_group).text =
+                if (bean.groupName.isNullOrEmpty()) getString(R.string.str_none) else bean.groupName
+            h.getItemView<TextView>(R.id.tv_time).text =
+                "${if (bean.start_date.isNullOrEmpty()) "" else bean.start_date} ~ ${if (bean.end_date.isNullOrEmpty()) "" else bean.end_date}"
+            val image = h.getItemView<ImageView>(R.id.iv_group)
 
-            h.itemView.setOnLongClickListener(View.OnLongClickListener {
+            val `class`: Int? = when (bean.Class) {
+                0->R.drawable.icon_work3
+                1->R.drawable.icon_school3
+                else->R.drawable.icon_group3
+            }
+
+
+            Glide.with(context!!)
+                .load(`class`)
+                .centerInside()
+                .into(image)
+
+            h.itemView.setOnLongClickListener {
                 val popupMenu = PopupMenu(context!!, h.itemView)
                 popupMenu.menu.add(getString(R.string.str_edit))
                 popupMenu.menu.add(getString(R.string.str_delete))
 
                 popupMenu.setOnMenuItemClickListener {
-                    when(it.title){
-                        getString(R.string.str_edit)->{
-                            (activity as ActivityMyProfileContainer).replaceFragment(FragmentEditGroup.newInstance(bean), true)
+                    when (it.title) {
+                        getString(R.string.str_edit) -> {
+                            (activity as ActivityMyProfileContainer).replaceFragment(
+                                FragmentEditGroup.newInstance(bean),
+                                true
+                            )
                         }
-                        getString(R.string.str_delete)->{
+                        getString(R.string.str_delete) -> {
                             deleteGroupInfo(bean.idx)
                         }
                     }
@@ -186,7 +231,7 @@ class FragmentMyProfile : BaseFragment() {
                 }
                 popupMenu.show()
                 false
-            })
+            }
         }
 
         override fun getItemViewType(i: Int): Int {
@@ -197,8 +242,8 @@ class FragmentMyProfile : BaseFragment() {
          * Http
          * 소속수정 삭제
          */
-        private fun deleteGroupInfo(idx : Int){
-            DAClient.deleteUsersGroup(idx,object : DAHttpCallback{
+        private fun deleteGroupInfo(idx: Int) {
+            DAClient.deleteUsersGroup(idx, object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -206,10 +251,11 @@ class FragmentMyProfile : BaseFragment() {
                     code: String,
                     message: String
                 ) {
-                    if(context != null){
-                        Toast.makeText(context!!.applicationContext,message,Toast.LENGTH_SHORT).show()
+                    if (context != null) {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
 
-                        if(code == DAClient.SUCCESS){
+                        if (code == DAClient.SUCCESS) {
                             getUserProfile()
                         }
                     }

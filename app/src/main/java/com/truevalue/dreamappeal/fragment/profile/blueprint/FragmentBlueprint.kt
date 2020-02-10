@@ -107,6 +107,10 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     /**
      * VIew OnClick Listener
      */
@@ -276,6 +280,19 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             override fun afterTextChanged(editable: Editable) {}
         })
+
+        if(Comm_Prefs.getUserProfileIndex() == mViewUserIdx){
+            tv_default_ability_opportunity.text = getString(R.string.str_default_ability_and_opportunity)
+            tv_default_object.text = getString(R.string.str_default_object)
+            tv_default_ability_opportunity.elevation = Utils.dpToPixel(context!!,3f).toFloat()
+            tv_default_object.elevation = Utils.dpToPixel(context!!,3f).toFloat()
+        }else{
+            tv_default_ability_opportunity.text = "상대방이 생각한 능력과 기회가\n여기에 표시됩니다"
+            tv_default_object.text = "상대방님이 세운 실천목표가\n여기에 표시됩니다"
+            tv_default_ability_opportunity.elevation = Utils.dpToPixel(context!!,0f).toFloat()
+            tv_default_object.elevation = Utils.dpToPixel(context!!,0f).toFloat()
+        }
+
     }
 
     /**
@@ -637,13 +654,13 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             tvObjectCount.text = "${bean.total_action_post_count}개"
 
-            h.itemView.setOnClickListener(View.OnClickListener {
+            h.itemView.setOnClickListener{
                 (activity as ActivityMain).replaceFragment(
                     FragmentObjectStep.newInstance(bean, mViewUserIdx),
                     addToBack = true,
                     isMainRefresh = true
                 )
-            })
+            }
         }
 
         override fun getItemViewType(i: Int): Int = 0

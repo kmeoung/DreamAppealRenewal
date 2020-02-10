@@ -122,9 +122,12 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="10dp"
-                            android:background="@drawable/bg_default_box"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_round_box_gray_2"
                             android:fontFamily="@font/nanum_square_round_b"
+                            android:elevation="3dp"
                             android:gravity="center"
+                            android:lineSpacingExtra="@dimen/text_line_spacing"
                             android:text="@string/str_default_ability_and_opportunity"
                             android:textColor="@color/black"
                             android:textSize="13sp" />
@@ -195,7 +198,9 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="10dp"
-                            android:background="@drawable/bg_default_box"
+                            android:lineSpacingExtra="@dimen/text_line_spacing"
+                            android:background="@drawable/bg_round_box_gray_2"
+                            android:elevation="3dp"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:gravity="center"
                             android:text="@string/str_default_object"
@@ -208,7 +213,6 @@
 
         </androidx.core.widget.NestedScrollView>
         <!-- 스크롤 뷰 -->
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <!-- Swipe Refresh -->
 

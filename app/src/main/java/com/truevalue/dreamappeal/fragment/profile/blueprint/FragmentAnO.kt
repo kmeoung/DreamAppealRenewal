@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile.blueprint
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -96,7 +97,7 @@ class FragmentAnO : BaseFragment() {
                         (activity as ActivityMain).replaceFragment(
                             FragmentAddPage.newInstance(
                                 type
-                            ), true,isMainRefresh = false
+                            ), true, isMainRefresh = false
                         )
                     }
                 }
@@ -266,8 +267,9 @@ class FragmentAnO : BaseFragment() {
                             val bean = BeanBlueprintAnO(profile_idx, idx, contents, 0)
                             mAdapter!!.add(bean)
                         }
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -306,7 +308,7 @@ class FragmentAnO : BaseFragment() {
                             mAdapter!!.add(bean)
                         }
                     }
-                }else{
+                } else {
                     Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -406,13 +408,42 @@ class FragmentAnO : BaseFragment() {
                             FragmentAddPage.newInstance(
                                 type
                                 , bean
-                            ), true,isMainRefresh = false
+                            ), true, isMainRefresh = false
                         )
                     }
                     getString(R.string.str_delete) -> {
                         when (viewType) {
-                            VIEW_TYPE_ABILITY -> deleteAbility(bean.idx)
-                            VIEW_TYPE_OPPORTUNITY -> deleteOpportunity(bean.idx)
+                            VIEW_TYPE_ABILITY -> {
+                                val builder =
+                                    AlertDialog.Builder(context!!)
+                                        .setMessage(getString(R.string.str_delete_ability_contents))
+                                        .setPositiveButton(
+                                            getString(R.string.str_yes)
+                                        ) { dialog, _ ->
+                                            deleteAbility(bean.idx)
+                                            dialog.dismiss()
+                                        }
+                                        .setNegativeButton(
+                                            getString(R.string.str_no)
+                                        ) { dialog, _ -> dialog.dismiss() }
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
+                            VIEW_TYPE_OPPORTUNITY -> {
+                                val builder =
+                                    AlertDialog.Builder(context!!)
+                                        .setMessage(getString(R.string.str_delete_opportunity_contents))
+                                        .setPositiveButton(
+                                            getString(R.string.str_yes)
+                                        ) { dialog, _ ->
+                                            deleteOpportunity(bean.idx)
+                                            dialog.dismiss()
+                                        }.setNegativeButton(
+                                            getString(R.string.str_no)
+                                        ) { dialog, _ -> dialog.dismiss() }
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
                         }
                     }
                 }
@@ -440,9 +471,9 @@ class FragmentAnO : BaseFragment() {
             if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) ivMore.visibility = VISIBLE
             else ivMore.visibility = GONE
 
-            ivMore.setOnClickListener(View.OnClickListener {
+            ivMore.setOnClickListener {
                 showPopupMenu(ivMore, bean, mViewType!!)
-            })
+            }
         }
 
         override fun getItemViewType(i: Int): Int {

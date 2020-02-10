@@ -53,9 +53,6 @@ class FragmentPopular : BaseFragment() {
         getBoardPopular()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
 
     /**
      * RecyclerView Adapter 초기화
@@ -195,24 +192,25 @@ class FragmentPopular : BaseFragment() {
                 data?.let {
                     val boardIdx = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX, -1)
                     val boardType = it.getIntExtra(ActivitySearch.RESULT_REPLACE_BOARD_TYPE, -1)
+                    val profile_idx = it.getIntExtra(ActivitySearch.RESULT_REPLACE_PROFILE_IDX,-1)
                     when (boardType) {
                         FragmentActionPost.ACTION_POST -> (activity as ActivityMain).replaceFragment(
                             FragmentActionPost.newInstance(
                                 boardIdx,
-                                Comm_Prefs.getUserProfileIndex()
+                                profile_idx
                             ), addToBack = true, isMainRefresh = false
                         )
                         FragmentActionPost.ACTION_LIFE -> (activity as ActivityMain).replaceFragment(
                             FragmentActionPost.newInstance(
                                 boardIdx,
-                                Comm_Prefs.getUserProfileIndex(),
+                                profile_idx,
                                 FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                             ), addToBack = true, isMainRefresh = false
                         )
                         FragmentActionPost.ACTION_IDEA -> (activity as ActivityMain).replaceFragment(
                             FragmentActionPost.newInstance(
                                 boardIdx,
-                                Comm_Prefs.getUserProfileIndex(),
+                                profile_idx,
                                 FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                             ), addToBack = true, isMainRefresh = false
                         )
@@ -302,7 +300,7 @@ class FragmentPopular : BaseFragment() {
                                                 FragmentActionPost
                                                     .newInstance(
                                                         pagerBean.idx,
-                                                        Comm_Prefs.getUserProfileIndex()
+                                                        pagerBean.profile_idx
                                                     ),
                                                 addToBack = true,
                                                 isMainRefresh = false
@@ -328,7 +326,7 @@ class FragmentPopular : BaseFragment() {
                                                 FragmentActionPost
                                                     .newInstance(
                                                         pagerBean.idx,
-                                                        Comm_Prefs.getUserProfileIndex(),
+                                                        pagerBean.profile_idx,
                                                         FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                                     ),
                                                 addToBack = true,

@@ -258,6 +258,7 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
                     val intent = Intent()
                     intent.putExtra(ActivitySearch.RESULT_REPLACE_BOARD_IDX,bean.idx)
                     intent.putExtra(ActivitySearch.RESULT_REPLACE_BOARD_TYPE,bean.post_type)
+                    intent.putExtra(ActivitySearch.RESULT_REPLACE_PROFILE_IDX,bean.profile_idx)
                     activity!!.setResult(ActivitySearch.RESULT_CODE_BOARD,intent)
                     activity!!.finish()
                 }

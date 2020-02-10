@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:ellipsize="end"
-                android:fontFamily="@font/nanum_square_round_r"
+                android:fontFamily="@font/jalnan"
                 android:lineSpacingExtra="@dimen/text_line_spacing"
                 android:maxLines="2"
                 android:paddingLeft="26dp"
@@ -27,7 +27,7 @@
                 android:text="@string/str_add_achivement_post"
                 android:paddingBottom="13.3dp"
                 android:textColor="@color/black"
-                android:textSize="17.2sp"
+                android:textSize="20sp"
                 android:gravity="center"/>
 
     </RelativeLayout>

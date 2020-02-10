@@ -55,6 +55,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/linear_birth" />
 
         <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:text="@string/str_number"
+                android:textColor="@color/azure"
+                android:textSize="14.8sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear_address" />
+
+
+        <TextView
                 android:id="@+id/birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,6 +164,7 @@
                     android:inputType="text"
                     android:lines="1"
                     android:maxLines="1"
+                    android:maxLength="12"
                     android:paddingLeft="17.7dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/silver"
@@ -207,6 +223,51 @@
 
 
         </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linear_number"
+                android:layout_width="match_parent"
+                android:layout_height="34.7dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/bg_round_rectangle_gray"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/number">
+
+            <EditText
+                    android:id="@+id/et_number"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:gravity="center_vertical"
+                    android:hint="@string/str_number_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:maxLength="13"
+                    android:paddingLeft="17.7dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/silver"
+                    android:textSize="13.3sp" />
+
+            <ImageView
+                    android:id="@+id/iv_lock_number"
+                    android:layout_width="34.7dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_lock"
+                    android:visibility="gone"/>
+
+
+        </LinearLayout>
+
 
 
         <LinearLayout

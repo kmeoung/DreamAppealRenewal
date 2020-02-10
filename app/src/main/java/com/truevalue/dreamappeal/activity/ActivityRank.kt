@@ -66,6 +66,8 @@ class ActivityRank : BaseActivity() {
         private const val RV_TYPE_LOADING = 1
 
         const val EXTRA_VIEW_TYPE_REPUTATION = "EXTRA_VIEW_TYPE_REPUTATION"
+
+        private const val MAX_GET_ONCE_ITEM = 9
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,15 +179,19 @@ class ActivityRank : BaseActivity() {
         ll_selector.visibility = VISIBLE
         when (type) {
             VIEW_TYPE_ALL -> {
+                tv_my_rank_title.text = "종합 랭킹"
                 getTotalRank(mRangeType)
             }
             VIEW_TYPE_ACTION -> {
+                tv_my_rank_title.text = "실천 랭킹"
                 getActionRank(mRangeType)
             }
             VIEW_TYPE_IDEA -> {
+                tv_my_rank_title.text = "영감 랭킹"
                 getIdeaRank(mRangeType)
             }
             VIEW_TYPE_LIFE -> {
+                tv_my_rank_title.text = "일상 랭킹"
                 getLifeRank(mRangeType)
             }
             VIEW_TYPE_REPUTATION -> {
@@ -326,7 +332,7 @@ class ActivityRank : BaseActivity() {
             if (isRefresh)
                 it.clear()
 
-            if (bean.high_rank.size < 9) isLast = true
+            if (bean.high_rank.size < MAX_GET_ONCE_ITEM) isLast = true
 
             for (rank in bean.high_rank) {
                 it.add(rank)
@@ -426,7 +432,7 @@ class ActivityRank : BaseActivity() {
                 val json = JSONObject(body)
                 val bean = Gson().fromJson(json.toString(), BeanRank::class.java)
                 mBean = bean
-                if (bean.high_rank.size < 9) isLast = true
+                if (bean.high_rank.size < MAX_GET_ONCE_ITEM) isLast = true
                 setData(bean)
             } else if (code == DAClient.NO_MORE_POST) {
                 isLast = true
@@ -448,7 +454,7 @@ class ActivityRank : BaseActivity() {
             if (code == DAClient.SUCCESS) {
                 val json = JSONObject(body)
                 val bean = Gson().fromJson(json.toString(), BeanRank::class.java)
-                if (bean.high_rank.size < 9) isLast = true
+                if (bean.high_rank.size < MAX_GET_ONCE_ITEM) isLast = true
                 setData(bean, false)
             } else if (code == DAClient.NO_MORE_POST) {
                 isLast = true
@@ -466,7 +472,7 @@ class ActivityRank : BaseActivity() {
     private val rvRank = object : IORecyclerViewListener {
 
         override val itemCount: Int
-            get() = if (mAdapter != null) if (mAdapter!!.size() > 8 && !isLast && !isMyRank) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
+            get() = if (mAdapter != null) if (mAdapter!!.size() > (MAX_GET_ONCE_ITEM - 1) && !isLast && !isMyRank) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             when (viewType) {
@@ -592,13 +598,11 @@ class ActivityRank : BaseActivity() {
                         getMoreReputationRank(bean.row_num)
                     }
                 }
-
             }
-
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mAdapter!!.size() > 8 && mAdapter!!.size() == i && !isLast && !isMyRank) {
+            if (mAdapter!!.size() > (MAX_GET_ONCE_ITEM - 1) && mAdapter!!.size() == i && !isLast && !isMyRank) {
                 return FragmentConcern.RV_TYPE_ITEM_MORE
             }
             return FragmentConcern.RV_TYPE_ITEM

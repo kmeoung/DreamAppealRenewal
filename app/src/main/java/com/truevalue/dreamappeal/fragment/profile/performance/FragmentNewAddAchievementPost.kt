@@ -100,7 +100,7 @@ class FragmentNewAddAchievementPost : BaseFragment() {
         if(postIdx > -1){
             tv_text_btn.visibility = GONE
             iv_check.visibility = VISIBLE
-            tv_title.text = getString(R.string.str_edit_post)
+            tv_title.text = getString(R.string.str_edit_achivement_post)
 
             et_title.setText(mTitle)
             et_comment.setText(mContents)
@@ -109,9 +109,8 @@ class FragmentNewAddAchievementPost : BaseFragment() {
         }else {
             tv_text_btn.visibility = GONE
             iv_check.visibility = VISIBLE
-            tv_title.text = getString(R.string.str_new_post)
+            tv_title.text = getString(R.string.str_add_achivement_post)
         }
-
     }
 
     /**

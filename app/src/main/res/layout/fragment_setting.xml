@@ -64,7 +64,8 @@
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="www.dreamappeal.kr"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:id="@+id/tv_site"/>
 
     </LinearLayout>
 

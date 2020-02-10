@@ -97,9 +97,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="20dp"
-                    android:paddingTop="15dp"
+                    android:paddingTop="8dp"
                     android:paddingRight="20dp"
-                    android:paddingBottom="18dp">
+                    android:paddingBottom="8dp">
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -131,7 +131,7 @@
                         android:id="@+id/ll_step_line"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -197,7 +197,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:text="10 / 10"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:textSize="10sp"/>
 
                 </LinearLayout>
 
@@ -217,7 +218,6 @@
                         android:id="@+id/tv_contents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="21dp"
                         android:fontFamily="@font/nanum_square_round_r"
                         android:lineSpacingExtra="@dimen/text_line_spacing"
                         android:paddingLeft="12.7dp"

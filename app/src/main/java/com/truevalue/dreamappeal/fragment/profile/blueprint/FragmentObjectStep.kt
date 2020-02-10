@@ -91,6 +91,13 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
         }
 
         Utils.setSwipeRefreshLayout(srl_refresh,this)
+
+        tv_default_step.text = if(mViewUserIdx == Comm_Prefs.getUserProfileIndex()){
+            Utils.replaceTextType(context,tv_default_step,"세부단계를 추가해 작은 것부터 실천해보세요")
+        }
+        else{
+            "상대방이 만든 세부단계가\n여기에 표시됩니다"
+        }
     }
 
     /**
@@ -153,8 +160,8 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                 getString(R.string.str_delete) -> {
                     val builder =
                         AlertDialog.Builder(context)
-                            .setTitle(getString(R.string.str_delete_post_title))
-                            .setMessage(getString(R.string.str_delete_post_contents))
+                            .setTitle(getString(R.string.str_delete_object_title))
+                            .setMessage(getString(R.string.str_delete_object_contents))
                             .setPositiveButton(
                                 getString(R.string.str_yes)
                             ) { dialog, _ ->
@@ -322,6 +329,11 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
+                        if(mAdapter!!.size() > 0){
+                            tv_default_step.visibility = GONE
+                        }else{
+                            tv_default_step.visibility = VISIBLE
+                        }
 
                     }else{
                         Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
@@ -382,9 +394,9 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                     ivMore.visibility = VISIBLE
                 } else ivMore.visibility = GONE
 
-                ivMore.setOnClickListener(View.OnClickListener {
+                ivMore.setOnClickListener{
                     showPopupMenu(ivMore,bean)
-                })
+                }
 
             } else if (getItemViewType(i) == TYPE_ITEM) {
                 val bean = mAdapter!!.get(i) as BeanActionPost
@@ -396,13 +408,13 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                     .placeholder(R.drawable.ic_image_white)
                     .into(ivImage)
 
-                h.itemView.setOnClickListener(View.OnClickListener {
+                h.itemView.setOnClickListener{
                     (activity as ActivityMain).replaceFragment(
                         FragmentActionPost.newInstance(bean.idx, mViewUserIdx),
                         addToBack = true,
                         isMainRefresh = false
                     )
-                })
+                }
             }
         }
 
@@ -426,8 +438,8 @@ class FragmentObjectStep : BaseFragment(), SwipeRefreshLayout.OnRefreshListener 
                     getString(R.string.str_delete) -> {
                         val builder =
                             AlertDialog.Builder(context!!)
-                                .setTitle(getString(R.string.str_delete_post_title))
-                                .setMessage(getString(R.string.str_delete_post_contents))
+                                .setTitle(getString(R.string.str_delete_object_step_title))
+                                .setMessage(getString(R.string.str_delete_object_step_contents))
                                 .setPositiveButton(
                                     getString(R.string.str_yes)
                                 ) { dialog, _ ->

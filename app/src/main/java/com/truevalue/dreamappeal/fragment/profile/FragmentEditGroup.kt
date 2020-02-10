@@ -26,10 +26,6 @@ import java.util.*
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 
 
-
-
-
-
 class FragmentEditGroup : BaseFragment() {
 
     private var mClass: Int = -1
@@ -98,15 +94,18 @@ class FragmentEditGroup : BaseFragment() {
 
             val sdf = SimpleDateFormat("yyyy-MM")
             val sDate = sdf.parse(mBean!!.start_date)
-            val eDate = sdf.parse(mBean!!.end_date)
 
             val cal = Calendar.getInstance()
             cal.time = sDate
             tv_start_year.text = String.format("%04d", cal.get(Calendar.YEAR))
             tv_start_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
-            cal.time = eDate
-            tv_end_year.text = String.format("%04d", cal.get(Calendar.YEAR))
-            tv_end_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
+
+            mBean!!.end_date?.let {
+                val eDate = sdf.parse(it)
+                cal.time = eDate
+                tv_end_year.text = String.format("%04d", cal.get(Calendar.YEAR))
+                tv_end_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
+            }
 
             et_detail_info.setText(mBean!!.description)
         }
@@ -200,7 +199,7 @@ class FragmentEditGroup : BaseFragment() {
             if (tv_start_month.text.toString().isNullOrEmpty()) calendar.get(Calendar.MONTH) else tv_start_month.text.toString().toInt()
 
         val dialogFragment = MonthYearPickerDialogFragment
-            .getInstance(monthSelected, yearSelected,customTitle,locale)
+            .getInstance(monthSelected, yearSelected, customTitle, locale)
 
         dialogFragment.setOnDateSetListener { year, monthOfYear ->
             tv_start_year.text = year.toString()
@@ -226,7 +225,7 @@ class FragmentEditGroup : BaseFragment() {
             if (tv_end_month.text.toString().isNullOrEmpty()) calendar.get(Calendar.MONTH) else tv_end_month.text.toString().toInt()
 
         val dialogFragment = MonthYearPickerDialogFragment
-            .getInstance(monthSelected, yearSelected,customTitle,locale)
+            .getInstance(monthSelected, yearSelected, customTitle, locale)
 
         dialogFragment.setOnDateSetListener { year, monthOfYear ->
             tv_end_year.text = year.toString()
@@ -277,8 +276,8 @@ class FragmentEditGroup : BaseFragment() {
         val start_year = Integer.parseInt(tv_start_year.text.toString())
         val start_month = Integer.parseInt(tv_start_month.text.toString())
         val start_date = String.format("%04d-%02d", start_year, start_month)
-        var end_date : String? = null
-        if(!tv_end_year.text.toString().isNullOrEmpty() && !tv_end_month.text.toString().isNullOrEmpty()) {
+        var end_date: String? = null
+        if (!tv_end_year.text.toString().isNullOrEmpty() && !tv_end_month.text.toString().isNullOrEmpty()) {
             val end_year = Integer.parseInt(tv_end_year.text.toString())
             val end_month = Integer.parseInt(tv_end_month.text.toString())
             end_date = String.format("%04d-%02d", end_year, end_month)

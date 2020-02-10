@@ -238,8 +238,11 @@ class FragmentNewPerformance : BaseFragment(), IORecyclerViewListener,
                     )
                 }
             } else {
-                tvPost.text =
+                tvPost.text = if (Comm_Prefs.getUserProfileIndex() == mViewUserIdx) {
                     Utils.replaceTextColor(context, tvPost, getString(R.string.str_best_post))
+                } else {
+                    "대표성과가 여기에 표시됩니다"
+                }
 
                 if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                     h.itemView.setOnClickListener {

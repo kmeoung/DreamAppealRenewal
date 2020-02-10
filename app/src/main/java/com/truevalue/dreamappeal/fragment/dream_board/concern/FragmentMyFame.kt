@@ -94,7 +94,7 @@ class FragmentMyFame : BaseFragment() {
                             .into(iv_profile)
                     }
 
-                    tv_user.text = "${bean.user.nickname} 님"
+                    tv_user.text = "${bean.user.nickname} 님의 명성도"
                     tv_fame.text = bean.user.reputation.toString()
 
                     setTabView(mViewType)

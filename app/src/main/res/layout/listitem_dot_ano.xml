@@ -24,6 +24,7 @@
             android:fontFamily="@font/nanum_square_round_r"
             android:maxLines="1"
             android:textColor="@color/black"
+            android:lineSpacingExtra="@dimen/text_line_spacing"
             android:textSize="13sp" />
 
 </LinearLayout>

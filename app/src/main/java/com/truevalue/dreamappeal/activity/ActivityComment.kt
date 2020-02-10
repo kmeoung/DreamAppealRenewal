@@ -675,7 +675,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 tvAddReply.setOnClickListener{
                     setReplyComment(bean)
                 }
-                if (bean.profile_idx == Comm_Prefs.getUserProfileIndex()) {
+                if (bean.writer_idx == Comm_Prefs.getUserProfileIndex()) {
                     h.itemView.setOnLongClickListener {
                         showPopupMenu(tvComment, bean)
                         true

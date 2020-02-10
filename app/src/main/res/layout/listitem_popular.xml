@@ -2,24 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white_nine"
+        android:layout_marginBottom="10dp"
+        android:paddingBottom="3dp">
 
     <TextView
             android:id="@+id/tv_attention"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="11.3dp"
-            android:layout_marginBottom="12.3dp"
+            android:layout_marginBottom="3dp"
             android:fontFamily="@font/nanum_square_round_b"
             android:text="@string/str_attention_appealer"
             android:textColor="@color/black"
-            android:textSize="15.7sp" />
+            android:textSize="15.7sp"
+            android:layout_marginTop="5dp"/>
 
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager_attention"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/thumb"
-            android:layout_marginBottom="15.7dp" />
+            android:layout_height="@dimen/thumb" />
 
 </LinearLayout>

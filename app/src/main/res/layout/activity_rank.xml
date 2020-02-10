@@ -1,161 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <TextView
+            android:id="@+id/tv_rank_title"
             android:layout_width="match_parent"
             android:layout_height="53.3dp"
             android:background="@color/yellow_orange_three"
+            android:fontFamily="@font/jalnan"
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
             android:text="@string/str_appeal_rank"
             android:textColor="@color/white"
-            android:textSize="22.3sp"
-            android:fontFamily="@font/jalnan"
-            android:id="@+id/tv_rank_title"/>
+            android:textSize="22.3sp" />
 
     <LinearLayout
+            android:id="@+id/ll_selector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="8dp"
-            android:paddingRight="14dp"
-            android:id="@+id/ll_selector">
+            android:paddingRight="14dp">
 
         <TextView
                 android:id="@+id/tv_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="13.3sp"
+                android:padding="10dp"
                 android:text="@string/str_synthesis"
-                android:textColor="@color/color_search"/>
+                android:textColor="@color/color_search"
+                android:textSize="13.3sp" />
 
         <TextView
                 android:id="@+id/tv_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="13.3sp"
+                android:padding="10dp"
                 android:text="@string/str_action_post"
-                android:textColor="@color/color_search"/>
+                android:textColor="@color/color_search"
+                android:textSize="13.3sp" />
 
         <TextView
                 android:id="@+id/tv_idea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="13.3sp"
+                android:padding="10dp"
                 android:text="@string/str_idea"
-                android:textColor="@color/color_search"/>
+                android:textColor="@color/color_search"
+                android:textSize="13.3sp" />
 
         <TextView
                 android:id="@+id/tv_life"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="13.3sp"
+                android:padding="10dp"
                 android:text="@string/str_life"
-                android:textColor="@color/color_search"/>
+                android:textColor="@color/color_search"
+                android:textSize="13.3sp" />
 
         <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         <TextView
                 android:id="@+id/tv_weekly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="13.3sp"
+                android:padding="10dp"
                 android:text="@string/str_weekly"
-                android:textColor="@color/color_search"/>
+                android:textColor="@color/color_search"
+                android:textSize="13.3sp" />
 
         <TextView
                 android:id="@+id/tv_accumulate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:textSize="13.3sp"
+                android:padding="10dp"
                 android:text="@string/str_accumulate"
-                android:textColor="@color/color_search"/>
+                android:textColor="@color/color_search"
+                android:textSize="13.3sp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_rank"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/rv_rank"/>
+            android:layout_weight="1" />
 
     <LinearLayout
+            android:id="@+id/ll_my"
             android:layout_width="match_parent"
             android:layout_height="53.3dp"
             android:background="@color/yellow_orange_three"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:id="@+id/ll_my">
+            android:orientation="horizontal">
 
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="11.3dp"
-                android:paddingRight="12dp"
-                android:gravity="center">
+                android:paddingRight="12dp">
 
             <TextView
+                    android:id="@+id/tv_my_rank_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12.3sp"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/nanum_square_round_b"
-                    android:text="@string/str_synthesis_rank" />
+                    android:text="@string/str_synthesis_rank"
+                    android:textColor="@color/black"
+                    android:textSize="12.3sp" />
 
             <TextView
+                    android:id="@+id/tv_all_rank"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22.3sp"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/nanum_square_round_eb"
                     android:text="0"
-                    android:id="@+id/tv_all_rank"/>
+                    android:textColor="@color/black"
+                    android:textSize="22.3sp" />
 
         </LinearLayout>
 
         <ImageView
+                android:id="@+id/iv_my_rank_profile"
                 android:layout_width="37dp"
                 android:layout_height="37dp"
-                android:src="@drawable/drawer_user"
-                android:id="@+id/iv_my_rank_profile"
-                android:layout_marginRight="10.3dp"/>
+                android:layout_marginRight="10.3dp"
+                android:src="@drawable/drawer_user" />
 
         <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
             <TextView
+                    android:id="@+id/tv_value_style_job"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="13.3sp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:text="#value_style"
                     android:layout_marginBottom="6dp"
-                    android:maxLines="1"
                     android:ellipsize="end"
-                    android:id="@+id/tv_value_style_job"/>
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:maxLines="1"
+                    android:text="#value_style"
+                    android:textColor="@color/black"
+                    android:textSize="13.3sp" />
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -166,32 +168,32 @@
                         android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13.3sp"
-                        android:textColor="@color/black"
-                        android:text="#name"
-                        android:maxLines="1"
+                        android:layout_marginRight="10dp"
                         android:ellipsize="end"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:layout_marginRight="10dp"/>
+                        android:maxLines="1"
+                        android:text="#name"
+                        android:textColor="@color/black"
+                        android:textSize="13.3sp" />
 
                 <TextView
                         android:id="@+id/tv_contents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="13.3sp"
-                        android:textColor="@color/black"
-                        android:text="#contents"
-                        android:maxLines="1"
                         android:ellipsize="end"
-                        android:fontFamily="@font/nanum_square_round_b" />
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:maxLines="1"
+                        android:text="#contents"
+                        android:textColor="@color/black"
+                        android:textSize="13.3sp" />
 
                 <LinearLayout
+                        android:id="@+id/ll_concern"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="horizontal"
-                        android:id="@+id/ll_concern"
-                        android:visibility="gone"
-                        android:gravity="center">
+                        android:visibility="gone">
 
                     <TextView
                             android:id="@+id/tv_fame"
@@ -232,7 +234,7 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="0"
                             android:textColor="@color/black"
-                            android:textSize="13.3sp"/>
+                            android:textSize="13.3sp" />
 
                     <ImageView
                             android:layout_width="13dp"
@@ -248,7 +250,7 @@
                             android:fontFamily="@font/nanum_square_round_r"
                             android:text="0"
                             android:textColor="@color/black"
-                            android:textSize="13.3sp"/>
+                            android:textSize="13.3sp" />
 
                 </LinearLayout>
 

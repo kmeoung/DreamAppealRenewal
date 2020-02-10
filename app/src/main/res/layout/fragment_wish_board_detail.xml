@@ -91,6 +91,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:text="10 / 10"
+                                android:textSize="10sp"
                                 android:textColor="@color/white" />
 
                     </LinearLayout>
@@ -189,7 +190,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:paddingLeft="12.7dp"
+                            android:paddingLeft="18dp"
                             android:paddingTop="11dp"
                             android:paddingRight="12.7dp"
                             android:paddingBottom="11dp">
@@ -226,21 +227,6 @@
                                     android:layout_width="9dp"
                                     android:layout_height="9dp"
                                     android:layout_marginRight="5dp"
-                                    android:src="@drawable/ic_circle_nice_blue" />
-
-                            <TextView
-                                    android:id="@+id/tv_achievement_cnt"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="20dp"
-                                    android:fontFamily="@font/nanum_square_round_r"
-                                    android:textColor="@color/black"
-                                    android:textSize="11.2sp" />
-
-                            <ImageView
-                                    android:layout_width="9dp"
-                                    android:layout_height="9dp"
-                                    android:layout_marginRight="5dp"
                                     android:src="@drawable/ic_circle_blue" />
 
                             <TextView
@@ -249,7 +235,24 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/nanum_square_round_r"
                                     android:textColor="@color/black"
+                                    android:textSize="11.2sp"
+                                    android:layout_marginRight="20dp"/>
+
+                            <ImageView
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
+                                    android:layout_marginRight="5dp"
+                                    android:src="@drawable/ic_circle_nice_blue" />
+
+                            <TextView
+                                    android:id="@+id/tv_achievement_cnt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nanum_square_round_r"
+                                    android:textColor="@color/black"
                                     android:textSize="11.2sp" />
+
+
 
                         </LinearLayout>
 

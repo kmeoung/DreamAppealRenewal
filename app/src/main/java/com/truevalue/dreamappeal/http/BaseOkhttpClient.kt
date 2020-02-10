@@ -40,62 +40,77 @@ object BaseOkhttpClient : OkHttpClient() {
         if (!Comm_Param.REAL) Log.d("SERVER REQUEST URL", call.request().url.toString())
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback?.let {callback->
+                callback?.let { callback ->
                     callback.onFailure(call, e)
                 }
 
             }
 
             override fun onResponse(call: Call, response: Response) {
-                // GET 방식에 Parameter가 들어가게 될 경우 떄문에 처리
-                if (call.request().url.toUrl().toString().split("?")[0] == url) {
-                    val strBody = response.body!!.string()
-                    if (!Comm_Param.REAL) Log.d("SERVER BODY", strBody)
-                    var code: String? = null
-                    var message: String? = null
-                    var isJson = false
-                    try {
-                        val json = JSONObject(strBody)
-                        isJson = true
-                        code = json.getString("code")
-                        message = json.getString("message")
-                    } catch (e: JSONException) {
-                    } finally {
-                        handler.post {
-                            callback?.let { callback ->
-                                if (isJson) {
-                                    if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
-                                        callback.onResponse(
-                                            call,
-                                            response.code,
-                                            strBody,
-                                            code,
-                                            message
-                                        )
+                if (response.code == 200) {
+                    // GET 방식에 Parameter가 들어가게 될 경우 떄문에 처리
+                    if (call.request().url.toUrl().toString().split("?")[0] == url) {
+                        val strBody = response.body!!.string()
+                        if (!Comm_Param.REAL) Log.d("SERVER BODY", strBody)
+                        var code: String? = null
+                        var message: String? = null
+                        var isJson = false
+                        try {
+                            val json = JSONObject(strBody)
+                            isJson = true
+                            code = json.getString("code")
+                            message = json.getString("message")
+                        } catch (e: JSONException) {
+                        } finally {
+                            handler.post {
+                                callback?.let { callback ->
+                                    if (isJson) {
+                                        if (!code.isNullOrEmpty() && !message.isNullOrEmpty()) {
+                                            callback.onResponse(
+                                                call,
+                                                response.code,
+                                                strBody,
+                                                code,
+                                                message
+                                            )
+                                        } else {
+                                            callback.onResponse(
+                                                call,
+                                                response.code,
+                                                strBody,
+                                                DAClient.SUCCESS,
+                                                ""
+                                            )
+                                        }
                                     } else {
                                         callback.onResponse(
                                             call,
                                             response.code,
                                             strBody,
-                                            DAClient.SUCCESS,
-                                            ""
+                                            DAClient.FAIL,
+                                            "서버에 에러가 발생하였습니다"
                                         )
                                     }
-                                } else {
-                                    callback.onResponse(
-                                        call,
-                                        response.code,
-                                        strBody,
-                                        DAClient.FAIL,
-                                        "서버에 에러가 발생하였습니다"
-                                    )
+
                                 }
                             }
                         }
 
                     }
-                }
+                }else {
+                    handler.post{
+                        callback?.let { callback->
+                            callback.onResponse(
+                                call,
+                                response.code,
+                                "",
+                                DAClient.FAIL,
+                                "서버에 에러가 발생하였습니다"
+                            )
+                        }
+                    }
 
+                }
             }
         })
     }

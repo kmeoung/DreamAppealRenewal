@@ -27,7 +27,7 @@ import java.io.IOException
 class FragmentDreamNoteIdea : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    private var mViewUserIdx : Int = -1
+    private var mViewUserIdx: Int = -1
 
     companion object {
         fun newInstance(view_user_idx: Int): FragmentDreamNoteIdea {
@@ -57,7 +57,7 @@ class FragmentDreamNoteIdea : BaseFragment() {
     /**
      * SwipeRefreshLayout 설정
      */
-    private fun initView(){
+    private fun initView() {
         Utils.setSwipeRefreshLayout(srl_refresh, SwipeRefreshLayout.OnRefreshListener {
             getDreamNoteIdea()
         })
@@ -68,10 +68,10 @@ class FragmentDreamNoteIdea : BaseFragment() {
      */
     private fun initAdapter() {
         mAdapter = BaseRecyclerViewAdapter(recyclerViewListener)
-        val itemDecorate = BaseGridItemDecorate(context!!,1.0f,3)
+        val itemDecorate = BaseGridItemDecorate(context!!, 1.0f, 3)
         rv_recycle.addItemDecoration(itemDecorate)
         rv_recycle.adapter = mAdapter
-        rv_recycle.layoutManager = GridLayoutManager(context!!,3)
+        rv_recycle.layoutManager = GridLayoutManager(context!!, 3)
     }
 
     /**
@@ -114,8 +114,12 @@ class FragmentDreamNoteIdea : BaseFragment() {
                                 }
                             } catch (e: Exception) {
                             }
-                        }else{
-                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        } else {
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
@@ -135,18 +139,23 @@ class FragmentDreamNoteIdea : BaseFragment() {
         }
 
         override fun onBindViewHolder(h: BaseViewHolder, i: Int) {
-            if(mAdapter != null){
+            if (mAdapter != null) {
                 val bean = mAdapter!!.get(i) as BeanDreamNoteIdea
                 val ivIdea = h.getItemView<ImageView>(R.id.iv_idea)
+                Glide.with(context!!).load(bean.thumbnail_image)
+                    .centerCrop().placeholder(R.drawable.ic_image_white).into(ivIdea)
 
-                Glide.with(context!!).load(bean.thumbnail_image).placeholder(R.drawable.ic_image_white).centerCrop().into(ivIdea)
-
-                h.itemView.setOnClickListener(View.OnClickListener {
+                h.itemView.setOnClickListener {
                     (activity as ActivityMain).replaceFragment(
-                        FragmentActionPost.newInstance(bean.idx,mViewUserIdx,FragmentActionPost.TYPE_DREAM_NOTE_IDEA),
-                        addToBack = true,isMainRefresh = false
+                        FragmentActionPost.newInstance(
+                            bean.idx,
+                            mViewUserIdx,
+                            FragmentActionPost.TYPE_DREAM_NOTE_IDEA
+                        ),
+                        addToBack = true, isMainRefresh = false
                     )
-                })
+                }
+                Utils.setImageItemViewSquare(context, ivIdea)
             }
         }
 

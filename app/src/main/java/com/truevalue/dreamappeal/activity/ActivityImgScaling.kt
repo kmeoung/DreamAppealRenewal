@@ -2,6 +2,8 @@ package com.truevalue.dreamappeal.activity
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -12,7 +14,6 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_img_scaling.*
 import kotlinx.android.synthetic.main.activity_img_scaling.pager_image
 import kotlinx.android.synthetic.main.activity_img_scaling.tv_indicator
-import kotlinx.android.synthetic.main.fragment_post_detail.*
 
 class ActivityImgScaling : BaseActivity() {
 
@@ -62,12 +63,21 @@ class ActivityImgScaling : BaseActivity() {
         mAdapter = ScalingAdapter()
         pager_image.adapter = mAdapter
         pager_image.setCurrentItem(mPosition,false)
-        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tv_indicator.text = if(mArrayImg.size > 0) ((position + 1).toString() + " / " + mArrayImg.size) else "0 / 0"
-            }
-        })
+
+        if(mArrayImg.size > 1) {
+            ll_indicator.visibility = VISIBLE
+            pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    if(mArrayImg.size > 1) {
+                        tv_indicator.text =
+                            if (mArrayImg.size > 0) ((position + 1).toString() + " / " + mArrayImg.size) else "0 / 0"
+                    }
+                }
+            })
+        }else{
+            ll_indicator.visibility = GONE
+        }
     }
 
     private fun onClickView(){

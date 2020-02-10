@@ -29,7 +29,6 @@ class FragmentSetting : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // view 초기화
         initView()
         // View Click Listener
@@ -76,11 +75,16 @@ class FragmentSetting : BaseFragment() {
                 tv_leave_member->{
 
                 }
+                tv_site->{
+                    val intent = Intent(ACTION_VIEW, Uri.parse("http://${tv_site.text}"))
+                    startActivity(intent)
+                }
             }
         }
         iv_back_blue.setOnClickListener(listener)
         tv_terms_of_use.setOnClickListener(listener)
         tv_privacy_policy.setOnClickListener(listener)
         tv_leave_member.setOnClickListener(listener)
+        tv_site.setOnClickListener(listener)
     }
 }

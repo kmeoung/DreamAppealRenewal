@@ -396,8 +396,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             pagerImages.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    tvIndicator.text =
-                        ((position + 1).toString() + " / " + pagerAdapter!!.count)
+                    if(pagerAdapter!!.count > 1) {
+                        tvIndicator.text =
+                            ((position + 1).toString() + " / " + pagerAdapter!!.count)
+                    }
                 }
             })
 
@@ -421,13 +423,20 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             tvTag.text = strTags
 
             bean.images?.let { imageList ->
-                tvIndicator.text =
-                    if (imageList.isNotEmpty()) ((1).toString() + " / " + imageList.size) else ((0).toString() + " / " + imageList.size)
+                if(imageList.size > 1) {
+                    llIndicator.visibility = VISIBLE
+                    tvIndicator.text =
+                        if (imageList.isNotEmpty()) ((1).toString() + " / " + imageList.size) else ((0).toString() + " / " + imageList.size)
+                }else{
+                    llIndicator.visibility = GONE
+                }
                 for (j in imageList.indices) {
                     imageList[j].url?.let { url ->
                         pagerAdapter.add(url)
                     }
                 }
+            }?:kotlin.run {
+                llIndicator.visibility = GONE
             }
             pagerAdapter.notifyDataSetChanged()
 

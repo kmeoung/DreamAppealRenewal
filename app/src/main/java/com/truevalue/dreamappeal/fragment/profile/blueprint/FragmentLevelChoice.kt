@@ -525,7 +525,7 @@ class FragmentLevelChoice : BaseFragment() {
                     tvTitle.isSelected = false
                 }
 
-                llBg.setOnClickListener(View.OnClickListener {
+                llBg.setOnClickListener {
                     if (selectedCategoryIdx != bean.idx) {
                         selectedCategoryIdx = bean.idx
                         selectedCategoryDetailIdx = 0
@@ -533,7 +533,7 @@ class FragmentLevelChoice : BaseFragment() {
                         getCategoryDetail(selectedCategoryIdx)
                         mAdapter!!.notifyDataSetChanged()
                     }
-                })
+                }
             }
         }
 

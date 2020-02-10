@@ -23,12 +23,11 @@
             android:lineSpacingExtra="3sp" />
 
     <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/more_btn"
-            android:layout_marginRight="10dp"
-            android:scaleY="0.5"
-            android:scaleX="0.5"
+            android:scaleY="0.3"
+            android:scaleX="0.3"
             android:id="@+id/iv_more"/>
 
 </LinearLayout>

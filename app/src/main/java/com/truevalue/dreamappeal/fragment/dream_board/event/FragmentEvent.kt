@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
@@ -126,8 +128,10 @@ class FragmentEvent : BaseFragment() {
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    tv_indicator.text =
-                        ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
+                    if(mPagerAdapter!!.count > 1) {
+                        tv_indicator.text =
+                            ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
+                    }
                 }
             })
         }
@@ -184,8 +188,10 @@ class FragmentEvent : BaseFragment() {
             ) {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
-                    val value = json.getString("value")
+                    var value = json.getString("value")
+                    value = if(value.length > 15) "${value.subSequence(0, 15)}..." else value
                     tv_event_title.text = "${value}에 도움될만한 소식"
+                    tv_event_title.text = Utils.replaceTextColor(context,tv_event_title.text.toString(),R.color.nice_blue,value)
                     val promotions = json.getJSONArray("promotions")
                     mPagerAdapter?.let {
                         it.clear()
@@ -199,7 +205,13 @@ class FragmentEvent : BaseFragment() {
                             it.add(bean)
                         }
                         it.notifyDataSetChanged()
-                        tv_indicator.text = (1.toString() + " / " + promotions.length())
+                        if(promotions.length() > 1){
+                            tv_indicator.visibility = VISIBLE
+                            tv_indicator.text = (1.toString() + " / " + promotions.length())
+                        }else{
+                            tv_indicator.visibility = GONE
+                        }
+
                     }
 
                     val event_cards = json.getJSONArray("event_cards")

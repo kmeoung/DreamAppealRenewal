@@ -188,7 +188,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nanum_square_round_b"
                         android:text="10 / 10"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="10sp"/>
 
             </LinearLayout>
 
@@ -207,7 +208,6 @@
                     android:id="@+id/tv_contents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:lineSpacingExtra="@dimen/text_line_spacing"
                     android:paddingLeft="12.7dp"

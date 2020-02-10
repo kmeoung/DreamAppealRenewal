@@ -251,6 +251,7 @@ object DAClient {
         if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname as String)
         params.put("gender", bean.gender)
         if(!bean.birth.isNullOrEmpty()) params.put("birth",bean.birth as String)
+        if(!bean.mobile.isNullOrEmpty()) params.put("mobile",bean.mobile as String)
 
         if (bean.address != null) {
             when (bean.address) {

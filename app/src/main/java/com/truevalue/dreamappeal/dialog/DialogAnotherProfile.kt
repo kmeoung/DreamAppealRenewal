@@ -5,8 +5,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter2
 import com.truevalue.dreamappeal.base.BaseViewHolder
@@ -108,6 +110,7 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
                     val tvGender = h.getItemView<TextView>(R.id.tv_gender)
                     val tvAddress = h.getItemView<TextView>(R.id.tv_address)
                     val tvEmail = h.getItemView<TextView>(R.id.tv_email)
+                    val tvNumber = h.getItemView<TextView>(R.id.tv_number)
 
                     var privateBean = bean.private!!
 
@@ -135,10 +138,10 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
                     }
 
                     if(privateBean.gender == 0){
-                        if(bean.gender.isNullOrEmpty()){
+                        if(bean.gender != null){
                             tvGender.text = context!!.getString(R.string.str_none)
                         }else{
-                            tvGender.text = if(bean.gender == "0") context.getString(R.string.str_female)
+                            tvGender.text = if(bean.gender == 0) context.getString(R.string.str_female)
                             else context.getString(R.string.str_male)
                         }
                     }else{
@@ -152,11 +155,16 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
                         tvAddress.text = context.getString(R.string.str_private)
                     }
 
-                    // 이메일 계정은 null이 들어오면 sns 계정입니다.
                     if(privateBean.email == 0){
-                        tvEmail.text = if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_sns_login) else bean.email
+                        tvEmail.text = if (bean.email.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.email
                     }else{
                         tvEmail.text = context.getString(R.string.str_private)
+                    }
+
+                    if(privateBean.mobile == 0){
+                        tvNumber.text = if (bean.mobile.isNullOrEmpty()) context!!.getString(R.string.str_none) else bean.mobile
+                    }else{
+                        tvNumber.text = context.getString(R.string.str_private)
                     }
 
 
@@ -164,7 +172,19 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
                     val bean = mAdapter!!.get(i) as BeanAnotherProfileGroup
                     val tvGroup = h.getItemView<TextView>(R.id.tv_group)
                     val tvRank = h.getItemView<TextView>(R.id.tv_rank)
+                    val image = h.getItemView<ImageView>(R.id.iv_group)
 
+                    val `class`: Int? = when (bean.`class`) {
+                        0->R.drawable.icon_work3
+                        1->R.drawable.icon_school3
+                        else->R.drawable.icon_group3
+                    }
+
+
+                    Glide.with(context!!)
+                        .load(`class`)
+                        .centerInside()
+                        .into(image)
                     tvGroup.text = if(bean.groupName.isNullOrEmpty()) context.getString(R.string.str_none) else bean.groupName
                     tvRank.text = if(bean.position.isNullOrEmpty()) context.getString(R.string.str_none) else bean.position
 

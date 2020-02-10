@@ -10,13 +10,12 @@
             android:id="@+id/tv_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="19.3dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:gravity="center_vertical"
-            android:paddingLeft="14.7dp"
+            android:layout_marginLeft="15dp"
             android:paddingTop="8.3dp"
             android:paddingBottom="8.3dp"
-            android:text="•  "
+            android:text="•"
             android:textColor="@color/color_level_choice_item" />
 
 
@@ -26,7 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanum_square_round_r"
             android:gravity="center_vertical"
-            android:paddingLeft="14.7dp"
+            android:paddingLeft="10dp"
             android:paddingTop="8.3dp"
             android:paddingBottom="8.3dp"
             android:text=""

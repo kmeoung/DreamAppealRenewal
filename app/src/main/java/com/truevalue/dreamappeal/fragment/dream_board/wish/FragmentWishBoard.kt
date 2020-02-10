@@ -26,7 +26,11 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_other.*
+import kotlinx.android.synthetic.main.fragment_event.*
 import kotlinx.android.synthetic.main.fragment_wish_board.*
+import kotlinx.android.synthetic.main.fragment_wish_board.pager_image
+import kotlinx.android.synthetic.main.fragment_wish_board.rl_images
+import kotlinx.android.synthetic.main.fragment_wish_board.tv_indicator
 import okhttp3.Call
 import org.json.JSONObject
 
@@ -39,6 +43,8 @@ class FragmentWishBoard : BaseFragment() {
     companion object {
         private const val RV_TYPE_ITEM = 0
         private const val RV_TYPE_LOADING = 1
+
+        private const val MAX_GET_ONCE_ITEM = 20
     }
 
     init {
@@ -73,6 +79,10 @@ class FragmentWishBoard : BaseFragment() {
         tv_title.text = getString(R.string.str_wish_main_title)
         iv_back_black.visibility = GONE
         iv_back_blue.visibility = VISIBLE
+
+        rl_images.run {
+            Utils.setImageViewSquare(context, this, 7, 3)
+        }
     }
 
     /**
@@ -117,8 +127,10 @@ class FragmentWishBoard : BaseFragment() {
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    tv_indicator.text =
-                        ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
+                    if(mPagerAdapter!!.count > 1) {
+                        tv_indicator.text =
+                            ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
+                    }
                 }
             })
         }
@@ -164,6 +176,7 @@ class FragmentWishBoard : BaseFragment() {
                     val json = JSONObject(body)
                     val promotions = json.getJSONArray("promotions")
                     mPagerAdapter?.let {
+
                         it.clear()
                         for (i in 0 until promotions.length()) {
                             val promotion = promotions.getJSONObject(i)
@@ -175,11 +188,22 @@ class FragmentWishBoard : BaseFragment() {
                             it.add(bean)
                         }
                         it.notifyDataSetChanged()
-                        tv_indicator.text = (1.toString() + " / " + promotions.length())
+                        if(promotions.length() > 1) {
+                            tv_indicator.visibility = VISIBLE
+                            tv_indicator.text = (1.toString() + " / " + promotions.length())
+                        }else{
+                            tv_indicator.visibility = GONE
+                        }
                     }
 
                     val wishes = json.getJSONArray("wishes")
                     mAdapter?.let {
+
+                        if(MAX_GET_ONCE_ITEM > wishes.length()){
+                            isLast = true
+                            it.notifyDataSetChanged()
+                        }
+
                         it.clear()
                         for (i in 0 until wishes.length()) {
                             val wish = wishes.getJSONObject(i)
@@ -223,7 +247,7 @@ class FragmentWishBoard : BaseFragment() {
                     try {
                         val wishes = json.getJSONArray("wishes")
                         mAdapter?.let {
-                            if(1 > wishes.length()){
+                            if(MAX_GET_ONCE_ITEM > wishes.length()){
                                 isLast = true
                                 it.notifyDataSetChanged()
                             }
@@ -259,7 +283,7 @@ class FragmentWishBoard : BaseFragment() {
      */
     private val rvListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mAdapter != null) if (mAdapter!!.size() > 19 && !isLast) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
+            get() = if (mAdapter != null) if (mAdapter!!.size() > (MAX_GET_ONCE_ITEM - 1) && !isLast) mAdapter!!.size() + 1 else mAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             when (viewType) {
@@ -297,7 +321,7 @@ class FragmentWishBoard : BaseFragment() {
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mAdapter!!.size() > 19 && mAdapter!!.size() == i && !isLast) {
+            if (mAdapter!!.size() > (MAX_GET_ONCE_ITEM - 1) && mAdapter!!.size() == i && !isLast) {
                 return FragmentConcern.RV_TYPE_ITEM_MORE
             }
             return FragmentConcern.RV_TYPE_ITEM

@@ -15,10 +15,10 @@
 
     <string name="str_not_ready_yet">준비중입니다.</string>
 
-    <string name="str_menu_normal_profile">일반 프로필</string>
+    <string name="str_menu_normal_profile">일반프로필</string>
     <string name="str_menu_following">팔로잉</string>
     <string name="str_cheering_member">응원해준 어필러</string>
-    <string name="str_menu_dreampoint">드림 포인트</string>
+    <string name="str_menu_dreampoint">드림포인트</string>
 
     <string name="str_title_dream_title">꿈에 명칭 달아주기</string>
     <string name="str_title_dream_list">꿈 보관함</string>
@@ -60,6 +60,8 @@
     <string name="str_default_object">능력/기회를 위한 실천목표를 등록해주세요</string>
     <string name="str_default_ability">꿈에 필요한 능력과</string>
     <string name="str_default_oppotunity">기회 정리하기</string>
+    <string name="str_default_object_step_page">세부단계를 추가해 작은 것부터 실천해보세요\n실천을 인증하면 여기에 표시됩니다</string>
+
 
     <string name="str_default_merit_and_motive_2">이 꿈의 어떤 점에 매력을 느꼈을까?\n계기는 무엇이었을까?</string>
 
@@ -76,7 +78,7 @@
     <string name="str_close_view">접기</string>
     <string name="str_cheering">응원합니다</string>
     <string name="str_add_comment">댓글 달기</string>
-    <string name="str_sharing">퍼가기</string>
+    <string name="str_sharing">공유하기</string>
     <string name="str_title_comment_detail">응원과 조언</string>
 
     <string name="str_first_dream">첫번째 꿈</string>
@@ -93,6 +95,7 @@
     <string name="str_error">Error</string>
     <string name="lv_00">Lv.00</string>
     <string name="str_recent_performance">최근 성과</string>
+    <string name="str_recent_write">최신글</string>
     <string name="str_best_performance">대표 성과</string>
     <string name="str_default_best_performance">대표로 지정한 성과가\n여기에 표시됩니다</string>
     <string name="str_comment_hint">댓글 남기기</string>
@@ -133,6 +136,7 @@
     <string name="str_month">월</string>
     <string name="str_date">일</string>
     <string name="str_email">이메일</string>
+    <string name="str_number">전화번호</string>
     <string name="str_password">비밀번호</string>
     <string name="str_agree_privacy_policy_register">개인정보처리방침 동의하고 회원가입하기</string>
 
@@ -141,8 +145,9 @@
     <string name="str_email_hint">이메일(아이디)입력</string>
     <string name="str_password_hint">비밀번호 입력</string>
     <string name="str_check_password">비밀번호 확인</string>
-    <string name="str_level_info">&lt; 경험치 획득 &gt; 실천 등록 +10 / 성과 등록 +30</string>
+    <string name="str_level_info">Lv. 1 달성 조건 : 꿈 소개 탭 모든 항목 작성\nLv. 2 달성 조건 : 발전계획 탭 모든 항목 작성\n경험치 획득 : 실천 + 10 / 대표성과 + 30 / 일상 · 경험 + 2 / 영감 + 2</string>
     <string name="str_add_achivement_post">대표성과 등록하기</string>
+    <string name="str_edit_achivement_post">대표성과 수정하기</string>
     <string name="str_best_post">대표성과</string>
     <string name="str_transfer">편집</string>
     <string name="str_add_dream">새 꿈 추가하기</string>
@@ -194,6 +199,7 @@
 
     <string name="str_nickname_hint">별명 입력 (중복불가)</string>
     <string name="str_address_hint">주소 검색</string>
+    <string name="str_number_hint">전화번호를 입력해 주세요</string>
 
     <string name="str_reset_password">비밀번호 재설정</string>
 
@@ -257,10 +263,11 @@
     <string name="str_check_password_min_length">비밀번호를 최소 8자리로 입력해주세요.</string>
     <string name="str_total_number_of_action_post">총 인증</string>
 
-    <string name="str_delete_profile_dialog_title">프로필 삭제</string>
-    <string name="str_delete_profile_dialog_contents">프로필을 삭제하시겠습니까?</string>
+    <string name="str_delete_profile_dialog_title">해당 드림프로필을\n정말 삭제하시겠습니까?</string>
+    <string name="str_delete_profile_dialog_contents">\n주의!\n삭제하시면 관련된 실천인증까지 모두 삭제됩니다.</string>
     <string name="str_error_delete_using_profile">현재 사용중인 프로필은 삭제가 불가능 합니다.</string>
-    <string name="str_error_min_profile">최소 1개의 프로필이 있어야 합니다.</string>
+    <string name="str_error_min_profile">최소 1개의 프로필이 있어야 합니다</string>
+    <string name="str_error_max_profile">최대 10개의 프로필까지 생성이 가능합니다</string>
 
     <string name="str_change_profile_dialog_title">프로필 변경</string>
     <string name="str_change_profile_dialog_contents">프로필을 변경하시겠습니까?</string>
@@ -273,7 +280,7 @@
     <string name="str_no">아니오</string>
     <string name="str_none">없음</string>
     <string name="str_edit">수정</string>
-    <string name="str_save">저장</string>
+    <string name="str_save">영감 갤러리에 담기</string>
     <string name="str_delete">삭제</string>
 
     <string name="str_no_select">지정 안함</string>
@@ -302,6 +309,17 @@
     <string name="str_count">개</string>
     <string name="str_delete_post_title">게시글 삭제</string>
     <string name="str_delete_post_contents">게시글을 삭제하시겠습니까?</string>
+
+    <string name="str_delete_best_post_contents">해당 대표성과를 삭제하시겠습니까?</string>
+
+    <string name="str_delete_ability_contents">해당 능력을 삭제하시겠습니까?</string>
+    <string name="str_delete_opportunity_contents">해당 기회를 삭제하시겠습니까?</string>
+
+    <string name="str_delete_object_title">해당 실천목표를\n정말 삭제하시겠습니까?</string>
+    <string name="str_delete_object_contents">\n주의!\n삭제하시면 관련된 실천인증까지 모두 삭제됩니다.</string>
+
+    <string name="str_delete_object_step_title">해당 세부단계를\n정말 삭제하시겠습니까?</string>
+    <string name="str_delete_object_step_contents">\n주의!\n삭제하시면 관련된 실천인증까지 모두 삭제됩니다.</string>
 
     <string name="str_delete_comment_title">댓글 삭제</string>
     <string name="str_delete_comment_contents">댓글을 삭제하시겠습니까?</string>
@@ -341,10 +359,10 @@
     <string name="str_add_wish">소원 빌기</string>
     <string name="str_wish_title">소원 담벼락</string>
     <string name="str_wish_main_title">소원을 말해봐</string>
-    <string name="str_wish_detail_title">소원 게시글</string>
+    <string name="str_wish_detail_title">소원</string>
     <string name="str_wish_add_title">소원 등록하기</string>
     <string name="str_concern_add_title">고민 / 질문 등록하기</string>
-    <string name="str_concern_title">내 활동 내역</string>
+    <string name="str_concern_title">고민 / 질문</string>
 
 
     <string name="str_addr_error">읍/면/동/리 를 입력하세요</string>
@@ -353,13 +371,13 @@
     <string name="str_recommand">추천</string>
     <string name="str_re_concern">답글</string>
     <string name="str_check_rank">랭킹 확인</string>
-    <string name="str_my_fame">내 명성도</string>
+    <string name="str_my_fame">내 활동내역</string>
     <string name="str_popular_text">주목받는 글</string>
     <string name="str_recent_text">최신 글</string>
 
     <string name="str_fame_text">작성한 게시글</string>
     <string name="str_fame_comment">작성한 댓글</string>
-    
+
     <string name="str_notification">알림</string>
     <string name="str_inquiry">문의</string>
     <string name="str_version">버전</string>
@@ -372,5 +390,5 @@
     <string name="str_no_data_1">내 꿈과 팔로우중인 꿈의 게시물이 나타납니다</string>
     <string name="str_no_data_2">관심가는 꿈을 팔로우해서 소식을 받아보세요</string>
 
-    <string name="str_sns_login">SNS로 가입된 계정입니다</string>
+    <string name="str_nickname_limit">닉네임은 최대 12자까지 가능합니다</string>
 </resources>

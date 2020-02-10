@@ -103,7 +103,7 @@ class FragmentNotification : BaseFragment() {
      * View Click Listener
      */
     private fun onClickView() {
-        val listener = View.OnClickListener {
+        val listener = OnClickListener {
             when (it) {
                 tv_following -> {
                     setTabView(VIEW_TYPE_FOLLOWING)
@@ -149,7 +149,14 @@ class FragmentNotification : BaseFragment() {
                             json.toString(),
                             BeanNotification::class.java
                         )
-                        setNotification(bean)
+
+                        if (bean.private_items.isEmpty() &&
+                            bean.following_items.isNotEmpty()
+                        ) {
+                            mViewType = VIEW_TYPE_FOLLOWING
+
+                        }
+                        setTabView(mViewType,bean)
                     } else {
                         context?.let {
                             Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
@@ -168,7 +175,6 @@ class FragmentNotification : BaseFragment() {
         bean?.let { bean ->
             mBean = bean
             mAdapter?.let { adapter ->
-
                 adapter.clear()
                 when (mViewType) {
                     VIEW_TYPE_FOLLOWING -> {
@@ -195,7 +201,7 @@ class FragmentNotification : BaseFragment() {
     /**
      * 상단 탭 설정
      */
-    private fun setTabView(view_type: Int) {
+    private fun setTabView(view_type: Int,bean: BeanNotification? = mBean) {
         mViewType = view_type
         when (view_type) {
             VIEW_TYPE_FOLLOWING -> {
@@ -203,14 +209,14 @@ class FragmentNotification : BaseFragment() {
                 tv_my_noti.isSelected = false
                 iv_following.visibility = VISIBLE
                 iv_my_noti.visibility = INVISIBLE
-                setNotification(mBean)
+                setNotification(bean)
             }
             VIEW_TYPE_MY_NOTI -> {
                 tv_following.isSelected = false
                 tv_my_noti.isSelected = true
                 iv_following.visibility = INVISIBLE
                 iv_my_noti.visibility = VISIBLE
-                setNotification(mBean)
+                setNotification(bean)
             }
         }
     }
@@ -308,7 +314,7 @@ class FragmentNotification : BaseFragment() {
                     }
                 }
             }
-            ivProfile.setBackgroundColor(ContextCompat.getColor(context!!,R.color.transparent))
+            ivProfile.setBackgroundColor(ContextCompat.getColor(context!!, R.color.transparent))
             when (bean.code) {
                 Noti_Param.NOTICES,
                 Noti_Param.BEST_PROFILE,
@@ -323,7 +329,7 @@ class FragmentNotification : BaseFragment() {
                         .circleCrop()
                         .into(ivProfile)
 
-                    h.itemView.setOnClickListener (null)
+                    h.itemView.setOnClickListener(null)
                 }
                 Noti_Param.PROFILE_LIKE -> {
                     ivFlame.visibility = VISIBLE

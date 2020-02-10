@@ -104,11 +104,20 @@ class FragmentDreamList : BaseFragment() {
                     mAdapter!!.notifyDataSetChanged()
                 }
                 ll_add_dream -> { // 새로운 프로필 추가
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentDreamTitle.newInstance(
-                            FragmentDreamTitle.MODE_NEW_PROFILE
-                        ), true
-                    )
+
+                    if (mAdapter != null && mAdapter!!.size() > 10) {
+                        Toast.makeText(
+                            context!!.applicationContext,
+                            getString(R.string.str_error_max_profile),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        (activity as ActivityMain).replaceFragment(
+                            FragmentDreamTitle.newInstance(
+                                FragmentDreamTitle.MODE_NEW_PROFILE
+                            ), true
+                        )
+                    }
                 }
             }
         }
@@ -150,8 +159,12 @@ class FragmentDreamList : BaseFragment() {
                                 )
                                 mAdapter!!.add(bean)
                             }
-                        }else{
-                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        } else {
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
@@ -185,8 +198,12 @@ class FragmentDreamList : BaseFragment() {
                             Comm_Prefs.setToken(token)
 
                             (activity as ActivityMain).initAllView()
-                        }else{
-                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        } else {
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
@@ -226,7 +243,7 @@ class FragmentDreamList : BaseFragment() {
         val builder = AlertDialog.Builder(context)
             .setTitle(getString(R.string.str_delete_profile_dialog_title))
             .setMessage(getString(R.string.str_delete_profile_dialog_contents))
-            .setPositiveButton(getString(R.string.str_yes)) { dialog, which ->
+            .setPositiveButton(getString(R.string.str_yes)) { dialog, _ ->
                 if (mAdapter != null) {
                     if (mAdapter!!.size() > 1) {
                         if (idx == mViewUserIdx) {

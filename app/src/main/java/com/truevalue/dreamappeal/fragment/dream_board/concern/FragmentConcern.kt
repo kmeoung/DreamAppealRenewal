@@ -61,6 +61,8 @@ class FragmentConcern : BaseFragment() {
 
         const val RV_TYPE_ITEM = 0
         const val RV_TYPE_ITEM_MORE = 1
+
+        private const val MAX_GET_ONCE_ITEM = 40
     }
 
     override fun onCreateView(
@@ -174,6 +176,11 @@ class FragmentConcern : BaseFragment() {
                     mBeanFragment?.let { bean ->
                         bean.recent?.let {
                             mRecentAdapter?.let { adapter ->
+
+                                if (MAX_GET_ONCE_ITEM > it.size) {
+                                    isLast = true
+                                }
+
                                 adapter.clear()
                                 for (i in 0 until it.size) {
                                     adapter.add(it[i])
@@ -181,7 +188,6 @@ class FragmentConcern : BaseFragment() {
                             }
                         }
                     }
-
                 } else {
                     context?.let {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
@@ -250,7 +256,7 @@ class FragmentConcern : BaseFragment() {
                     try {
                         val recent_more = json.getJSONArray("recent_more")
                         mRecentAdapter?.let {
-                            if (1 > recent_more.length()) {
+                            if (MAX_GET_ONCE_ITEM > recent_more.length()) {
                                 isLast = true
                                 it.notifyDataSetChanged()
                             }
@@ -431,7 +437,7 @@ class FragmentConcern : BaseFragment() {
      */
     private val rvRecentListener = object : IORecyclerViewListener {
         override val itemCount: Int
-            get() = if (mRecentAdapter != null) if (mRecentAdapter!!.size() > 19 && !isLast) mRecentAdapter!!.size() + 1 else mRecentAdapter!!.size() else 0
+            get() = if (mRecentAdapter != null) if (mRecentAdapter!!.size() > (MAX_GET_ONCE_ITEM - 1) && !isLast) mRecentAdapter!!.size() + 1 else mRecentAdapter!!.size() else 0
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             if (RV_TYPE_ITEM_MORE == viewType)
@@ -456,7 +462,7 @@ class FragmentConcern : BaseFragment() {
                 val tvStrReConcern = h.getItemView<TextView>(R.id.tv_str_re_concern)
                 val llConcernItemBg = h.getItemView<LinearLayout>(R.id.ll_concern_item_bg)
 
-                tvRecommand.text = bean.adopted.toString()
+                tvRecommand.text = bean.votes.toString()
                 tvTitle.text = bean.title
                 tvReConcern.text = bean.count.toString()
 
@@ -475,7 +481,7 @@ class FragmentConcern : BaseFragment() {
         }
 
         override fun getItemViewType(i: Int): Int {
-            if (mRecentAdapter!!.size() > 19 && mRecentAdapter!!.size() == i && !isLast) {
+            if (mRecentAdapter!!.size() > (MAX_GET_ONCE_ITEM - 1) && mRecentAdapter!!.size() == i && !isLast) {
                 return RV_TYPE_ITEM_MORE
             }
             return RV_TYPE_ITEM

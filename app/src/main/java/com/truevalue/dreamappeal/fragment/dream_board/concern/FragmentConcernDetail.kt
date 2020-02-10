@@ -158,7 +158,7 @@ class FragmentConcernDetail : BaseFragment() {
                             json.toString(),
                             BeanConcernDetail::class.java
                         )
-                        setConcernDetail(bean,isScroll)
+                        setConcernDetail(bean, isScroll)
                     } else {
                         context?.let { context ->
                             Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
@@ -173,7 +173,7 @@ class FragmentConcernDetail : BaseFragment() {
     /**
      * 질문 게시글 데이터 bind
      */
-    private fun setConcernDetail(bean: BeanConcernDetail, isScroll : Boolean) {
+    private fun setConcernDetail(bean: BeanConcernDetail, isScroll: Boolean) {
         mBean = bean
         tv_like_cnt.text = bean.post.votes
         tv_concern_title.text = bean.post.title
@@ -181,17 +181,30 @@ class FragmentConcernDetail : BaseFragment() {
         tv_indicator.text = "0 / 0"
         bean.images?.let {
             if (it.isNotEmpty()) {
-                if(it.size < 2) ll_indicator.visibility = GONE
-                else ll_indicator.visibility = VISIBLE
-                rl_images.visibility = VISIBLE
-                tv_indicator.text = "1 / " + it.size
-                for (i in it.indices) {
-                    mAdapterImage!!.add(it[i])
+                if (it.size < 2) ll_indicator.visibility = GONE
+                else {
+                    ll_indicator.visibility = VISIBLE
+                    tv_indicator.text = "1 / " + it.size
                 }
-                mAdapterImage!!.notifyDataSetChanged()
+
+                rl_images.visibility = VISIBLE
+                mAdapterImage?.let { adapter ->
+                    adapter.clear()
+                    for (i in it.indices) {
+                        adapter.add(it[i])
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+
             } else {
                 rl_images.visibility = GONE
             }
+        }
+
+        if (bean.post.profile_idx == Comm_Prefs.getUserProfileIndex()) {
+            iv_post_more.visibility = VISIBLE
+        } else {
+            iv_post_more.visibility = GONE
         }
 
         if (bean.post.vote_type == DAClient.VOTE_UP) {
@@ -217,9 +230,6 @@ class FragmentConcernDetail : BaseFragment() {
             "${bean.post_writer.value_style} ${bean.post_writer.job} ${bean.post_writer.nickname}"
         tv_fame.text = bean.post_writer.reputation
         // todo : 아직 지정되지 않음
-//        tv_gold
-//        tv_silver
-//        tv_bronze
 
         bean.re_posts?.let {
             tv_comment_cnt.text = bean.re_posts?.size.toString()
@@ -242,7 +252,7 @@ class FragmentConcernDetail : BaseFragment() {
             }
 
             if (isScroll && adapter.size() > 0) {
-                nsv_scroll.post{
+                nsv_scroll.post {
                     nsv_scroll.fullScroll(ScrollView.FOCUS_DOWN)
                 }
             }
@@ -260,7 +270,12 @@ class FragmentConcernDetail : BaseFragment() {
         }
 
         mAdapterImage = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(any: Any, view: ImageView, position: Int, arrayList: ArrayList<Any>) {
+            override fun onBindViewPager(
+                any: Any,
+                view: ImageView,
+                position: Int,
+                arrayList: ArrayList<Any>
+            ) {
                 val url = any as Image
                 context?.let {
                     Glide.with(it)
@@ -276,8 +291,8 @@ class FragmentConcernDetail : BaseFragment() {
                             array.add(img.image_url)
                         }
                         val intent = Intent(context, ActivityImgScaling::class.java)
-                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGES,array)
-                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION,position)
+                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGES, array)
+                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION, position)
                         startActivity(intent)
                     }
                 }
@@ -292,8 +307,10 @@ class FragmentConcernDetail : BaseFragment() {
                     super.onPageSelected(position)
 
                     mAdapterImage?.let {
-                        tv_indicator.text =
-                            if (it.count > 0) ((position + 1).toString() + " / " + it.count) else "0 / 0"
+                        if (it.count > 1) {
+                            tv_indicator.text =
+                                if (it.count > 0) ((position + 1).toString() + " / " + it.count) else "0 / 0"
+                        }
                     }
                 }
             })
@@ -351,6 +368,29 @@ class FragmentConcernDetail : BaseFragment() {
                     message: String
                 ) {
                     if (code == DAClient.SUCCESS) {
+                        val json = JSONObject(body)
+                        val bean = Gson().fromJson<BeanConcernVote>(
+                            json.toString(),
+                            BeanConcernVote::class.java
+                        )
+
+                        if (bean.status) {
+                            val str = when (bean.vote_side) {
+                                "up" -> {
+                                    "추천"
+                                }
+                                "down" -> {
+                                    "비추천"
+                                }
+                                else -> ""
+                            }
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                "이 글을 ${str}하였습니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
                         getConcernDetail(false)
                     } else {
                         context?.let { context ->
@@ -379,6 +419,28 @@ class FragmentConcernDetail : BaseFragment() {
                 message: String
             ) {
                 if (code == DAClient.SUCCESS) {
+                    val json = JSONObject(body)
+                    val bean = Gson().fromJson<BeanConcernVote>(
+                        json.toString(),
+                        BeanConcernVote::class.java
+                    )
+                    if (bean.status) {
+                        val str = when (bean.vote_side) {
+                            "up" -> {
+                                "추천"
+                            }
+                            "down" -> {
+                                "비추천"
+                            }
+                            else -> ""
+                        }
+                        Toast.makeText(
+                            context!!.applicationContext,
+                            "이 글을 ${str}하였습니다",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
                     getConcernDetail(false)
                 } else {
                     context?.let { context ->
@@ -773,8 +835,6 @@ class FragmentConcernDetail : BaseFragment() {
                     }
                 }
             }
-
-
         }
 
         override fun getItemViewType(i: Int): Int {

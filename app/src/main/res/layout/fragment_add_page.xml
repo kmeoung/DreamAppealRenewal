@@ -49,7 +49,7 @@
                         android:fontFamily="@font/nanum_square_round_r"
                         android:gravity="left|center_vertical"
                         android:lineSpacingExtra="@dimen/text_line_spacing"
-                        android:minHeight="76dp"
+                        android:minHeight="98dp"
                         android:paddingLeft="21dp"
                         android:paddingTop="17.7dp"
                         android:paddingRight="21dp"
@@ -65,7 +65,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:lineSpacingExtra="@dimen/text_line_spacing"
-                        android:minHeight="76dp"
+                        android:minHeight="98dp"
                         android:textColor="@color/warm_grey"
                         android:textSize="14.7sp" />
 
@@ -118,7 +118,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:text="10 / 10"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:textSize="10sp"/>
 
                 </LinearLayout>
 

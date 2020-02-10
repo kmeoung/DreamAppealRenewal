@@ -41,6 +41,7 @@ class ActivityCameraGallery : BaseActivity() {
     private var mSelectType: String?
     private var mViewType: String?
     private var mBestIdx: Int
+    private var mPopupMenu : PopupMenu?
 
     init {
         mOldPath = null
@@ -49,7 +50,7 @@ class ActivityCameraGallery : BaseActivity() {
         isMultiMode = false
         mCurrentViewImage = null
         mGridAdapter = null
-
+        mPopupMenu = null
         mMultiImage = ArrayList()
         // 기본 싱글
         mSelectType = EXTRA_IMAGE_SINGLE_SELECT
@@ -119,7 +120,6 @@ class ActivityCameraGallery : BaseActivity() {
             }
         }
         iv_close.visibility = VISIBLE
-        iv_back_black.visibility = GONE
     }
 
     /**
@@ -229,24 +229,16 @@ class ActivityCameraGallery : BaseActivity() {
             applicationContext!!
         )
 
+        mPopupMenu = PopupMenu(applicationContext, ll_title)
         val strBucketNameList = ArrayList<String>()
         for (i in bucketNameList.indices) {
             val title = bucketNameList[i]
+            mPopupMenu!!.menu.add(title)
             val id = bucketIdList[i]
             mBucked!!.add(BeanGalleryInfo(title, id, null, false, -1))
             strBucketNameList.add(title)
         }
-
-        val titleSpinner = sp_title
-
-        val arrayAdapter = ArrayAdapter(
-            applicationContext,
-            R.layout.spinner_text,
-            strBucketNameList
-        )
-
-        titleSpinner.adapter = arrayAdapter
-        Utils.setDropDownHeight(sp_title, 500)
+        tv_title.text = strBucketNameList[0]
 
         for (i in beanImageInfoList.indices) {
             val (bucketName, bucketId, imagePath) = beanImageInfoList[i]
@@ -275,49 +267,41 @@ class ActivityCameraGallery : BaseActivity() {
             mCurrentViewImage = File(mItemPath!![i].imagePath)
         }
 
-        val spinnerListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                val bean = mBucked!![position]
-                mItemPath!!.clear()
-                if (TextUtils.equals(bean.bucketId, "All")) {
-                    mItemPath!!.addAll(mOldPath!!)
-                } else {
-                    for (i in mOldPath!!.indices) {
-                        val oldBean = mOldPath!!.get(i)
-                        if (TextUtils.equals(bean.bucketId, oldBean.bucketId)) {
-                            mItemPath!!.add(oldBean)
-                        }
+        mPopupMenu!!.setOnMenuItemClickListener {
+            mItemPath!!.clear()
+            if (TextUtils.equals(it.title, "All")) {
+                mItemPath!!.addAll(mOldPath!!)
+            } else {
+                for (i in mOldPath!!.indices) {
+                    val oldBean = mOldPath!![i]
+                    if (TextUtils.equals(it.title, oldBean.bucketName)) {
+                        mItemPath!!.add(oldBean)
                     }
                 }
-                // 이미지뷰 초기화
-                if (mItemPath!!.size > 0) {
+            }
+            // 이미지뷰 초기화
+            if (mItemPath!!.size > 0) {
 
-                    mCurrentViewImage = File(mItemPath!![0].imagePath)
+                mCurrentViewImage = File(mItemPath!![0].imagePath)
 
-                    Glide.with(applicationContext!!)
-                        .load(mItemPath!![0].imagePath)
-                        .into(iv_select_image)
-                }
-
-                mGridAdapter!!.notifyDataSetChanged()
+                Glide.with(applicationContext!!)
+                    .load(mItemPath!![0].imagePath)
+                    .into(iv_select_image)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
+            mGridAdapter!!.notifyDataSetChanged()
+            tv_title.text = it.title
+            false
         }
 
-        sp_title.onItemSelectedListener = spinnerListener
-
-        tv_camera.setOnClickListener(View.OnClickListener {
+        tv_camera.setOnClickListener{
             // 카메라 처리
             onClickedCamera()
-        })
+        }
+
+        ll_title.setOnClickListener {
+            mPopupMenu!!.show()
+        }
     }
 
     /**

@@ -86,6 +86,19 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_address" />
 
                 <TextView
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:text="@string/str_number"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="12.3sp"
+                        app:layout_constraintStart_toStartOf="@+id/email"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+
+                <TextView
                         android:id="@+id/gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -148,15 +161,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:layout_marginBottom="19dp"
                         android:fontFamily="@font/nanum_square_round_r"
                         android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/email"
                         app:layout_constraintTop_toBottomOf="@+id/email"
                         tools:text="@string/str_email"
                         android:maxLength="40"
                         android:ellipsize="end" />
+
+                <TextView
+                        android:id="@+id/tv_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="19dp"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/number"
+                        app:layout_constraintTop_toBottomOf="@+id/number"
+                        tools:text="@string/str_number"
+                        android:maxLength="40"
+                        android:ellipsize="end" />
+
 
                 <TextView
                         android:id="@+id/tv_gender"

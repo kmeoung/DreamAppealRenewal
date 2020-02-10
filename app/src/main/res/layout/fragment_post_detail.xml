@@ -48,7 +48,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_square_round_b"
                             android:text="10 / 10"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:textSize="10sp"/>
 
                 </LinearLayout>
 

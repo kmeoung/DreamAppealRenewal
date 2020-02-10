@@ -30,6 +30,7 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.service.ServiceFirebaseMsg
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.IOUserNameListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
@@ -37,7 +38,6 @@ import okhttp3.Call
 
 
 class ActivityMain : BaseActivity() {
-    var mActionListener: IOActionBarListener? = null
     // 현재 나의 프로필을 보고 있고, 내가 다른 프로필을 선택하여
     // 변겅이 되었는지를 확인하여 MainProfile을 변경
     private var mCurrentUserIdx: Int = -1

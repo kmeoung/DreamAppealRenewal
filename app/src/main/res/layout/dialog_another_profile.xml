@@ -23,7 +23,7 @@
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:gravity="center"
-                    android:text="@string/str_normal_profile"
+                    android:text="@string/str_menu_normal_profile"
                     android:textColor="@color/black"
                     android:textSize="16.7sp" />
 

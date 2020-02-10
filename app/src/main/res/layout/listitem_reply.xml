@@ -68,6 +68,7 @@
             android:paddingTop="9.3dp"
             android:paddingRight="13.3dp"
             android:fontFamily="@font/nanum_square_round_r"
+            android:textColor="@color/black"
             android:textSize="15sp"
             android:paddingBottom="9.3dp"
             android:lineSpacingExtra="@dimen/text_line_spacing"/>

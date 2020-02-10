@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
@@ -230,12 +231,13 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
         }
     }
 
-    override fun sendName(name: String) {
+    override fun sendName(name: String, isMy : Boolean) {
+
+        iv_another.visibility = if(isMy) GONE else VISIBLE
+
         tv_title.text = if(name.isNullOrEmpty()){
-            "드림프로필"
-        }else if(name.length > 5){
-            "$name"
-        }else "$name 드림프로필"
+            getString(R.string.str_dream_profile)
+        }else "$name ${getString(R.string.str_dream_profile)}"
     }
 }
 

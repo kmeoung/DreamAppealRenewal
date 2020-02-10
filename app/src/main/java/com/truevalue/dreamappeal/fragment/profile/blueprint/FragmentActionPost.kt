@@ -101,8 +101,6 @@ class FragmentActionPost : BaseFragment() {
     private fun initView() {
         // 상단 이미지 정사각형 설정
         Utils.setImageViewSquare(context, rl_images)
-        // text 설정
-        tv_title.text = getString(R.string.str_level_choice_action_post)
 
         if(isDreamNoteType != null) {
             when (isDreamNoteType) {
@@ -129,6 +127,7 @@ class FragmentActionPost : BaseFragment() {
 
             when (isDreamNoteType) {
                 TYPE_DREAM_NOTE_LIFE -> {
+                    tv_title.text = "일상 / 경험"
                     iv_circle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -144,6 +143,8 @@ class FragmentActionPost : BaseFragment() {
                     )
                 }
                 TYPE_DREAM_NOTE_IDEA -> {
+                    // text 설정
+                    tv_title.text = "영감"
                     iv_circle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -159,6 +160,8 @@ class FragmentActionPost : BaseFragment() {
                     )
                 }
                 else -> {
+                    // text 설정
+                    tv_title.text = getString(R.string.str_level_choice_action_post)
                     iv_circle.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -175,6 +178,8 @@ class FragmentActionPost : BaseFragment() {
                 }
             }
         } else {
+            // text 설정
+            tv_title.text = getString(R.string.str_level_choice_action_post)
             iv_circle.setImageDrawable(
                 ContextCompat.getDrawable(
                     context!!,
@@ -235,6 +240,13 @@ class FragmentActionPost : BaseFragment() {
                     intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mPostIdx)
                     startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
                 }
+                iv_dream_profile,ll_dream_title->{
+                    val view_user_idx = mViewUserIdx
+                    (activity as ActivityMain).replaceFragment(
+                        FragmentProfile.newInstance(view_user_idx),
+                        true
+                    )
+                }
             }
         }
         iv_back_black.setOnClickListener(listener)
@@ -244,6 +256,8 @@ class FragmentActionPost : BaseFragment() {
         ll_share.setOnClickListener(listener)
         iv_action_more.setOnClickListener(listener)
         ll_cheering_detail.setOnClickListener(listener)
+        iv_dream_profile.setOnClickListener(listener)
+        ll_dream_title.setOnClickListener(listener)
     }
 
     /**
@@ -271,12 +285,10 @@ class FragmentActionPost : BaseFragment() {
                             getString(R.string.str_save)
                         )
                     }
-
                 }
                 else -> {
                     if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
                         arrayOf(
-                            getString(R.string.str_save),
                             getString(R.string.str_edit),
                             getString(R.string.str_delete)
                         )
@@ -455,7 +467,10 @@ class FragmentActionPost : BaseFragment() {
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = if(mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
+                if(mAdapterImage!!.getCount() > 1) {
+                    tv_indicator.text =
+                        if (mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
+                }
             }
         })
     }
@@ -530,7 +545,12 @@ class FragmentActionPost : BaseFragment() {
                                 )
                                 mAdapterImage!!.add(beanImage.image_url)
                                 tv_indicator.text = "0 / 0"
-                                tv_indicator.text = "1 / " + images.length()
+                                if(images.length() > 1) {
+                                    ll_indicator.visibility = VISIBLE
+                                    tv_indicator.text = "1 / " + images.length()
+                                }else{
+                                    ll_indicator.visibility = GONE
+                                }
                             }
                             mAdapterImage!!.notifyDataSetChanged()
                         } catch (e: Exception) {

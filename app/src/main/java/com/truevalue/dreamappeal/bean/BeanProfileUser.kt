@@ -6,6 +6,7 @@ data class BeanProfileUser(
     var nickname: String?,
     var gender: Int,
     var address: Any?,
+    var mobile : String?,
     var email: String?,
     var birth: String?,
     var private : BeanProfileUserPrivates?

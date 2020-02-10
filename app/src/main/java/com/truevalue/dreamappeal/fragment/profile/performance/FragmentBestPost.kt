@@ -45,9 +45,11 @@ class FragmentBestPost : BaseFragment() {
             fragment.mViewUserIdx = view_user_idx
             return fragment
         }
+
+        private const val REQUEST_EDIT_PAGE = 2020
     }
 
-    private val REQUEST_EDIT_PAGE = 2020
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,7 +91,10 @@ class FragmentBestPost : BaseFragment() {
         pager_image.addOnPageChangeListener(object : SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                tv_indicator.text = if(mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
+                if(mAdapterImage!!.getCount() > 1) {
+                    tv_indicator.text =
+                        if (mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
+                }
             }
         })
     }
@@ -274,7 +279,7 @@ class FragmentBestPost : BaseFragment() {
                     val builder =
                         AlertDialog.Builder(context)
                             .setTitle(getString(R.string.str_delete_post_title))
-                            .setMessage(getString(R.string.str_delete_post_contents))
+                            .setMessage(getString(R.string.str_delete_best_post_contents))
                             .setPositiveButton(
                                 getString(R.string.str_yes)
                             ) { dialog, which ->
@@ -330,7 +335,12 @@ class FragmentBestPost : BaseFragment() {
         ll_cheering.isSelected = bean.status
         tv_time.text = convertFromDate(bean.register_date)
         tv_indicator.text = "0 / 0"
-        tv_indicator.text = "1 / " + bean.Images.size
+        if(bean.Images.size > 1) {
+            ll_indicator.visibility = VISIBLE
+            tv_indicator.text = "1 / " + bean.Images.size
+        }else{
+            ll_indicator.visibility = GONE
+        }
         for (i in 0 until bean.Images.size) {
             val image = bean.Images[i]
             mAdapterImage!!.add(image)

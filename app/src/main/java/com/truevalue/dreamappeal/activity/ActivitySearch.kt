@@ -28,6 +28,7 @@ class ActivitySearch : BaseActivity() {
 
         const val RESULT_REPLACE_BOARD_IDX = "RESULT_REPLACE_BOARD_IDX"
         const val RESULT_REPLACE_BOARD_TYPE = "RESULT_REPLACE_BOARD_TYPE"
+        const val RESULT_REPLACE_PROFILE_IDX = "RESULT_REPLACE_PROFILE_IDX"
         const val REQUEST_SEARCH = 3000
 
         const val RESULT_CODE_BOARD = 1005

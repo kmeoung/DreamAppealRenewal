@@ -31,7 +31,8 @@
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="@string/str_modifier_based_recommendation"
                 android:textColor="@color/color_search"
-                android:textSize="12.3sp" />
+                android:textSize="12.3sp"
+                android:visibility="gone"/>
 
         <Space
                 android:layout_width="0dp"
@@ -45,7 +46,7 @@
                 android:layout_marginRight="14.3dp"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="@string/str_no_address"
-                android:textColor="@color/black"
+                android:textColor="@color/nice_blue"
                 android:textSize="12.3sp" />
 
     </LinearLayout>

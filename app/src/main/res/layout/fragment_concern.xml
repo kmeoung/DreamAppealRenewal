@@ -180,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16.3dp"
                         android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/str_recent_performance"
+                        android:text="@string/str_recent_write"
                         android:textColor="@color/white"
                         android:textSize="14.7sp" />
 

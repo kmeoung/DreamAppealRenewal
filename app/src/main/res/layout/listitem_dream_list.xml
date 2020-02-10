@@ -4,12 +4,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/ctl_dream_list_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="160dp"
         android:layout_marginLeft="15.3dp"
         android:layout_marginRight="15.3dp"
         android:background="@drawable/bg_dream_list"
         android:orientation="vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="16dp">
 
     <ProgressBar
             android:id="@+id/pb_exp"
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="9.3dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="8dp"
             android:max="100"
@@ -33,11 +33,13 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_close_gray"
             android:visibility="visible"
+            android:scaleY="0.7"
+            android:scaleX="0.7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +48,7 @@
             android:layout_width="55.6dp"
             android:layout_height="55.6dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="23dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/drawer_user" />
@@ -70,22 +72,24 @@
             android:id="@+id/tv_job"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
             android:fontFamily="@font/bmjua"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="24.8sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_value_style"
             app:layout_constraintTop_toBottomOf="@+id/tv_value_style"
-            tools:text="서버개발자"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            tools:text="서버개발자" />
 
     <TextView
             android:id="@+id/tv_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="18dp"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center_horizontal"
             android:textColor="@color/black"
@@ -99,14 +103,14 @@
             android:id="@+id/achievement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
+            android:layout_marginStart="5dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:gravity="center_horizontal"
             android:text="@string/str_achievement_post"
             android:textColor="@color/brown_grey"
             android:textSize="13.5sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_level"
-            app:layout_constraintStart_toEndOf="@+id/tv_action"
+            app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="@+id/tv_level"
             tools:text="@string/str_achievement_post" />
 
@@ -124,18 +128,37 @@
             app:layout_constraintTop_toTopOf="@+id/achievement"
             tools:text="3회" />
 
+    <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:src="@drawable/ic_circle_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/action"
+            app:layout_constraintStart_toStartOf="@+id/tv_job"
+            app:layout_constraintTop_toTopOf="@+id/action" />
+
+    <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_circle_nice_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/achievement"
+            app:layout_constraintStart_toEndOf="@+id/tv_action"
+            app:layout_constraintTop_toTopOf="@+id/achievement" />
 
     <TextView
             android:id="@+id/action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:fontFamily="@font/nanum_square_round_r"
             android:gravity="center_horizontal"
             android:text="@string/str_action_post"
             android:textColor="@color/brown_grey"
             android:textSize="13.5sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_achievement"
-            app:layout_constraintStart_toStartOf="@+id/tv_job"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="@id/tv_achievement"
             app:layout_constraintVertical_bias="1.0"
             tools:text="실천" />

@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.dream_board.event
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityImgScaling
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanPromotion
@@ -108,6 +110,20 @@ class FragmentEventDetail : BaseFragment() {
                                     .centerCrop()
                                     .thumbnail(0.1f)
                                     .into(iv_event)
+
+                                bean.url?.let { url->
+                                    val list = ArrayList<String>()
+                                    list.add(url)
+
+                                    iv_event.setOnClickListener {
+                                        val intent = Intent(context!!, ActivityImgScaling::class.java)
+                                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGES,list)
+                                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION,1)
+                                        startActivity(intent)
+                                    }
+                                }
+
+
                             }
                         }
                     }

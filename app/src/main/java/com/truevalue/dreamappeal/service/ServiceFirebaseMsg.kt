@@ -84,7 +84,7 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
 
         val CHANNEL_ID = id
         val CHANNEL_NAME = getString(R.string.app_name)
-        val requestId = System.currentTimeMillis().toInt()
+        val requestId = 1004
         val description = "${bean.contents_bold ?: ""}${bean.contents_regular ?: ""}"
 
         val intent = Intent(this, ActivityMain::class.java)
@@ -96,7 +96,6 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
         stackBuilder.addNextIntent(intent)
         val pendingIntent = stackBuilder.getPendingIntent(requestId, PendingIntent.FLAG_UPDATE_CURRENT)
 
-//        val pendingIntent = PendingIntent.getActivity(this,requestId,intent,PendingIntent.FLAG_UPDATE_CURRENT)
         val builder = NotificationCompat.Builder(this,CHANNEL_ID)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon_main))
             .setContentTitle(CHANNEL_NAME)

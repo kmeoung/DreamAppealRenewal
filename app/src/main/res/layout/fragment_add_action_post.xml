@@ -25,7 +25,7 @@
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_image"
                     android:layout_width="match_parent"
-                    android:layout_height="138dp" />
+                    android:layout_height="158dp" />
 
             <ImageView
                     android:layout_width="match_parent"
@@ -36,13 +36,13 @@
             <EditText
                     android:id="@+id/et_comment"
                     android:layout_width="match_parent"
-                    android:layout_height="202dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="202dp"
                     android:background="@color/white"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:gravity="top|left"
                     android:hint="@string/str_input_comment"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="16dp"
+                    android:padding="16dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/brown_grey"
                     android:textSize="14.7sp" />

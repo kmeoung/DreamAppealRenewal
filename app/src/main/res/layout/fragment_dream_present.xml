@@ -28,22 +28,22 @@
                         android:layout_height="60dp"
                         android:layout_marginTop="7dp"
                         android:baselineAligned="false"
+                        android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingLeft="15.3dp"
-                        android:paddingRight="15.3dp"
-                        android:gravity="center">
+                        android:paddingRight="15.3dp">
                     <!--나의 꿈-->
                     <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="51dp"
-                            android:layout_weight="0.8"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:background="@drawable/bg_round_box_nice_blue"
                             android:layout_marginLeft="3dp"
                             android:layout_marginTop="3dp"
                             android:layout_marginBottom="3dp"
-                            android:elevation="3dp">
+                            android:layout_weight="0.8"
+                            android:background="@drawable/bg_round_box_nice_blue"
+                            android:elevation="3dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
                         <LinearLayout
                                 android:id="@+id/ll_dreams"
@@ -54,25 +54,26 @@
                                 android:orientation="vertical">
 
                             <TextView
-                                    android:id="@+id/tv_dream_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/nanum_square_round_b"
-                                    android:gravity="center"
-                                    android:text="@string/str_first_dream"
-                                    android:textColor="@color/nice_blue"
-                                    android:textSize="13.3sp" />
-
-                            <TextView
                                     android:id="@+id/tv_dream_level"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/nanum_square_round_b"
                                     android:gravity="center"
                                     android:text="@string/lv_00"
+                                    android:textColor="@color/black"
+                                    android:textSize="17.7sp" />
+
+                            <TextView
+                                    android:id="@+id/tv_dream_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:gravity="center"
+                                    android:text="@string/str_first_dream"
                                     android:textColor="@color/nice_blue"
-                                    android:textSize="17.7sp"
-                                    android:layout_marginTop="3dp"/>
+                                    android:textSize="13.3sp" />
+
 
                         </LinearLayout>
 
@@ -82,7 +83,7 @@
                     <Space
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.1"/>
+                            android:layout_weight="0.1" />
                     <!--팔로워-->
                     <LinearLayout
                             android:id="@+id/ll_follower"
@@ -187,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15.3dp"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginRight="15.3dp"
                         android:background="@drawable/bg_round_box_gray_2"
                         android:elevation="3dp"
@@ -197,8 +198,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="25dp"
-                            android:layout_marginTop="19dp"
-                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginRight="17dp"
                             android:gravity="center"
                             android:orientation="horizontal">
                         <!--꿈 프로필 이미지-->
@@ -230,7 +231,8 @@
                                         android:fontFamily="@font/nanum_pen"
                                         android:text=""
                                         android:textColor="@color/black"
-                                        android:textSize="22sp" />
+                                        android:textSize="22sp"
+                                        android:layout_marginBottom="3dp"/>
 
                                 <TextView
                                         android:id="@+id/tv_job"
@@ -249,7 +251,10 @@
                                     android:id="@+id/tv_init_dream_title"
                                     android:layout_width="match_parent"
                                     android:layout_height="60dp"
-                                    android:background="@drawable/bg_default_box"
+                                    android:layout_margin="3dp"
+                                    android:background="@drawable/bg_round_box_gray_2"
+                                    android:lineSpacingExtra="@dimen/text_line_spacing"
+                                    android:elevation="3dp"
                                     android:fontFamily="@font/nanum_square_round_b"
                                     android:gravity="center"
                                     android:text="@string/str_default_dream_title"
@@ -268,7 +273,7 @@
                                 android:id="@+id/ll_dream_description"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="19dp"
                                 android:orientation="vertical">
 
                             <LinearLayout
@@ -281,7 +286,6 @@
                                         android:id="@+id/rv_dream_description"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="3dp"
                                         android:layout_weight="1"
                                         android:paddingLeft="22dp"
                                         android:paddingRight="20dp" />
@@ -314,7 +318,9 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:background="@drawable/bg_default_box"
+                                android:background="@drawable/bg_round_box_gray_2"
+                                android:lineSpacingExtra="@dimen/text_line_spacing"
+                                android:elevation="3dp"
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:gravity="center"
                                 android:text="@string/str_default_dream_description"
@@ -355,7 +361,7 @@
                             android:background="@drawable/bg_round_box_gray_2"
                             android:elevation="3dp"
                             android:orientation="vertical"
-                            android:paddingLeft="10dp"
+                            android:paddingLeft="16dp"
                             android:paddingTop="6dp">
 
                         <RelativeLayout
@@ -376,7 +382,7 @@
                                         android:fontFamily="@font/nanum_square_round_r"
                                         android:lineSpacingExtra="@dimen/text_line_spacing"
                                         android:maxLines="3"
-                                        android:paddingRight="13dp"
+                                        android:paddingRight="19dp"
                                         android:text=""
                                         android:textColor="@color/black"
                                         android:textSize="12.3sp" />
@@ -403,15 +409,15 @@
                                     android:id="@+id/tv_init_merit_and_motive"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:layout_marginRight="10dp"
-                                    android:background="@drawable/bg_default_box"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="6dp"
                                     android:fontFamily="@font/nanum_square_round_b"
                                     android:gravity="center"
+                                    android:lineSpacingExtra="@dimen/text_line_spacing"
                                     android:text="@string/str_default_merit_and_motive"
                                     android:textColor="@color/black"
                                     android:textSize="12.3sp"
-                                    android:visibility="visible"
-                                    android:layout_marginBottom="6dp"/>
+                                    android:visibility="visible" />
 
                         </RelativeLayout>
 
@@ -610,7 +616,6 @@
 
                         </LinearLayout>
                         <!--공유하기-->
-
                     </LinearLayout>
 
                 </LinearLayout>
@@ -621,9 +626,7 @@
                         android:layout_height="1dp"
                         android:background="@color/white_six" />
 
-
             </LinearLayout>
-
 
         </ScrollView>
 
