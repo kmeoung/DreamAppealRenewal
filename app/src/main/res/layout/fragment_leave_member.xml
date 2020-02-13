@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+    <include
+            layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="꿈은 포기할 때 끝나고 탈퇴할 때 멀어진대요\n그래도 탈퇴하시겠어요?"
+                android:textColor="@color/black"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="17sp"
+                android:layout_marginTop="30dp"
+                android:lineSpacingExtra="10dp"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="탈퇴하시면 회원님의 드림프로필, 실천인증, 드림노트, 잔여 드림포인트 등 관련된 정보가 삭제되며 드림어필 앱에서 제공하는 각종 이벤트에 참여할 수 없습니다."
+                android:textColor="@color/black"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:textSize="16sp"
+                android:layout_marginTop="30dp"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="탈퇴 시 기존 데이터는 최대 2주 내로 삭제 처리 됩니다. 그 안에 탈퇴 취소를 누를 시, 데이터는 유지되며 정상적으로 서비스를 이용할 수 있습니다."
+                android:textColor="@color/nice_blue"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textSize="16sp"
+                android:layout_marginTop="30dp"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:gravity="center">
+
+            <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cb_agree"
+                    android:buttonTint="@color/permission_red" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="모든 데이터 삭제 후 회원탈퇴에 동의합니다."
+                    android:textColor="@color/permission_red"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:textSize="14.5sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    <TextView
+            android:id="@+id/tv_leave_member"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/nanum_square_round_r"
+            android:gravity="center"
+            android:text="@string/str_leave_member"
+            android:textColor="@color/tomato"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+</LinearLayout>

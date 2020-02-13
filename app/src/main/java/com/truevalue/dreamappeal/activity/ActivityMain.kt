@@ -9,28 +9,21 @@ import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.amazonaws.mobile.client.AWSMobileClient
-import com.facebook.AccessToken
-import com.facebook.AccessToken.getCurrentAccessToken
-import com.facebook.login.LoginManager
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
-import com.truevalue.dreamappeal.base.IOActionBarListener
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentDreamBoard
 import com.truevalue.dreamappeal.fragment.notification.FragmentNotification
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.FragmentSetting
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
-import com.truevalue.dreamappeal.fragment.profile.performance.FragmentPerformance
 import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.service.ServiceFirebaseMsg
 import com.truevalue.dreamappeal.utils.Comm_Prefs
-import com.truevalue.dreamappeal.utils.IOUserNameListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.nav_view.*
@@ -83,16 +76,12 @@ class ActivityMain : BaseActivity() {
         }.execute()
     }
 
-    fun initAllView() {
-        val fm = supportFragmentManager
-        for (i in 0..fm.backStackEntryCount) {
-            fm.popBackStack()
-        }
-        // Action
-        onAction()
-
+    fun initProfileView() {
         mCurrentUserIdx = Comm_Prefs.getUserProfileIndex()
 
+        mMainViewType = MAIN_TYPE_PROFILE
+        initFragment()
+        initBottomView()
     }
 
     /**
@@ -186,17 +175,6 @@ class ActivityMain : BaseActivity() {
     }
 
     /**
-     * Drawer 열기 여부 관리
-     */
-    private fun isOpenDrawer(): Boolean {
-        val fragment = supportFragmentManager.findFragmentById(R.id.base_container)
-        return (fragment is FragmentProfile)
-                || (fragment is FragmentBlueprint)
-                || (fragment is FragmentPerformance)
-                || (fragment is FragmentDreamPresent)
-    }
-
-    /**
      * Fragment에서 접근하는 Fragment 변경
      */
     fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
@@ -251,25 +229,10 @@ class ActivityMain : BaseActivity() {
         val listener = View.OnClickListener {
             when (it) {
                 ll_logout -> {
-
-                    DAClient.deletePushToken(object : DAHttpCallback{
-                        override fun onResponse(
-                            call: Call,
-                            serverCode: Int,
-                            body: String,
-                            code: String,
-                            message: String
-                        ) {
-                            if(code == DAClient.SUCCESS){
-                                Comm_Prefs.allReset()
-                                val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
-                                startActivity(intent)
-                                finish()
-                            }else{
-                                Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    })
+                    Comm_Prefs.allReset()
+                    val intent = Intent(this@ActivityMain, ActivityLoginContainer::class.java)
+                    startActivity(intent)
+                    finish()
                 }
                 ll_profile -> {
                     val intent = Intent(this@ActivityMain, ActivityMyProfileContainer::class.java)
@@ -277,12 +240,12 @@ class ActivityMain : BaseActivity() {
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
                 ll_following -> {
-                    val intent = Intent(this@ActivityMain, ActivityFollowCheering::class.java)
+                    val intent = Intent(this@ActivityMain, ActivitySFA::class.java)
                     intent.putExtra(
-                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
-                        ActivityFollowCheering.VIEW_TYPE_FOLLOWING
+                        ActivitySFA.EXTRA_VIEW_TYPE,
+                        ActivitySFA.VIEW_TYPE_FOLLOWING
                     )
-                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                    startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
                 ll_dream_point -> {
@@ -306,7 +269,7 @@ class ActivityMain : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_CODE) {
-            if (requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX) {
+            if (requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX) {
                 val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 replaceFragment(FragmentProfile.newInstance(view_user_idx), true)
             }

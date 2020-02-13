@@ -138,6 +138,32 @@ object Utils {
         }
     }
 
+    fun replaceTextType(
+        context: Context?,
+        tv: TextView,
+        changeText: String,
+        isBold : Boolean
+    ): SpannableStringBuilder {
+        context?.let {
+            val str = tv.text.toString()
+            val first = str.indexOf(changeText)
+            val last = str.lastIndexOf(changeText) + changeText.length
+            val ssb = SpannableStringBuilder(str)
+
+            val bold = if(isBold) Typeface.BOLD else Typeface.NORMAL
+            ssb.setSpan(
+                StyleSpan(bold),
+                first,
+                last,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return ssb
+        } ?: kotlin.run {
+            return SpannableStringBuilder()
+        }
+    }
+
+
     /**
      * 문자열이 Email 방식인지 인지 확인
      */
@@ -185,9 +211,7 @@ object Utils {
             popupWindow.height = size
         } catch (e: NoClassDefFoundError) {
             // silently fail...
-        } catch (e: ClassCastException) {
-        } catch (e: NoSuchFieldException) {
-        } catch (e: IllegalAccessException) {
+        } catch (e: Exception) {
         }
 
     }
@@ -400,7 +424,7 @@ object Utils {
                     strDate = viewSdf.format(postDate)
                 } else {
                     if (postHour < nowHour) {
-                        strDate = "${nowHour - postHour}시간전"
+                        strDate = "${nowHour - postHour}시간 전"
                     } else {
                         if (postMinute < nowMinute) {
                             strDate = "${nowMinute - postMinute}분전"

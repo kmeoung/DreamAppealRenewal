@@ -93,6 +93,4 @@ class ActivityAddPost : BaseActivity() {
     fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
         replaceFragment(R.id.post_container, fragment, addToBack)
     }
-
-
 }

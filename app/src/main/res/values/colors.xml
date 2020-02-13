@@ -13,7 +13,6 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00ffffff</color>
-
 <!--    <color name="text_gray">#a0a0a0</color>-->
     <color name="text_gray">#b1b4b3</color>
     <color name="logout_gray">#dfdfdf</color>
@@ -76,4 +75,5 @@
     <color name="soft_green">#61b97f</color>
     <color name="battleship_grey">#6a737c</color>
     <color name="noti_no_select">#ddeaf6</color>
+    <color name="algae_green">#1aaf54</color>
 </resources>

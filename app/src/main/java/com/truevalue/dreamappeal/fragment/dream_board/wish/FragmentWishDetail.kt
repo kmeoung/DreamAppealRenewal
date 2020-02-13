@@ -242,7 +242,7 @@ class FragmentWishDetail : BaseFragment() {
                         val status = json.getBoolean("status")
                         val count = json.getInt("count")
 
-                        tv_cheering.text = "${count}개"
+                        tv_cheering.text = count.toString()
                         iv_cheering.isSelected = status
                     } else {
                         context?.let {
@@ -321,7 +321,7 @@ class FragmentWishDetail : BaseFragment() {
                     tv_achievement_cnt.text = "성과 $achievement_post_count / 3"
                     tv_action_cnt.text = "실천 ${action_post_count}개"
 
-                    tv_cheering.text = "${like_count}개"
+                    tv_cheering.text = like_count.toString()
                     iv_cheering.isSelected = statusOfLike
 
                     tv_time.text = Utils.convertFromDate(beanWish.register_date)

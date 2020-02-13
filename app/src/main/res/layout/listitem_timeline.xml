@@ -89,9 +89,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="12dp"
-                android:paddingTop="10dp"
+                android:paddingTop="4dp"
                 android:paddingRight="20dp"
-                android:paddingBottom="13dp">
+                android:paddingBottom="7dp">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                         android:id="@+id/iv_circle"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginRight="2dp"
                         android:src="@drawable/ic_object" />
 
                 <TextView
@@ -130,11 +130,10 @@
 
                 <ImageView
                         android:id="@+id/iv_step"
-                        android:layout_width="40dp"
+                        android:layout_width="35dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_object_step"
-                        android:layout_marginLeft="3dp"/>
+                        android:src="@drawable/ic_object_step" />
 
                 <TextView
                         android:id="@+id/tv_step"
@@ -156,7 +155,37 @@
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/white_two"/>
+                android:background="@color/silver"/>
+
+        <LinearLayout
+                android:id="@+id/ll_origin_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp">
+            <TextView
+                    android:id="@+id/tv_origin_user"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:lineSpacingExtra="@dimen/text_line_spacing"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/silver"/>
 
         <RelativeLayout
                 android:id="@+id/rl_images"
@@ -213,6 +242,7 @@
                     android:paddingTop="12dp"
                     android:paddingRight="12.7dp"
                     android:text=""
+                    android:autoLink="all"
                     android:textColor="@color/black"
                     android:textSize="13.3sp" />
 
@@ -243,6 +273,7 @@
                     android:paddingLeft="12.7dp"
                     android:paddingRight="12.7dp"
                     android:paddingTop="5dp"
+                    android:autoLink="all"
                     android:text=""
                     android:paddingBottom="5dp"
                     android:textColor="@color/nice_blue"

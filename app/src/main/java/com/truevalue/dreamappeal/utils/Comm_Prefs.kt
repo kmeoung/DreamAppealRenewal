@@ -3,10 +3,10 @@ package com.truevalue.dreamappeal.utils
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import com.facebook.AccessToken
+import com.facebook.FacebookSdk
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthSettings
-import com.google.firebase.auth.FirebaseUser
 
 object Comm_Prefs {
 
@@ -21,9 +21,11 @@ object Comm_Prefs {
         setToken(null)
         setPushToken(null)
         setNotification(true)
+        setSNSToken(null)
         // Sns 로그인 로그아웃
-        FirebaseAuth.getInstance().signOut()
+        AccessToken.setCurrentAccessToken(null)
         LoginManager.getInstance().logOut()
+        FirebaseAuth.getInstance().signOut()
     }
 
     /**
@@ -76,6 +78,17 @@ object Comm_Prefs {
 
     fun isNotification() : Boolean{
         return prefs.getBoolean(Comm_Prefs_Param.PREFS_IS_NOTIFICATION,true)
+    }
+
+    /**
+     * SNS 토큰
+     */
+    fun setSNSToken(token : String?){
+        prefs.edit().putString(Comm_Prefs_Param.PREFS_SNS_TOKEN,token).commit()
+    }
+
+    fun getSNSToken() : String?{
+        return prefs.getString(Comm_Prefs_Param.PREFS_SNS_TOKEN,null)
     }
 
 }

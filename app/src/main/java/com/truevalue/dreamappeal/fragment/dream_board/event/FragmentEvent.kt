@@ -2,6 +2,8 @@ package com.truevalue.dreamappeal.fragment.dream_board.event
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -33,6 +35,7 @@ class FragmentEvent : BaseFragment() {
     private var mPagerAdapter: BasePagerAdapter? = null
 
     companion object {
+        private const val TOP_BANNER_DELAY = 1000 * 7
         private const val RV_TYPE_ITEM = 0
         private const val RV_TYPE_LOADING = 1
 
@@ -59,6 +62,49 @@ class FragmentEvent : BaseFragment() {
         onClickView()
         // bind data
         getEvent()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startPageRolling()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopPageRolling()
+    }
+
+    /**
+     * View Page 자동 스크롤 Handler
+     */
+    private val handler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            val position = pager_image.currentItem
+            if (mPagerAdapter != null) {
+                if (position >= mPagerAdapter!!.count - 1) {
+                    pager_image.currentItem = 0
+                } else {
+                    pager_image.currentItem = position + 1
+                }
+            }
+        }
+    }
+
+    /**
+     * 자동 스크롤 시작
+     */
+    private fun startPageRolling() {
+        if (!handler.hasMessages(0)) {
+            handler.sendEmptyMessageDelayed(0, TOP_BANNER_DELAY.toLong())
+        }
+    }
+
+    /**
+     * 자동 스크롤 정지
+     */
+    private fun stopPageRolling() {
+        handler.removeMessages(0)
     }
 
     /**
@@ -123,6 +169,23 @@ class FragmentEvent : BaseFragment() {
 
             }
         })
+
+        // ViewPager 사용자가 스크롤 시 잠시 Hander를 끄고
+        // 일정 시간이 지나면 다시 자동 스크롤 진행
+        pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                if (pager_image.adapter != null) {
+                    if (pager_image.adapter!!.getCount() > 1) {
+                        when (state) {
+                            ViewPager.SCROLL_STATE_DRAGGING -> stopPageRolling()
+                            ViewPager.SCROLL_STATE_SETTLING -> startPageRolling()
+                        }
+                    }
+                }
+            }
+        })
+
         pager_image.run {
             adapter = mPagerAdapter
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
@@ -188,10 +251,23 @@ class FragmentEvent : BaseFragment() {
             ) {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
-                    var value = json.getString("value")
-                    value = if(value.length > 15) "${value.subSequence(0, 15)}..." else value
-                    tv_event_title.text = "${value}에 도움될만한 소식"
-                    tv_event_title.text = Utils.replaceTextColor(context,tv_event_title.text.toString(),R.color.nice_blue,value)
+                    var valueStyle : String? = json.getString("value_style")
+                    var job : String? = json.getString("job")
+                    tv_event_value_style.text = valueStyle
+                    if(!valueStyle.isNullOrEmpty()) {
+                        valueStyle = "#${valueStyle}"
+                        tv_event_value_style.visibility = VISIBLE
+                        tv_event_value_style.text = Utils.replaceTextColor(
+                            context,
+                            valueStyle,
+                            R.color.nice_blue,
+                            valueStyle
+                        )
+                    }else{
+                        tv_event_value_style.visibility = GONE
+                    }
+                    tv_event_job.text = "${if(job.isNullOrEmpty())"#Value" else job}에 도움될 소식"
+                    tv_event_job.text = Utils.replaceTextColor(context,tv_event_job.text.toString(),R.color.nice_blue,tv_event_job.text.toString())
                     val promotions = json.getJSONArray("promotions")
                     mPagerAdapter?.let {
                         it.clear()

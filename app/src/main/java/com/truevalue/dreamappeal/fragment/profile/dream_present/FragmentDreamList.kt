@@ -196,8 +196,7 @@ class FragmentDreamList : BaseFragment() {
                             val profile_idx = json.getInt("profile_idx")
                             Comm_Prefs.setUserProfileIndex(profile_idx)
                             Comm_Prefs.setToken(token)
-
-                            (activity as ActivityMain).initAllView()
+                            (activity as ActivityMain).initProfileView()
                         } else {
                             Toast.makeText(
                                 context!!.applicationContext,
@@ -340,12 +339,12 @@ class FragmentDreamList : BaseFragment() {
                 if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) ivDelete.visibility = VISIBLE
                 else ivDelete.visibility = GONE
 
-                ivDelete.setOnClickListener(OnClickListener {
+                ivDelete.setOnClickListener{
                     showDeleteProfileDialog(bean.idx)
-                })
+                }
 
-                pbExp.progress = bean.exp
                 pbExp.max = bean.max_exp
+                pbExp.progress = bean.exp
                 tvValueStyle.text = bean.value_style
                 tvJob.text = bean.job
                 tvLevel.text = String.format("Lv.%02d", bean.level)

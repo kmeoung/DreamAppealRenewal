@@ -513,8 +513,9 @@ class FragmentLevelChoice : BaseFragment() {
                 val tvTitle = h.getItemView<TextView>(R.id.tv_title)
 
                 tvTitle.text = bean.object_name
-
-                tvTitle.isSelected = (selectedCategoryIdx == bean.idx)
+                val selected = selectedCategoryIdx == bean.idx
+                tvTitle.text = Utils.replaceTextType(context,tvTitle,bean.object_name,selected)
+                tvTitle.isSelected = selected
 
                 llBg.setOnClickListener {
                     if (selectedCategoryIdx != bean.idx) {
@@ -553,7 +554,9 @@ class FragmentLevelChoice : BaseFragment() {
 
                 tvTitle.text = bean.title
 
-                tvTitle.isSelected = (selectedCategoryDetailIdx == bean.idx)
+                val selected = selectedCategoryDetailIdx == bean.idx
+                tvTitle.text = Utils.replaceTextType(context,tvTitle,bean.title,selected)
+                tvTitle.isSelected = selected
 
                 llBg.setOnClickListener {
                     selectedCategoryDetailIdx = bean.idx

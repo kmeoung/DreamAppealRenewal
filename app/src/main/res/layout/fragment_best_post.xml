@@ -80,6 +80,7 @@
                     android:paddingTop="12dp"
                     android:paddingRight="12.7dp"
                     android:text=""
+                    android:autoLink="web"
                     android:textColor="@color/black"
                     android:textSize="13.3sp" />
 

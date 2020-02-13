@@ -17,7 +17,7 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
-import com.truevalue.dreamappeal.activity.ActivityFollowCheering
+import com.truevalue.dreamappeal.activity.ActivitySFA
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
@@ -27,6 +27,7 @@ import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.action_bar_best_post.tv_title
 import kotlinx.android.synthetic.main.action_bar_other.*
@@ -42,7 +43,7 @@ class FragmentActionPost : BaseFragment() {
     private var mViewUserIdx = -1
     private var mBean: BeanActionPostDetail? = null
     private var isDreamNoteType: String? = null
-    private var mTags : String? = null
+    private var mTags: String? = null
 
 
     companion object {
@@ -101,26 +102,9 @@ class FragmentActionPost : BaseFragment() {
         // 상단 이미지 정사각형 설정
         Utils.setImageViewSquare(context, rl_images)
 
-        if(isDreamNoteType != null) {
-            when (isDreamNoteType) {
-                TYPE_DREAM_NOTE_LIFE -> {
-                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
-                        iv_action_more.visibility = VISIBLE
-                    } else iv_action_more.visibility = GONE
-                }
-                TYPE_DREAM_NOTE_IDEA -> {
-                    iv_action_more.visibility = VISIBLE
-                }
-                else -> {
-                    iv_action_more.visibility = VISIBLE
-                }
-            }
-        }else{
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
             iv_action_more.visibility = VISIBLE
-        }
-
-
-
+        } else iv_action_more.visibility = GONE
 
         if (isDreamNoteType != null) {
 
@@ -197,21 +181,21 @@ class FragmentActionPost : BaseFragment() {
                     startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_share -> {
-
+                    showShareDialog()
                 }
                 iv_action_more -> {
                     showMoreDialog()
                 }
-                ll_cheering_detail->{
-                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                ll_cheering_detail -> {
+                    val intent = Intent(context, ActivitySFA::class.java)
                     intent.putExtra(
-                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
-                        ActivityFollowCheering.VIEW_TYPE_CHEERING_ACTION
+                        ActivitySFA.EXTRA_VIEW_TYPE,
+                        ActivitySFA.VIEW_TYPE_CHEERING_ACTION
                     )
-                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mPostIdx)
-                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(ActivitySFA.REQUEST_VIEW_LIST_IDX, mPostIdx)
+                    startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
                 }
-                iv_dream_profile,ll_dream_title->{
+                iv_dream_profile, ll_dream_title -> {
                     val view_user_idx = mViewUserIdx
                     (activity as ActivityMain).replaceFragment(
                         FragmentProfile.newInstance(view_user_idx),
@@ -235,63 +219,23 @@ class FragmentActionPost : BaseFragment() {
      * 더보기 Dialog 띄우기
      */
     private fun showMoreDialog() {
-        var list : Array<String> =
-        if (isDreamNoteType != null){
-            when (isDreamNoteType) {
-                TYPE_DREAM_NOTE_LIFE -> {
-                    arrayOf(
-                        getString(R.string.str_edit),
-                        getString(R.string.str_delete)
-                    )
-                }
-                TYPE_DREAM_NOTE_IDEA -> {
-                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
-                        arrayOf(
-                            getString(R.string.str_save),
-                            getString(R.string.str_edit),
-                            getString(R.string.str_delete)
-                        )
-                    }else{
-                        arrayOf(
-                            getString(R.string.str_save)
-                        )
-                    }
-                }
-                else -> {
-                    if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
-                        arrayOf(
-                            getString(R.string.str_edit),
-                            getString(R.string.str_delete)
-                        )
-                    }else{
-                        arrayOf(
-                            getString(R.string.str_save)
-                        )
-                    }
-                }
-            }
-        }else {
-            if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+        var list: Array<String> =
+            if (isDreamNoteType != null) {
                 arrayOf(
-                    getString(R.string.str_save),
+                    getString(R.string.str_edit),
+                    getString(R.string.str_delete)
+                )
+            } else {
+                arrayOf(
                     getString(R.string.str_edit_level),
                     getString(R.string.str_edit),
                     getString(R.string.str_delete)
                 )
-            }else{
-                arrayOf(
-                    getString(R.string.str_save)
-                )
             }
-
-        }
         val builder =
             AlertDialog.Builder(context)
         builder.setItems(list) { _, i ->
             when (list[i]) {
-                getString(R.string.str_save)->{
-                    saveIdeaPost(mBean!!.idx)
-                }
                 getString(R.string.str_edit_level) -> {
                     val intent = Intent(context!!, ActivityAddPost::class.java)
                     intent.putExtra(
@@ -310,7 +254,7 @@ class FragmentActionPost : BaseFragment() {
                         ActivityAddPost.EDIT_VIEW_TYPE,
                         ActivityAddPost.EDIT_ACTION_POST
                     )
-                    intent.putExtra(ActivityAddPost.REQUEST_TAGS,mTags)
+                    intent.putExtra(ActivityAddPost.REQUEST_TAGS, mTags)
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, mPostIdx)
                     intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, mAdapterImage!!.getAll())
                     intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, tv_contents.text.toString())
@@ -339,8 +283,50 @@ class FragmentActionPost : BaseFragment() {
         builder.create().show()
     }
 
-    private fun saveIdeaPost(post_idx : Int){
-        DAClient.saveIdeaPost(post_idx,object : DAHttpCallback{
+    private fun showShareDialog() {
+        var list: Array<String> =
+            if (isDreamNoteType != null) {
+                when (isDreamNoteType) {
+                    TYPE_DREAM_NOTE_LIFE -> {
+                        arrayOf(
+                            getString(R.string.str_scrap)
+                        )
+                    }
+                    else -> {
+                        arrayOf(
+                            getString(R.string.str_save),
+                            getString(R.string.str_scrap)
+                        )
+                    }
+                }
+            } else {
+                arrayOf(
+                    getString(R.string.str_save),
+                    getString(R.string.str_scrap)
+                )
+            }
+        val builder =
+            AlertDialog.Builder(context)
+        builder.setItems(list) { _, i ->
+            when (list[i]) {
+                getString(R.string.str_save) -> {
+                    saveIdeaPost(mBean!!.idx)
+                }
+                getString(R.string.str_scrap)->{
+                    val intent = Intent(context!!,ActivitySFA::class.java)
+                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE,ActivitySFA.VIEW_TYPE_SCRAP)
+                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX,mBean!!.idx)
+                    intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE, Noti_Param.SHARE_ACTION)
+                    startActivity(intent)
+                }
+            }
+        }
+        builder.create().show()
+    }
+
+
+    private fun saveIdeaPost(post_idx: Int) {
+        DAClient.saveIdeaPost(post_idx, object : DAHttpCallback {
             override fun onResponse(
                 call: Call,
                 serverCode: Int,
@@ -349,7 +335,7 @@ class FragmentActionPost : BaseFragment() {
                 message: String
             ) {
                 context?.let {
-                    Toast.makeText(it.applicationContext,message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -390,7 +376,7 @@ class FragmentActionPost : BaseFragment() {
         } else if (resultCode == RESULT_CODE
         ) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
@@ -422,7 +408,7 @@ class FragmentActionPost : BaseFragment() {
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
-                        tv_cheering.text = "${count}개"
+                        tv_cheering.text = count.toString()
                     }
                 }
             }
@@ -438,7 +424,7 @@ class FragmentActionPost : BaseFragment() {
         pager_image.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(mAdapterImage!!.getCount() > 1) {
+                if (mAdapterImage!!.getCount() > 1) {
                     tv_indicator.text =
                         if (mAdapterImage!!.getCount() > 0) ((position + 1).toString() + " / " + mAdapterImage!!.getCount()) else "0 / 0"
                 }
@@ -483,18 +469,18 @@ class FragmentActionPost : BaseFragment() {
 
                         mTags = tags
                         var strTags = ""
-                        if(!mTags.isNullOrEmpty()){
+                        if (!mTags.isNullOrEmpty()) {
                             tv_tag.visibility = VISIBLE
-                            if(mTags!!.contains(",".toRegex())) {
+                            if (mTags!!.contains(",".toRegex())) {
 
                                 val tags = mTags!!.split(",".toRegex())
                                 for (i in 0 until tags.size) {
                                     strTags = "$strTags #${tags[i]} "
                                 }
-                            }else{
+                            } else {
                                 strTags = " #${mTags!!}"
                             }
-                        }else{
+                        } else {
                             strTags = getString(R.string.str_tag)
                             tv_tag.visibility = GONE
                         }
@@ -516,10 +502,10 @@ class FragmentActionPost : BaseFragment() {
                                 )
                                 mAdapterImage!!.add(beanImage.image_url)
                                 tv_indicator.text = "0 / 0"
-                                if(images.length() > 1) {
+                                if (images.length() > 1) {
                                     ll_indicator.visibility = VISIBLE
                                     tv_indicator.text = "1 / " + images.length()
-                                }else{
+                                } else {
                                     ll_indicator.visibility = GONE
                                 }
                             }
@@ -529,8 +515,9 @@ class FragmentActionPost : BaseFragment() {
                         } finally {
                             setData(bean)
                         }
-                    }else{
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -545,24 +532,39 @@ class FragmentActionPost : BaseFragment() {
         iv_cheering.isSelected = bean.status
 
         if (bean.object_name.isNullOrEmpty() && bean.step_name.isNullOrEmpty()) {
-            ll_object_step.visibility = View.GONE
+            ll_object_step.visibility = GONE
         } else {
-            ll_object_step.visibility = View.VISIBLE
+            ll_object_step.visibility = VISIBLE
             tv_object.text = bean.object_name
 
             if (bean.step_name.isNullOrEmpty()) {
-                ll_step_line.visibility = View.GONE
+                ll_step_line.visibility = GONE
             } else {
                 tv_step.text = bean.step_name
-                ll_step_line.visibility = View.VISIBLE
+                ll_step_line.visibility = VISIBLE
             }
         }
+
+        ll_origin_user.visibility = if(bean.copied == 1){
+            tv_origin_user.text = if(bean.origin_post_writer != null) {
+                bean.origin_post_writer.let {
+                    val user = "${it.value_style ?:""} ${it.job ?:""} ${it.nickname ?:""}"
+                    "${if(user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다."
+                }
+            }else{
+                "퍼온 게시물입니다"
+            }
+            VISIBLE
+        }else{
+            GONE
+        }
+
 
         tv_time.text = Utils.convertFromDate(bean.register_date)
 
         tv_contents.text = bean.content
 
-        tv_cheering.text = "${bean.like_count}개"
+        tv_cheering.text = bean.like_count.toString()
         tv_comment.text = "${bean.comment_count}개"
 
     }

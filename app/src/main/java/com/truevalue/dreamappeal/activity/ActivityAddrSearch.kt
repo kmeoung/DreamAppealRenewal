@@ -20,6 +20,7 @@ import com.truevalue.dreamappeal.base.IORecyclerViewListener
 import com.truevalue.dreamappeal.bean.BeanAddress
 import com.truevalue.dreamappeal.http.*
 import com.truevalue.dreamappeal.utils.Comm_Param
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.activity_address_search.*
 import kotlinx.android.synthetic.main.activity_search.btn_cancel
 import kotlinx.android.synthetic.main.activity_search.et_search
@@ -57,7 +58,13 @@ class ActivityAddrSearch : BaseActivity() {
      */
     private fun initView() {
         iv_cancel.visibility = GONE
-        tv_default_addr.visibility = VISIBLE
+        ll_default_addr.visibility = VISIBLE
+        tv_default_addr.text = getString(R.string.str_default_addr_search)
+        tv_default_addr.text = Utils.replaceTextType(
+            applicationContext,
+            tv_default_addr,
+            getString(R.string.str_default_addr_search_bold)
+        )
 
         et_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -105,9 +112,9 @@ class ActivityAddrSearch : BaseActivity() {
         btn_cancel.setOnClickListener(listener)
         iv_cancel.setOnClickListener(listener)
 
-        et_search.setOnEditorActionListener {  _, i, _ ->
+        et_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-                if (!et_search.text.toString().isNullOrEmpty()) {
+                if (!et_search.text.toString().replace(" ", "").trim().isNullOrEmpty()) {
                     getAddrPost(et_search.text.toString())
                     et_search.setText("")
                 }
@@ -151,11 +158,15 @@ class ActivityAddrSearch : BaseActivity() {
                         try {
                             val documents = json.getJSONArray("documents")
 
-                            if(documents.length() < 1){
-                                Toast.makeText(applicationContext,"찾으시는 검색결과가 없습니다",Toast.LENGTH_SHORT).show()
-                                tv_default_addr.visibility = VISIBLE
-                            }else{
-                                tv_default_addr.visibility = GONE
+                            if (documents.length() < 1) {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "찾으시는 검색결과가 없습니다",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                ll_default_addr.visibility = VISIBLE
+                            } else {
+                                ll_default_addr.visibility = GONE
                             }
 
                             for (i in 0 until documents.length()) {
@@ -208,7 +219,11 @@ class ActivityAddrSearch : BaseActivity() {
                                 it.add(bean)
                             }
                         } catch (e: JSONException) {
-                            Toast.makeText(applicationContext,"찾으시는 검색결과가 없습니다",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                applicationContext,
+                                "찾으시는 검색결과가 없습니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             e.printStackTrace()
                         }
                     }

@@ -68,6 +68,7 @@
             android:paddingRight="13.3dp"
             android:paddingBottom="9.3dp"
             android:text=""
+            android:autoLink="all"
             android:fontFamily="@font/nanum_square_round_r"
             android:textSize="15sp"/>
 

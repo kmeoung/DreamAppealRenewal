@@ -1,21 +1,18 @@
 package com.truevalue.dreamappeal.fragment.profile
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
-import com.truevalue.dreamappeal.bean.BeanProfileGroup
 import com.truevalue.dreamappeal.base.BaseFragment
-import com.truevalue.dreamappeal.dialog.DialogYearMonthPicker
+import com.truevalue.dreamappeal.bean.BeanProfileGroup
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import kotlinx.android.synthetic.main.action_bar_other.*
@@ -23,17 +20,12 @@ import kotlinx.android.synthetic.main.fragment_edit_group_info.*
 import okhttp3.Call
 import java.text.SimpleDateFormat
 import java.util.*
-import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 
 
 class FragmentEditGroup : BaseFragment() {
 
     private var mClass: Int = -1
     private var mBean: BeanProfileGroup? = null
-
-    private var mSCal: Calendar? = null
-    private var mECal: Calendar? = null
-
 
     /**
      * class 각 숫자의 의미
@@ -70,6 +62,8 @@ class FragmentEditGroup : BaseFragment() {
         initData()
         // View On Click Listener
         onClickView()
+
+        (activity as ActivityMyProfileContainer).iv_check.isSelected = isCheck()
     }
 
     /**
@@ -101,10 +95,12 @@ class FragmentEditGroup : BaseFragment() {
             tv_start_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
 
             mBean!!.end_date?.let {
-                val eDate = sdf.parse(it)
-                cal.time = eDate
-                tv_end_year.text = String.format("%04d", cal.get(Calendar.YEAR))
-                tv_end_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
+                try {
+                    val eDate = sdf.parse(it)
+                    cal.time = eDate
+                    tv_end_year.text = String.format("%04d", cal.get(Calendar.YEAR))
+                    tv_end_month.text = String.format("%02d", cal.get(Calendar.MONTH) + 1)
+                }catch (e : Exception){ }
             }
 
             et_detail_info.setText(mBean!!.description)
@@ -131,7 +127,7 @@ class FragmentEditGroup : BaseFragment() {
         (activity as ActivityMyProfileContainer).iv_back_blue.visibility = View.GONE
         (activity as ActivityMyProfileContainer).iv_check.visibility = View.VISIBLE
         (activity as ActivityMyProfileContainer).iv_close.visibility = View.VISIBLE
-        // todo : 여기 추가 수정 따로 있음 header도 다름
+
         (activity as ActivityMyProfileContainer).tv_title.text =
             getString(R.string.str_add_group_info)
 
@@ -191,7 +187,7 @@ class FragmentEditGroup : BaseFragment() {
         val monthSelected: Int
         val customTitle = getString(R.string.str_start_date)
         val locale = Locale("ko")
-//Set default values
+
         val calendar = Calendar.getInstance()
         yearSelected =
             if (tv_start_year.text.toString().isNullOrEmpty()) calendar.get(Calendar.YEAR) else tv_start_year.text.toString().toInt()
@@ -284,7 +280,6 @@ class FragmentEditGroup : BaseFragment() {
         }
         val description = et_detail_info.text.toString()
 
-        // todo : 페이지를 완성해야 합니다
         DAClient.addUsersGroup(
             groupName,
             position,
@@ -328,13 +323,15 @@ class FragmentEditGroup : BaseFragment() {
         val Class = mClass
         val start_year = Integer.parseInt(tv_start_year.text.toString())
         val start_month = Integer.parseInt(tv_start_month.text.toString())
-        val end_year = Integer.parseInt(tv_end_year.text.toString())
-        val end_month = Integer.parseInt(tv_end_month.text.toString())
         val start_date = String.format("%04d-%02d", start_year, start_month)
-        val end_date = String.format("%04d-%02d", end_year, end_month)
-        val description = et_detail_info.text.toString()
+        var end_date: String? = null
+        if (!tv_end_year.text.toString().isNullOrEmpty() && !tv_end_month.text.toString().isNullOrEmpty()) {
+            val end_year = Integer.parseInt(tv_end_year.text.toString())
+            val end_month = Integer.parseInt(tv_end_month.text.toString())
+            end_date = String.format("%04d-%02d", end_year, end_month)
+        }
+        var description : String? = et_detail_info.text.toString()
 
-        // todo : 페이지를 완성해야 합니다
         DAClient.editUsersGroup(
             idx,
             groupName,

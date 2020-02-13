@@ -40,10 +40,21 @@ object BaseOkhttpClient : OkHttpClient() {
         if (!Comm_Param.REAL) Log.d("SERVER REQUEST URL", call.request().url.toString())
         call.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                callback?.let { callback ->
-                    callback.onFailure(call, e)
+                handler.post {
+                    callback?.let { callback ->
+                        callback?.let { callback ->
+                            callback.onFailure(call, e)
+                        }
+                        // todo : 해당 부분은 확인 후 더 좋은 처리방법이 있다면 따로 처리하는 것이 더 좋을 듯 합니다
+                        callback.onResponse(
+                            call,
+                            200,
+                            "",
+                            DAClient.FAIL,
+                            "서버에 에러가 발생하였습니다"
+                        )
+                    }
                 }
-
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -95,7 +106,18 @@ object BaseOkhttpClient : OkHttpClient() {
                                 }
                             }
                         }
-
+                    }else{
+                        handler.post{
+                            callback?.let { callback->
+                                callback.onResponse(
+                                    call,
+                                    response.code,
+                                    "",
+                                    DAClient.FAIL,
+                                    "서버에 에러가 발생하였습니다"
+                                )
+                            }
+                        }
                     }
                 }else {
                     handler.post{

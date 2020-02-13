@@ -269,9 +269,6 @@ class FragmentCheckEmail : BaseFragment() {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
-
                         if (code == DAClient.SUCCESS) {
                             checkLogin(bean)
                         } else Toast.makeText(

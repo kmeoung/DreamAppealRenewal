@@ -439,7 +439,7 @@
                             android:background="@null"
                             android:gravity="center|left"
                             android:orientation="horizontal"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="10dp"
                             android:paddingRight="14dp">
 
                         <!--불꽃 (좋아요)-->
@@ -448,7 +448,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp">
 
                             <ImageView
                                     android:layout_width="12.7dp"

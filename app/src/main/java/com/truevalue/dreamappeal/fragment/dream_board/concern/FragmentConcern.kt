@@ -96,7 +96,7 @@ class FragmentConcern : BaseFragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 keyboardHandler.removeMessages(0)
-                if (et_search.text.toString().isNotEmpty()) {
+                if (!et_search.text.toString().replace(" ","").trim().isNullOrEmpty()) {
                     keyboardHandler.sendEmptyMessageDelayed(0, DELAY)
                 } else {
                     getConcern()

@@ -37,11 +37,11 @@
                     android:id="@+id/et_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="202dp"
                     android:background="@color/white"
                     android:fontFamily="@font/nanum_square_round_r"
                     android:gravity="top|left"
                     android:hint="@string/str_input_comment"
+                    android:minHeight="202dp"
                     android:padding="16dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/brown_grey"
@@ -52,7 +52,6 @@
                     android:layout_height="2px"
                     android:background="@color/pale_grey" />
 
-
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="2px"
@@ -60,12 +59,12 @@
                     android:background="@color/pale_grey" />
 
             <LinearLayout
+                    android:id="@+id/ll_tag_title"
                     android:layout_width="match_parent"
                     android:layout_height="32.7dp"
                     android:background="@color/white"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:id="@+id/ll_tag_title">
+                    android:orientation="horizontal">
 
                 <ImageView
                         android:layout_width="32.7dp"

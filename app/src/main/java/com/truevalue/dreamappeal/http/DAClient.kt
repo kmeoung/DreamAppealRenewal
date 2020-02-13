@@ -171,7 +171,7 @@ object DAClient {
         params.put("position", position)
         params.put("class", Class)
         params.put("start_date", start_date)
-        if(!end_date.isNullOrEmpty())params.put("end_date", end_date)
+        if (!end_date.isNullOrEmpty()) params.put("end_date", end_date)
         params.put("description", description)
 
         BaseOkhttpClient.request(
@@ -193,8 +193,8 @@ object DAClient {
         position: String,
         Class: Int,
         start_date: String,
-        end_date: String,
-        description: String,
+        end_date: String?,
+        description: String?,
         callback: DAHttpCallback
     ) {
 
@@ -205,8 +205,8 @@ object DAClient {
         params.put("position", position)
         params.put("class", Class)
         params.put("start_date", start_date)
-        params.put("end_date", end_date)
-        params.put("description", description)
+        if (!end_date.isNullOrEmpty()) params.put("end_date", end_date)
+        if (!description.isNullOrEmpty()) params.put("description", description)
 
         BaseOkhttpClient.request(
             HttpType.PATCH,
@@ -250,8 +250,8 @@ object DAClient {
         if (!bean.name.isNullOrEmpty()) params.put("name", bean.name as String)
         if (!bean.nickname.isNullOrEmpty()) params.put("nickname", bean.nickname as String)
         params.put("gender", bean.gender)
-        if(!bean.birth.isNullOrEmpty()) params.put("birth",bean.birth as String)
-        if(!bean.mobile.isNullOrEmpty()) params.put("mobile",bean.mobile as String)
+        if (!bean.birth.isNullOrEmpty()) params.put("birth", bean.birth as String)
+        if (!bean.mobile.isNullOrEmpty()) params.put("mobile", bean.mobile as String)
 
         if (bean.address != null) {
             when (bean.address) {
@@ -3437,5 +3437,129 @@ object DAClient {
             callback
         )
     }
+
+    /**
+     * GET
+     * 탈퇴 회원 확인하기
+     */
+    fun checkLeaveMember(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_USERS_DELETE,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+    }
+
+    /**
+     * POST
+     * 탈퇴 신청
+     */
+    fun confirmLeaveMember(
+        idToken: String?,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        if (!idToken.isNullOrEmpty()) params.put("idToken", idToken)
+
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_USERS_DELETE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+
+    }
+
+    /**
+     * DELETE
+     * 탈퇴 신청 취소
+     */
+    fun cancelLeaveMember(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.DELETE,
+            Comm_Param.URL_USERS_DELETE,
+            getHttpHeader(),
+            null,
+            callback
+        )
+
+    }
+
+    /**
+     * GET
+     * 퍼가기 멤버 조회
+     */
+    fun getScrapMember(callback: DAHttpCallback) {
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.URL_SHARE,
+            getHttpHeader(),
+            null,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 퍼가기 멤버 조회 - 검색
+     */
+    fun getScrapMember(keyword : String,callback: DAHttpCallback) {
+
+        val params = DAHttpParams()
+        params.put("keyword",keyword)
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_SHARE_SEARCH,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
+    /**
+     * POST
+     * 퍼가기 전송
+     */
+    fun sendScrapMember(
+        profiles: ArrayList<Int>,
+        code: String,
+        item_idx: Int,
+        callback: DAHttpCallback
+    ) {
+
+        val params = DAHttpParams()
+        val json = JSONObject()
+
+        if (profiles.isNotEmpty()) {
+            val profilesArray = JSONArray()
+            for (profile in profiles) {
+                val idx = JSONObject()
+                idx.put("idx", profile)
+                profilesArray.put(idx)
+            }
+            json.put("profiles", profilesArray)
+        }
+        // notification code must be one of 804, 814, 824
+        json.put("code", code)
+        // item idx must be one of profile_idx, action_post_idx, achievement_post_idx
+        json.put("item_idx", item_idx)
+        params.put(json)
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_SHARE,
+            getHttpHeader(),
+            params,
+            callback
+        )
+    }
+
 
 }

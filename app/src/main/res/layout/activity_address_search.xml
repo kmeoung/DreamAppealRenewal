@@ -83,17 +83,24 @@
                 android:layout_height="match_parent"
                 android:background="@color/white" />
 
-        <TextView
-                android:id="@+id/tv_default_addr"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:lineSpacingExtra="@dimen/text_line_spacing"
-                android:minHeight="195dp"
-                android:text="@string/str_default_addr_search"
-                android:textColor="@color/warm_grey"
-                android:textSize="14.7sp" />
+                android:gravity="center_horizontal"
+                android:paddingTop="30dp"
+                android:id="@+id/ll_default_addr">
 
+            <TextView
+                    android:id="@+id/tv_default_addr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/text_line_spacing"
+                    android:text="@string/str_default_addr_search"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:textColor="@color/black"
+                    android:textSize="14.7sp" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

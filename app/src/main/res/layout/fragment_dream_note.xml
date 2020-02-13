@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white_three" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/ll_default"
+            android:gravity="center"
+            android:visibility="gone">
+
+        <TextView
+                android:id="@+id/tv_default_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/text_line_spacing"
+                android:text="꿈을 위한 어쩌구"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textColor="@color/black"
+                android:textSize="14.7sp" />
+
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/sp_margin"/>
+
+        <TextView
+                android:id="@+id/tv_default_my_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/text_line_spacing"
+                android:text="를 터치하여 작성할 수 있어요"
+                android:fontFamily="@font/nanum_square_round_r"
+                android:textColor="@color/black"
+                android:textSize="14.7sp"
+                android:layout_marginBottom="5dp"/>
+
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/ll_default_my"
+                android:gravity="center">
+
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_circle"/>
+
+            <TextView
+                    android:id="@+id/tv_default_my"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/text_line_spacing"
+                    android:text="를 터치하여 작성할 수 있어요"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:textColor="@color/black"
+                    android:textSize="14.7sp" />
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

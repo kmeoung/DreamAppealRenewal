@@ -23,8 +23,6 @@ import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
-
-
 class ServiceFirebaseMsg : FirebaseMessagingService() {
 
     companion object {
@@ -76,11 +74,19 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
             e.printStackTrace()
         }
         bean?.let {
-            sendNewNotification(it,id)
+            // todo : 푸시 에서 날라오는 Device Token이 현재 Device Token과 일치하지 않을 경우 Push를 날리지 않음
+            if (!Comm_Prefs.getPushToken().isNullOrEmpty()) {
+                bean.registrationTokens?.let { token ->
+                    if (token == Comm_Prefs.getPushToken()) {
+                        sendNewNotification(it, id)
+                    }
+
+                }
+            }
         }
     }
 
-    private fun sendNewNotification(bean: BeanPushMsg,id : String){
+    private fun sendNewNotification(bean: BeanPushMsg, id: String) {
 
         val CHANNEL_ID = id
         val CHANNEL_NAME = getString(R.string.app_name)
@@ -88,19 +94,21 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
         val description = "${bean.contents_bold ?: ""}${bean.contents_regular ?: ""}"
 
         val intent = Intent(this, ActivityMain::class.java)
-        intent.putExtra(FIREBASE_NORIFICATION_CALLED,"FIREBASE_NORIFICATION_CALLED")
+        intent.putExtra(FIREBASE_NORIFICATION_CALLED, "FIREBASE_NORIFICATION_CALLED")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addParentStack(ActivityMain::class.java)
         stackBuilder.addNextIntent(intent)
-        val pendingIntent = stackBuilder.getPendingIntent(requestId, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            stackBuilder.getPendingIntent(requestId, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder = NotificationCompat.Builder(this,CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon_main))
             .setContentTitle(CHANNEL_NAME)
             .setContentText(description)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(description))
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
 
@@ -108,11 +116,11 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
             this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         builder.setSmallIcon(getNotificationIcon())
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val color = ContextCompat.getColor(this, R.color.main_blue)
             builder.color = color
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(CHANNEL_ID,CHANNEL_NAME,importance)
+            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
             channel.description = description
 
             assert(notificationManager != null)

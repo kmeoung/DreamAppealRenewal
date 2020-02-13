@@ -13,7 +13,7 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityAddPost
 import com.truevalue.dreamappeal.activity.ActivityComment
-import com.truevalue.dreamappeal.activity.ActivityFollowCheering
+import com.truevalue.dreamappeal.activity.ActivitySFA
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseImagePagerAdapter
@@ -22,6 +22,7 @@ import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
 import com.truevalue.dreamappeal.utils.Utils.convertFromDate
 import com.truevalue.dreamappeal.utils.Utils.setReadMore
@@ -129,19 +130,19 @@ class FragmentBestPost : BaseFragment() {
                     startActivityForResult(intent, ActivityComment.REQUEST_REPLACE_USER_IDX)
                 }
                 ll_share -> {
-
+                    showShareDialog()
                 }
                 iv_more -> {
                     showMoreDialog()
                 }
                 ll_cheering_detail -> {
-                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                    val intent = Intent(context, ActivitySFA::class.java)
                     intent.putExtra(
-                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
-                        ActivityFollowCheering.VIEW_TYPE_CHEERING_ACHIEVEMENT
+                        ActivitySFA.EXTRA_VIEW_TYPE,
+                        ActivitySFA.VIEW_TYPE_CHEERING_ACHIEVEMENT
                     )
-                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mPostIdx)
-                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(ActivitySFA.REQUEST_VIEW_LIST_IDX, mPostIdx)
+                    startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
                 }
             }
         }
@@ -158,7 +159,7 @@ class FragmentBestPost : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX
             ) {
                 achivementPostDetail()
             } else if (requestCode == REQUEST_EDIT_PAGE) {
@@ -167,7 +168,7 @@ class FragmentBestPost : BaseFragment() {
         } else if (resultCode == RESULT_CODE
         ) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
@@ -199,7 +200,7 @@ class FragmentBestPost : BaseFragment() {
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
-                        tv_cheering.text = "${count}개"
+                        tv_cheering.text = count.toString()
                     }
                 }
             }
@@ -297,6 +298,28 @@ class FragmentBestPost : BaseFragment() {
         builder.create().show()
     }
 
+    private fun showShareDialog() {
+        val list =
+            arrayOf(
+                getString(R.string.str_scrap)
+            )
+        val builder =
+            AlertDialog.Builder(context)
+        builder.setItems(list) { _, i ->
+            when (list[i]) {
+                getString(R.string.str_scrap)->{
+                    val intent = Intent(context!!,ActivitySFA::class.java)
+                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE,ActivitySFA.VIEW_TYPE_SCRAP)
+                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX,mPostIdx)
+                    intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE, Noti_Param.SHARE_ACHIEVEMENT)
+                    startActivity(intent)
+                }
+            }
+        }
+        builder.create().show()
+    }
+
+
     /**
      * Http
      * 게시물 삭제
@@ -330,7 +353,7 @@ class FragmentBestPost : BaseFragment() {
         iv_cheering.isSelected = bean.status
         // todo : 아직 검증이 필요함
         setReadMore(tv_contents, bean.content, 3)
-        tv_cheering.text = String.format("%d${getString(R.string.str_count)}", bean.like_count)
+        tv_cheering.text = String.format("%d", bean.like_count)
         tv_comment.text = String.format("%d${getString(R.string.str_count)}", bean.comment_count)
         ll_cheering.isSelected = bean.status
         tv_time.text = convertFromDate(bean.register_date)

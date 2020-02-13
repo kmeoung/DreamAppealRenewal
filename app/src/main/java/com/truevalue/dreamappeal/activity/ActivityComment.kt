@@ -661,7 +661,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 }
 
                 tvTime.text = Utils.convertFromDate(bean.register_date)
-                tvLike.text = String.format("%d개", bean.like_count)
+                tvLike.text = String.format("%d", bean.like_count)
 
                 ivLike.isSelected = bean.status
 

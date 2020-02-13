@@ -1,6 +1,7 @@
 package com.truevalue.dreamappeal.fragment.profile.dream_present
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -28,6 +29,7 @@ import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.IOUserNameListener
+import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_present.*
 import okhttp3.Call
@@ -197,32 +199,11 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                                 .show()
 
                             if (code == DAClient.FAIL) {
-
-                                DAClient.deletePushToken(object : DAHttpCallback {
-                                    override fun onResponse(
-                                        call: Call,
-                                        serverCode: Int,
-                                        body: String,
-                                        code: String,
-                                        message: String
-                                    ) {
-                                        if (code == DAClient.SUCCESS) {
-                                            ActivityCompat.finishAffinity(activity!!)
-                                            val intent =
-                                                Intent(context!!, ActivityIntro::class.java)
-                                            Comm_Prefs.allReset()
-                                            startActivity(intent)
-                                        } else {
-                                            Toast.makeText(
-                                                context!!.applicationContext,
-                                                message,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
-                                })
-
-
+                                ActivityCompat.finishAffinity(activity!!)
+                                val intent =
+                                    Intent(context!!, ActivityIntro::class.java)
+                                Comm_Prefs.allReset()
+                                startActivity(intent)
                             }
                         }
                     }
@@ -275,7 +256,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             tv_comment.text = "${bean.comment_count}개"
             tv_achievement_post_count.text = "${bean.achievement_post_count} / 3"
             tv_action_post_count.text = bean.action_post_count.toString()
-            tv_cheering.text = "${bean.like_count}개"
+            tv_cheering.text = "${bean.like_count}"
             iv_cheering.isSelected = bean.status
             tv_dream_level.text = String.format("Lv.%02d", bean.level)
             tv_dream_name.text = when (bean.profile_order) {
@@ -359,13 +340,13 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                 }
                 ll_follower -> {
                     // replace to Follower
-                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                    val intent = Intent(context, ActivitySFA::class.java)
                     intent.putExtra(
-                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
-                        ActivityFollowCheering.VIEW_TYPE_FOLLOWER
+                        ActivitySFA.EXTRA_VIEW_TYPE,
+                        ActivitySFA.VIEW_TYPE_FOLLOWER
                     )
-                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mViewUserIdx)
-                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(ActivitySFA.REQUEST_VIEW_LIST_IDX, mViewUserIdx)
+                    startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
                 }
                 iv_dream_profile -> {
                     // replace to Gallery and Camera
@@ -471,19 +452,19 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                     }
                 }
                 ll_share -> {
-
+                    showShareDialog()
                 }
                 tv_add_follow -> {
                     follow()
                 }
                 ll_cheering_detail -> {
-                    val intent = Intent(context, ActivityFollowCheering::class.java)
+                    val intent = Intent(context, ActivitySFA::class.java)
                     intent.putExtra(
-                        ActivityFollowCheering.EXTRA_VIEW_TYPE,
-                        ActivityFollowCheering.VIEW_TYPE_CHEERING_PROFILE
+                        ActivitySFA.EXTRA_VIEW_TYPE,
+                        ActivitySFA.VIEW_TYPE_CHEERING_PROFILE
                     )
-                    intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, mViewUserIdx)
-                    startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                    intent.putExtra(ActivitySFA.REQUEST_VIEW_LIST_IDX, mViewUserIdx)
+                    startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
                 }
             }
         }
@@ -505,6 +486,28 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
         tv_add_follow.setOnClickListener(listener)
         ll_cheering_detail.setOnClickListener(listener)
     }
+
+    private fun showShareDialog() {
+        val list =
+            arrayOf(
+                getString(R.string.str_scrap)
+            )
+        val builder =
+            AlertDialog.Builder(context)
+        builder.setItems(list) { _, i ->
+            when (list[i]) {
+                getString(R.string.str_scrap)->{
+                    val intent = Intent(context!!,ActivitySFA::class.java)
+                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE,ActivitySFA.VIEW_TYPE_SCRAP)
+                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX,mViewUserIdx)
+                    intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE,Noti_Param.SHARE_PROFILE)
+                    startActivity(intent)
+                }
+            }
+        }
+        builder.create().show()
+    }
+
 
     /**
      * Dream Description List Init Adapter
@@ -573,7 +576,7 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         val status = json.getBoolean("status")
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
-                        tv_cheering.text = "${count}개"
+                        tv_cheering.text = count.toString()
                     } else {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
@@ -686,13 +689,13 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
                         .into(iv_dream_profile)
                 }
             } else if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX
             ) {
                 getProfile()
             }
         } else if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(

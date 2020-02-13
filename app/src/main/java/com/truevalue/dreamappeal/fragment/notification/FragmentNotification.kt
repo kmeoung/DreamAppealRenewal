@@ -2,8 +2,6 @@ package com.truevalue.dreamappeal.fragment.notification
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -16,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityComment
-import com.truevalue.dreamappeal.activity.ActivityFollowCheering
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
@@ -34,9 +31,7 @@ import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.bottom_main_view.*
-import kotlinx.android.synthetic.main.fragment_concern_detail.*
 import kotlinx.android.synthetic.main.fragment_notification.*
-import kotlinx.android.synthetic.main.fragment_notification.srl_refresh
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.IOException
@@ -156,7 +151,7 @@ class FragmentNotification : BaseFragment() {
                             mViewType = VIEW_TYPE_FOLLOWING
 
                         }
-                        setTabView(mViewType,bean)
+                        setTabView(mViewType, bean)
                     } else {
                         context?.let {
                             Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT)
@@ -201,7 +196,7 @@ class FragmentNotification : BaseFragment() {
     /**
      * 상단 탭 설정
      */
-    private fun setTabView(view_type: Int,bean: BeanNotification? = mBean) {
+    private fun setTabView(view_type: Int, bean: BeanNotification? = mBean) {
         mViewType = view_type
         when (view_type) {
             VIEW_TYPE_FOLLOWING -> {
@@ -290,6 +285,11 @@ class FragmentNotification : BaseFragment() {
                     .circleCrop()
                     .placeholder(R.drawable.drawer_user)
                     .into(ivProfile)
+            }else{
+                Glide.with(context)
+                    .load(R.drawable.drawer_user)
+                    .circleCrop()
+                    .into(ivProfile)
             }
 
             rlSourceProfile.setOnClickListener {
@@ -314,8 +314,84 @@ class FragmentNotification : BaseFragment() {
                     }
                 }
             }
+
             ivProfile.setBackgroundColor(ContextCompat.getColor(context!!, R.color.transparent))
             when (bean.code) {
+                Noti_Param.SHARE_PROFILE->{
+                    ivFlame.visibility = GONE
+                    h.itemView.setOnClickListener {
+                        checkNoti(bean)
+                        if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
+                            profileChange(bean, object : ReplaceListener {
+                                override fun replace() {
+                                    (activity as ActivityMain).replaceFragment(
+                                        FragmentProfile.newInstance(bean.item_idx),
+                                        true
+                                    )
+                                }
+                            })
+                        } else {
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentProfile.newInstance(bean.item_idx),
+                                true
+                            )
+                        }
+                    }
+                }
+                Noti_Param.SHARE_ACTION->{
+                    ivFlame.visibility = GONE
+                    h.itemView.setOnClickListener {
+                        checkNoti(bean)
+                        if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
+                            profileChange(bean, object : ReplaceListener {
+                                override fun replace() {
+                                    (activity as ActivityMain).replaceFragment(
+                                        FragmentActionPost.newInstance(
+                                            bean.item_idx,
+                                            bean.profile_idx
+                                        ),
+                                        true
+                                    )
+                                }
+                            })
+                        } else {
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
+                                true
+                            )
+                        }
+                    }
+
+                }
+                Noti_Param.SHARE_ACHIEVEMENT->{
+                    ivFlame.visibility = GONE
+                    h.itemView.setOnClickListener {
+                        checkNoti(bean)
+                        if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
+                            profileChange(bean, object : ReplaceListener {
+                                override fun replace() {
+                                    (activity as ActivityMain).replaceFragment(
+                                        FragmentBestPost.newInstance(
+                                            bean.item_idx,
+                                            bean.profile_idx
+                                        ),
+                                        true
+                                    )
+                                }
+                            })
+                        } else {
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentBestPost.newInstance(
+                                    bean.item_idx,
+                                    bean.profile_idx
+                                ),
+                                true
+                            )
+                        }
+                    }
+
+                }
+                Noti_Param.TARGET_NOTI,
                 Noti_Param.NOTICES,
                 Noti_Param.BEST_PROFILE,
                 Noti_Param.BEST_ACTION,
@@ -517,7 +593,6 @@ class FragmentNotification : BaseFragment() {
                             )
                         }
                     }
-
                 }
                 Noti_Param.ACTION_COMMENT_LIKE -> {
                     ivFlame.visibility = VISIBLE
@@ -776,6 +851,7 @@ class FragmentNotification : BaseFragment() {
 
                 Noti_Param.PROFILE_FOLLOW -> {
                     ivFlame.visibility = GONE
+
                     h.itemView.setOnClickListener {
                         checkNoti(bean)
                         if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
@@ -1514,6 +1590,13 @@ class FragmentNotification : BaseFragment() {
                 }
                 Noti_Param.COMPLETE_PROFILE_OBJECT -> {
                     ivFlame.visibility = GONE
+
+                    ivProfile.setBackgroundResource(R.drawable.bg_stroke_circle)
+                    Glide.with(context)
+                        .load(R.drawable.ic_noti_horn)
+                        .circleCrop()
+                        .into(ivProfile)
+
                     h.itemView.setOnClickListener {
                         checkNoti(bean)
                         if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
@@ -1793,7 +1876,11 @@ class FragmentNotification : BaseFragment() {
                     val profile_idx = json.getInt("profile_idx")
                     Comm_Prefs.setUserProfileIndex(profile_idx)
                     Comm_Prefs.setToken(token)
-                    Toast.makeText(context!!.applicationContext, getString(R.string.str_notification_change_profile), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        context!!.applicationContext,
+                        getString(R.string.str_notification_change_profile),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     listener.replace()
 

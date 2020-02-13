@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.fragment.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import androidx.annotation.Nullable
@@ -17,6 +18,7 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
+import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
@@ -179,9 +181,13 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
         val listener = View.OnClickListener {
             when (it) {
                 iv_menu -> (activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
+                iv_another,
                 tv_title -> {
                     if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
                         showDialog()
+                    }else{
+                        val intent = Intent(context!!, ActivityMyProfileContainer::class.java)
+                        startActivity(intent)
                     }
                 }
                 iv_dream_note->{
@@ -193,6 +199,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
             }
         }
         iv_menu.setOnClickListener(listener)
+        iv_another.setOnClickListener(listener)
         tv_title.setOnClickListener(listener)
         iv_dream_note.setOnClickListener(listener)
         iv_back.setOnClickListener(listener)

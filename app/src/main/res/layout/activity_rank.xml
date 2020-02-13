@@ -12,6 +12,7 @@
             android:fontFamily="@font/jalnan"
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
+            android:paddingTop="4dp"
             android:text="@string/str_appeal_rank"
             android:textColor="@color/white"
             android:textSize="22.3sp" />
@@ -202,7 +203,8 @@
                             android:fontFamily="@font/nanum_square_round_b"
                             android:text="0"
                             android:textColor="@color/blueberry"
-                            android:textSize="13.3sp" />
+                            android:textSize="13.3sp"
+                            android:layout_marginRight="7dp"/>
 
                     <ImageView
                             android:layout_width="13dp"

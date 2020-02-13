@@ -24,14 +24,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
 import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
@@ -91,23 +91,15 @@ class FragmentLoginContainer : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getHashKey()
+
         // Click View Listener
         onClickView()
 
 //        callback = SessionCallback()
 //        Session.getCurrentSession().addCallback(callback)
 
-//        /** 토큰 만료시 갱신을 시켜준다**/
-//        if (Session.getCurrentSession().isOpenable) {
-//            Session.getCurrentSession().checkAndImplicitOpen()
-//        }
-//        /** 토큰 만료시 갱신을 시켜준다**/
-//        if (AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().isExpired) {
-//            AccessToken.refreshCurrentAccessTokenAsync()
-//        }
-
         if (!Comm_Param.REAL) {
+            getHashKey()
             Log.e(TAG, "로그인 시작")
             Log.e(TAG, "해시 : " + getHashKey(context!!))
             Log.e(TAG, "토큰 : " + Session.getCurrentSession().tokenInfo.accessToken)
@@ -116,7 +108,8 @@ class FragmentLoginContainer : BaseFragment() {
         }
 
         firebaseAuth = FirebaseAuth.getInstance()
-
+        // Initialize Facebook Login button
+        callbackManager = CallbackManager.Factory.create()
         setFacebookApi()
 
         setGoogleApi()
@@ -154,15 +147,11 @@ class FragmentLoginContainer : BaseFragment() {
      * Facebook 설정
      */
     private fun setFacebookApi() {
-        // Initialize Facebook Login button
-        callbackManager = CallbackManager.Factory.create()
-
         val listener = object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 //login success
-                Log.d(TAG, "facebook:onSuccess:$result")
                 result?.let { result ->
-                    handleFacebookAccessToken(result?.accessToken)
+                    handleFacebookAccessToken(result.accessToken)
                 }
             }
 
@@ -179,21 +168,16 @@ class FragmentLoginContainer : BaseFragment() {
 
         }
 
-        /*
-        LoginManager.getInstance()
-            .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
-        LoginManager.getInstance()
-            .registerCallback(callbackManager, listener)
-            */
-        login_facebook.setPermissions(Arrays.asList("public_profile", "email"))
-        // If using in a fragment
+        AccessToken.setCurrentAccessToken(null)
         LoginManager.getInstance().logOut()
+        firebaseAuth.signOut()
+
+        login_facebook.setPermissions(Arrays.asList("email", "public_profile"))
         login_facebook.fragment = this
         login_facebook.registerCallback(callbackManager, listener)// ...
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
 
         val credential = FacebookAuthProvider.getCredential(token.token)
         firebaseAuth.signInWithCredential(credential)
@@ -215,16 +199,15 @@ class FragmentLoginContainer : BaseFragment() {
 
     private fun updateUI(user: FirebaseUser?) {
         user?.let { user ->
-            Toast.makeText(context!!.applicationContext, "로그인 성공", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context!!.applicationContext, "로그인 중입니다. 잠시만 기다려주세요", Toast.LENGTH_SHORT).show()
 
             user.getIdToken(true)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val idToken = task.result?.token ?: ""
-                        // Send token to your backend via HTTPS
-                        // ...
-                        Log.d(TAG, "ID TOKEN : $idToken")
+                        Comm_Prefs.setSNSToken(idToken)
                         DAClient.snsLogin(idToken, object : DAHttpCallback {
+
                             override fun onResponse(
                                 call: Call,
                                 serverCode: Int,
@@ -246,6 +229,10 @@ class FragmentLoginContainer : BaseFragment() {
                                         activity?.finish()
 
                                     } else {
+                                        AccessToken.setCurrentAccessToken(null)
+                                        LoginManager.getInstance().logOut()
+                                        FirebaseAuth.getInstance().signOut()
+
                                         Toast.makeText(
                                             context.applicationContext,
                                             message,
@@ -256,7 +243,6 @@ class FragmentLoginContainer : BaseFragment() {
 
                             }
                         })
-                        Log.d(TAG, "this is Token : $idToken")
                     } else {
                         // Handle error -> task.getException();
                     }
@@ -294,7 +280,7 @@ class FragmentLoginContainer : BaseFragment() {
      */
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        firebaseAuth!!.signInWithCredential(credential)
+        firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information

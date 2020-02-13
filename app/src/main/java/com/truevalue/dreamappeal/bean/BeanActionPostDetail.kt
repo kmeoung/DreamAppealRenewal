@@ -14,4 +14,7 @@ data class BeanActionPostDetail(var idx : Int,
                                 var comment_count : Int,
                                 var like_count : Int,
                                 val link : String?,
+                                val copied : Int?,
+                                val origin_post_writer:originPostWriter?,
                                 var status : Boolean)
+

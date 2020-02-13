@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_permission.*
 
 class ActivityPermission : BaseActivity() {
 
-    companion object{
+    companion object {
         private const val REQUEST_PERMISSION_GRANT = 3000
     }
 
@@ -35,18 +35,23 @@ class ActivityPermission : BaseActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_GRANT) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 권한 허가
                 // 해당 권한을 사용해서 작업을 진행할 수 있습니다
-                val prefs = Comm_Prefs
-                val intent: Intent = if (prefs.getUserProfileIndex() > -1) { // 바로 메인
-                    Intent(this@ActivityPermission, ActivityMain::class.java)
-                } else { // 로그인 페이지
-                    Intent(this@ActivityPermission, ActivityLoginContainer::class.java)
-                }
+//                val prefs = Comm_Prefs
+//                val intent: Intent = if (prefs.getUserProfileIndex() > -1) { // 바로 메인
+//                    Intent(this@ActivityPermission, ActivityMain::class.java)
+//                } else { // 로그인 페이지
+//                }
+                Comm_Prefs.allReset()
+                val intent = Intent(this@ActivityPermission, ActivityLoginContainer::class.java)
                 startActivity(intent)
                 finish()
             } else run {

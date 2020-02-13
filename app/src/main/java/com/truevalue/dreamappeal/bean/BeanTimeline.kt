@@ -19,6 +19,7 @@ data class BeanTimeline(
     val nickname: String?,
     val object_title: String?,
     val post_type: Int?,
+    val copied : Int?,
     val present_idx: Int?,
     val profile_idx: Int?,
     val profile_image: String?,
@@ -30,9 +31,14 @@ data class BeanTimeline(
     val type: Int?,
     val unconfirmed: Int?,
     val user_idx: Int?,
-    val value_style: String?
+    val value_style: String?,
+    val origin_post_writer : originPostWriter?
 )
 
 data class TimelineImage(
     val url: String?
 )
+
+data class originPostWriter(val value_style:String?,
+                              val job:String?,
+                              val nickname:String?)

@@ -62,6 +62,13 @@
 
     </LinearLayout>
 
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cb_check"
+            android:visibility="gone"
+            android:layout_marginRight="20dp"/>
+
     <TextView
             android:id="@+id/tv_add_follow"
             android:layout_width="70dp"

@@ -5,8 +5,7 @@
     <string name="str_name_value_style">님이</string>
     <string name="str_is_update_1">을 업데이트 했습니다</string>
     <string name="str_is_update_2">를 업데이트 했습니다</string>
-    <string name="str_objective_postposition">를</string>
-    <string name="str_did">했습니다</string>
+    <string name="str_did_complete">를 달성했습니다</string>
     <string name="str_go_view">보러가기 >></string>
     <string name="str_dream_profile">드림프로필</string>
     <string name="str_error_server">서버에 에러가 발생하였습니다</string>
@@ -64,7 +63,8 @@
 
 
     <string name="str_default_merit_and_motive_2">이 꿈의 어떤 점에 매력을 느꼈을까?\n계기는 무엇이었을까?</string>
-    <string name="str_default_addr_search">동 / 읍 / 면 / 리 / 도로명\n을(를) 입력해주세요</string>
+    <string name="str_default_addr_search">관심지역으로 설정할 주소를 검색하세요\n\n원하는 주소를 검색하여 선택하면\n관심지역이 자동으로 동 단위로 지정됩니다</string>
+    <string name="str_default_addr_search_bold">관심지역으로 설정할 주소를 검색하세요</string>
 
     <string name="str_designation">명칭</string>
     <string name="str_explanation">설명</string>
@@ -107,7 +107,7 @@
     <string name="str_ability">갖출 능력</string>
     <string name="str_opportunity">만들어갈 기회</string>
     <string name="str_add_opportunity">만들어갈 기회 등록하기</string>
-    <string name="str_add_ability">갖출 능력 등록하기</string>
+    <string name="str_add_ability">갖출능력 등록하기</string>
     <string name="str_default_add_ability">수식어에 맞게, 직업명에 맞게\n어떤 능력이 필요할까?</string>
     <string name="str_default_add_opportunity">필요한 경험과 실력을 쌓기 위해\n 어떤 기회를 만들어볼까?</string>
     <string name="str_edit_ability">갖출 능력 수정</string>
@@ -189,7 +189,7 @@
     <string name="str_change_password">비밀번호 변경하기</string>
     <string name="str_password_warning">최소 8자리 이상 : 영어 대문자, 소문자, 숫자, 특수문자 중 3종류 조합</string>
 
-    <string name="str_normal_profile">일반 프로필</string>
+    <string name="str_normal_profile">일반프로필</string>
     <string name="str_normal_prifile_info">기본정보</string>
     <string name="str_normal_edit_prifile">기본정보 수정</string>
     <string name="str_nickname">별명</string>
@@ -283,6 +283,8 @@
     <string name="str_none">없음</string>
     <string name="str_edit">내용 수정</string>
     <string name="str_save">영감 갤러리에 담기</string>
+    <string name="str_scrap">전달하기</string>
+    <string name="str_send">전송</string>
     <string name="str_delete">삭제</string>
 
     <string name="str_no_select">지정 안함</string>
@@ -356,7 +358,7 @@
     <string name="str_cancel">취소</string>
     <string name="str_write">글쓰기</string>
 
-    <string name="str_no_address">주소지가 없습니다</string>
+    <string name="str_no_address">관심 지역 등록하기</string>
 
     <string name="str_add_wish">소원 빌기</string>
     <string name="str_wish_title">소원 담벼락</string>
@@ -386,6 +388,9 @@
     <string name="str_terms_and_policies">약관 및 정책</string>
 
     <string name="str_leave_member">회원 탈퇴</string>
+    <string name="str_cancel_leave">탈퇴 취소</string>
+    <string name="str_cancel_leave_contents">탈퇴를 취소하시겠습니까?</string>
+    <string name="str_really_leave_contents">정말 탈퇴하시겠어요?</string>
     <string name="str_appeal_rank">어필 랭킹</string>
     <string name="str_fame_rank_title">명성도 랭킹</string>
 

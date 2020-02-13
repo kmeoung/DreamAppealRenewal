@@ -42,4 +42,9 @@ object Noti_Param {
     val ADD_ACTION = "010"
     val ADD_LIFE = "011"
     val ADD_IDEA = "012"
+    val TARGET_NOTI = "102"
+    val SHARE_PROFILE = "804"
+    val SHARE_ACTION = "814"
+    val SHARE_ACHIEVEMENT = "824"
+
 }

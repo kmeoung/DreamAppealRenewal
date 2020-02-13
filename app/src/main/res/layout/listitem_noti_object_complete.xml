@@ -5,7 +5,8 @@
         android:orientation="vertical"
         android:paddingLeft="14.3dp"
         android:paddingRight="14.3dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_marginTop="5dp">
 
     <ImageView
             android:layout_width="match_parent"
@@ -75,30 +76,9 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/nanum_square_round_r"
                 android:maxLength="20"
-                android:text="@string/str_objective_postposition"
-                android:textColor="@color/black"
-                android:textSize="14.3sp"
-                android:layout_marginRight="8.7dp"/>
-
-        <ImageView
-                android:layout_width="67dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_complete"
-                android:scaleType="fitXY"
-                android:layout_marginBottom="2dp"/>
-
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8.7dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:maxLength="20"
-                android:text="@string/str_did"
+                android:text="@string/str_did_complete"
                 android:textColor="@color/black"
                 android:textSize="14.3sp" />
-
 
 
     </LinearLayout>
@@ -134,11 +114,5 @@
                 android:textSize="12.3sp" />
 
     </LinearLayout>
-
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/pale_grey" />
 
 </LinearLayout>

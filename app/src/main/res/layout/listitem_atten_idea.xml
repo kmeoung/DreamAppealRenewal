@@ -18,7 +18,7 @@
 
         <RelativeLayout
                 android:layout_width="@dimen/inner_thumb"
-                android:layout_height="126dp">
+                android:layout_height="@dimen/inner_thumb">
 
             <ImageView
                     android:id="@+id/iv_book_cover"
@@ -26,20 +26,23 @@
                     android:layout_height="match_parent"
                     android:src="@color/white" />
 
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:background="#80000000"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    apps:text="뉴에이지 피아니스트"
+                    android:layout_alignParentBottom="true"/>
+
+
         </RelativeLayout>
 
-        <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="@dimen/inner_thumb"
-                android:layout_height="24dp"
-                android:background="@color/white_three"
-                android:ellipsize="end"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textSize="11sp"
-                apps:text="뉴에이지 피아니스트" />
     </LinearLayout>
 
 </LinearLayout>

@@ -167,6 +167,58 @@
 
     </LinearLayout>
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+        <TextView
+                android:id="@+id/tv_license_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center"
+                android:text="CC 이미지 라이센스 확인"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+        <TextView
+                android:id="@+id/tv_license_2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center"
+                android:text="ICON8 라이센스 확인"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+    </LinearLayout>
+
+
     <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"

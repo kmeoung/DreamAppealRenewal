@@ -176,30 +176,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                 isLast = true
                                 mAdapter!!.notifyDataSetChanged()
                             } else if (code == DAClient.FAIL) {
-
-                                DAClient.deletePushToken(object : DAHttpCallback {
-                                    override fun onResponse(
-                                        call: Call,
-                                        serverCode: Int,
-                                        body: String,
-                                        code: String,
-                                        message: String
-                                    ) {
-                                        if (code == DAClient.SUCCESS) {
-                                            ActivityCompat.finishAffinity(activity!!)
-                                            val intent =
-                                                Intent(context!!, ActivityIntro::class.java)
-                                            Comm_Prefs.allReset()
-                                            startActivity(intent)
-                                        } else {
-                                            Toast.makeText(
-                                                context!!.applicationContext,
-                                                message,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
-                                })
+                                ActivityCompat.finishAffinity(activity!!)
+                                val intent =
+                                    Intent(context!!, ActivityIntro::class.java)
+                                Comm_Prefs.allReset()
+                                startActivity(intent)
                             }
                             Toast.makeText(
                                 context!!.applicationContext,
@@ -292,11 +273,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     val tvName = h.getItemView<TextView>(R.id.tv_name)
                     val tvTitle = h.getItemView<TextView>(R.id.tv_title)
                     val name =
-                        if (bean.contents_bold.isNullOrEmpty()) {
-                            if (bean.contents_bold!!.length > 18) {
+                        if (!bean.contents_bold.isNullOrEmpty()) {
+                            if (bean.contents_bold.length > 24) {
                                 "${bean.contents_bold.subSequence(
                                     0,
-                                    18
+                                    24
                                 )}..."
                             } else bean.contents_bold
                         } else ""
@@ -341,11 +322,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     if (!bean.value_style.isNullOrEmpty()) tvValueStyle.text = bean.value_style
                     if (!bean.job.isNullOrEmpty()) tvJob.text = bean.job
                     val name =
-                        if (bean.contents_bold.isNullOrEmpty()) {
-                            if (bean.contents_bold!!.length > 18) {
+                        if (!bean.contents_bold.isNullOrEmpty()) {
+                            if (bean.contents_bold.length > 24) {
                                 "${bean.contents_bold.subSequence(
                                     0,
-                                    18
+                                    24
                                 )}..."
                             } else bean.contents_bold
                         } else ""
@@ -369,11 +350,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     val bean = mAdapter?.get(i) as BeanTimeline
                     val tvName = h.getItemView<TextView>(R.id.tv_name)
                     val name =
-                        if (bean.contents_bold.isNullOrEmpty()) {
-                            if (bean.contents_bold!!.length > 18) {
+                        if (!bean.contents_bold.isNullOrEmpty()) {
+                            if (bean.contents_bold.length > 24) {
                                 "${bean.contents_bold.subSequence(
                                     0,
-                                    18
+                                    24
                                 )}..."
                             } else bean.contents_bold
                         } else ""
@@ -444,15 +425,32 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llCheeringDetail = h.getItemView<LinearLayout>(R.id.ll_cheering_detail)
             val llCommentDetail = h.getItemView<LinearLayout>(R.id.ll_comment_detail)
             val tvTag = h.getItemView<TextView>(R.id.tv_tag)
+            val llOriginUser = h.getItemView<LinearLayout>(R.id.ll_origin_user)
+            val tvOriginUser = h.getItemView<TextView>(R.id.tv_origin_user)
+
+            llOriginUser.visibility = if(bean.copied == 1){
+                tvOriginUser.text = if(bean.origin_post_writer != null) {
+                    bean.origin_post_writer.let {
+                        val user = "${it.value_style ?:""} ${it.job ?:""} ${it.nickname ?:""}"
+                        "${if(user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다."
+                    }
+                }else{
+                    "퍼온 게시물입니다"
+                }
+                VISIBLE
+            }else{
+                GONE
+            }
+
 
             val pagerAdapter = BaseImagePagerAdapter<String>(context!!)
             pagerImages.adapter = pagerAdapter
             pagerImages.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if (pagerAdapter!!.count > 1) {
+                    if (pagerAdapter.count > 1) {
                         tvIndicator.text =
-                            ((position + 1).toString() + " / " + pagerAdapter!!.count)
+                            ((position + 1).toString() + " / " + pagerAdapter.count)
                     }
                 }
             })
@@ -494,9 +492,13 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
             pagerAdapter.notifyDataSetChanged()
 
+
+            if (Comm_Prefs.getUserProfileIndex() == bean.profile_idx) ivMore.visibility =
+                VISIBLE
+            else ivMore.visibility = GONE
+
             when (bean.post_type) {
                 FragmentActionPost.ACTION_POST -> {
-                    ivMore.visibility = VISIBLE
                     ivSideImg.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -505,9 +507,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     )
                 }
                 FragmentActionPost.ACTION_LIFE -> {
-                    if (Comm_Prefs.getUserProfileIndex() == bean.profile_idx) ivMore.visibility =
-                        VISIBLE
-                    else ivMore.visibility = GONE
                     ivSideImg.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -516,7 +515,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     )
                 }
                 FragmentActionPost.ACTION_IDEA -> {
-                    ivMore.visibility = VISIBLE
                     ivSideImg.setImageDrawable(
                         ContextCompat.getDrawable(
                             context!!,
@@ -550,8 +548,12 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 llDreamTitle.setOnClickListener(changeProfileListener)
             }
 
+            llShare.setOnClickListener {
+                showShareMenu(llShare, bean)
+            }
+
             ivMore.setOnClickListener {
-                showPopupMenu(ivMore, bean)
+                showMoreMenu(ivMore, bean)
             }
 
             tvValueStyle.text = if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
@@ -577,7 +579,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
             tvContents.text = bean.content
 
-            tvCheering.text = "${bean.like_count}개"
+            tvCheering.text = bean.like_count.toString()
             tvComment.text = "${bean.comment_count}개"
 
             llCommentDetail.setOnClickListener {
@@ -605,13 +607,13 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
 
             llCheeringDetail.setOnClickListener {
-                val intent = Intent(context, ActivityFollowCheering::class.java)
+                val intent = Intent(context, ActivitySFA::class.java)
                 intent.putExtra(
-                    ActivityFollowCheering.EXTRA_VIEW_TYPE,
-                    ActivityFollowCheering.VIEW_TYPE_CHEERING_ACTION
+                    ActivitySFA.EXTRA_VIEW_TYPE,
+                    ActivitySFA.VIEW_TYPE_CHEERING_ACTION
                 )
-                intent.putExtra(ActivityFollowCheering.REQUEST_VIEW_LIST_IDX, bean.idx)
-                startActivityForResult(intent, ActivityFollowCheering.REQUEST_REPLACE_USER_IDX)
+                intent.putExtra(ActivitySFA.REQUEST_VIEW_LIST_IDX, bean.idx)
+                startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
             }
 
             ivCheering.isSelected = bean.status ?: false
@@ -619,24 +621,16 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     /**
-     * Show PopupMenu
+     * Show More Menu
      */
-    private fun showPopupMenu(ivMore: View, bean: BeanTimeline) {
+    private fun showMoreMenu(ivMore: View, bean: BeanTimeline) {
         val popupMenu = PopupMenu(context!!, ivMore)
-        popupMenu.menu.add(getString(R.string.str_save))
 
-        if (bean.profile_idx == Comm_Prefs.getUserProfileIndex()) {
-            popupMenu.menu.add(getString(R.string.str_edit))
-            popupMenu.menu.add(getString(R.string.str_delete))
-        }
+        popupMenu.menu.add(getString(R.string.str_edit))
+        popupMenu.menu.add(getString(R.string.str_delete))
 
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
-                getString(R.string.str_save) -> {
-                    bean.idx?.let { idx ->
-                        saveIdeaPost(idx)
-                    }
-                }
                 getString(R.string.str_edit) -> {
 
                     bean.images?.let { images ->
@@ -685,6 +679,39 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         popupMenu.show()
     }
+
+    /**
+     * Show Share Menu
+     */
+    private fun showShareMenu(ivShare: View, bean: BeanTimeline) {
+        val popupMenu = PopupMenu(context!!, ivShare)
+
+        // Action Like 는 저장하기 X
+        if (bean.post_type != FragmentActionPost.ACTION_LIFE) {
+            popupMenu.menu.add(getString(R.string.str_save))
+        }
+        popupMenu.menu.add(getString(R.string.str_scrap))
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.title) {
+                getString(R.string.str_save) -> {
+                    bean.idx?.let { idx ->
+                        saveIdeaPost(idx)
+                    }
+                }
+                getString(R.string.str_scrap)->{
+                    val intent = Intent(context!!,ActivitySFA::class.java)
+                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE,ActivitySFA.VIEW_TYPE_SCRAP)
+                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX,bean.idx)
+                    intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE,Noti_Param.SHARE_ACTION)
+                    startActivity(intent)
+                }
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
 
     private fun saveIdeaPost(post_idx: Int) {
         DAClient.saveIdeaPost(post_idx, object : DAHttpCallback {
@@ -739,7 +766,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         } else if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
-                requestCode == ActivityFollowCheering.REQUEST_REPLACE_USER_IDX
+                requestCode == ActivitySFA.REQUEST_REPLACE_USER_IDX
             ) {
                 val view_user_idx = data!!.getIntExtra(RESULT_REPLACE_USER_IDX, -1)
                 (activity as ActivityMain).replaceFragment(
@@ -766,8 +793,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     message: String
                 ) {
                     if (context != null) {
-                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
-                            .show()
 
                         if (code == DAClient.SUCCESS) {
                             val json = JSONObject(body)
@@ -776,6 +801,9 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             val count = json.getInt("count")
                             bean.like_count = count
                             mAdapter!!.notifyDataSetChanged()
+                        }else{
+                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

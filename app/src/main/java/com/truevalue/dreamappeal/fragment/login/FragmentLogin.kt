@@ -110,7 +110,6 @@ class FragmentLogin : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
 
@@ -124,6 +123,8 @@ class FragmentLogin : BaseFragment() {
                         val intent = Intent(context, ActivityMain::class.java)
                         activity?.startActivity(intent)
                         activity?.finish()
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

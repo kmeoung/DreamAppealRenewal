@@ -267,7 +267,7 @@ class FragmentPopular : BaseFragment() {
                                     tvValueStyle.text = pagerBean.value_style
                                     tvJob.text = pagerBean.job
                                     tvName.text = pagerBean.nickname
-                                    tvCheering.text = "${Utils.getCommentView(pagerBean.count)}개"
+                                    tvCheering.text = Utils.getCommentView(pagerBean.count)
 
                                     view.setOnClickListener{
                                         (activity as ActivityMain)
@@ -292,7 +292,7 @@ class FragmentPopular : BaseFragment() {
                                         .into(ivBookCover)
 
                                     tvTitle.text = pagerBean.object_name
-                                    tvSubTitle.text = "${pagerBean.value_style} ${pagerBean.job}"
+                                    tvSubTitle.text = pagerBean.job?:""
 
                                     view.setOnClickListener{
                                         (activity as ActivityMain)
@@ -318,7 +318,7 @@ class FragmentPopular : BaseFragment() {
                                         .placeholder(R.drawable.ic_image_white)
                                         .into(ivBookCover)
 
-                                    tvTitle.text = "${pagerBean.value_style} ${pagerBean.job}"
+                                    tvTitle.text = pagerBean.tags?:""
 
                                     view.setOnClickListener {
                                         (activity as ActivityMain)

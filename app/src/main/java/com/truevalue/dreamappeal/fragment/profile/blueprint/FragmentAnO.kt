@@ -129,7 +129,7 @@ class FragmentAnO : BaseFragment() {
                             R.color.yellow_orange
                         )
                     )
-                    tv_add.text = getString(R.string.str_add_ability)
+                    tv_add.text = "등록하기"
                     ll_bg_add.setBackgroundColor(
                         ContextCompat.getColor(
                             context!!,
@@ -156,7 +156,7 @@ class FragmentAnO : BaseFragment() {
                             R.color.light_peach
                         )
                     )
-                    tv_add.text = getString(R.string.str_add_opportunity)
+                    tv_add.text = "등록하기"
                     ll_bg_add.setBackgroundColor(
                         ContextCompat.getColor(
                             context!!,

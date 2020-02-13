@@ -150,6 +150,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
+            android:autoLink="email"
             android:maxLength="30"
             android:textColor="@color/black"
             android:textColorHint="@color/warm_grey"
@@ -166,6 +167,7 @@
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:maxLength="30"
+            android:autoLink="phone"
             android:textColor="@color/black"
             android:textColorHint="@color/warm_grey"
             app:layout_constraintStart_toStartOf="@+id/number"
@@ -194,6 +196,7 @@
             android:fontFamily="@font/nanum_square_round_r"
             android:hint="@string/str_private"
             android:textColor="@color/black"
+            android:autoLink="map"
             android:textColorHint="@color/warm_grey"
             app:layout_constraintStart_toStartOf="@+id/address"
             app:layout_constraintTop_toBottomOf="@+id/address"
@@ -211,4 +214,5 @@
             app:layout_constraintStart_toStartOf="@+id/nickname"
             app:layout_constraintTop_toBottomOf="@+id/nickname"
             tools:text="@string/str_nickname" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,9 @@ class ActivitySearch : BaseActivity() {
         mSearchListener = null
         handler = Handler(Handler.Callback {
             mSearchListener?.let {
-                it.onSearch(et_search.text.toString())
+                if(!et_search.text.toString().replace(" ","").trim().isNullOrEmpty()) {
+                    it.onSearch(et_search.text.toString())
+                }
             }
             false
         })

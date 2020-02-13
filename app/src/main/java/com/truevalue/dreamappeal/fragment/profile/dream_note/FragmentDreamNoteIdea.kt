@@ -3,6 +3,8 @@ package com.truevalue.dreamappeal.fragment.profile.dream_note
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
@@ -17,9 +19,12 @@ import com.truevalue.dreamappeal.bean.BeanDreamNoteIdea
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Comm_Prefs
 import com.truevalue.dreamappeal.utils.Utils
+import kotlinx.android.synthetic.main.fragment_dream_note.*
 import kotlinx.android.synthetic.main.fragment_recyclerview.rv_recycle
 import kotlinx.android.synthetic.main.fragment_swipe_recyclerview.*
+import kotlinx.android.synthetic.main.fragment_swipe_recyclerview.srl_refresh
 import okhttp3.Call
 import org.json.JSONObject
 import java.io.IOException
@@ -42,7 +47,7 @@ class FragmentDreamNoteIdea : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_swipe_recyclerview, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_dream_note, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,6 +66,20 @@ class FragmentDreamNoteIdea : BaseFragment() {
         Utils.setSwipeRefreshLayout(srl_refresh, SwipeRefreshLayout.OnRefreshListener {
             getDreamNoteIdea()
         })
+
+        if (mViewUserIdx == Comm_Prefs.getUserProfileIndex()) {
+            ll_default_my.visibility = VISIBLE
+            tv_default_my_top.visibility = VISIBLE
+            sp_margin.visibility = VISIBLE
+            tv_default_bold.text = "내게 영감을 주는 자료를 모으는 공간이에요"
+            tv_default_my_top.text = "다른 친구의 영감자료를 담아오거나,"
+            tv_default_my.text = "를 터치하여 작성할 수 있어요"
+        } else {
+            tv_default_my_top.visibility = GONE
+            ll_default_my.visibility = GONE
+            sp_margin.visibility = GONE
+            tv_default_bold.text = "상대방이 모은 영감이 여기에 표시됩니다"
+        }
     }
 
     /**
@@ -114,6 +133,7 @@ class FragmentDreamNoteIdea : BaseFragment() {
                                 }
                             } catch (e: Exception) {
                             }
+                            ll_default.visibility = if (mAdapter!!.size() > 0) GONE else VISIBLE
                         } else {
                             Toast.makeText(
                                 context!!.applicationContext,

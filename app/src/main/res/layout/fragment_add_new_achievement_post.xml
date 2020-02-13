@@ -75,6 +75,7 @@
                     android:gravity="top|left"
                     android:hint="@string/str_input_comment"
                     android:padding="16dp"
+                    android:autoLink="web"
                     android:textColor="@color/black"
                     android:textColorHint="@color/brown_grey"
                     android:textSize="14.7sp" />

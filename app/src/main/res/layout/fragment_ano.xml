@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1px"
             android:background="@color/yellow_orange"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
@@ -116,9 +116,9 @@
 
         <LinearLayout
                 android:id="@+id/ll_add"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
 
 

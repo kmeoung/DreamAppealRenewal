@@ -5,7 +5,8 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingLeft="14.3dp"
-        android:paddingRight="14.3dp">
+        android:paddingRight="14.3dp"
+        android:layout_marginTop="5dp">
 
     <ImageView
             android:layout_width="match_parent"
@@ -158,11 +159,5 @@
                 android:textSize="12.3sp" />
 
     </LinearLayout>
-
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/pale_grey" />
 
 </LinearLayout>

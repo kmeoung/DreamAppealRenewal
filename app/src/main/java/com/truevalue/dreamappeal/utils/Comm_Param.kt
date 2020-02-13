@@ -10,7 +10,7 @@ object Comm_Param {
 
     // DEV 서버
     private const val DEV_API =
-        "https://dev.dreamappeal-mobile.com"
+        "https://dreamappeal-mobile.com"
 //    "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버
     private const val REAL_API =
@@ -297,10 +297,14 @@ object Comm_Param {
     val URL_DOCS_TERMS = "$URL_DOCS/terms"
 
     //영감 게시물 저장
-    private val URL_SHARE = "$URL_API/share"
+    val URL_SHARE = "$URL_API/share"
+    val URL_SHARE_SEARCH = "$URL_SHARE/search"
     private val URL_SHARE_IDEA = "$URL_SHARE/idea"
     val URL_SHARE_IDEA_POST_IDX = "$URL_SHARE_IDEA/$POST_INDEX"
 
     private val URL_USERS_TOKENS_AUTH = "$URL_USERS_TOKENS/auth"
     val URL_USERS_TOKENS_AUTH_GOOGLE = "$URL_USERS_TOKENS_AUTH/google"
+
+    //회원탈퇴
+    val URL_USERS_DELETE = "$URL_USERS/delete"
 }

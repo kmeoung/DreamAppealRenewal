@@ -120,7 +120,7 @@
 
         <!-- 팔로워 -->
         <activity
-                android:name=".activity.ActivityFollowCheering"
+                android:name=".activity.ActivitySFA"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustResize" />
 
