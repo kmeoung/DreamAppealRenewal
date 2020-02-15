@@ -510,8 +510,8 @@ class ActivityRank : BaseActivity() {
                         .circleCrop()
                         .into(ivRankProfile)
                 }
-
-                tvUser.text = "${bean.value_style} ${bean.job} ${bean.nickname}"
+                val dreamTitle = "${bean.value_style} ${bean.job}"
+                tvUser.text = "${if(dreamTitle.length > 20) "${dreamTitle.subSequence(0,20)}..." else dreamTitle} ${bean.nickname}"
                 var sp = Utils.replaceTextType(
                     this@ActivityRank,
                     tvUser,

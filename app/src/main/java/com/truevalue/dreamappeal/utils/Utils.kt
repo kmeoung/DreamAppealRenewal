@@ -392,44 +392,54 @@ object Utils {
         strPostDate?.let { strPostDate ->
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 //        val sdf2 = SimpleDateFormat("yyyy. MM. dd")
-            val cal = Calendar.getInstance()
+            val DateCal = Calendar.getInstance()
 
-            val nowHour = cal.get(Calendar.HOUR_OF_DAY)
-            val nowMinute = cal.get(Calendar.MINUTE)
-            val nowSeconds = cal.get(Calendar.SECOND)
             try {
-                cal.set(Calendar.HOUR_OF_DAY, 0)
-                cal.set(Calendar.MINUTE, 0)
-                cal.set(Calendar.SECOND, 0)
-                cal.set(Calendar.MILLISECOND, 0)
+                DateCal.set(Calendar.HOUR_OF_DAY, 0)
+                DateCal.set(Calendar.MINUTE, 0)
+                DateCal.set(Calendar.SECOND, 0)
+                DateCal.set(Calendar.MILLISECOND, 0)
 
-                val nowDate = cal.time
+                val nowDate = DateCal.time
 
                 val parseDate = sdf.parse(strPostDate)
-                cal.time = parseDate
+                DateCal.time = parseDate
 
-                val postHour = cal.get(Calendar.HOUR_OF_DAY)
-                val postMinute = cal.get(Calendar.MINUTE)
-                val postSeconds = cal.get(Calendar.SECOND)
 
-                cal.set(Calendar.HOUR_OF_DAY, 0)
-                cal.set(Calendar.MINUTE, 0)
-                cal.set(Calendar.SECOND, 0)
-                cal.set(Calendar.MILLISECOND, 0)
+                DateCal.set(Calendar.HOUR_OF_DAY, 0)
+                DateCal.set(Calendar.MINUTE, 0)
+                DateCal.set(Calendar.SECOND, 0)
+                DateCal.set(Calendar.MILLISECOND, 0)
 
-                val postDate = cal.time
+                val postDate = DateCal.time
 
                 if (nowDate > postDate) {
                     val viewSdf = SimpleDateFormat("yy. MM. dd")
                     strDate = viewSdf.format(postDate)
                 } else {
-                    if (postHour < nowHour) {
-                        strDate = "${nowHour - postHour}시간 전"
+                    val cal = Calendar.getInstance()
+                    val now = cal.time
+
+                    val parse = sdf.parse(strPostDate)
+                    cal.time = parse
+                    val post = cal.time
+
+                    var time: Long = now.time - post.time
+                    val day: Long = (time / (24 * 60 * 60 * 1000))
+                    time -= day * (24 * 60 * 60 * 1000)
+                    val hour: Long = (time / (60 * 60 * 1000))
+                    time -= hour * (60 * 60 * 1000)
+                    val min: Long = (time / (60 * 1000))
+                    time -= min * (60 * 1000)
+                    val sec: Long = (time / 1000)
+
+                    if (hour > 0) {
+                        strDate = "${hour}시간 전"
                     } else {
-                        if (postMinute < nowMinute) {
-                            strDate = "${nowMinute - postMinute}분 전"
+                        if (min > 0) {
+                            strDate = "${min}분 전"
                         } else {
-                            var second = nowSeconds - postSeconds
+                            var second = sec
                             if (second < 0) second = 0
                             strDate = "${second}초 전"
                         }

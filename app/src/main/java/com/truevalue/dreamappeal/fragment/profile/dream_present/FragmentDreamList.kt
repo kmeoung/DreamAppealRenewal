@@ -99,10 +99,6 @@ class FragmentDreamList : BaseFragment() {
                 iv_back_blue -> {
                     activity!!.onBackPressed()
                 }
-                iv_edit -> {
-                    isEdit = !isEdit
-                    mAdapter!!.notifyDataSetChanged()
-                }
                 ll_add_dream -> { // 새로운 프로필 추가
 
                     if (mAdapter != null && mAdapter!!.size() > 10) {
@@ -121,8 +117,6 @@ class FragmentDreamList : BaseFragment() {
                 }
             }
         }
-
-        iv_edit.setOnClickListener(listener)
         iv_back_blue.setOnClickListener(listener)
         ll_add_dream.setOnClickListener(listener)
     }

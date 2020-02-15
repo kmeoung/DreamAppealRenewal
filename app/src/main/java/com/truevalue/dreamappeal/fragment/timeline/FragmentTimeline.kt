@@ -428,17 +428,20 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             val llOriginUser = h.getItemView<LinearLayout>(R.id.ll_origin_user)
             val tvOriginUser = h.getItemView<TextView>(R.id.tv_origin_user)
 
-            llOriginUser.visibility = if(bean.copied == 1){
-                tvOriginUser.text = if(bean.origin_post_writer != null) {
+            llOriginUser.visibility = if (bean.copied == 1) {
+                tvOriginUser.text = if (bean.origin_post_writer != null) {
                     bean.origin_post_writer.let {
-                        val user = "${it.value_style ?:""} ${it.job ?:""} ${it.nickname ?:""}"
-                        "${if(user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다"
+                        val user = "${it.value_style ?: ""} ${it.job ?: ""} ${it.nickname ?: ""}"
+                        "${if (user.length < 31) user else "${user.subSequence(
+                            0,
+                            30
+                        )}..."}님의 게시물입니다"
                     }
-                }else{
+                } else {
                     "퍼온 게시물입니다"
                 }
                 VISIBLE
-            }else{
+            } else {
                 GONE
             }
 
@@ -625,8 +628,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun showMoreMenu(ivMore: View, bean: BeanTimeline) {
         val popupMenu = PopupMenu(context!!, ivMore)
-
-        popupMenu.menu.add(getString(R.string.str_edit))
+        // 퍼온 게시물은 수정 불가
+        if (bean.copied == 0) popupMenu.menu.add(getString(R.string.str_edit))
         popupMenu.menu.add(getString(R.string.str_delete))
 
         popupMenu.setOnMenuItemClickListener {
@@ -699,11 +702,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         saveIdeaPost(idx)
                     }
                 }
-                getString(R.string.str_scrap)->{
-                    val intent = Intent(context!!,ActivitySFA::class.java)
-                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE,ActivitySFA.VIEW_TYPE_SCRAP)
-                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX,bean.idx)
-                    intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE,Noti_Param.SHARE_ACTION)
+                getString(R.string.str_scrap) -> {
+                    val intent = Intent(context!!, ActivitySFA::class.java)
+                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE, ActivitySFA.VIEW_TYPE_SCRAP)
+                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX, bean.idx)
+                    intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE, Noti_Param.SHARE_ACTION)
                     startActivity(intent)
                 }
             }
@@ -801,8 +804,12 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             val count = json.getInt("count")
                             bean.like_count = count
                             mAdapter!!.notifyDataSetChanged()
-                        }else{
-                            Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                        } else {
+                            Toast.makeText(
+                                context!!.applicationContext,
+                                message,
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }

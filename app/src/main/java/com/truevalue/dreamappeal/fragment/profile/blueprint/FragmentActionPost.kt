@@ -221,8 +221,13 @@ class FragmentActionPost : BaseFragment() {
     private fun showMoreDialog() {
         var list: Array<String> =
             if (isDreamNoteType != null) {
-                arrayOf(
-                    getString(R.string.str_edit),
+                // 퍼온 게시물은 수정 불가
+                if (mBean!!.copied == 0) {
+                    arrayOf(
+                        getString(R.string.str_edit),
+                        getString(R.string.str_delete)
+                    )
+                } else arrayOf(
                     getString(R.string.str_delete)
                 )
             } else {
@@ -312,10 +317,10 @@ class FragmentActionPost : BaseFragment() {
                 getString(R.string.str_save) -> {
                     saveIdeaPost(mBean!!.idx)
                 }
-                getString(R.string.str_scrap)->{
-                    val intent = Intent(context!!,ActivitySFA::class.java)
-                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE,ActivitySFA.VIEW_TYPE_SCRAP)
-                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX,mBean!!.idx)
+                getString(R.string.str_scrap) -> {
+                    val intent = Intent(context!!, ActivitySFA::class.java)
+                    intent.putExtra(ActivitySFA.EXTRA_VIEW_TYPE, ActivitySFA.VIEW_TYPE_SCRAP)
+                    intent.putExtra(ActivitySFA.EXTRA_ITEM_INDEX, mBean!!.idx)
                     intent.putExtra(ActivitySFA.EXTRA_NOTI_CODE, Noti_Param.SHARE_ACTION)
                     startActivity(intent)
                 }
@@ -545,17 +550,17 @@ class FragmentActionPost : BaseFragment() {
             }
         }
 
-        ll_origin_user.visibility = if(bean.copied == 1){
-            tv_origin_user.text = if(bean.origin_post_writer != null) {
+        ll_origin_user.visibility = if (bean.copied == 1) {
+            tv_origin_user.text = if (bean.origin_post_writer != null) {
                 bean.origin_post_writer.let {
-                    val user = "${it.value_style ?:""} ${it.job ?:""} ${it.nickname ?:""}"
-                    "${if(user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다"
+                    val user = "${it.value_style ?: ""} ${it.job ?: ""} ${it.nickname ?: ""}"
+                    "${if (user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다"
                 }
-            }else{
+            } else {
                 "퍼온 게시물입니다"
             }
             VISIBLE
-        }else{
+        } else {
             GONE
         }
 
