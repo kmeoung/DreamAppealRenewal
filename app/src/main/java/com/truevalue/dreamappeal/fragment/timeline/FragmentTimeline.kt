@@ -22,8 +22,10 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.*
 import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.bean.BeanTimeline
+import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
+import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddActionPost
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -42,6 +44,8 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
     companion object {
+        private const val EXTRA_CHANGE_CATEGORY = 3030
+
         private const val RV_TYPE_TIMELINE = 0
         private const val RV_TYPE_TIMELINE_MORE = 1
 
@@ -628,12 +632,25 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun showMoreMenu(ivMore: View, bean: BeanTimeline) {
         val popupMenu = PopupMenu(context!!, ivMore)
+        // todo : 레벨 변경 필요
+//        if (bean.post_type == FragmentActionPost.ACTION_POST) popupMenu.menu.add(getString(R.string.str_edit_level))
         // 퍼온 게시물은 수정 불가
         if (bean.copied == 0) popupMenu.menu.add(getString(R.string.str_edit))
         popupMenu.menu.add(getString(R.string.str_delete))
 
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
+                getString(R.string.str_edit_level) -> {
+//                    val intent = Intent(context!!, ActivityAddPost::class.java)
+//                    intent.putExtra(
+//                        ActivityAddPost.EDIT_VIEW_TYPE,
+//                        ActivityAddPost.EDIT_CHANGE_CATEGORY
+//                    )
+//                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
+//                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_IDX, bean.)
+//                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_DETAIL_IDX, bean.step_idx)
+//                    startActivityForResult(intent, EXTRA_CHANGE_CATEGORY)
+                }
                 getString(R.string.str_edit) -> {
 
                     bean.images?.let { images ->
@@ -642,7 +659,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             ActivityAddPost.EDIT_VIEW_TYPE,
                             ActivityAddPost.EDIT_ACTION_POST
                         )
-
 
                         val array = ArrayList<String>()
 
@@ -656,7 +672,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         intent.putExtra(ActivityAddPost.REQUEST_IAMGE_FILES, array)
                         intent.putExtra(ActivityAddPost.REQUEST_CONTENTS, bean!!.content)
                         intent.putExtra(ActivityAddPost.REQUEST_TAGS, bean!!.tags)
-                        startActivity(intent)
+                        startActivityForResult(
+                            intent,
+                            FragmentAddActionPost.REQUEST_TIMELINE_EDIT_SUCCESS
+                        )
                     }
 
                 }
@@ -732,6 +751,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         })
     }
 
+
     /**
      * Post 삭제
      */
@@ -766,6 +786,9 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX
             ) {
 
+            } else if (requestCode == EXTRA_CHANGE_CATEGORY) {
+                isLast = false
+                getTimeLineData(false, -1, true)
             }
         } else if (resultCode == RESULT_CODE) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX ||
@@ -776,6 +799,11 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     FragmentProfile.newInstance(view_user_idx),
                     true
                 )
+            }
+        } else if (resultCode == FragmentAddActionPost.REQUEST_TIMELINE_EDIT_SUCCESS) {
+            if (requestCode == FragmentAddActionPost.REQUEST_TIMELINE_EDIT_SUCCESS) {
+                isLast = false
+                getTimeLineData(false, -1, true)
             }
         }
     }

@@ -43,6 +43,9 @@ class FragmentAddActionPost : BaseFragment() {
     private var mTags: String? = null
 
     companion object {
+
+        const val REQUEST_TIMELINE_EDIT_SUCCESS = 7777
+
         fun newInstance(images: ArrayList<File>): FragmentAddActionPost {
             val fragment = FragmentAddActionPost()
             fragment.mImages = images
@@ -276,6 +279,7 @@ class FragmentAddActionPost : BaseFragment() {
                             .show()
 
                         if (code == DAClient.SUCCESS) {
+                            activity!!.setResult(REQUEST_TIMELINE_EDIT_SUCCESS)
                             activity!!.onBackPressed()
                         }
                     }
