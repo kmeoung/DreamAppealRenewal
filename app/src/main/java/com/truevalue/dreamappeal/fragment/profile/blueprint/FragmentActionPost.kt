@@ -82,8 +82,8 @@ class FragmentActionPost : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_action_post, container, false)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         // View 초기화
         initView()
@@ -406,7 +406,6 @@ class FragmentActionPost : BaseFragment() {
                 message: String
             ) {
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
@@ -414,6 +413,8 @@ class FragmentActionPost : BaseFragment() {
                         iv_cheering.isSelected = status
                         val count = json.getInt("count")
                         tv_cheering.text = count.toString()
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

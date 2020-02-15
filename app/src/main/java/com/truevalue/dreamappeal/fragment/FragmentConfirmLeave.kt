@@ -57,11 +57,11 @@ class FragmentConfirmLeave : BaseFragment() {
                 code: String,
                 message: String
             ) {
-                if(code == DAClient.SUCCESS){
-                    (activity as ActivityMain).initProfileView()
-                }
                 context?.let {
                     Toast.makeText(it.applicationContext,message, Toast.LENGTH_SHORT).show()
+                }
+                if(code == DAClient.SUCCESS){
+                    (activity as ActivityMain).initProfileView()
                 }
             }
         })

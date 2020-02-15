@@ -76,7 +76,6 @@ class FragmentMyProfileEdit : BaseFragment() {
                 && (!et_nickname.text.toString().isNullOrEmpty())
                 && (!tv_gender.text.toString().isNullOrEmpty())
                 && (!tv_date.text.toString().isNullOrEmpty())
-                && (!tv_address.text.toString().isNullOrEmpty())
     }
 
     /**
@@ -100,8 +99,6 @@ class FragmentMyProfileEdit : BaseFragment() {
                 initRightBtn()
             }
         }
-
-
 
         et_name.addTextChangedListener(textWatcher)
         tv_address.addTextChangedListener(textWatcher)

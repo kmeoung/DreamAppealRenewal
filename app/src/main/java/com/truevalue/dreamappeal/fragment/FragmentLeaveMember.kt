@@ -93,11 +93,11 @@ class FragmentLeaveMember : BaseFragment() {
                 message: String
             ) {
 
-                if(code == DAClient.SUCCESS){
-                    (activity as ActivityMain).replaceFragment(FragmentConfirmLeave(),addToBack = true,isMainRefresh = false)
-                }
                 context?.let {
                     Toast.makeText(it.applicationContext,message, Toast.LENGTH_SHORT).show()
+                }
+                if(code == DAClient.SUCCESS){
+                    (activity as ActivityMain).replaceFragment(FragmentConfirmLeave(),addToBack = true,isMainRefresh = false)
                 }
             }
         })

@@ -569,13 +569,15 @@ class ActivitySFA : BaseActivity() {
                     code: String,
                     message: String
                 ) {
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+
 
                     if (code == DAClient.SUCCESS) {
                         val json = JSONObject(body)
                         val status = json.getInt("status")
                         bean.status = status
                         mAdapter!!.notifyDataSetChanged()
+                    }else{
+                        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             })

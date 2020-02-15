@@ -332,7 +332,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             writer_idx,
             parent_idx,
             contents,
-            updateCommentListener
+            sendCommentListener
         )
     }
 
@@ -349,7 +349,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             writer_idx,
             parent_idx,
             contents,
-            updateCommentListener
+            sendCommentListener
         )
     }
 
@@ -366,7 +366,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             writer_idx,
             parent_idx,
             contents,
-            updateCommentListener
+            sendCommentListener
         )
     }
 
@@ -383,7 +383,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             writer_idx,
             parent_idx,
             contents,
-            updateCommentListener
+            sendCommentListener
         )
     }
 
@@ -571,6 +571,27 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
+    private val sendCommentListener = object : DAHttpCallback {
+        override fun onResponse(
+            call: Call,
+            serverCode: Int,
+            body: String,
+            code: String,
+            message: String
+        ) {
+
+            if (code == DAClient.SUCCESS) {
+                et_comment.setText("")
+                initComment()
+                initData(true)
+            }else{
+                Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+
     /**
      * Show PopupMenu
      */
@@ -715,7 +736,6 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 code: String,
                 message: String
             ) {
-                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
@@ -726,6 +746,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     mAdapter?.let {
                         it.notifyDataSetChanged()
                     }
+                }else{
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

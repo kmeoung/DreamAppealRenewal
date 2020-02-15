@@ -14,7 +14,8 @@ object Comm_Param {
 //    "http://ec2-15-164-118-112.ap-northeast-2.compute.amazonaws.com:8080"
     // REAL 서버
     private const val REAL_API =
-        "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
+    "https://dreamappeal-mobile.com"
+//        "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
     // Kakao Addr
     const val KAKAO_ADDRESS_API = "https://dapi.kakao.com/v2/local/search/address.json"
     // API
