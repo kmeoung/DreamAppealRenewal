@@ -255,7 +255,7 @@ class FragmentEvent : BaseFragment() {
                     var job : String? = json.getString("job")
                     tv_event_value_style.text = valueStyle
                     if(!valueStyle.isNullOrEmpty()) {
-                        valueStyle = "#${valueStyle}"
+                        valueStyle = "${valueStyle}"
                         tv_event_value_style.visibility = VISIBLE
                         tv_event_value_style.text = Utils.replaceTextColor(
                             context,
@@ -266,8 +266,9 @@ class FragmentEvent : BaseFragment() {
                     }else{
                         tv_event_value_style.visibility = GONE
                     }
-                    tv_event_job.text = "${if(job.isNullOrEmpty())"#Value" else job}에 도움될 소식"
-                    tv_event_job.text = Utils.replaceTextColor(context,tv_event_job.text.toString(),R.color.nice_blue,tv_event_job.text.toString())
+                    val value = if(job.isNullOrEmpty())"Value" else job
+                    tv_event_job.text = "${value}에 도움될 소식"
+                    tv_event_job.text = Utils.replaceTextColor(context,tv_event_job.text.toString(),R.color.nice_blue,value)
                     val promotions = json.getJSONArray("promotions")
                     mPagerAdapter?.let {
                         it.clear()

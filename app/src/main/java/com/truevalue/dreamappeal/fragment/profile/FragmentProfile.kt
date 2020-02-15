@@ -183,12 +183,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
                 iv_menu -> (activity as ActivityMain).dl_drawer.openDrawer(Gravity.RIGHT)
                 iv_another,
                 tv_title -> {
-                    if(mViewUserIdx != Comm_Prefs.getUserProfileIndex()) {
-                        showDialog()
-                    }else{
-                        val intent = Intent(context!!, ActivityMyProfileContainer::class.java)
-                        startActivity(intent)
-                    }
+                    showDialog()
                 }
                 iv_dream_note->{
                     (activity as ActivityMain).replaceFragment(FragmentDreamNote.newInstance(mViewUserIdx),addToBack = true,isMainRefresh = false)
@@ -239,9 +234,6 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
     }
 
     override fun sendName(name: String, isMy : Boolean) {
-
-        iv_another.visibility = if(isMy) GONE else VISIBLE
-
         tv_title.text = if(name.isNullOrEmpty()){
             getString(R.string.str_dream_profile)
         }else "$name ${getString(R.string.str_dream_profile)}"

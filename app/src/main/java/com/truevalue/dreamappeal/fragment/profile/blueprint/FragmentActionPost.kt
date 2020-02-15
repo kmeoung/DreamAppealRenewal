@@ -549,7 +549,7 @@ class FragmentActionPost : BaseFragment() {
             tv_origin_user.text = if(bean.origin_post_writer != null) {
                 bean.origin_post_writer.let {
                     val user = "${it.value_style ?:""} ${it.job ?:""} ${it.nickname ?:""}"
-                    "${if(user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다."
+                    "${if(user.length < 31) user else "${user.subSequence(0, 30)}..."}님의 게시물입니다"
                 }
             }else{
                 "퍼온 게시물입니다"

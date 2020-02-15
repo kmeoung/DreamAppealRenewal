@@ -449,7 +449,9 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="horizontal"
-                                android:paddingLeft="10dp">
+                                android:paddingLeft="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:paddingRight="20dp">
 
                             <ImageView
                                     android:layout_width="12.7dp"
@@ -462,7 +464,6 @@
                                     android:id="@+id/tv_cheering"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="10dp"
                                     android:fontFamily="@font/bmjua"
                                     android:text="0"
                                     android:textColor="@color/black"

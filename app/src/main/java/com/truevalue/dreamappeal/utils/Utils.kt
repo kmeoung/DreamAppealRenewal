@@ -427,11 +427,11 @@ object Utils {
                         strDate = "${nowHour - postHour}시간 전"
                     } else {
                         if (postMinute < nowMinute) {
-                            strDate = "${nowMinute - postMinute}분전"
+                            strDate = "${nowMinute - postMinute}분 전"
                         } else {
                             var second = nowSeconds - postSeconds
                             if (second < 0) second = 0
-                            strDate = "${second}초전"
+                            strDate = "${second}초 전"
                         }
                     }
                 }

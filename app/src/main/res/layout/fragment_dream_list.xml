@@ -17,16 +17,16 @@
             android:id="@+id/ll_edit_list"
             android:layout_width="match_parent"
             android:layout_height="42.7dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal"
             android:background="@color/white"
             android:elevation="3dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
         <!--새 꿈 추가하기-->
         <LinearLayout
                 android:id="@+id/ll_add_dream"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -35,10 +35,9 @@
                     android:id="@+id/iv_add_dream"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="7dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add_dream" />
+                    android:src="@drawable/ic_add_dream"
+                    android:layout_marginRight="3dp"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -54,14 +53,6 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1" />
-
-        <ImageView
-                android:id="@+id/iv_edit"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginRight="9dp"
-                android:src="@drawable/ic_edit"
-                android:visibility="gone"/>
 
     </LinearLayout>
 
