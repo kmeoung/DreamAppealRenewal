@@ -215,7 +215,6 @@ class FragmentWishDetail : BaseFragment() {
                     context?.let {
                         Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
-
                     if (code == DAClient.SUCCESS) {
                         (activity as ActivityMain).onBackPressed(false)
                     }

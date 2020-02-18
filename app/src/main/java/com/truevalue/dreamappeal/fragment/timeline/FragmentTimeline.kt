@@ -633,7 +633,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun showMoreMenu(ivMore: View, bean: BeanTimeline) {
         val popupMenu = PopupMenu(context!!, ivMore)
         // todo : 레벨 변경 필요
-//        if (bean.post_type == FragmentActionPost.ACTION_POST) popupMenu.menu.add(getString(R.string.str_edit_level))
+        if (bean.post_type == FragmentActionPost.ACTION_POST) popupMenu.menu.add(getString(R.string.str_edit_level))
         // 퍼온 게시물은 수정 불가
         if (bean.copied == 0) popupMenu.menu.add(getString(R.string.str_edit))
         popupMenu.menu.add(getString(R.string.str_delete))
@@ -641,15 +641,15 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         popupMenu.setOnMenuItemClickListener {
             when (it.title) {
                 getString(R.string.str_edit_level) -> {
-//                    val intent = Intent(context!!, ActivityAddPost::class.java)
-//                    intent.putExtra(
-//                        ActivityAddPost.EDIT_VIEW_TYPE,
-//                        ActivityAddPost.EDIT_CHANGE_CATEGORY
-//                    )
-//                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
-//                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_IDX, bean.)
-//                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_DETAIL_IDX, bean.step_idx)
-//                    startActivityForResult(intent, EXTRA_CHANGE_CATEGORY)
+                    val intent = Intent(context!!, ActivityAddPost::class.java)
+                    intent.putExtra(
+                        ActivityAddPost.EDIT_VIEW_TYPE,
+                        ActivityAddPost.EDIT_CHANGE_CATEGORY
+                    )
+                    intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
+                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_IDX, bean.object_idx)
+                    intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_DETAIL_IDX, bean.step_idx)
+                    startActivityForResult(intent, EXTRA_CHANGE_CATEGORY)
                 }
                 getString(R.string.str_edit) -> {
 

@@ -139,10 +139,10 @@ class DialogAnotherProfile(context: Context, var bean: BeanAnotherProfile?) : Di
 
                     if(privateBean.gender == 0){
                         if(bean.gender != null){
-                            tvGender.text = context!!.getString(R.string.str_none)
-                        }else{
                             tvGender.text = if(bean.gender == 0) context.getString(R.string.str_female)
                             else context.getString(R.string.str_male)
+                        }else{
+                            tvGender.text = context!!.getString(R.string.str_none)
                         }
                     }else{
                         tvGender.text = context.getString(R.string.str_private)

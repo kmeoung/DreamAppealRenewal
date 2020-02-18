@@ -8,6 +8,8 @@ data class BeanTimeline(
     val concern_idx: Int?,
     val content: String?,
     val contents_bold: String?,
+    val object_idx : Int,
+    val step_idx : Int,
     val title : String?,
     val contents_regular: String?,
     val idx: Int?,

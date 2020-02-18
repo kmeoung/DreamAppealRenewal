@@ -98,6 +98,7 @@ class FragmentLoginContainer : BaseFragment() {
 //        callback = SessionCallback()
 //        Session.getCurrentSession().addCallback(callback)
 
+
         if (!Comm_Param.REAL) {
             getHashKey()
             Log.e(TAG, "로그인 시작")
@@ -199,7 +200,8 @@ class FragmentLoginContainer : BaseFragment() {
 
     private fun updateUI(user: FirebaseUser?) {
         user?.let { user ->
-            Toast.makeText(context!!.applicationContext, "로그인 중입니다. 잠시만 기다려주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context!!.applicationContext, "로그인 중입니다. 잠시만 기다려주세요", Toast.LENGTH_SHORT)
+                .show()
 
             user.getIdToken(true)
                 .addOnCompleteListener { task ->

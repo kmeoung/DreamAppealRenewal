@@ -4,7 +4,7 @@ import com.truevalue.dreamappeal.BuildConfig
 
 object Comm_Param {
 
-    val REAL = !BuildConfig.DEBUG
+    val REAL = BuildConfig.DEBUG
     //    val REAL = true
     const val APP_NAME = "DreamAppeal"
 

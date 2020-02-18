@@ -284,11 +284,12 @@ class FragmentNewAddAchievementPost : BaseFragment() {
             ) {
                 if (mDialog != null && mDialog!!.isShowing) mDialog!!.dismiss()
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
 
                     if (code == DAClient.SUCCESS) {
                         activity!!.setResult(RESULT_OK)
                         activity!!.finish()
+                    }else{
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

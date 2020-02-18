@@ -543,7 +543,7 @@ class FragmentConcernDetail : BaseFragment() {
      */
     private fun deleteReConcern(re_idx: Int) {
         mBean?.let {
-            DAClient.deleteConcern(re_idx, object : DAHttpCallback {
+            DAClient.deleteReConcern(re_idx, object : DAHttpCallback {
                 override fun onResponse(
                     call: Call,
                     serverCode: Int,
@@ -669,13 +669,12 @@ class FragmentConcernDetail : BaseFragment() {
                     code: String,
                     message: String
                 ) {
+                    context?.let { context ->
+                        Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                     if (code == DAClient.SUCCESS) {
                         (activity as ActivityMain).onBackPressed(false)
-                    } else {
-                        context?.let { context ->
-                            Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
                     }
                 }
             })

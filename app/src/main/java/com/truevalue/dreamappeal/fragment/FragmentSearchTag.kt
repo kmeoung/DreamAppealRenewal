@@ -86,7 +86,7 @@ class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
                 code: String,
                 message: String
             ) {
-
+                
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
 

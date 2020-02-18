@@ -1779,7 +1779,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -1787,7 +1787,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
+                                FragmentActionPost.newInstance(bean.item_idx, bean.source_idx),
                                 true
                             )
                         }
@@ -1804,7 +1804,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                         ),
                                         true
@@ -1815,7 +1815,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                 ),
                                 true
@@ -1834,7 +1834,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                         ),
                                         true
@@ -1845,7 +1845,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                 ),
                                 true

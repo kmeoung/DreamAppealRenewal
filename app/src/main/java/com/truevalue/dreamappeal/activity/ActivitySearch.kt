@@ -17,9 +17,10 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class ActivitySearch : BaseActivity() {
 
-    private var mSearchType : Int
+    private var mSearchType: Int
     var mSearchListener: IOSearchListener? = null
     private val handler: Handler
+
     companion object {
         private const val TYPE_APPEALER = 0
         private const val TYPE_BOARD = 1
@@ -40,9 +41,8 @@ class ActivitySearch : BaseActivity() {
         mSearchListener = null
         handler = Handler(Handler.Callback {
             mSearchListener?.let {
-                if(!et_search.text.toString().replace(" ","").trim().isNullOrEmpty()) {
-                    it.onSearch(et_search.text.toString())
-                }
+                if(et_search.text.toString().isNullOrEmpty() ||
+                    et_search.text.toString().replace(" ","").trim().isNotEmpty()) it.onSearch(et_search.text.toString())
             }
             false
         })
@@ -81,7 +81,8 @@ class ActivitySearch : BaseActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 handler.removeMessages(0)
 
-                iv_cancel.visibility = if (et_search.text.toString().isNullOrEmpty()) GONE else VISIBLE
+                iv_cancel.visibility =
+                    if (et_search.text.toString().isNullOrEmpty()) GONE else VISIBLE
 
                 handler.sendEmptyMessageDelayed(0, SEARCH_DELAY)
             }
@@ -127,28 +128,28 @@ class ActivitySearch : BaseActivity() {
     /**
      * SearchActivity Replace Fragment
      */
-    fun replaceFragment(fragment : Fragment,addToBack : Boolean){
+    fun replaceFragment(fragment: Fragment, addToBack: Boolean) {
         replaceFragment(R.id.search_container, fragment, addToBack)
     }
 
     /**
      * SearchActivity Replace Fragment (set Tag Keyword
      */
-    fun replaceFragment(fragment : Fragment,addToBack : Boolean,tag_keyword : String){
+    fun replaceFragment(fragment: Fragment, addToBack: Boolean, tag_keyword: String) {
         replaceFragment(fragment, addToBack)
-        searchSetText(tag_keyword,false)
+        searchSetText(tag_keyword, false)
     }
 
-    private fun searchSetText(keyword : String, send_handler : Boolean){
+    private fun searchSetText(keyword: String, send_handler: Boolean) {
         et_search.setText(keyword)
-        if(!send_handler) handler.removeMessages(0)
+        if (!send_handler) handler.removeMessages(0)
     }
 
     /**
      * Set Search View Type
      */
     private fun setSearchType(search_type: Int) {
-        searchSetText("",false)
+        searchSetText("", false)
         when (search_type) {
             TYPE_APPEALER -> {
                 tv_appealer.isSelected = true
@@ -171,6 +172,4 @@ class ActivitySearch : BaseActivity() {
         }
         mSearchType = search_type
     }
-
-
 }

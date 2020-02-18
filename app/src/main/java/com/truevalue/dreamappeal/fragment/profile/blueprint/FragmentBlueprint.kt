@@ -288,7 +288,7 @@ class FragmentBlueprint : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             tv_default_object.elevation = Utils.dpToPixel(context!!,3f).toFloat()
         }else{
             tv_default_ability_opportunity.text = "상대방이 생각한 능력과 기회가\n여기에 표시됩니다"
-            tv_default_object.text = "상대방님이 세운 실천목표가\n여기에 표시됩니다"
+            tv_default_object.text = "상대방이 세운 실천목표가\n여기에 표시됩니다"
             tv_default_ability_opportunity.elevation = Utils.dpToPixel(context!!,0f).toFloat()
             tv_default_object.elevation = Utils.dpToPixel(context!!,0f).toFloat()
         }

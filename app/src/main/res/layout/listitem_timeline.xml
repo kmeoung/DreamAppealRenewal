@@ -157,7 +157,7 @@
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/silver"/>
+                android:background="@color/white_six"/>
 
         <LinearLayout
                 android:id="@+id/ll_origin_user"
@@ -188,7 +188,7 @@
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/silver"/>
+                android:background="@color/white_six"/>
 
         <RelativeLayout
                 android:id="@+id/rl_images"

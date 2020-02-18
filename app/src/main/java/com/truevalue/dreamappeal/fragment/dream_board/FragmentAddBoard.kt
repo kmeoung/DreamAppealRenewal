@@ -257,27 +257,26 @@ class FragmentAddBoard : BaseFragment() {
             code: String,
             message: String
         ) {
-            if (code == DAClient.SUCCESS) {
-                if(mAdapter!!.size() > 0) {
-                    if (mViewType == TYPE_ADD_CONCERN) {
-                        val json = JSONObject(body)
-                        val insertId = json.getInt("concern_idx")
-                        mDialog.show()
-                        uploadImage(insertId)
-                    } else if (mViewType == TYPE_ADD_WISH) {
-                        val json = JSONObject(body)
-                        val insertId = json.getInt("post_idx")
-                        mDialog.show()
-                        uploadImage(insertId)
+            context?.let {
+                Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
+                if (code == DAClient.SUCCESS) {
+                    if (mAdapter!!.size() > 0) {
+                        if (mViewType == TYPE_ADD_CONCERN) {
+                            val json = JSONObject(body)
+                            val insertId = json.getInt("concern_idx")
+                            mDialog.show()
+                            uploadImage(insertId)
+                        } else if (mViewType == TYPE_ADD_WISH) {
+                            val json = JSONObject(body)
+                            val insertId = json.getInt("post_idx")
+                            mDialog.show()
+                            uploadImage(insertId)
+                        } else {
+                            (activity as ActivityMain).onBackPressed(false)
+                        }
                     } else {
                         (activity as ActivityMain).onBackPressed(false)
                     }
-                }else{
-                    (activity as ActivityMain).onBackPressed(false)
-                }
-            } else {
-                context?.let {
-                    Toast.makeText(it.applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -354,10 +353,11 @@ class FragmentAddBoard : BaseFragment() {
             ) {
                 if (mDialog.isShowing) mDialog.dismiss()
                 if (context != null) {
-                    Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT).show()
-
                     if (code == DAClient.SUCCESS) {
                         (activity as ActivityMain).onBackPressed(false)
+                    } else {
+                        Toast.makeText(context!!.applicationContext, message, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

@@ -81,11 +81,15 @@ class FragmentEvent : BaseFragment() {
         override fun handleMessage(msg: Message?) {
             super.handleMessage(msg)
             val position = pager_image.currentItem
-            if (mPagerAdapter != null) {
-                if (position >= mPagerAdapter!!.count - 1) {
+
+            mPagerAdapter?.let { adapter->
+                if (position >= adapter.count - 1) {
                     pager_image.currentItem = 0
                 } else {
                     pager_image.currentItem = position + 1
+                }
+                if (adapter.count > 1) {
+                    tv_indicator.text = "${pager_image.currentItem + 1} / ${adapter.count}"
                 }
             }
         }
@@ -127,7 +131,12 @@ class FragmentEvent : BaseFragment() {
         }
 
         mPagerAdapter = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(any: Any, view: ImageView, position: Int, arrayList: ArrayList<Any>) {
+            override fun onBindViewPager(
+                any: Any,
+                view: ImageView,
+                position: Int,
+                arrayList: ArrayList<Any>
+            ) {
                 val bean = any as BeanPromotion
                 context?.let {
                     Glide.with(it)
@@ -191,7 +200,7 @@ class FragmentEvent : BaseFragment() {
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if(mPagerAdapter!!.count > 1) {
+                    if (mPagerAdapter!!.count > 1) {
                         tv_indicator.text =
                             ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
                     }
@@ -200,7 +209,7 @@ class FragmentEvent : BaseFragment() {
         }
 
 
-        swipy_bottom.setOnRefreshListener{
+        swipy_bottom.setOnRefreshListener {
             getEvent()
             swipy_bottom.isRefreshing = false
         }
@@ -251,10 +260,10 @@ class FragmentEvent : BaseFragment() {
             ) {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
-                    var valueStyle : String? = json.getString("value_style")
-                    var job : String? = json.getString("job")
+                    var valueStyle: String? = json.getString("value_style")
+                    var job: String? = json.getString("job")
                     tv_event_value_style.text = valueStyle
-                    if(!valueStyle.isNullOrEmpty()) {
+                    if (!valueStyle.isNullOrEmpty()) {
                         valueStyle = "${valueStyle}"
                         tv_event_value_style.visibility = VISIBLE
                         tv_event_value_style.text = Utils.replaceTextColor(
@@ -263,12 +272,17 @@ class FragmentEvent : BaseFragment() {
                             R.color.nice_blue,
                             valueStyle
                         )
-                    }else{
+                    } else {
                         tv_event_value_style.visibility = GONE
                     }
-                    val value = if(job.isNullOrEmpty())"Value" else job
+                    val value = if (job.isNullOrEmpty()) "Value" else job
                     tv_event_job.text = "${value}에 도움될 소식"
-                    tv_event_job.text = Utils.replaceTextColor(context,tv_event_job.text.toString(),R.color.nice_blue,value)
+                    tv_event_job.text = Utils.replaceTextColor(
+                        context,
+                        tv_event_job.text.toString(),
+                        R.color.nice_blue,
+                        value
+                    )
                     val promotions = json.getJSONArray("promotions")
                     mPagerAdapter?.let {
                         it.clear()
@@ -282,10 +296,10 @@ class FragmentEvent : BaseFragment() {
                             it.add(bean)
                         }
                         it.notifyDataSetChanged()
-                        if(promotions.length() > 1){
+                        if (promotions.length() > 1) {
                             tv_indicator.visibility = VISIBLE
                             tv_indicator.text = (1.toString() + " / " + promotions.length())
-                        }else{
+                        } else {
                             tv_indicator.visibility = GONE
                         }
 

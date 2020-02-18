@@ -196,11 +196,13 @@ class FragmentActionPost : BaseFragment() {
                     startActivityForResult(intent, ActivitySFA.REQUEST_REPLACE_USER_IDX)
                 }
                 iv_dream_profile, ll_dream_title -> {
-                    val view_user_idx = mViewUserIdx
-                    (activity as ActivityMain).replaceFragment(
-                        FragmentProfile.newInstance(view_user_idx),
-                        true
-                    )
+                    mBean?.let {bean->
+                            (activity as ActivityMain).replaceFragment(
+                                FragmentProfile.newInstance(bean.profile_idx),
+                                true
+                            )
+
+                    }
                 }
             }
         }

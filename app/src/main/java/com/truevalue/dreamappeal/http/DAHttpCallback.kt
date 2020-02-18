@@ -1,5 +1,6 @@
 package com.truevalue.dreamappeal.http
 
+import com.truevalue.dreamappeal.base.BaseFragment
 import okhttp3.Call
 import org.json.JSONException
 import java.io.IOException
