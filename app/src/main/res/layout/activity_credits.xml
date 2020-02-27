@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+    <include
+        layout="@layout/action_bar_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:id="@+id/tv_credits"
+            android:textColor="@color/black"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:autoLink="web"
+            android:textSize="13sp"
+            android:lineSpacingExtra="10dp"
+            android:ellipsize="end"/>
+
+    </ScrollView>
+
+</LinearLayout>

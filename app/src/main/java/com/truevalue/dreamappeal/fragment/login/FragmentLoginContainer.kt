@@ -1,13 +1,10 @@
 package com.truevalue.dreamappeal.fragment.login
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Base64
-import android.util.Base64.NO_WRAP
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,16 +27,14 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
-import com.kakao.network.ErrorResult
 import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.MeV2ResponseCallback
-import com.kakao.usermgmt.response.MeV2Response
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kakao.util.exception.KakaoException
-import com.kakao.util.helper.Utility.getPackageInfo
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityLoginContainer
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
+import com.truevalue.dreamappeal.http.BaseOkhttpClient
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Param
@@ -50,12 +45,9 @@ import org.json.JSONObject
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class FragmentLoginContainer : BaseFragment() {
-
-    private var callback: SessionCallback
 
     // google login result
     private var RC_SIGN_IN = 9001
@@ -66,13 +58,10 @@ class FragmentLoginContainer : BaseFragment() {
 
     private lateinit var callbackManager: CallbackManager
 
+//    private lateinit var kakaoCallback: SessionCallback
+
     companion object {
         private const val TAG = "FragmentLoginContainer"
-
-    }
-
-    init {
-        callback = SessionCallback()
     }
 
     override fun onStart() {
@@ -95,18 +84,7 @@ class FragmentLoginContainer : BaseFragment() {
         // Click View Listener
         onClickView()
 
-//        callback = SessionCallback()
-//        Session.getCurrentSession().addCallback(callback)
-
-
-        if (!Comm_Param.REAL) {
-            getHashKey()
-            Log.e(TAG, "로그인 시작")
-            Log.e(TAG, "해시 : " + getHashKey(context!!))
-            Log.e(TAG, "토큰 : " + Session.getCurrentSession().tokenInfo.accessToken)
-            Log.e(TAG, "토큰 리프레쉬토큰 : " + Session.getCurrentSession().tokenInfo.refreshToken)
-            Log.e(TAG, "토큰 파이어데이트 : " + Session.getCurrentSession().tokenInfo.remainingExpireTime)
-        }
+        getHashKey()
 
         firebaseAuth = FirebaseAuth.getInstance()
         // Initialize Facebook Login button
@@ -114,7 +92,10 @@ class FragmentLoginContainer : BaseFragment() {
         setFacebookApi()
 
         setGoogleApi()
+
+//        setKakaoApi()
     }
+
 
     private fun getHashKey() {
         var packageInfo: PackageInfo? = null
@@ -142,7 +123,6 @@ class FragmentLoginContainer : BaseFragment() {
             }
         }
     }
-
 
     /**
      * Facebook 설정
@@ -200,7 +180,7 @@ class FragmentLoginContainer : BaseFragment() {
 
     private fun updateUI(user: FirebaseUser?) {
         user?.let { user ->
-            Toast.makeText(context!!.applicationContext, "로그인 중입니다. 잠시만 기다려주세요", Toast.LENGTH_SHORT)
+            Toast.makeText(context!!.applicationContext, getString(R.string.str_wait_login), Toast.LENGTH_SHORT)
                 .show()
 
             user.getIdToken(true)
@@ -252,7 +232,7 @@ class FragmentLoginContainer : BaseFragment() {
 
 
         } ?: kotlin.run {
-            Toast.makeText(context!!.applicationContext, "로그인 실패", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context!!.applicationContext,getString(R.string.str_login_failed), Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -304,15 +284,11 @@ class FragmentLoginContainer : BaseFragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        //Session.getCurrentSession().removeCallback(callback)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // Facebook 로그인 인텐트 응답
         callbackManager.onActivityResult(requestCode, resultCode, data)
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            Log.d(REQUEST_TAG, "session get current session")
-            return
-        }
 
         // Google 로그인 인텐트 응답
         if (requestCode === RC_SIGN_IN) {
@@ -354,101 +330,4 @@ class FragmentLoginContainer : BaseFragment() {
         btn_register.setOnClickListener(listener)
     }
 
-    val REQUEST_TAG = "REQUEST_TAG"
-    /**
-     * Kakao 사용자 정보 가져오기
-     */
-    private fun getHashKey(context: Context): String? {
-        try {
-            if (Build.VERSION.SDK_INT >= 28) {
-                val packageInfo = getPackageInfo(context, PackageManager.GET_SIGNING_CERTIFICATES)
-                val signatures = packageInfo.signingInfo.apkContentsSigners
-                val md = MessageDigest.getInstance("SHA")
-                for (signature in signatures) {
-                    md.update(signature.toByteArray())
-                    return String(Base64.encode(md.digest(), NO_WRAP))
-                }
-            } else {
-                val packageInfo =
-                    getPackageInfo(context, PackageManager.GET_SIGNATURES) ?: return null
-
-                for (signature in packageInfo!!.signatures) {
-                    try {
-                        val md = MessageDigest.getInstance("SHA")
-                        md.update(signature.toByteArray())
-                        return Base64.encodeToString(md.digest(), Base64.NO_WRAP)
-                    } catch (e: NoSuchAlgorithmException) {
-                        Log.d(REQUEST_TAG, "Unable to get MessageDigest. signature=$signature")
-                    }
-                }
-            }
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
-
-    private inner class SessionCallback : ISessionCallback {
-
-        override fun onSessionOpenFailed(exception: KakaoException?) {
-            Log.e(TAG, "Session Call back :: onSessionOpenFailed: ${exception?.message}")
-            Toast.makeText(
-                context!!.applicationContext,
-                "카카오 로그인 실패", Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        override fun onSessionOpened() {
-            Log.e(TAG, "카카오 로그인 성공 ")
-            Toast.makeText(
-                context!!.applicationContext,
-                "카카오 로그인 성공", Toast.LENGTH_SHORT
-            ).show()
-            /** 사용자에 대한 정보를 가져온다 **/
-            val keys = ArrayList<String>()
-            keys.add("emailNeedsAgreement")
-            keys.add("ageRangeNeedsAgreement")
-            keys.add("birthdayNeedsAgreement")
-            keys.add("genderNeedsAgreement")
-
-            keys.add("properties.nickname")
-            keys.add("properties.profile_image")
-            keys.add("kakao_account.email")
-            keys.add("kakao_account.age_range")
-            keys.add("kakao_account.birthday")
-            keys.add("kakao_account.gender")
-
-            UserManagement.getInstance().me(keys, object : MeV2ResponseCallback() {
-
-                override fun onFailure(errorResult: ErrorResult?) {
-                    Log.e(TAG, "Session Call back :: on failed ${errorResult?.errorMessage}")
-                    Toast.makeText(
-                        context!!.applicationContext,
-                        "카카오 사용자 정보 가져오기 실패", Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onSessionClosed(errorResult: ErrorResult?) {
-                    Log.e(TAG, "Session Call back :: onSessionClosed ${errorResult?.errorMessage}")
-                    Toast.makeText(
-                        context!!.applicationContext,
-                        "카카오 세션 닫힘", Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onSuccess(result: MeV2Response?) {
-                    Toast.makeText(
-                        context!!.applicationContext,
-                        "카카오 사용자 정보 가져오기 성공", Toast.LENGTH_SHORT
-                    ).show()
-                    // register or login
-                    Log.e(TAG, result.toString())
-                }
-
-            })
-        }
-    }
 }

@@ -19,6 +19,7 @@ object BaseOkhttpClient : OkHttpClient() {
     init {
         client = OkHttpClient()
         handler = Handler()
+
     }
 
     fun request(

@@ -177,7 +177,7 @@ class FragmentConcernDetail : BaseFragment() {
         mBean = bean
         tv_like_cnt.text = bean.post.votes
         tv_concern_title.text = bean.post.title
-
+        tv_date.text = Utils.convertFromDate(bean.post.register_date)
         tv_indicator.text = "0 / 0"
         bean.images?.let {
             if (it.isNotEmpty()) {
@@ -720,19 +720,18 @@ class FragmentConcernDetail : BaseFragment() {
                 val tvSilver = h.getItemView<TextView>(R.id.tv_silver)
                 val tvBronze = h.getItemView<TextView>(R.id.tv_bronze)
                 val llBg = h.getItemView<LinearLayout>(R.id.ll_bg)
-
+                val tvDate = h.getItemView<TextView>(R.id.tv_date)
                 if (getItemViewType(i) == RV_TYPE_ADOPTED) {
                     val bean = mAdapter!!.get(i) as AdoptedRePost
-
+                    tvDate.text = Utils.convertFromDate(bean.register_date)
 //                    if (Comm_Prefs.getUserProfileIndex() == mBean?.post?.profile_idx) {
 //                        tvAdoption.visibility = VISIBLE
 //                    } else {
 //
 //                    }
                     tvAdoption.visibility = GONE
-
                     llBg.setBackgroundColor(ContextCompat.getColor(it, R.color.off_white_two))
-
+                    tvDate.setBackgroundColor(ContextCompat.getColor(it, R.color.off_white_two))
                     tvLikeCnt.text = bean.votes
                     tvContents.text = bean.content
 
@@ -743,7 +742,7 @@ class FragmentConcernDetail : BaseFragment() {
                             .placeholder(R.drawable.drawer_user)
                             .into(ivProfile)
                     }
-
+                    tvContents.minHeight = Utils.dpToPixel(it,63f)
                     if (bean.auth) {
                         h.itemView.setOnLongClickListener {
                             showReConcernPopup(tvContents, bean.idx!!, bean.nickname, bean.content)
@@ -779,16 +778,23 @@ class FragmentConcernDetail : BaseFragment() {
 
                 } else {
                     val bean = mAdapter!!.get(i) as RePost
-
+                    tvDate.text = Utils.convertFromDate(bean.register_date)
                     if (Comm_Prefs.getUserProfileIndex() == mBean?.post?.profile_idx) {
                         tvAdoption.visibility =
-                            if (mBean?.adopted_re_post?.idx == null) VISIBLE else GONE
+                            if (mBean?.adopted_re_post?.idx == null){
+                                tvContents.minHeight = Utils.dpToPixel(it,91f)
+                                VISIBLE
+                            } else{
+                                tvContents.minHeight = Utils.dpToPixel(it,63f)
+                                GONE
+                            }
                     } else {
+                        tvContents.minHeight = Utils.dpToPixel(it,63f)
                         tvAdoption.visibility = GONE
                     }
 
                     llBg.setBackgroundColor(ContextCompat.getColor(it, R.color.white))
-
+                    tvDate.setBackgroundColor(ContextCompat.getColor(it, R.color.white))
                     tvLikeCnt.text = bean.votes
                     tvContents.text = bean.content
 
@@ -842,4 +848,6 @@ class FragmentConcernDetail : BaseFragment() {
             return RV_TYPE_ITEM
         }
     }
+
+
 }

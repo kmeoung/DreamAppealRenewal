@@ -260,16 +260,17 @@ class FragmentDreamPresent : BaseFragment(), IORecyclerViewListener,
             iv_cheering.isSelected = bean.status
             tv_dream_level.text = String.format("Lv.%02d", bean.level)
             tv_dream_name.text = when (bean.profile_order) {
-                0 -> getString(R.string.str_first_dream)
-                1 -> getString(R.string.str_second_dream)
-                2 -> getString(R.string.str_third_dream)
-                3 -> getString(R.string.str_forth_dream)
-                4 -> getString(R.string.str_fifth_dream)
-                5 -> getString(R.string.str_sixth_dream)
-                6 -> getString(R.string.str_seventh_dream)
-                7 -> getString(R.string.str_eighth_dream)
-                8 -> getString(R.string.str_ninth_dream)
-                9 -> getString(R.string.str_tenth_dream)
+                1 -> getString(R.string.str_first_dream)
+                2 -> getString(R.string.str_second_dream)
+                3 -> getString(R.string.str_third_dream)
+                4 -> getString(R.string.str_forth_dream)
+                5 -> getString(R.string.str_fifth_dream)
+                6 -> getString(R.string.str_sixth_dream)
+
+                7 -> getString(R.string.str_seventh_dream)
+                8 -> getString(R.string.str_eighth_dream)
+                9 -> getString(R.string.str_ninth_dream)
+                10 -> getString(R.string.str_tenth_dream)
                 else -> getString(R.string.str_first_dream)
             }
 

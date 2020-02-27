@@ -7,6 +7,8 @@ import com.facebook.AccessToken
 import com.facebook.FacebookSdk
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 
 object Comm_Prefs {
 
@@ -22,10 +24,22 @@ object Comm_Prefs {
         setPushToken(null)
         setNotification(true)
         setSNSToken(null)
+        onClickLogout()
         // Sns 로그인 로그아웃
         AccessToken.setCurrentAccessToken(null)
         LoginManager.getInstance().logOut()
         FirebaseAuth.getInstance().signOut()
+    }
+
+    /**
+     * KaKao Logout
+     */
+    private fun onClickLogout() {
+        UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
+            override fun onCompleteLogout() {
+
+            }
+        })
     }
 
     /**

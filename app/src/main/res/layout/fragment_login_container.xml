@@ -49,14 +49,12 @@
                     android:textSize="16dp" />
 
             <com.kakao.usermgmt.LoginButton
-                    android:id="@+id/com_kakao_login"
+                    android:id="@+id/login_kakao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30.3dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="30.3dp"
-                    android:visibility="gone"/>
+                    android:layout_marginLeft="30.3dp"
+                    android:layout_marginRight="30.3dp"/>
 
             <com.google.android.gms.common.SignInButton
                     android:id="@+id/login_google"

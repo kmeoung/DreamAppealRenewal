@@ -13,6 +13,7 @@ import com.truevalue.dreamappeal.base.BaseActivity
 import com.truevalue.dreamappeal.fragment.FragmentSearchAppealer
 import com.truevalue.dreamappeal.fragment.FragmentSearchBoard
 import com.truevalue.dreamappeal.fragment.FragmentSearchTag
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.activity_search.*
 
 class ActivitySearch : BaseActivity() {
@@ -114,6 +115,7 @@ class ActivitySearch : BaseActivity() {
                         setSearchType(TYPE_TAG)
                 }
                 iv_cancel -> {
+                    Utils.downKeyBoard(this@ActivitySearch)
                     et_search.setText("")
                 }
             }
@@ -150,6 +152,7 @@ class ActivitySearch : BaseActivity() {
      */
     private fun setSearchType(search_type: Int) {
         searchSetText("", false)
+        Utils.downKeyBoard(this@ActivitySearch)
         when (search_type) {
             TYPE_APPEALER -> {
                 tv_appealer.isSelected = true

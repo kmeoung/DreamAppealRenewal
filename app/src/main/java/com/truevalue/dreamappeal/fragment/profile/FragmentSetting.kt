@@ -13,6 +13,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import com.truevalue.dreamappeal.R
+import com.truevalue.dreamappeal.activity.ActivityCredits
 import com.truevalue.dreamappeal.activity.ActivityMain
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.fragment.FragmentConfirmLeave
@@ -155,12 +156,8 @@ class FragmentSetting : BaseFragment() {
                     val intent = Intent(ACTION_VIEW, Uri.parse("http://${tv_site.text}"))
                     startActivity(intent)
                 }
-                tv_license_1->{
-                    val intent = Intent(ACTION_VIEW, Uri.parse("https://creativecommons.org/licenses/by/3.0/"))
-                    startActivity(intent)
-                }
-                tv_license_2->{
-                    val intent = Intent(ACTION_VIEW, Uri.parse("https://icons8.com/vue-static/landings/pricing/icons8-license.pdf"))
+                tv_credits_description->{
+                    val intent = Intent(context!!, ActivityCredits::class.java)
                     startActivity(intent)
                 }
             }
@@ -170,7 +167,6 @@ class FragmentSetting : BaseFragment() {
         tv_privacy_policy.setOnClickListener(listener)
         tv_leave_member.setOnClickListener(listener)
         tv_site.setOnClickListener(listener)
-        tv_license_1.setOnClickListener(listener)
-        tv_license_2.setOnClickListener(listener)
+        tv_credits_description.setOnClickListener(listener)
     }
 }

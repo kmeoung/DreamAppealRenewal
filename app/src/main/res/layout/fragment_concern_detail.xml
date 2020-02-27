@@ -18,11 +18,11 @@
 
 
         <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsv_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/white_six"
-                android:id="@+id/nsv_scroll">
+                android:background="@color/white_six">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -78,6 +78,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:autoLink="all"
                             android:background="@color/white"
                             android:ellipsize="end"
                             android:fontFamily="@font/nanum_square_round_b"
@@ -137,7 +138,7 @@
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:text="10 / 10"
                                 android:textColor="@color/white"
-                                android:textSize="10sp"/>
+                                android:textSize="10sp" />
 
                     </LinearLayout>
 
@@ -148,15 +149,30 @@
                         android:id="@+id/tv_contents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
+                        android:autoLink="all"
                         android:background="@color/white"
                         android:fontFamily="@font/nanum_square_round_r"
                         android:paddingLeft="19.7dp"
                         android:paddingTop="16dp"
                         android:paddingRight="40dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="8dp"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="13.3sp" />
+
+                <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:background="@color/white"
+                        android:gravity="right"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="8dp"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/nanum_square_round_r"
+                        android:textSize="10sp" />
 
                 <!-- 유저 -->
 

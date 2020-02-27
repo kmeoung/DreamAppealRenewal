@@ -26,6 +26,7 @@ import com.truevalue.dreamappeal.bean.BeanFragmentConcern
 import com.truevalue.dreamappeal.fragment.dream_board.FragmentAddBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_concern.*
 import okhttp3.Call
 import org.json.JSONException
@@ -293,6 +294,7 @@ class FragmentConcern : BaseFragment() {
         val listener = View.OnClickListener {
             when (it) {
                 iv_my -> {
+                    Utils.downKeyBoard(activity!!)
                     (activity as ActivityMain).replaceFragment(
                         FragmentMyFame(),
                         addToBack = true,
@@ -300,6 +302,7 @@ class FragmentConcern : BaseFragment() {
                     )
                 }
                 ll_write -> {
+                    Utils.downKeyBoard(activity!!)
                     (activity as ActivityMain).replaceFragment(
                         FragmentAddBoard.newInstance(FragmentAddBoard.TYPE_ADD_CONCERN),
                         addToBack = true,
@@ -418,6 +421,7 @@ class FragmentConcern : BaseFragment() {
             tvReConcern.isSelected = (bean.adopted == 1)
 
             h.itemView.setOnClickListener {
+                Utils.downKeyBoard(activity!!)
                 (activity as ActivityMain).replaceFragment(
                     FragmentConcernDetail.newInstance(bean.idx),
                     addToBack = true,
@@ -471,6 +475,7 @@ class FragmentConcern : BaseFragment() {
                 tvReConcern.isSelected = (bean.adopted == 1)
 
                 h.itemView.setOnClickListener {
+                    Utils.downKeyBoard(activity!!)
                     (activity as ActivityMain).replaceFragment(
                         FragmentConcernDetail.newInstance(
                             bean.idx
@@ -486,5 +491,15 @@ class FragmentConcern : BaseFragment() {
             }
             return RV_TYPE_ITEM
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Utils.downKeyBoard(activity!!)
     }
 }

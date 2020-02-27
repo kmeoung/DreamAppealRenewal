@@ -70,18 +70,43 @@
                 android:layout_height="match_parent"
                 android:background="@color/white_six"/>
 
-        <TextView
-                android:id="@+id/tv_contents"
+        <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_r"
-                android:textColor="@color/black"
-                android:textSize="12.3sp"
-                android:paddingTop="11dp"
-                android:paddingBottom="11dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"/>
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tv_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="63dp"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:textColor="@color/black"
+                    android:textSize="12.3sp"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="15dp"
+                    android:text=""
+                    android:autoLink="all"
+                    android:paddingRight="15dp"/>
+
+            <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@color/white"
+                    android:gravity="right"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="8dp"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_square_round_r"
+                    android:textSize="10sp" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

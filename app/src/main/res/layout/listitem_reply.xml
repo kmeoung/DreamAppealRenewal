@@ -39,7 +39,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="@color/black"
-                    android:textSize="16.7sp" />
+                    android:textSize="15.7sp" />
 
             <TextView
                     android:id="@+id/tv_tag"
@@ -51,7 +51,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="@color/dark_indigo"
-                    android:textSize="16.7sp" />
+                    android:textSize="15.7sp" />
 
 
         </LinearLayout>

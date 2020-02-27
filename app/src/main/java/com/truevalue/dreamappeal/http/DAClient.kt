@@ -52,6 +52,27 @@ object DAClient {
     val POST_TYPE_IDEA = 2
 
     /**
+     * POST
+     * KAKAO LOGIN
+     */
+    fun kakaoLogin(nickname : String,
+                   email : String,
+                   token : String,
+                   callback: DAHttpCallback){
+        val params = DAHttpParams()
+        params.put("nickname",nickname)
+        params.put("email",email)
+        params.put("token",token)
+        BaseOkhttpClient.request(
+            HttpType.POST,
+            Comm_Param.URL_USERS_TOKENS_KAKAO,
+            null,
+            params,
+            callback
+        )
+    }
+
+    /**
      * PATCH
      * Push Token 업데이트
      */
@@ -71,6 +92,21 @@ object DAClient {
             )
         }
 
+    }
+
+    /**
+     * GET
+     * Credit 가져오기
+     */
+    fun getCredits(callback: DAHttpCallback){
+
+        BaseOkhttpClient.request(
+            HttpType.GET,
+            Comm_Param.CREDIT_API,
+            null,
+            null,
+            callback
+        )
     }
 
     /**

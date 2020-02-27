@@ -4,7 +4,7 @@ import com.truevalue.dreamappeal.BuildConfig
 
 object Comm_Param {
 
-    val REAL = BuildConfig.DEBUG
+    val REAL = !BuildConfig.DEBUG
     //    val REAL = true
     const val APP_NAME = "DreamAppeal"
 
@@ -18,8 +18,14 @@ object Comm_Param {
 //        "http://ec2-15-164-168-185.ap-northeast-2.compute.amazonaws.com:8080"
     // Kakao Addr
     const val KAKAO_ADDRESS_API = "https://dapi.kakao.com/v2/local/search/address.json"
+
     // API
     val URL_API = if (REAL) REAL_API else DEV_API
+
+
+
+    // Credits
+    val CREDIT_API = "$URL_API/docs/credits"
 
     const val PROFILE_INDEX = "PROFILE_INDEX"
 
@@ -308,4 +314,7 @@ object Comm_Param {
 
     //회원탈퇴
     val URL_USERS_DELETE = "$URL_USERS/delete"
+
+    // KAKAO login
+    val URL_USERS_TOKENS_KAKAO = "$URL_USERS_TOKENS/kakao"
 }

@@ -8,6 +8,7 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.fragment.dream_board.concern.FragmentConcern
 import com.truevalue.dreamappeal.fragment.dream_board.event.FragmentEvent
+import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_dream_board.*
 
 class FragmentDreamBoard : BaseFragment() {
@@ -71,6 +72,7 @@ class FragmentDreamBoard : BaseFragment() {
      */
     private fun setTabView(tab_type : Int){
         mTabViewType = tab_type
+        Utils.downKeyBoard(activity!!)
         when(tab_type){
             TAB_TYPE_EVENT->{
                 tv_event.isSelected = true
