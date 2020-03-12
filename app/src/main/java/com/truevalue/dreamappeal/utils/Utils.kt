@@ -543,7 +543,7 @@ object Utils {
                 override fun onStateChanged(id: Int, state: TransferState?) {
                     if (state == TransferState.COMPLETED) {
                         listener.onStateCompleted(id, state, uploadObserver.key)
-                        // todo : 모든 이미지가 성공했을 시 업로드
+                        // 모든 이미지가 성공했을 시 업로드 처리
                         if (++completeFile >= file.size) listener.onMutiStateCompleted(addressList)
                     }
                 }

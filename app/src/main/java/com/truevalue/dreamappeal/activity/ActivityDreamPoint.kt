@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
-import com.truevalue.dreamappeal.fragment.FragmentDreamPoint
+import com.truevalue.dreamappeal.fragment.dream_point.FragmentDreamPoint
 
 class ActivityDreamPoint : BaseActivity(){
 
@@ -19,7 +19,8 @@ class ActivityDreamPoint : BaseActivity(){
      * Normal Action
      */
     private fun onAction(){
-        replaceFragment(R.id.base_container, FragmentDreamPoint(),false)
+        replaceFragment(R.id.base_container,
+            FragmentDreamPoint(),false)
     }
 
     /**

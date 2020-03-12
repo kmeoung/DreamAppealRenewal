@@ -59,7 +59,7 @@ class ActivityIntro : BaseActivity() {
         startActivity(activityIntent)
 
         finish()
-        // TODO : Activity 애니메이션 없애기
+        //  Activity 애니메이션 없애기
 //            overridePendingTransition(0, 0);
         false
     })

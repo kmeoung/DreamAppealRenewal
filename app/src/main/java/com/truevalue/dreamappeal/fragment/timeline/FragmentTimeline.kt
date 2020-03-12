@@ -632,7 +632,6 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun showMoreMenu(ivMore: View, bean: BeanTimeline) {
         val popupMenu = PopupMenu(context!!, ivMore)
-        // todo : 레벨 변경 필요
         if (bean.post_type == FragmentActionPost.ACTION_POST) popupMenu.menu.add(getString(R.string.str_edit_level))
         // 퍼온 게시물은 수정 불가
         if (bean.copied == 0) popupMenu.menu.add(getString(R.string.str_edit))

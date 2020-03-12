@@ -10,86 +10,89 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingLeft="10.7dp"
-            android:paddingTop="12.3dp"
-            android:paddingBottom="11.3dp">
-        <!--꿈 프로필 이미지-->
-        <ImageView
-                android:id="@+id/iv_dream_profile"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginRight="10.3dp"
-                android:src="@drawable/drawer_user" />
-        <!--꿈 프로필 이미지-->
-
-        <!--꿈 수식어 및 꿈 명-->
-        <LinearLayout
-                android:id="@+id/ll_dream_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:orientation="vertical">
-
-            <TextView
-                    android:id="@+id/tv_value_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/nanum_pen"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="22.3sp"
-                    tools:text="" />
-
-            <TextView
-                    android:id="@+id/tv_job"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/bmjua"
-                    android:lines="1"
-                    android:maxLength="30"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="22.3sp"
-                    tools:text="" />
-
-        </LinearLayout>
-        <!--꿈 수식어 및 꿈 명-->
-
-        <ImageView
-                android:id="@+id/iv_action_more"
-                android:layout_width="45dp"
-                android:layout_height="30dp"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:src="@drawable/btn_more_black" />
-
-    </LinearLayout>
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/white_six" />
-
     <!--Contents-->
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
+
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10.7dp"
+                    android:paddingTop="12.3dp"
+                    android:paddingBottom="11.3dp">
+                <!--꿈 프로필 이미지-->
+                <ImageView
+                        android:id="@+id/iv_dream_profile"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginRight="10.3dp"
+                        android:src="@drawable/drawer_user" />
+                <!--꿈 프로필 이미지-->
+
+                <!--꿈 수식어 및 꿈 명-->
+                <LinearLayout
+                        android:id="@+id/ll_dream_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/tv_value_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/nanum_pen"
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="22.3sp"
+                            tools:text="" />
+
+                    <TextView
+                            android:id="@+id/tv_job"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/bmjua"
+                            android:lines="1"
+                            android:maxLength="30"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="22.3sp"
+                            tools:text="" />
+
+                </LinearLayout>
+                <!--꿈 수식어 및 꿈 명-->
+
+                <ImageView
+                        android:id="@+id/iv_action_more"
+                        android:layout_width="45dp"
+                        android:layout_height="30dp"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        android:src="@drawable/btn_more_black" />
+
+            </LinearLayout>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/white_six" />
+
 
             <LinearLayout
                     android:id="@+id/ll_object_step"

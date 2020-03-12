@@ -43,7 +43,6 @@
                 android:id="@+id/tv_addr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="14.3dp"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:text="@string/str_no_address"
                 android:textColor="@color/nice_blue"

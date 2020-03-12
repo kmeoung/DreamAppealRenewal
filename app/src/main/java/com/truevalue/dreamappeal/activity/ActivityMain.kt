@@ -278,7 +278,6 @@ class ActivityMain : BaseActivity() {
 
     /**
      * 하단 View 클릭 이미지 설정
-     * TODO : 이동이 따로 설정이 필요합니다
      */
     private fun initBottomView() {
         when (mMainViewType) {
@@ -319,7 +318,6 @@ class ActivityMain : BaseActivity() {
      * Init Fragment
      */
     private fun initFragment() {
-        // todo : 처음 페이지 설정 시 변경 필요
         when (mMainViewType) {
             MAIN_TYPE_HOME -> replaceFragment(FragmentDreamBoard(), false)
             MAIN_TYPE_TIMELINE -> replaceFragment(FragmentTimeline(), false)

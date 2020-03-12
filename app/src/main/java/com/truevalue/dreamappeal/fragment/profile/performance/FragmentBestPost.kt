@@ -352,7 +352,6 @@ class FragmentBestPost : BaseFragment() {
     private fun setData(bean: BeanAchivementPostDetail) {
         tv_title.text = bean.title
         iv_cheering.isSelected = bean.status
-        // todo : 아직 검증이 필요함
         setReadMore(tv_contents, bean.content, 3)
         tv_cheering.text = String.format("%d", bean.like_count)
         tv_comment.text = String.format("%d${getString(R.string.str_count)}", bean.comment_count)

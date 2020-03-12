@@ -275,7 +275,7 @@ class FragmentEvent : BaseFragment() {
                     } else {
                         tv_event_value_style.visibility = GONE
                     }
-                    val value = if (job.isNullOrEmpty()) "Value" else job
+                    val value = if (job.isNullOrEmpty()) getString(R.string.str_event_default_dream_name) else job
                     tv_event_job.text = "${value}에 도움될 소식"
                     tv_event_job.text = Utils.replaceTextColor(
                         context,

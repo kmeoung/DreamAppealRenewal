@@ -55,14 +55,16 @@ object DAClient {
      * POST
      * KAKAO LOGIN
      */
-    fun kakaoLogin(nickname : String,
-                   email : String,
-                   token : String,
-                   callback: DAHttpCallback){
+    fun kakaoLogin(
+        nickname: String,
+        email: String,
+        token: String,
+        callback: DAHttpCallback
+    ) {
         val params = DAHttpParams()
-        params.put("nickname",nickname)
-        params.put("email",email)
-        params.put("token",token)
+        params.put("nickname", nickname)
+        params.put("email", email)
+        params.put("token", token)
         BaseOkhttpClient.request(
             HttpType.POST,
             Comm_Param.URL_USERS_TOKENS_KAKAO,
@@ -98,7 +100,7 @@ object DAClient {
      * GET
      * Credit 가져오기
      */
-    fun getCredits(callback: DAHttpCallback){
+    fun getCredits(callback: DAHttpCallback) {
 
         BaseOkhttpClient.request(
             HttpType.GET,
@@ -683,7 +685,6 @@ object DAClient {
      * 꿈 목록 순서 변경
      */
     fun updateProfilesList() {
-        // todo : 생각이 필요함
     }
 
     /**
@@ -841,7 +842,6 @@ object DAClient {
         params.put("title", title)
         params.put("content", content)
         params.put("thumbnail_image", thumbnail_image)
-        // todo : 태그 확인 필요
 
 
         BaseOkhttpClient.request(
@@ -929,7 +929,6 @@ object DAClient {
         cur_profile_index: Int,
         callback: DAHttpCallback
     ) {
-        // todo : 아마 profile Index 가 필요할거 같습니다.
         val url = Comm_Param.URL_BLUEPRINTS_PRFOILE_CUR_PROFILE_IDX.replace(
             Comm_Param.PROFILE_INDEX,
             cur_profile_index.toString()
@@ -1714,6 +1713,44 @@ object DAClient {
     }
 
     /**
+     * POST
+     * 내 꿈 소개 댓글 등록 + 태그
+     * parent_idx > 0 일경우 리플
+     */
+    fun addProfileComment(
+        dst_profile_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        tag_profile_idx: Int?,
+        content: String,
+        callback: DAHttpCallback
+    ) {
+        if(tag_profile_idx != null && tag_profile_idx > 0) {
+            val url = Comm_Param.URL_PRESENT_COMMENTS_PROFILE_IDX_TAG_IDX.replace(
+                Comm_Param.DST_RPOFILE_INDEX,
+                dst_profile_idx.toString()
+            ).replace(Comm_Param.TAG_PROFILE_IDX, tag_profile_idx.toString())
+
+            val params = DAHttpParams()
+            params.put("writer_idx", writer_idx)
+            if (parent_idx > 0) {
+                params.put("parent_idx", parent_idx)
+            }
+            params.put("content", content)
+
+            BaseOkhttpClient.request(
+                HttpType.POST,
+                url,
+                getHttpHeader(),
+                params,
+                callback
+            )
+        }else{
+            addProfileComment(dst_profile_idx, writer_idx, parent_idx, content, callback)
+        }
+    }
+
+    /**
      * GET
      * 내 꿈 소개 댓글 조회
      */
@@ -1722,7 +1759,7 @@ object DAClient {
         callback: DAHttpCallback
     ) {
 
-        val url = Comm_Param.URL_PRESENT_COMMENTS_PROFILE_IDX.replace(
+        val url = Comm_Param.URL_PRESENT_COMMENTS_PROFILE_IDX_TAG.replace(
             Comm_Param.DST_RPOFILE_INDEX,
             dst_profile_idx.toString()
         )
@@ -1933,6 +1970,44 @@ object DAClient {
     }
 
     /**
+     * POST
+     * 실현성과 댓글 등록 + 태그
+     * parent_idx > 0 일경우 리플
+     */
+    fun addAchievementPostComment(
+        post_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        content: String,
+        tag_profile_idx: Int?,
+        callback: DAHttpCallback
+    ) {
+        if(tag_profile_idx != null && tag_profile_idx > 0) {
+            val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_POST_IDX_TAG_IDX.replace(
+                Comm_Param.POST_INDEX,
+                post_idx.toString()
+            ).replace(Comm_Param.TAG_PROFILE_IDX, tag_profile_idx.toString())
+
+            val params = DAHttpParams()
+            params.put("writer_idx", writer_idx)
+            if (parent_idx > 0) {
+                params.put("parent_idx", parent_idx)
+            }
+            params.put("content", content)
+
+            BaseOkhttpClient.request(
+                HttpType.POST,
+                url,
+                getHttpHeader(),
+                params,
+                callback
+            )
+        }else{
+            addAchievementPostComment(post_idx, writer_idx, parent_idx, content, callback)
+        }
+    }
+
+    /**
      * GET
      * 실현성과 댓글 조회
      */
@@ -1941,7 +2016,7 @@ object DAClient {
         callback: DAHttpCallback
     ) {
 
-        val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_POST_IDX.replace(
+        val url = Comm_Param.URL_ACHIEVEMENT_COMMENTS_POST_IDX_TAG.replace(
             Comm_Param.POST_INDEX,
             post_idx.toString()
         )
@@ -2009,7 +2084,46 @@ object DAClient {
 
     /**
      * POST
-     * 실현성과 댓글 등록
+     * 실현성과 댓글 등록 + 태그
+     * parent_idx > 0 일경우 리플
+     */
+    fun addActionPostComment(
+        post_idx: Int,
+        writer_idx: Int,
+        parent_idx: Int,
+        content: String,
+        tag_profile_idx:Int?,
+        callback: DAHttpCallback
+    ) {
+
+        if(tag_profile_idx != null && tag_profile_idx > 0) {
+            val url = Comm_Param.URL_ACTION_COMMENTS_POST_IDX_TAG_IDX.replace(
+                Comm_Param.POST_INDEX,
+                post_idx.toString()
+            ).replace(Comm_Param.TAG_PROFILE_IDX, tag_profile_idx.toString())
+
+            val params = DAHttpParams()
+            params.put("writer_idx", writer_idx)
+            if (parent_idx > 0) {
+                params.put("parent_idx", parent_idx)
+            }
+            params.put("content", content)
+
+            BaseOkhttpClient.request(
+                HttpType.POST,
+                url,
+                getHttpHeader(),
+                params,
+                callback
+            )
+        }else{
+            addActionPostComment(post_idx, writer_idx, parent_idx, content, callback)
+        }
+    }
+
+    /**
+     * POST
+     * 실현성과 댓글 등록 + 태그
      * parent_idx > 0 일경우 리플
      */
     fun addActionPostComment(
@@ -2050,7 +2164,7 @@ object DAClient {
         callback: DAHttpCallback
     ) {
 
-        val url = Comm_Param.URL_ACTION_COMMENTS_POST_IDX.replace(
+        val url = Comm_Param.URL_ACTION_COMMENTS_POST_IDX_TAG.replace(
             Comm_Param.POST_INDEX,
             post_idx.toString()
         )
@@ -3547,10 +3661,10 @@ object DAClient {
      * POST
      * 퍼가기 멤버 조회 - 검색
      */
-    fun getScrapMember(keyword : String,callback: DAHttpCallback) {
+    fun getScrapMember(keyword: String, callback: DAHttpCallback) {
 
         val params = DAHttpParams()
-        params.put("keyword",keyword)
+        params.put("keyword", keyword)
         BaseOkhttpClient.request(
             HttpType.POST,
             Comm_Param.URL_SHARE_SEARCH,

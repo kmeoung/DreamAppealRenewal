@@ -295,7 +295,9 @@ class FragmentNotification : BaseFragment() {
             rlSourceProfile.setOnClickListener {
                 if (bean.code != Noti_Param.BEST_PROFILE &&
                     bean.code != Noti_Param.BEST_ACTION &&
-                    bean.code != Noti_Param.BEST_IDEA
+                    bean.code != Noti_Param.BEST_IDEA &&
+                    bean.code != Noti_Param.NOTICES &&
+                    bean.code != Noti_Param.TARGET_NOTI
                 ) {
                     if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
                         profileChange(bean, object : ReplaceListener {

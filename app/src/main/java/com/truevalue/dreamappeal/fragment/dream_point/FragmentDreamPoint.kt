@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment
+package com.truevalue.dreamappeal.fragment.dream_point
 
 import android.os.Bundle
 import android.os.Handler

@@ -10,9 +10,9 @@ import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base.BaseActivity
-import com.truevalue.dreamappeal.fragment.FragmentSearchAppealer
-import com.truevalue.dreamappeal.fragment.FragmentSearchBoard
-import com.truevalue.dreamappeal.fragment.FragmentSearchTag
+import com.truevalue.dreamappeal.fragment.search.FragmentSearchAppealer
+import com.truevalue.dreamappeal.fragment.search.FragmentSearchBoard
+import com.truevalue.dreamappeal.fragment.search.FragmentSearchTag
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.activity_search.*
 
@@ -158,19 +158,22 @@ class ActivitySearch : BaseActivity() {
                 tv_appealer.isSelected = true
                 tv_board.isSelected = false
                 tv_tag.isSelected = false
-                replaceFragment(R.id.search_container, FragmentSearchAppealer(), false)
+                replaceFragment(R.id.search_container,
+                    FragmentSearchAppealer(), false)
             }
             TYPE_BOARD -> {
                 tv_appealer.isSelected = false
                 tv_board.isSelected = true
                 tv_tag.isSelected = false
-                replaceFragment(R.id.search_container, FragmentSearchBoard(), false)
+                replaceFragment(R.id.search_container,
+                    FragmentSearchBoard(), false)
             }
             TYPE_TAG -> {
                 tv_appealer.isSelected = false
                 tv_board.isSelected = false
                 tv_tag.isSelected = true
-                replaceFragment(R.id.search_container, FragmentSearchTag(), false)
+                replaceFragment(R.id.search_container,
+                    FragmentSearchTag(), false)
             }
         }
         mSearchType = search_type

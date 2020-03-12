@@ -358,7 +358,7 @@
     <string name="str_cancel">취소</string>
     <string name="str_write">글쓰기</string>
 
-    <string name="str_no_address">관심 지역 등록하기</string>
+    <string name="str_no_address">내 지역 설정하기</string>
 
     <string name="str_add_wish">소원 빌기</string>
     <string name="str_wish_title">소원 담벼락</string>
@@ -367,6 +367,8 @@
     <string name="str_wish_add_title">소원 등록하기</string>
     <string name="str_concern_add_title">고민 / 질문 등록하기</string>
     <string name="str_concern_title">고민 / 질문</string>
+
+    <string name="str_event_default_dream_name">꿈 명칭 Value</string>
 
 
     <string name="str_addr_error">찾으시는 범위가 너무 넓습니다</string>
@@ -394,8 +396,8 @@
     <string name="str_appeal_rank">어필 랭킹</string>
     <string name="str_fame_rank_title">명성도 랭킹</string>
 
-    <string name="str_no_data_1">내 꿈과 팔로우중인 꿈의 게시물이 나타납니다</string>
-    <string name="str_no_data_2">관심가는 꿈을 팔로우해서 소식을 받아보세요</string>
+    <string name="str_no_data_1">관심가는 꿈을 팔로우해서 소식을 받아보세요</string>
+    <string name="str_no_data_2">내 꿈과 팔로우중인 꿈의 게시물이 나타납니다</string>
 
     <string name="str_nickname_limit">닉네임은 최대 12자까지 가능합니다</string>
     <string name="str_notification_change_profile">해당하는 프로필로 변경 후 이동합니다</string>

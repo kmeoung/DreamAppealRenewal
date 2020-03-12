@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment
+package com.truevalue.dreamappeal.fragment.search
 
 import android.content.Intent
 import android.os.Bundle
@@ -39,7 +39,7 @@ class FragmentSearchBoard : BaseFragment(), ActivitySearch.IOSearchListener {
         /**
          * Tag 게시물 검색용
          */
-        fun newInstance(tag_keyword :String) : FragmentSearchBoard{
+        fun newInstance(tag_keyword :String) : FragmentSearchBoard {
             val fragment = FragmentSearchBoard()
             fragment.mSearchTag = tag_keyword
             return fragment

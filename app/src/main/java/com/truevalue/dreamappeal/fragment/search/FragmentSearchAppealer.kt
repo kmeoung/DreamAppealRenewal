@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment
+package com.truevalue.dreamappeal.fragment.search
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -42,7 +42,8 @@ class FragmentSearchAppealer : BaseFragment(), ActivitySearch.IOSearchListener {
     private var mSearchType : Int
 
     init {
-        mSearchType = TYPE_LOCATION
+        mSearchType =
+            TYPE_LOCATION
         mAdapter = null
         mAddr = null
     }

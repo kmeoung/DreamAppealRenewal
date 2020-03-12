@@ -229,7 +229,6 @@ class FragmentConcernDetail : BaseFragment() {
         tv_user.text =
             "${bean.post_writer.value_style} ${bean.post_writer.job} ${bean.post_writer.nickname}"
         tv_fame.text = bean.post_writer.reputation
-        // todo : 아직 지정되지 않음
 
         bean.re_posts?.let {
             tv_comment_cnt.text = bean.re_posts?.size.toString()

@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment
+package com.truevalue.dreamappeal.fragment.dream_point
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,11 +21,11 @@ import kotlinx.android.synthetic.main.fragment_dream_point_usage.*
 import okhttp3.Call
 import org.json.JSONObject
 import java.text.SimpleDateFormat
-import java.util.*
 
 class FragmentDreamPointUsage : BaseFragment() {
 
-    private var mViewType = VIEW_TYPE_GET
+    private var mViewType =
+        VIEW_TYPE_GET
 
     private var mAdapter: BaseRecyclerViewAdapter2<BeanDreamPointGetUsage>? = null
 

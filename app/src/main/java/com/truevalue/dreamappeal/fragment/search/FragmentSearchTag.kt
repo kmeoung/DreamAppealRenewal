@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment
+package com.truevalue.dreamappeal.fragment.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,17 +17,14 @@ import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.base.BaseRecyclerViewAdapter
 import com.truevalue.dreamappeal.base.BaseViewHolder
 import com.truevalue.dreamappeal.base.IORecyclerViewListener
-import com.truevalue.dreamappeal.bean.BeanAddress
 import com.truevalue.dreamappeal.bean.BeanHistoryTag
 import com.truevalue.dreamappeal.bean.BeanPopularTag
-import com.truevalue.dreamappeal.bean.BeanSearchBoard
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Utils
 import kotlinx.android.synthetic.main.fragment_search_board.*
 import okhttp3.Call
 import org.json.JSONObject
-import java.text.SimpleDateFormat
 
 class FragmentSearchTag : BaseFragment(), ActivitySearch.IOSearchListener {
 

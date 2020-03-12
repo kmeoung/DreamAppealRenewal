@@ -43,22 +43,24 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
-    private var mIndex : Int
+    private var mIndex: Int
     private var mViewType: String?
-    private var mParentIdx : Int
-    private var mIsEdit : Boolean
+    private var mParentIdx: Int
+    private var mTagIdx: Int
+    private var mIsEdit: Boolean
 
     init {
         mIndex = -1
         mViewType = null
         mParentIdx = -1
+        mTagIdx = -1
         mIsEdit = false
     }
 
     companion object {
         private const val RV_TYPE_COMMENT = 0
         private const val RV_TYPE_REPLY = 1
-        
+
         const val EXTRA_VIEW_TYPE = "EXTRA_VIEW_TYPE"
 
         const val EXTRA_TYPE_PROFILE = "EXTRA_TYPE_PROFILE"
@@ -103,7 +105,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
         intent.getStringExtra(EXTRA_OFF_KEYBOARD)?.let {
             bottom_comment.visibility = VISIBLE
-        }?:kotlin.run {
+        } ?: kotlin.run {
             et_comment.isFocusableInTouchMode = true
             et_comment.requestFocus()
             val imm =
@@ -118,7 +120,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 i: Int,
                 i1: Int,
                 i2: Int
-            ) {}
+            ) {
+            }
 
             override fun onTextChanged(
                 charSequence: CharSequence,
@@ -162,17 +165,17 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     private fun onClickView() {
         val listener = View.OnClickListener {
             when (it) {
-                iv_back_black ->{
+                iv_back_black -> {
                     setResult(RESULT_OK)
                     finish()
                 }
                 btn_commit_comment -> if (btn_commit_comment.isSelected) if (mIsEdit) updateComment(
                     mParentIdx
-                ) else addComment(mParentIdx)
+                ) else addComment(mParentIdx, mTagIdx)
                 iv_writer_reply_close -> {
                     initComment()
                 }
-                tv_title->{
+                tv_title -> {
                     rv_comments.smoothScrollToPosition(0)
                 }
             }
@@ -206,8 +209,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
-                }else{
-                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                } else {
+                    Toast.makeText(
+                        this@ActivityComment.applicationContext,
+                        message,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -218,6 +225,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 발전계획 댓글 가져오기
      */
+    @Deprecated("Blueprint 댓글 현재 비 활성화")
     private fun getBlueprintComments(isScroll: Boolean) {
         val dst_profile_idx = mIndex
         DAClient.getBlueprintComment(dst_profile_idx, object : DAHttpCallback {
@@ -237,8 +245,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
-                }else{
-                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                } else {
+                    Toast.makeText(
+                        this@ActivityComment.applicationContext,
+                        message,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -268,8 +280,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
-                }else{
-                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                } else {
+                    Toast.makeText(
+                        this@ActivityComment.applicationContext,
+                        message,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -299,8 +315,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
 
                 if (code == DAClient.SUCCESS) {
                     getCommentAction(body, isScroll)
-                }else{
-                    Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
+                } else {
+                    Toast.makeText(
+                        this@ActivityComment.applicationContext,
+                        message,
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -310,12 +330,12 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
     /**
      * 댓글 추가
      */
-    private fun addComment(parent_idx: Int) {
+    private fun addComment(parent_idx: Int, tag_idx: Int) {
         when (mViewType) {
-            EXTRA_TYPE_PROFILE -> addPresentComment(parent_idx)
+            EXTRA_TYPE_PROFILE -> addPresentComment(parent_idx, tag_idx)
             EXTRA_TYPE_BLUEPRINT -> addBlueprintComment(parent_idx)
-            EXTRA_TYPE_ACHIEVEMENT_POST -> addAchievementPostComment(parent_idx)
-            EXTRA_TYPE_ACTION_POST -> addActionPostComment(parent_idx)
+            EXTRA_TYPE_ACHIEVEMENT_POST -> addAchievementPostComment(parent_idx, tag_idx)
+            EXTRA_TYPE_ACTION_POST -> addActionPostComment(parent_idx, tag_idx)
         }
     }
 
@@ -323,7 +343,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 내 꿈 소개 댓글 추가
      */
-    private fun addPresentComment(parent_idx: Int) {
+    private fun addPresentComment(parent_idx: Int, tag_idx: Int) {
         val dst_profile_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
@@ -331,6 +351,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             dst_profile_idx,
             writer_idx,
             parent_idx,
+            tag_idx,
             contents,
             sendCommentListener
         )
@@ -340,6 +361,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 발전계획 댓글 추가
      */
+    @Deprecated("Blueprint 댓글 비 활성화")
     private fun addBlueprintComment(parent_idx: Int) {
         val dst_profile_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
@@ -357,7 +379,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 실현성과 댓글 추가
      */
-    private fun addAchievementPostComment(parent_idx: Int) {
+    private fun addAchievementPostComment(parent_idx: Int, tag_idx: Int) {
         val post_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
@@ -366,6 +388,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             writer_idx,
             parent_idx,
             contents,
+            tag_idx,
             sendCommentListener
         )
     }
@@ -374,7 +397,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      * Http
      * 실천인증 댓글 추가
      */
-    private fun addActionPostComment(parent_idx: Int) {
+    private fun addActionPostComment(parent_idx: Int, tag_idx: Int) {
         val post_idx = mIndex
         val writer_idx = Comm_Prefs.getUserProfileIndex()
         val contents = et_comment.text.toString()
@@ -383,6 +406,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             writer_idx,
             parent_idx,
             contents,
+            tag_idx,
             sendCommentListener
         )
     }
@@ -506,7 +530,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
             .circleCrop()
             .into(iv_profile)
 
-        mAdapter?.let { mAdapter->
+        mAdapter?.let { mAdapter ->
             mAdapter.clear()
             val parent: ArrayList<BeanCommentDetail> =
                 ArrayList()
@@ -517,7 +541,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     comments.getJSONObject(i).toString(),
                     BeanCommentDetail::class.java
                 )
-                if (bean.parent_idx === 0) {
+                if (bean.parent_idx == 0) {
                     parent.add(bean)
                 } else {
                     reply[bean.parent_idx] = reply[bean.parent_idx] ?: ArrayList()
@@ -541,9 +565,9 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 }
             }
             if (isScroll && mAdapter.size() > 0) {
-                if(mAdapter.size() > 15){
+                if (mAdapter.size() > 15) {
                     rv_comments.scrollToPosition(mAdapter.size() - 1)
-                }else {
+                } else {
                     rv_comments.smoothScrollToPosition(mAdapter.size() - 1)
                 }
             }
@@ -584,7 +608,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 et_comment.setText("")
                 initComment()
                 initData(true)
-            }else{
+            } else {
                 Toast.makeText(this@ActivityComment.applicationContext, message, Toast.LENGTH_SHORT)
                     .show()
             }
@@ -658,22 +682,25 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                     val tvValueStyle = h.getItemView<TextView>(R.id.tv_value_style)
                     val tvJob = h.getItemView<TextView>(R.id.tv_job)
 
-                    tvValueStyle.text = if(bean.value_style.isNullOrEmpty()) "" else bean.value_style
-                    tvJob.text =  "${if(bean.job.isNullOrEmpty()) "" else bean.job} ${if(bean.name.isNullOrEmpty()) "" else bean.name}"
+                    tvValueStyle.text =
+                        if (bean.value_style.isNullOrEmpty()) "" else bean.value_style
+                    tvJob.text =
+                        "${if (bean.job.isNullOrEmpty()) "" else bean.job} ${if (bean.name.isNullOrEmpty()) "" else bean.name}"
                 } else {
                     val tvName = h.getItemView<TextView>(R.id.tv_name)
                     val tvTag = h.getItemView<TextView>(R.id.tv_tag)
-                    tvName.text = if(bean.name.isNullOrEmpty()) "" else bean.name
-                    tvTag.text = if(bean.parent_name.isNullOrEmpty()) "" else "@${bean.parent_name}"
+                    tvName.text = if (bean.name.isNullOrEmpty()) "" else bean.name
+                    tvTag.text =
+                        if (bean.tag_profile_idx != null) "@${bean.tag_name}" else if (bean.parent_name.isNullOrEmpty()) "" else "@${bean.parent_name}"
                 }
-                tvComment.text = if(bean.content.isNullOrEmpty()) "" else bean.content
+                tvComment.text = if (bean.content.isNullOrEmpty()) "" else bean.content
 
-                if(bean.image.isNullOrEmpty()) {
+                if (bean.image.isNullOrEmpty()) {
                     Glide.with(this@ActivityComment)
                         .load(R.drawable.drawer_user)
                         .circleCrop()
                         .into(ivProfile)
-                }else{
+                } else {
                     Glide.with(this@ActivityComment)
                         .load(bean.image)
                         .placeholder(R.drawable.drawer_user)
@@ -693,7 +720,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 ivLike.setOnClickListener(likeClickListener)
                 tvLike.setOnClickListener(likeClickListener)
 
-                tvAddReply.setOnClickListener{
+                tvAddReply.setOnClickListener {
                     setReplyComment(bean)
                 }
                 if (bean.writer_idx == Comm_Prefs.getUserProfileIndex()) {
@@ -701,8 +728,8 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                         showPopupMenu(tvComment, bean)
                         true
                     }
-                }else{
-                    llProfile.setOnClickListener{
+                } else {
+                    llProfile.setOnClickListener {
                         val intent = Intent()
                         intent.putExtra(RESULT_REPLACE_USER_IDX, bean.writer_idx)
                         setResult(RESULT_CODE, intent)
@@ -740,13 +767,17 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
                 if (code == DAClient.SUCCESS) {
                     val json = JSONObject(body)
                     val status = json.getBoolean("status")
-                   bean.status = status
-                    bean.like_count = if (bean.status) { bean.like_count + 1 } else { bean.like_count - 1 }
+                    bean.status = status
+                    bean.like_count = if (bean.status) {
+                        bean.like_count + 1
+                    } else {
+                        bean.like_count - 1
+                    }
 
                     mAdapter?.let {
                         it.notifyDataSetChanged()
                     }
-                }else{
+                } else {
                     Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -771,7 +802,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         tv_writer.text = bean.name
         val idx = if (bean.parent_idx > 0) bean.parent_idx else bean.idx
         mParentIdx = idx
-
+        mTagIdx = bean.writer_idx
         et_comment.isFocusableInTouchMode = true
         et_comment.requestFocus()
         val imm =
@@ -804,6 +835,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
      */
     private fun initComment() {
         mParentIdx = -1
+        mTagIdx = -1
         tv_writer.text = ""
         mIsEdit = false
         ll_writer.visibility = GONE

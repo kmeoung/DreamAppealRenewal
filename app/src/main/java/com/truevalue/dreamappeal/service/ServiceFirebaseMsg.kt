@@ -74,15 +74,7 @@ class ServiceFirebaseMsg : FirebaseMessagingService() {
             e.printStackTrace()
         }
         bean?.let {
-            // todo : 푸시 에서 날라오는 Device Token이 현재 Device Token과 일치하지 않을 경우 Push를 날리지 않음
-            if (!Comm_Prefs.getPushToken().isNullOrEmpty()) {
-                bean.registrationTokens?.let { token ->
-                    if (token == Comm_Prefs.getPushToken()) {
-                        sendNewNotification(it, id)
-                    }
-
-                }
-            }
+            sendNewNotification(it, id)
         }
     }
 

@@ -37,6 +37,7 @@ class FragmentMyProfileEdit : BaseFragment() {
 
     /**
      * privates data
+     * 데이터 공개 / 비공개 설정
      *
      * 0 : public
      * 1 : private
@@ -185,6 +186,7 @@ class FragmentMyProfileEdit : BaseFragment() {
             if (mBean!!.private != null) {
                 /**
                  * privates data
+                 * 사용자 데이터 공개 / 비공개 설정
                  *
                  * 0 : public
                  * 1 : private
@@ -321,6 +323,7 @@ class FragmentMyProfileEdit : BaseFragment() {
                 iv_lock_gender -> iv_lock_gender.isSelected = !iv_lock_gender.isSelected
                 iv_lock_nickname -> iv_lock_nickname.isSelected = !iv_lock_nickname.isSelected
                 iv_lock_name -> iv_lock_name.isSelected = !iv_lock_name.isSelected
+                iv_lock_number->iv_lock_number.isSelected = !iv_lock_number.isSelected
                 tv_gender -> setGenderView()
                 (activity as ActivityMyProfileContainer).iv_check -> {
                     if ((activity as ActivityMyProfileContainer).iv_check.isSelected) {
@@ -342,6 +345,7 @@ class FragmentMyProfileEdit : BaseFragment() {
         iv_lock_gender.setOnClickListener(listener)
         iv_lock_nickname.setOnClickListener(listener)
         iv_lock_name.setOnClickListener(listener)
+        iv_lock_number.setOnClickListener(listener)
         tv_gender.setOnClickListener(listener)
         tv_address.setOnClickListener(listener)
     }
