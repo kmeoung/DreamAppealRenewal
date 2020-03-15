@@ -83,7 +83,7 @@ class ActivityComment : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
         // init RecyclerView Adapter
         initAdapter()
         // init Data
-        initData(false)
+        initData(true)
         // View Click Listener
         onClickView()
     }

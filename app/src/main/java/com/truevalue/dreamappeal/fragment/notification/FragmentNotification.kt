@@ -285,7 +285,7 @@ class FragmentNotification : BaseFragment() {
                     .circleCrop()
                     .placeholder(R.drawable.drawer_user)
                     .into(ivProfile)
-            }else{
+            } else {
                 Glide.with(context)
                     .load(R.drawable.drawer_user)
                     .circleCrop()
@@ -319,7 +319,7 @@ class FragmentNotification : BaseFragment() {
 
             ivProfile.setBackgroundColor(ContextCompat.getColor(context!!, R.color.transparent))
             when (bean.code) {
-                Noti_Param.SHARE_PROFILE->{
+                Noti_Param.SHARE_PROFILE -> {
                     ivFlame.visibility = GONE
                     h.itemView.setOnClickListener {
                         checkNoti(bean)
@@ -340,32 +340,83 @@ class FragmentNotification : BaseFragment() {
                         }
                     }
                 }
-                Noti_Param.SHARE_ACTION->{
+                Noti_Param.SHARE_ACTION -> {
                     ivFlame.visibility = GONE
                     h.itemView.setOnClickListener {
                         checkNoti(bean)
                         if (Comm_Prefs.getUserProfileIndex() != bean.profile_idx) {
                             profileChange(bean, object : ReplaceListener {
                                 override fun replace() {
+                                    when (bean.post_type) {
+                                        DAClient.POST_TYPE_ACTION -> {
+                                            (activity as ActivityMain).replaceFragment(
+                                                FragmentActionPost.newInstance(
+                                                    bean.item_idx,
+                                                    bean.source_idx
+                                                ),
+                                                true
+                                            )
+                                        }
+                                        DAClient.POST_TYPE_IDEA -> {
+                                            (activity as ActivityMain).replaceFragment(
+                                                FragmentActionPost.newInstance(
+                                                    bean.item_idx,
+                                                    bean.source_idx,
+                                                    FragmentActionPost.TYPE_DREAM_NOTE_IDEA
+                                                ),
+                                                true
+                                            )
+                                        }
+                                        DAClient.POST_TYPE_LIFE -> {
+                                            (activity as ActivityMain).replaceFragment(
+                                                FragmentActionPost.newInstance(
+                                                    bean.item_idx,
+                                                    bean.source_idx,
+                                                    FragmentActionPost.TYPE_DREAM_NOTE_LIFE
+                                                ),
+                                                true
+                                            )
+                                        }
+                                    }
+                                }
+                            })
+                        } else {
+                            when (bean.post_type) {
+                                DAClient.POST_TYPE_ACTION -> {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
                                 }
-                            })
-                        } else {
-                            (activity as ActivityMain).replaceFragment(
-                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
-                                true
-                            )
+                                DAClient.POST_TYPE_IDEA -> {
+                                    (activity as ActivityMain).replaceFragment(
+                                        FragmentActionPost.newInstance(
+                                            bean.item_idx,
+                                            bean.source_idx,
+                                            FragmentActionPost.TYPE_DREAM_NOTE_IDEA
+                                        ),
+                                        true
+                                    )
+                                }
+                                DAClient.POST_TYPE_LIFE -> {
+                                    (activity as ActivityMain).replaceFragment(
+                                        FragmentActionPost.newInstance(
+                                            bean.item_idx,
+                                            bean.source_idx,
+                                            FragmentActionPost.TYPE_DREAM_NOTE_LIFE
+                                        ),
+                                        true
+                                    )
+                                }
+                            }
                         }
                     }
 
                 }
-                Noti_Param.SHARE_ACHIEVEMENT->{
+                Noti_Param.SHARE_ACHIEVEMENT -> {
                     ivFlame.visibility = GONE
                     h.itemView.setOnClickListener {
                         checkNoti(bean)
@@ -375,7 +426,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentBestPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -385,7 +436,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentBestPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx
+                                    bean.source_idx
                                 ),
                                 true
                             )
@@ -497,7 +548,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -505,7 +556,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
+                                FragmentActionPost.newInstance(bean.item_idx, bean.source_idx),
                                 true
                             )
                         }
@@ -520,8 +571,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                         ),
                                         true
@@ -531,8 +581,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                 ),
                                 true
@@ -549,8 +598,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                         ),
                                         true
@@ -560,8 +608,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                 ),
                                 true
@@ -579,7 +626,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentBestPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -589,7 +636,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentBestPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx
+                                    bean.source_idx
                                 ),
                                 true
                             )
@@ -606,7 +653,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -632,7 +679,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
+                                FragmentActionPost.newInstance(bean.item_idx, bean.source_idx),
                                 true
                             )
 
@@ -665,8 +712,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                         ),
                                         true
@@ -694,8 +740,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                 ),
                                 true
@@ -730,8 +775,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                         ),
                                         true
@@ -759,8 +803,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                 ),
                                 true
@@ -796,7 +839,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentBestPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -824,7 +867,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentBestPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx
+                                    bean.source_idx
                                 ),
                                 true
                             )
@@ -941,7 +984,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -967,7 +1010,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
+                                FragmentActionPost.newInstance(bean.item_idx, bean.source_idx),
                                 true
                             )
 
@@ -1000,8 +1043,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                         ),
                                         true
@@ -1029,8 +1071,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                 ),
                                 true
@@ -1066,8 +1107,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                         ),
                                         true
@@ -1095,8 +1135,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                 ),
                                 true
@@ -1134,7 +1173,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentBestPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -1162,7 +1201,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentBestPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx
+                                    bean.source_idx
                                 ),
                                 true
                             )
@@ -1198,7 +1237,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -1224,7 +1263,7 @@ class FragmentNotification : BaseFragment() {
                             })
                         } else {
                             (activity as ActivityMain).replaceFragment(
-                                FragmentActionPost.newInstance(bean.item_idx, bean.profile_idx),
+                                FragmentActionPost.newInstance(bean.item_idx, bean.source_idx),
                                 true
                             )
 
@@ -1258,8 +1297,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                         ),
                                         true
@@ -1287,8 +1325,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_LIFE
                                 ),
                                 true
@@ -1324,8 +1361,7 @@ class FragmentNotification : BaseFragment() {
                                 override fun replace() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentActionPost.newInstance(
-                                            bean.item_idx,
-                                            bean.profile_idx,
+                                            bean.item_idx, bean.source_idx,
                                             FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                         ),
                                         true
@@ -1353,8 +1389,7 @@ class FragmentNotification : BaseFragment() {
                         } else {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentActionPost.newInstance(
-                                    bean.item_idx,
-                                    bean.profile_idx,
+                                    bean.item_idx, bean.source_idx,
                                     FragmentActionPost.TYPE_DREAM_NOTE_IDEA
                                 ),
                                 true
@@ -1449,7 +1484,7 @@ class FragmentNotification : BaseFragment() {
                                     (activity as ActivityMain).replaceFragment(
                                         FragmentBestPost.newInstance(
                                             bean.item_idx,
-                                            bean.profile_idx
+                                            bean.source_idx
                                         ),
                                         true
                                     )
@@ -1477,7 +1512,7 @@ class FragmentNotification : BaseFragment() {
                             (activity as ActivityMain).replaceFragment(
                                 FragmentBestPost.newInstance(
                                     bean.item_idx,
-                                    bean.profile_idx
+                                    bean.source_idx
                                 ),
                                 true
                             )
