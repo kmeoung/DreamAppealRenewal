@@ -31,16 +31,19 @@ import okhttp3.Call
 import java.io.File
 
 
-
 class FragmentAddActionPost : BaseFragment() {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
-    private var mTagAdapter: BaseRecyclerViewAdapter2<String>? = null
+    private var mTagAdapter: BaseRecyclerViewAdapter2<String>?
     private var mImages: ArrayList<File>? = null
     private var mUrls: ArrayList<String>? = null
     private var postIdx = -1
     private var mContents: String? = null
     private var mTags: String? = null
+
+    init {
+        mTagAdapter = null
+    }
 
     companion object {
 
@@ -120,11 +123,12 @@ class FragmentAddActionPost : BaseFragment() {
                     rv_tag.smoothScrollToPosition(mTagAdapter!!.size() - 1)
                     et_tag.setText("")
 
-                    sv_add_post.post{
+                    sv_add_post.post {
                         sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
 
                         et_tag.post {
-                            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            val imm =
+                                context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                             imm.showSoftInput(et_tag, 0)
                             et_tag.isFocusableInTouchMode = true
                             et_tag.requestFocus()
@@ -146,26 +150,32 @@ class FragmentAddActionPost : BaseFragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 try {
                     s?.let {
-                        if (it[(s.length - 1)].toInt() === 32 || it[(s.length - 1)].toInt() === 9) {
+                        if (it[(s.length - 1)].toInt() == 32 || it[(s.length - 1)].toInt() == 9) {
 
-                            if(!et_tag.text.toString().replace(" ","").isNullOrEmpty()) {
-                                if (mTagAdapter != null) mTagAdapter!!.add(et_tag.text.toString().replace(" ",""))
+                            if (!et_tag.text.toString().replace(" ", "").isNullOrEmpty()) {
+                                if (mTagAdapter != null) mTagAdapter!!.add(
+                                    et_tag.text.toString().replace(
+                                        " ",
+                                        ""
+                                    )
+                                )
                                 rv_tag.visibility = VISIBLE
 
                                 rv_tag.smoothScrollToPosition(mTagAdapter!!.size() - 1)
                                 et_tag.setText("")
 
-                                sv_add_post.post{
+                                sv_add_post.post {
                                     sv_add_post.fullScroll(ScrollView.FOCUS_DOWN)
 
                                     et_tag.post {
-                                        val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                        val imm =
+                                            context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                                         imm.showSoftInput(et_tag, 0)
                                         et_tag.isFocusableInTouchMode = true
                                         et_tag.requestFocus()
                                     }
                                 }
-                            }else{
+                            } else {
                                 et_tag.setText("")
                             }
                         }
@@ -189,6 +199,7 @@ class FragmentAddActionPost : BaseFragment() {
         mTagAdapter = BaseRecyclerViewAdapter2(rvTagListener)
         rv_tag.adapter = mTagAdapter
         rv_tag.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
     }
 
     /**
@@ -222,6 +233,9 @@ class FragmentAddActionPost : BaseFragment() {
             when (it) {
                 iv_back_black -> activity!!.onBackPressed()
                 tv_text_btn -> {
+                    if (mTagAdapter != null || mTagAdapter!!.size() > 0) {
+                        mTags = replaceTags(mTagAdapter!!.getList())
+                    }
                     if (tv_text_btn.isSelected)
                         (activity as ActivityAddPost)
                             .replaceFragment(
@@ -253,10 +267,7 @@ class FragmentAddActionPost : BaseFragment() {
         var tags = ""
 
         if (mTagAdapter != null || mTagAdapter!!.size() > 0) {
-            for (i in 0 until mTagAdapter!!.size()) {
-                if (i == 0) tags = mTagAdapter!!.get(i)
-                else tags = "$tags,${mTagAdapter!!.get(i)}"
-            }
+            tags = replaceTags(mTagAdapter!!.getList())
         }
 
         DAClient.updateActionPosts(
@@ -331,14 +342,23 @@ class FragmentAddActionPost : BaseFragment() {
             val tagDelete = h.getItemView<ImageView>(R.id.iv_tag_delete)
             tagName.text = bean
 
-            tagDelete.setOnClickListener(View.OnClickListener {
+            tagDelete.setOnClickListener {
                 mTagAdapter!!.remove(i)
-            })
+            }
         }
 
         override fun getItemViewType(i: Int): Int {
             return 0
         }
+    }
+
+    private fun replaceTags(tag_list: ArrayList<String>) : String {
+        var tags = ""
+        for (i in 0 until tag_list.size) {
+            if (i == 0) tags = tag_list[i]
+            else tags = "$tags,${tag_list[i]}"
+        }
+        return tags
     }
 
 
