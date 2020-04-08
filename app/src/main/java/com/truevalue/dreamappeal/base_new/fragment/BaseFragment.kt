@@ -1,4 +1,4 @@
-package com.example.stackoverflowuser.base.fragment
+package com.truevalue.dreamappeal.base_new.fragment
 
 
 import android.app.Dialog
@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.stackoverflowuser.base.repository.ErrorModel
+import com.truevalue.dreamappeal.base_new.repository.ErrorModel
 import com.example.stackoverflowuser.base.viewmodel.BaseViewModel
-import com.example.stackoverflowuser.base.viewmodel.ClassUtils
-import com.example.stackoverflowuser.base.viewmodel.ShareViewModel
+import com.truevalue.dreamappeal.base_new.viewmodel.ClassUtils
+import com.truevalue.dreamappeal.base_new.viewmodel.ShareViewModel
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.utils.toast
 

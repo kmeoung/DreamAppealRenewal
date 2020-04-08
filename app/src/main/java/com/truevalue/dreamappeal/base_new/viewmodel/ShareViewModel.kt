@@ -1,4 +1,4 @@
-package com.example.stackoverflowuser.base.viewmodel
+package com.truevalue.dreamappeal.base_new.viewmodel
 
 import org.jetbrains.annotations.NotNull
 

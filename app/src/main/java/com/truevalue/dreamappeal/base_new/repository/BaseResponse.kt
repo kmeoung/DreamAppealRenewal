@@ -1,4 +1,4 @@
-package com.example.stackoverflowuser.base.repository
+package com.truevalue.dreamappeal.base_new.repository
 
 import com.google.gson.Gson
 

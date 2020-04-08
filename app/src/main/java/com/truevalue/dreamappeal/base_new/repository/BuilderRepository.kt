@@ -1,7 +1,7 @@
-package com.example.stackoverflowuser.base.repository
+package com.truevalue.dreamappeal.base_new.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.stackoverflowuser.network.Network
+import com.truevalue.dreamappeal.base_new.network.Network
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 

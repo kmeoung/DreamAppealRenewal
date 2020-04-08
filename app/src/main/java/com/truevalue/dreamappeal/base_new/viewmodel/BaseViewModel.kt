@@ -3,9 +3,9 @@ package com.example.stackoverflowuser.base.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.stackoverflowuser.base.repository.BaseResponse
-import com.example.stackoverflowuser.base.repository.BuilderRepository
-import com.example.stackoverflowuser.base.repository.ErrorModel
+import com.truevalue.dreamappeal.base_new.repository.BaseResponse
+import com.truevalue.dreamappeal.base_new.repository.BuilderRepository
+import com.truevalue.dreamappeal.base_new.repository.ErrorModel
 
 open class BaseViewModel : ViewModel() {
     private var error = MutableLiveData<ErrorModel>()

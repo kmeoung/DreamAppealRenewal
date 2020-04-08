@@ -1,16 +1,14 @@
-package com.example.stackoverflowuser.base
+package com.truevalue.dreamappeal.base_new
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Window
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 
-import com.example.stackoverflowuser.base.repository.ErrorModel
+import com.truevalue.dreamappeal.base_new.repository.ErrorModel
 import com.example.stackoverflowuser.base.viewmodel.BaseViewModel
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.utils.toast

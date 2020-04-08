@@ -1,8 +1,6 @@
-package com.example.stackoverflowuser.network
+package com.truevalue.dreamappeal.base_new.network
 
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

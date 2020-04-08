@@ -20,6 +20,7 @@ import com.truevalue.dreamappeal.fragment.profile.FragmentSetting
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
 import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
+import com.truevalue.dreamappeal.fragment.timeline.TimeLineFragment
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.service.ServiceFirebaseMsg
@@ -320,7 +321,7 @@ class ActivityMain : BaseActivity() {
     private fun initFragment() {
         when (mMainViewType) {
             MAIN_TYPE_HOME -> replaceFragment(FragmentDreamBoard(), false)
-            MAIN_TYPE_TIMELINE -> replaceFragment(FragmentTimeline(), false)
+            MAIN_TYPE_TIMELINE -> replaceFragment(TimeLineFragment.newInstance(), false)
             MAIN_TYPE_ADD_BOARD -> {
                 val intent = Intent(this@ActivityMain, ActivityCameraGallery::class.java)
                 intent.putExtra(

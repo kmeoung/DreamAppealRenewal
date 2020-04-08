@@ -403,4 +403,8 @@
     <string name="str_notification_change_profile">해당하는 프로필로 변경 후 이동합니다</string>
     <string name="str_wait_login">로그인 중입니다. 잠시만 기다려주세요</string>
     <string name="str_login_failed">로그인에 실패하였습니다</string>
+    <string name="appeal">어필러</string>
+    <string name="subject_of_interest">관심주제</string>
+    <string name="hometown">우리동네</string>
+    <string name="timeline">타임라인</string>
 </resources>

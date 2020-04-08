@@ -1,4 +1,4 @@
-package com.example.stackoverflowuser.base.fragment
+package com.truevalue.dreamappeal.base_new.fragment
 
 import com.example.stackoverflowuser.base.viewmodel.BaseViewModel
 

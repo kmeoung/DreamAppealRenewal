@@ -1,11 +1,8 @@
 package com.truevalue.dreamappeal.base
 
 import android.app.Application
-import android.content.Context
 import com.truevalue.dreamappeal.utils.Comm_Prefs
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import com.example.stackoverflowuser.base.repository.isNetworkStatusAvailable
+import com.truevalue.dreamappeal.base_new.repository.isNetworkStatusAvailable
 import com.kakao.auth.*
 import com.truevalue.dreamappeal.utils.value
 

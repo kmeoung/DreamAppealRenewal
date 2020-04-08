@@ -1,4 +1,4 @@
-package com.example.stackoverflowuser.base.repository
+package com.truevalue.dreamappeal.base_new.repository
 
 import android.content.Context
 import android.net.ConnectivityManager
