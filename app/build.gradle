@@ -15,7 +15,14 @@ android {
     }
 
     signingConfigs {
+        debug {
+
+        }
         release {
+            storeFile file('key_store/key_store.jks')
+            storePassword 'roqkf2019'
+            keyAlias = 'key_alias'
+            keyPassword 'roqkf2019'
         }
     }
 
