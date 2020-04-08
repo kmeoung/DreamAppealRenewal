@@ -5,8 +5,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
-        android:orientation="vertical"
-        android:backgroundTint="@color/white">
+        android:backgroundTint="@color/white"
+        android:orientation="vertical">
 
     <!--툴바-->
     <include
@@ -50,6 +50,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:paddingLeft="14.3dp"
+                    android:text="dinhnguyen01.hcmus@gmail.com"
                     android:textColorHint="@color/warm_grey"
                     android:textSize="13sp" />
 
@@ -68,6 +69,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:paddingLeft="14.3dp"
+                    android:text="12345678"
                     android:textColorHint="@color/warm_grey"
                     android:textSize="13sp" />
 

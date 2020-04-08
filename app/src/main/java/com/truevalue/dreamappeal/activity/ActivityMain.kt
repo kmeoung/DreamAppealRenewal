@@ -126,7 +126,7 @@ class ActivityMain : BaseActivity() {
                             code: String,
                             message: String
                         ) {
-                            if(code != DAClient.SUCCESS){
+                            if (code != DAClient.SUCCESS) {
                                 Toast.makeText(
                                     applicationContext,
                                     message,
@@ -203,7 +203,7 @@ class ActivityMain : BaseActivity() {
                     mMainViewType = MAIN_TYPE_TIMELINE
                 iv_add_board ->
                     mMainViewType = MAIN_TYPE_ADD_BOARD
-                rl_notification -> {
+                iv_notification -> {
                     mMainViewType = MAIN_TYPE_NOTIFICATION
                 }
                 iv_profile ->
@@ -218,7 +218,7 @@ class ActivityMain : BaseActivity() {
         iv_home.setOnClickListener(onClickListener)
         iv_timeline.setOnClickListener(onClickListener)
         iv_add_board.setOnClickListener(onClickListener)
-        rl_notification.setOnClickListener(onClickListener)
+        iv_notification.setOnClickListener(onClickListener)
         iv_profile.setOnClickListener(onClickListener)
     }
 
@@ -253,9 +253,9 @@ class ActivityMain : BaseActivity() {
                     startActivity(intent)
                     dl_drawer.closeDrawer(Gravity.RIGHT)
                 }
-                ll_setting->{
+                ll_setting -> {
                     dl_drawer.closeDrawer(Gravity.RIGHT)
-                    replaceFragment(FragmentSetting(),addToBack = true,isMainRefresh = false)
+                    replaceFragment(FragmentSetting(), addToBack = true, isMainRefresh = false)
                 }
             }
         }

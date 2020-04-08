@@ -76,4 +76,8 @@
     <color name="battleship_grey">#6a737c</color>
     <color name="noti_no_select">#ddeaf6</color>
     <color name="algae_green">#1aaf54</color>
+    <color name="light_blue">#01b0f1</color>
+    <color name="dark_blue">#00a0db</color>
+    <color name="dark_blue_1">#1877f2</color>
+    <color name="yellow">#ffbf00</color>
 </resources>
