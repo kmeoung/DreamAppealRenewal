@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--카메라-->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
     <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
          See README(https://goo.gl/l4GJaQ) for more. -->
@@ -85,6 +87,7 @@
         <activity
                 android:name=".activity.ActivityMain"
                 android:screenOrientation="portrait"
+                android:theme="@style/AppThemeDarkStatusBar"
                 android:windowSoftInputMode="adjustResize" />
 
         <!-- Credits -->
@@ -162,6 +165,10 @@
         <activity
                 android:name=".activity.ActivityRank"
                 android:screenOrientation="portrait" />
+        <activity
+                android:name=".fragment.timeline.appeal.connect_friend.PhoneContactActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppThemeDarkStatusBar" />
 
         <!-- Push 연동 -->
         <service

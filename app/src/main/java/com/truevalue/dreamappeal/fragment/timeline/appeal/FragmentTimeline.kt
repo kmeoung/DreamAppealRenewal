@@ -27,12 +27,13 @@ import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddActionPost
+import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.PhoneContactActivity
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
+import com.truevalue.dreamappeal.utils.Constants
 import com.truevalue.dreamappeal.utils.Noti_Param
 import com.truevalue.dreamappeal.utils.Utils
-import kotlinx.android.synthetic.main.action_bar_timeline.*
 import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import okhttp3.Call
@@ -41,7 +42,8 @@ import java.io.IOException
 
 
 class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.OnRefreshListener {
-
+    override val classViewModel: Class<EmptyViewModel> = EmptyViewModel::class.java
+    override val layoutId: Int = R.layout.fragment_timeline
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
     companion object {
@@ -67,6 +69,9 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
     private var isLast = false
 
     override fun onFirstRender() {
+        setupUI()
+
+
         // init View
         initView()
         // Init Adapter
@@ -76,6 +81,17 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
         // init Data
         isLast = false
         getTimeLineData(false, -1, true)
+    }
+
+    private fun setupUI() {
+        tvOpenPhoneContact.setOnClickListener {
+            startActivityForResult(
+                Intent(context, PhoneContactActivity::class.java),
+                Constants.PHONE_CODE
+            )
+        }
+        tvOpenKakao.setOnClickListener { }
+        tvOpenFacebook.setOnClickListener { }
     }
 
     /**
@@ -98,14 +114,14 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
      * View Click Listener
      */
     private fun onClickView() {
-        val listener = View.OnClickListener {
-            when (it) {
-                ll_timeline -> {
-                    rv_timeline.smoothScrollToPosition(0)
-                }
-            }
-        }
-        ll_timeline.setOnClickListener(listener)
+//        val listener = View.OnClickListener {
+//            when (it) {
+//                ll_timeline -> {
+//                    rv_timeline.smoothScrollToPosition(0)
+//                }
+//            }
+//        }
+//        ll_timeline.setOnClickListener(listener)
     }
 
     /**
@@ -780,7 +796,14 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            Constants.PHONE_CODE -> {
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
+
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ActivityComment.REQUEST_REPLACE_USER_IDX
             ) {
@@ -853,7 +876,4 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
         isLast = false
         getTimeLineData(false, -1, true)
     }
-
-    override val classViewModel: Class<EmptyViewModel> = EmptyViewModel::class.java
-    override val layoutId: Int = R.layout.fragment_timeline
 }

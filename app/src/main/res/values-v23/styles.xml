@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- Dark application theme. -->
+    <style name="AppThemeDarkStatusBar" parent="AppTheme">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/grey3</item>
+        <item name="android:windowTranslucentStatus">false</item>
+
+    </style>
+</resources>

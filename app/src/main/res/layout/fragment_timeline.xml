@@ -1,20 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/pale_grey"
+        android:background="@color/white"
         android:orientation="vertical">
 
-    <include
-            layout="@layout/action_bar_timeline"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivLight"
+                android:layout_width="90dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="60dp"
+                android:src="@drawable/ic_light_bulb" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:text="내 꿈과 팔로우 중인 꿈의 게시물이 나타납니다"
+                android:textColor="@color/grey"
+                android:textSize="14dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="관심가는 꿈을 팔로우해서 소식을 받아보세요"
+                android:textColor="@color/grey"
+                android:textSize="12dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOpenPhoneContact"
+                android:layout_width="160dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_gradient_blue_radius_4"
+                android:drawableStart="@drawable/ic_phone"
+                android:drawablePadding="6dp"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:gravity="center_vertical"
+                android:paddingStart="6dp"
+                android:text="| 연락처 친구 연결하기"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOpenKakao"
+                android:layout_width="160dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_yellow_radius_4"
+                android:drawableStart="@drawable/ic_kakao"
+                android:drawablePadding="6dp"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:gravity="center_vertical"
+                android:paddingStart="6dp"
+                android:text="| 연락처 친구 연결하기"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOpenFacebook"
+                android:layout_width="160dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_dark_blue_radius_4"
+                android:drawableStart="@drawable/ic_facebook"
+                android:drawablePadding="6dp"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:gravity="center_vertical"
+                android:paddingStart="6dp"
+                android:text="| 연락처 친구 연결하기"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+    </LinearLayout>
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srl_refresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -64,4 +143,4 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

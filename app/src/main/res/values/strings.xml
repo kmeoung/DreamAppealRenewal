@@ -407,4 +407,8 @@
     <string name="subject_of_interest">관심주제</string>
     <string name="hometown">우리동네</string>
     <string name="timeline">타임라인</string>
+    <string name="confirm">확인</string>
+    <string name="follow">팔로우</string>
+    <string name="invite">초대하기</string>
+    <string name="contact_a_friend">연락처 친구 불러오기</string>
 </resources>

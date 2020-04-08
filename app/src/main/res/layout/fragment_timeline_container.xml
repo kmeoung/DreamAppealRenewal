@@ -24,6 +24,7 @@
             app:tabTextColor="@color/warm_grey" />
 
     <View
+            android:id="@+id/vDivider"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/warm_grey"
@@ -36,7 +37,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tlMain" />
+            app:layout_constraintTop_toBottomOf="@id/vDivider" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

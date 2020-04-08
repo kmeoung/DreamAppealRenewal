@@ -3,6 +3,7 @@ package com.truevalue.dreamappeal.base_new
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -29,7 +30,6 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(classViewModel)
         viewModel.error().observe(this, onError)
         viewModel.loading().observe(this, onLoading)
-
         init()
     }
 

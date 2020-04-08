@@ -12,6 +12,14 @@
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
+    <!-- Light application theme. -->
+    <style name="AppThemeDarkStatusBar" parent="AppTheme">
+        <!--custom fields are only applied for version >= 23-->
+        <item name="android:statusBarColor">@color/grey3</item>
+        <item name="android:windowTranslucentStatus">false</item>
+
+    </style>
+
 
     <!--TabLayout 폰트 설정-->
     <style name="profile_main_tab_font" parent="android:TextAppearance.Widget.TabWidget">
