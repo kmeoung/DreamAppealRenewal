@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.adapter.BaseAdapter
 import com.truevalue.dreamappeal.base_new.adapter.BaseHolder
+import com.truevalue.dreamappeal.utils.gone
 import com.truevalue.dreamappeal.utils.load
 import com.truevalue.dreamappeal.utils.value
+import com.truevalue.dreamappeal.utils.visible
 import kotlinx.android.synthetic.main.item_contact.*
 import kotlinx.android.synthetic.main.item_registerd_contact.*
 
@@ -37,6 +39,8 @@ class ContactAdapter(
         init {
             tvFollow.setOnClickListener {
                 onClickFollow.invoke(dataSource[adapterPosition])
+                tvFollowing.visible()
+                tvFollow.gone()
             }
         }
 

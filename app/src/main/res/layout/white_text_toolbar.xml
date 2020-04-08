@@ -23,11 +23,10 @@
             android:id="@+id/ivLeft"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="13dp"
-            android:visibility="gone"
+            android:padding="17dp"
+            android:src="@drawable/ic_back_black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_back_black" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvRight"

@@ -57,7 +57,6 @@ class PhoneContactActivity : BaseActivity<PhoneContactViewModel>() {
         tvRight.setOnClickListener {
 
         }
-        ivLeft.visible()
         ivLeft.setOnClickListener {
             finish()
         }

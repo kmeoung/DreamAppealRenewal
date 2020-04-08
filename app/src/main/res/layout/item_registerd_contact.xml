@@ -54,4 +54,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvFollowing"
+            android:layout_width="64dp"
+            android:layout_height="28dp"
+            android:background="@drawable/bg_gradient_blue_border_radius_4"
+            android:fontFamily="@font/nanum_square_round_eb"
+            android:gravity="center"
+            android:text="@string/following"
+            android:textColor="@color/light_blue"
+            android:textSize="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

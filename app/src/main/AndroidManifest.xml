@@ -87,7 +87,6 @@
         <activity
                 android:name=".activity.ActivityMain"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppThemeDarkStatusBar"
                 android:windowSoftInputMode="adjustResize" />
 
         <!-- Credits -->
