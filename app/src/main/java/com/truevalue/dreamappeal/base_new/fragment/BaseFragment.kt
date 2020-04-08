@@ -81,12 +81,12 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
         id: Int,
         backStack: Boolean = true
     ) {
-        val transaction = parentFragmentManager.beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         transaction.setCustomAnimations(
             R.anim.enter_from_right, R.anim.exit_to_left,
             R.anim.enter_from_left, R.anim.exit_to_right
         )
-        val currentFragment = parentFragmentManager.fragments.lastOrNull()
+        val currentFragment = childFragmentManager.fragments.lastOrNull()
         currentFragment?.let {
             transaction.hide(it)
         }
@@ -102,7 +102,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
         id: Int,
         backStack: Boolean = false
     ) {
-        val transaction = parentFragmentManager.beginTransaction()
+        val transaction = childFragmentManager.beginTransaction()
         if (backStack) {
             transaction.addToBackStack(fragment.javaClass.simpleName)
         }

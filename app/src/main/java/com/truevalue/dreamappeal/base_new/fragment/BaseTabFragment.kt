@@ -4,6 +4,11 @@ import com.example.stackoverflowuser.base.viewmodel.BaseViewModel
 
 abstract class BaseTabFragment<T : BaseViewModel> : BaseFragment<T>() {
 
+    companion object{
+        const val RESULT_CODE = 1004
+        const val RESULT_REPLACE_USER_IDX = "RESULT_REPLACE_USER_IDX"
+    }
+
     override fun init() {
         checkLoaded()
     }

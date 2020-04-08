@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.timeline
+package com.truevalue.dreamappeal.fragment.timeline.appeal
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -21,8 +21,9 @@ import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.*
 import com.truevalue.dreamappeal.base.*
+import com.truevalue.dreamappeal.base_new.fragment.BaseTabFragment
+import com.truevalue.dreamappeal.base_new.viewmodel.EmptyViewModel
 import com.truevalue.dreamappeal.bean.BeanTimeline
-import com.truevalue.dreamappeal.fragment.profile.FragmentAddPage
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddActionPost
@@ -39,7 +40,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.OnRefreshListener {
 
     private var mAdapter: BaseRecyclerViewAdapter? = null
 
@@ -57,19 +58,15 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         private const val RV_TYPE_OBJECT = 7
         private const val RV_TYPE_OBJECT_COMPLETE = 8
         private const val RV_TYPE_OPPORTUNITY = 9
+
+        fun newInstance(): FragmentTimeline {
+            return FragmentTimeline()
+        }
     }
 
     private var isLast = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_timeline, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onFirstRender() {
         // init View
         initView()
         // Init Adapter
@@ -648,7 +645,10 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     intent.putExtra(ActivityAddPost.EDIT_POST_IDX, bean.idx)
                     intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_IDX, bean.object_idx)
                     intent.putExtra(ActivityAddPost.REQUEST_CATEOGORY_DETAIL_IDX, bean.step_idx)
-                    startActivityForResult(intent, EXTRA_CHANGE_CATEGORY)
+                    startActivityForResult(
+                        intent,
+                        EXTRA_CHANGE_CATEGORY
+                    )
                 }
                 getString(R.string.str_edit) -> {
 
@@ -853,4 +853,7 @@ class FragmentTimeline : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         isLast = false
         getTimeLineData(false, -1, true)
     }
+
+    override val classViewModel: Class<EmptyViewModel> = EmptyViewModel::class.java
+    override val layoutId: Int = R.layout.fragment_timeline
 }

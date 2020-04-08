@@ -17,9 +17,6 @@ import com.truevalue.dreamappeal.fragment.dream_board.FragmentDreamBoard
 import com.truevalue.dreamappeal.fragment.notification.FragmentNotification
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.FragmentSetting
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
-import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
-import com.truevalue.dreamappeal.fragment.timeline.FragmentTimeline
 import com.truevalue.dreamappeal.fragment.timeline.TimeLineFragment
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback

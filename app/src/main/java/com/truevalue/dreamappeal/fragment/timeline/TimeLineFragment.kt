@@ -3,8 +3,10 @@ package com.truevalue.dreamappeal.fragment.timeline
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.fragment.BaseFragment
 import com.truevalue.dreamappeal.base_new.viewmodel.EmptyViewModel
+import com.truevalue.dreamappeal.fragment.timeline.appeal.FragmentTimeline
 import com.truevalue.dreamappeal.fragment.timeline.nearby.NearbyFragment
 import com.truevalue.dreamappeal.fragment.timeline.subject_interest.SubjectInterestFragment
+import com.truevalue.dreamappeal.utils.visible
 import com.truevalue.dreamappeal.widgets.MainPagerAdapter
 import kotlinx.android.synthetic.main.fragment_timeline_container.*
 import kotlinx.android.synthetic.main.white_toolbar.*
@@ -24,6 +26,7 @@ class TimeLineFragment : BaseFragment<EmptyViewModel>() {
 
     override fun init() {
         tvTitle.text = getString(R.string.timeline)
+        ivRight.visible()
         ivRight.setImageResource(R.drawable.ic_blue_message)
         ivRight.setOnClickListener {
 
@@ -35,11 +38,11 @@ class TimeLineFragment : BaseFragment<EmptyViewModel>() {
     private fun setUpViewPager() {
         val fragments =
             arrayListOf(
-                FragmentTimeline(),
+                FragmentTimeline.newInstance(),
                 SubjectInterestFragment.newInstance(),
                 NearbyFragment.newInstance()
             )
-        val mainPagerAdapter = MainPagerAdapter(parentFragmentManager, fragments)
+        val mainPagerAdapter = MainPagerAdapter(childFragmentManager, fragments)
         vpMain.adapter = mainPagerAdapter
         vpMain.setPagingEnabled(false)
         vpMain.offscreenPageLimit = fragments.size - 1
