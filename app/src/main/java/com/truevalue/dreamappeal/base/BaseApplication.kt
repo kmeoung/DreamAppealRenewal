@@ -5,7 +5,9 @@ import android.content.Context
 import com.truevalue.dreamappeal.utils.Comm_Prefs
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.stackoverflowuser.base.repository.isNetworkStatusAvailable
 import com.kakao.auth.*
+import com.truevalue.dreamappeal.utils.value
 
 
 class BaseApplication : Application() {
@@ -17,6 +19,8 @@ class BaseApplication : Application() {
         prefs.init(applicationContext)
 
         KakaoSDK.init(KakaoSDKAdapter())
+
+        instance = this
     }
 
     private inner class KakaoSDKAdapter : KakaoAdapter() {
@@ -53,5 +57,10 @@ class BaseApplication : Application() {
         override fun getApplicationConfig(): IApplicationConfig {
             return IApplicationConfig { applicationContext }
         }
+    }
+
+    companion object {
+        private var instance: BaseApplication? = null
+        fun isConnectInternet() = this.instance?.isNetworkStatusAvailable().value()
     }
 }

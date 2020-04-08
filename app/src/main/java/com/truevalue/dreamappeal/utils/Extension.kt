@@ -247,6 +247,10 @@ fun Context.toast(msg: String, duration: Int = Toast.LENGTH_SHORT, delayDuration
     }
 }
 
+fun Context.toast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
 fun TextView.setNonBlankText(mText: String?) {
     if (mText.isNullOrEmpty()) {
         gone()

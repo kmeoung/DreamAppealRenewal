@@ -204,7 +204,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
      * ViewPager Adapter
      * 페이지 넘어갈 때 마다 서버 호출 필요
      */
-    private inner class ViewPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
+    private inner class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         override fun getCount(): Int = mFragments!!.size
         override fun getItem(position: Int): Fragment = mFragments!![position]
         @Nullable

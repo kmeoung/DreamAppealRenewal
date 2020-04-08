@@ -202,7 +202,7 @@ class FragmentEditGroup : BaseFragment() {
             tv_start_month.text = (monthOfYear + 1).toString()
         }
 
-        dialogFragment.show(fragmentManager, null)
+        dialogFragment.show(fragmentManager!!, null)
     }
 
     /**
@@ -228,7 +228,7 @@ class FragmentEditGroup : BaseFragment() {
             tv_end_month.text = (monthOfYear + 1).toString()
         }
 
-        dialogFragment.show(fragmentManager, null)
+        dialogFragment.show(fragmentManager!!, null)
     }
 
     /**
