@@ -2,9 +2,11 @@ package com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.adapter.BaseHolder
 import com.truevalue.dreamappeal.fragment.timeline.adapter.ImageAdapter
 import com.truevalue.dreamappeal.fragment.timeline.adapter.TagAdapter
@@ -44,6 +46,14 @@ class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
             })
         }
 
+        tvContents.apply {
+            setShowingLine(4)
+            setShowMoreColor(ContextCompat.getColor(itemView.context, R.color.black))
+            setShowLessTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+            addShowMoreText("Show more")
+            addShowLessText("Show less")
+        }
+
         tagAdapter = TagAdapter(LayoutInflater.from(itemView.context))
         rvHashTags.apply {
             adapter = tagAdapter
@@ -55,7 +65,11 @@ class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
         civAvatar.load("https://kprofiles.com/wp-content/uploads/2019/11/D6aGkQlUcAAgf_n-533x800.jpg")
         tvName.text = "모든 포지션을 잘 수비하는 올라운드"
         tvDes.text = "모든 포지션을 잘 수비하는 올라운드"
-        tvContents.text = "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자"
+        tvContents.text = "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자 윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" +
+                "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" +
+                "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" +
+                "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" +
+                "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자"
         tvCommentCount.text = "2"
         tvCheerCount.text = "2"
         tvDetailStepDes.text = "윗몸일으키기, 플랭크"

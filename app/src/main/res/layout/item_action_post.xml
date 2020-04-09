@@ -152,15 +152,13 @@
             app:layout_constraintTop_toTopOf="@+id/tvDetailStep"
             tools:text="윗몸일으키기, 플랭크" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.skyhope.showmoretextview.ShowMoreTextView
             android:id="@+id/tvContents"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
-            android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_b"
-            android:maxLines="4"
             android:textColor="@color/black_1"
             android:textSize="14dp"
             app:layout_constraintEnd_toEndOf="parent"
