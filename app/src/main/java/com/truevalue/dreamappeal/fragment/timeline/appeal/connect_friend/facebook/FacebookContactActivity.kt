@@ -1,5 +1,7 @@
 package com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.facebook
 
+import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.truevalue.dreamappeal.R
@@ -59,6 +61,7 @@ class FacebookContactActivity : BaseActivity<FacebookContactViewModel>() {
     private fun setupUI() {
         tvTitle.text = getString(R.string.contact_a_friend)
         tvRight.setOnClickListener {
+            setResult(Activity.RESULT_OK, Intent())
             finish()
         }
         ivLeft.setOnClickListener {

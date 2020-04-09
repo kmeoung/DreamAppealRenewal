@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.phone
+package com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.kakao
 
 import android.app.Activity
 import android.content.Intent
@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.activity_phone_contact.*
 import kotlinx.android.synthetic.main.white_text_toolbar.*
 
 
-class PhoneContactActivity : BaseActivity<PhoneContactViewModel>() {
-    override val classViewModel: Class<PhoneContactViewModel> = PhoneContactViewModel::class.java
+class KakaoContactActivity : BaseActivity<KakaoContactViewModel>() {
+    override val classViewModel: Class<KakaoContactViewModel> = KakaoContactViewModel::class.java
     override val layoutId: Int = R.layout.activity_phone_contact
     private var mAdapter: ContactAdapter? = null
     override fun init() {
@@ -64,7 +64,7 @@ class PhoneContactActivity : BaseActivity<PhoneContactViewModel>() {
         }
 
         rvContacts.run {
-            layoutManager = LinearLayoutManager(this@PhoneContactActivity)
+            layoutManager = LinearLayoutManager(this@KakaoContactActivity)
             mAdapter =
                 ContactAdapter(
                     layoutInflater,

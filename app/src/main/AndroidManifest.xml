@@ -173,6 +173,10 @@
                 android:name=".fragment.timeline.appeal.connect_friend.facebook.FacebookContactActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppThemeDarkStatusBar" />
+        <activity
+                android:name=".fragment.timeline.appeal.connect_friend.kakao.KakaoContactActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppThemeDarkStatusBar" />
 
         <!-- Push 연동 -->
         <service

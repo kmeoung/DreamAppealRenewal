@@ -412,4 +412,5 @@
     <string name="invite">초대하기</string>
     <string name="contact_a_friend">연락처 친구 불러오기</string>
     <string name="following">팔로잉</string>
+    <string name="action_target">실천 목표</string>
 </resources>

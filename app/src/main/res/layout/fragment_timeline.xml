@@ -7,6 +7,7 @@
         android:orientation="vertical">
 
     <LinearLayout
+            android:id="@+id/llEmpty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
@@ -86,60 +87,66 @@
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/srl_refresh"
+            android:id="@+id/srlRefresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPosts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_timeline"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+        <!--        <RelativeLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginTop="5dp">-->
 
-            <LinearLayout
-                    android:id="@+id/ll_no_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
+        <!--            <androidx.recyclerview.widget.RecyclerView-->
+        <!--                    android:id="@+id/rv_timeline"-->
+        <!--                    android:layout_width="match_parent"-->
+        <!--                    android:layout_height="match_parent" />-->
 
-                <ImageView
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
-                        android:src="@drawable/ic_list" />
+        <!--            <LinearLayout-->
+        <!--                    android:id="@+id/ll_no_data"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_centerInParent="true"-->
+        <!--                    android:gravity="center"-->
+        <!--                    android:orientation="vertical">-->
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:fontFamily="@font/nanum_square_round_b"
-                        android:text="@string/str_no_data_1"
-                        android:textColor="@color/black"
-                        android:textSize="13sp" />
+        <!--                <ImageView-->
+        <!--                        android:layout_width="180dp"-->
+        <!--                        android:layout_height="180dp"-->
+        <!--                        android:src="@drawable/ic_list" />-->
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/nanum_square_round_r"
-                        android:text="@string/str_no_data_2"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
+        <!--                <TextView-->
+        <!--                        android:layout_width="wrap_content"-->
+        <!--                        android:layout_height="wrap_content"-->
+        <!--                        android:layout_marginTop="15dp"-->
+        <!--                        android:fontFamily="@font/nanum_square_round_b"-->
+        <!--                        android:text="@string/str_no_data_1"-->
+        <!--                        android:textColor="@color/black"-->
+        <!--                        android:textSize="13sp" />-->
+
+        <!--                <TextView-->
+        <!--                        android:layout_width="wrap_content"-->
+        <!--                        android:layout_height="wrap_content"-->
+        <!--                        android:layout_marginTop="5dp"-->
+        <!--                        android:fontFamily="@font/nanum_square_round_r"-->
+        <!--                        android:text="@string/str_no_data_2"-->
+        <!--                        android:textColor="@color/black"-->
+        <!--                        android:textSize="11sp" />-->
 
 
-            </LinearLayout>
+        <!--            </LinearLayout>-->
 
-        </RelativeLayout>
+        <!--        </RelativeLayout>-->
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

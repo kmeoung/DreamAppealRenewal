@@ -79,9 +79,13 @@
     <color name="light_blue">#01b0f1</color>
     <color name="dark_blue">#00a0db</color>
     <color name="dark_blue_1">#1877f2</color>
+    <color name="dark_blue_2">#0071c0</color>
     <color name="yellow">#ffbf00</color>
     <color name="black_1">#222222</color>
     <color name="grey">#666666</color>
     <color name="grey2">#7b7b7b</color>
     <color name="grey3">#19000000</color>
+    <color name="grey4">#444444</color>
+    <color name="grey5">#ececec</color>
+    <color name="black40">#66000000</color>
 </resources>
