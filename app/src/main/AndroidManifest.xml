@@ -165,7 +165,12 @@
                 android:name=".activity.ActivityRank"
                 android:screenOrientation="portrait" />
         <activity
-                android:name=".fragment.timeline.appeal.connect_friend.PhoneContactActivity"
+                android:name=".fragment.timeline.appeal.connect_friend.phone.PhoneContactActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppThemeDarkStatusBar" />
+
+        <activity
+                android:name=".fragment.timeline.appeal.connect_friend.facebook.FacebookContactActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppThemeDarkStatusBar" />
 

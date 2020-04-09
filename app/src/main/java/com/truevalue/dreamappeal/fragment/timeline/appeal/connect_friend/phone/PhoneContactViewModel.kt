@@ -1,9 +1,10 @@
-package com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend
+package com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.phone
 
 import android.content.Context
 import android.database.Cursor
 import android.provider.ContactsContract
 import com.example.stackoverflowuser.base.viewmodel.BaseViewModel
+import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.Contact
 
 class PhoneContactViewModel : BaseViewModel() {
 
@@ -25,7 +26,13 @@ class PhoneContactViewModel : BaseViewModel() {
                         ContactsContract.CommonDataKinds.Phone.NUMBER
                     )
                 )
-                contactList.add(Contact(null, name, phoneNumber))
+                contactList.add(
+                    Contact(
+                        null,
+                        name,
+                        phoneNumber
+                    )
+                )
             }
             phones.close()
         }

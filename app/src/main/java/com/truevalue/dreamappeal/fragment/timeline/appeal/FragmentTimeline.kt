@@ -3,8 +3,6 @@ package com.truevalue.dreamappeal.fragment.timeline.appeal
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -27,7 +25,8 @@ import com.truevalue.dreamappeal.bean.BeanTimeline
 import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddActionPost
-import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.PhoneContactActivity
+import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.facebook.FacebookContactActivity
+import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.phone.PhoneContactActivity
 import com.truevalue.dreamappeal.http.DAClient
 import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.Comm_Prefs
@@ -91,7 +90,12 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
             )
         }
         tvOpenKakao.setOnClickListener { }
-        tvOpenFacebook.setOnClickListener { }
+        tvOpenFacebook.setOnClickListener {
+            startActivityForResult(
+                Intent(context, FacebookContactActivity::class.java),
+                Constants.FB_CODE
+            )
+        }
     }
 
     /**

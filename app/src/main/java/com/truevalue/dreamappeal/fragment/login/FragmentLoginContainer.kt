@@ -153,7 +153,7 @@ class FragmentLoginContainer : BaseFragment() {
         LoginManager.getInstance().logOut()
         firebaseAuth.signOut()
 
-        login_facebook.setPermissions(Arrays.asList("email", "public_profile"))
+        login_facebook.setPermissions(Arrays.asList("email", "public_profile","user_friends"))
         login_facebook.fragment = this
         login_facebook.registerCallback(callbackManager, listener)// ...
     }

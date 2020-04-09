@@ -1,5 +1,9 @@
 package com.truevalue.dreamappeal.fragment.timeline
 
+import android.util.Log
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.HttpMethod
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.fragment.BaseFragment
 import com.truevalue.dreamappeal.base_new.viewmodel.EmptyViewModel
@@ -32,9 +36,11 @@ class TimeLineFragment : BaseFragment<EmptyViewModel>() {
 
         }
 
+
+
         setUpViewPager()
     }
-
+    private val TAG = "TimeLineFragment";
     private fun setUpViewPager() {
         val fragments =
             arrayListOf(
