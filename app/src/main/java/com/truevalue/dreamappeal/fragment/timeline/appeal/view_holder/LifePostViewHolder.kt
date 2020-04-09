@@ -11,12 +11,11 @@ import com.truevalue.dreamappeal.fragment.timeline.adapter.TagAdapter
 import com.truevalue.dreamappeal.fragment.timeline.adapter.TimeLineData
 import com.truevalue.dreamappeal.utils.load
 import com.truevalue.dreamappeal.utils.value
-import kotlinx.android.synthetic.main.item_action_post.*
+import kotlinx.android.synthetic.main.item_life_post.*
 import kotlin.math.max
 
-class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
+class LifePostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
     private var imageAdapter: ImageAdapter? = null
-    private var tagAdapter: TagAdapter? = null
 
     init {
         imageAdapter =
@@ -44,11 +43,6 @@ class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
             })
         }
 
-        tagAdapter = TagAdapter(LayoutInflater.from(itemView.context))
-        rvHashTags.apply {
-            adapter = tagAdapter
-        }
-
     }
 
     override fun bind(data: TimeLineData, position: Int) {
@@ -58,8 +52,6 @@ class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
         tvContents.text = "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자"
         tvCommentCount.text = "2"
         tvCheerCount.text = "2"
-        tvDetailStepDes.text = "윗몸일으키기, 플랭크"
-        tvActionDes.text = "코어 힘 키우기"
         imageAdapter?.setDataSource(
             listOf(
                 "https://upload.wikimedia.org/wikipedia/commons/5/5a/Books_HD_%288314929977%29.jpg",
@@ -69,13 +61,5 @@ class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
         val pos =
             max((rvImages.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition(), 0)
         tvIndicator.text = "${pos + 1}/${imageAdapter?.itemCount}"
-
-        tagAdapter?.setDataSource(
-            listOf(
-                "#아이스크림할인",
-                "#아이스크림할인",
-                "#아이스크림할인"
-            )
-        )
     }
 }

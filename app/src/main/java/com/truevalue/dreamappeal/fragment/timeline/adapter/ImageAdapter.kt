@@ -1,11 +1,10 @@
-package com.truevalue.dreamappeal.fragment.timeline.appeal
+package com.truevalue.dreamappeal.fragment.timeline.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.adapter.BaseAdapter
 import com.truevalue.dreamappeal.base_new.adapter.BaseHolder
-import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.ActionPostViewHolder
 import com.truevalue.dreamappeal.utils.load
 import kotlinx.android.synthetic.main.item_image.*
 

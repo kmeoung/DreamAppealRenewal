@@ -1,4 +1,4 @@
-package com.truevalue.dreamappeal.fragment.timeline.appeal
+package com.truevalue.dreamappeal.fragment.timeline.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.adapter.BaseAdapter
 import com.truevalue.dreamappeal.base_new.adapter.BaseHolder
 import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.ActionPostViewHolder
+import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.LifePostViewHolder
 
 
 class TimeLineDataAdapter(
@@ -17,7 +18,7 @@ class TimeLineDataAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (dataSource[position].type) {
             0 -> R.layout.item_action_post
-            else -> R.layout.item_action_post
+            else -> R.layout.item_life_post
         }
     }
 
@@ -26,7 +27,7 @@ class TimeLineDataAdapter(
             R.layout.item_action_post -> ActionPostViewHolder(
                 inflater.inflate(viewType, parent, false)
             )
-            else -> ActionPostViewHolder(inflater.inflate(viewType, parent, false))
+            else -> LifePostViewHolder(inflater.inflate(viewType, parent, false))
         }
     }
 

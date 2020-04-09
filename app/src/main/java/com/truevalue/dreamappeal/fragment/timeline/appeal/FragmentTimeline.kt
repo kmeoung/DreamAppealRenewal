@@ -1,42 +1,18 @@
 package com.truevalue.dreamappeal.fragment.timeline.appeal
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.*
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
-import com.truevalue.dreamappeal.activity.*
-import com.truevalue.dreamappeal.base.*
 import com.truevalue.dreamappeal.base_new.fragment.BaseTabFragment
 import com.truevalue.dreamappeal.base_new.viewmodel.EmptyViewModel
-import com.truevalue.dreamappeal.bean.BeanTimeline
-import com.truevalue.dreamappeal.fragment.profile.FragmentProfile
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentActionPost
-import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentAddActionPost
+import com.truevalue.dreamappeal.fragment.timeline.adapter.TimeLineData
+import com.truevalue.dreamappeal.fragment.timeline.adapter.TimeLineDataAdapter
 import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.facebook.FacebookContactActivity
 import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.kakao.KakaoContactActivity
-import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.kakao.KakaoContactViewModel
 import com.truevalue.dreamappeal.fragment.timeline.appeal.connect_friend.phone.PhoneContactActivity
-import com.truevalue.dreamappeal.http.DAClient
-import com.truevalue.dreamappeal.http.DAHttpCallback
 import com.truevalue.dreamappeal.utils.*
-import kotlinx.android.synthetic.main.bottom_main_view.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
-import okhttp3.Call
-import org.json.JSONObject
-import java.io.IOException
 
 
 class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.OnRefreshListener {
@@ -104,16 +80,19 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
         srlRefresh.gone()
 
         rvPosts.apply {
-            mAdapter = TimeLineDataAdapter(layoutInflater)
+            mAdapter =
+                TimeLineDataAdapter(
+                    layoutInflater
+                )
             adapter = mAdapter
             setHasFixedSize(true)
         }
         mAdapter?.setDataSource(
             listOf(
                 TimeLineData(),
+                TimeLineData(1),
                 TimeLineData(),
-                TimeLineData(),
-                TimeLineData()
+                TimeLineData(1)
             )
         )
     }

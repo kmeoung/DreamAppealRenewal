@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/tvHashtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="@font/nanum_square_round_eb"
+        android:includeFontPadding="false"
+        android:textColor="@color/light_blue"
+        android:textSize="12dp"
+        tools:text="#아이스크림할인" />
