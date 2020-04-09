@@ -42,7 +42,7 @@
     </style>
 
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
-        <item name="android:fontFamily">@font/nanum_square_round_r</item>
+        <item name="android:fontFamily">@font/nanum_square_round_b</item>
         <item name="android:textSize">14dp</item>
     </style>
 

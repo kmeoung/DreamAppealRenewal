@@ -11,7 +11,6 @@ import com.truevalue.dreamappeal.fragment.timeline.appeal.TimeLineData
 import com.truevalue.dreamappeal.utils.load
 import com.truevalue.dreamappeal.utils.value
 import kotlinx.android.synthetic.main.item_action_post.*
-import kotlinx.android.synthetic.main.item_contact.*
 import kotlin.math.max
 
 class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
@@ -42,7 +41,7 @@ class ActionPostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
     }
 
     override fun bind(data: TimeLineData, position: Int) {
-        ivAvatar.load("https://kprofiles.com/wp-content/uploads/2019/11/D6aGkQlUcAAgf_n-533x800.jpg")
+        civAvatar.load("https://kprofiles.com/wp-content/uploads/2019/11/D6aGkQlUcAAgf_n-533x800.jpg")
         tvName.text = "모든 포지션을 잘 수비하는 올라운드"
         tvDes.text = "모든 포지션을 잘 수비하는 올라운드"
         tvContents.text = "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자"
