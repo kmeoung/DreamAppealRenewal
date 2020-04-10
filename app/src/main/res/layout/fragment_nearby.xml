@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/nanum_square_round_eb"
-                android:text="내가 관심있는 주제의 게시물이 나타납니다"
+                android:text="@string/news_from_neighbors"
                 android:textColor="@color/grey"
                 android:textSize="14dp" />
 
@@ -33,63 +33,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:text="관심주제를 선택해보세요"
+                android:text="@string/setup_living_area"
                 android:textColor="@color/grey"
                 android:textSize="12dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvChooseTopic"
+                android:id="@+id/tvSetupPlace"
                 android:layout_width="160dp"
                 android:layout_height="28dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/bg_gradient_blue_radius_4"
                 android:fontFamily="@font/nanum_square_round_eb"
                 android:gravity="center"
-                android:text="@string/choose_topic_interest"
+                android:text="@string/setting_up_living_area"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvChosenTopic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="13dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_eb"
-            android:maxLines="1"
-            android:textColor="@color/black_1"
-            android:textSize="14dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="#IT/로봇" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvSeeOtherTopic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:maxLines="1"
-            android:text="@string/see_other_topics"
-            android:textColor="@color/light_blue"
-            android:textSize="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-            android:id="@+id/vTop"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="13dp"
-            android:background="@color/grey5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvChosenTopic" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srlRefresh"
@@ -108,10 +70,5 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <androidx.constraintlayout.widget.Group
-            android:id="@+id/groupListData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tvChosenTopic,tvSeeOtherTopic,vTop,srlRefresh" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

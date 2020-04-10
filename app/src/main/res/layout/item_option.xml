@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="34dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_gradient_blue_border_radius_4"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_eb"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/light_blue"
+            android:textSize="16dp"
+            tools:text="#디자인" />
+</FrameLayout>

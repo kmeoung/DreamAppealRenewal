@@ -87,5 +87,6 @@
     <color name="grey3">#19000000</color>
     <color name="grey4">#444444</color>
     <color name="grey5">#ececec</color>
+    <color name="grey6">#404244</color>
     <color name="black40">#66000000</color>
 </resources>

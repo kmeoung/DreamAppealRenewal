@@ -415,4 +415,10 @@
     <string name="action_target">실천 목표</string>
     <string name="daily_notes">일상 노트</string>
     <string name="inspirational_notes">영감 노트</string>
+    <string name="choose_topic_interest">관심주제 선택하기</string>
+    <string name="please_select_interest_topic">관심있는 주제를 선택해주세요</string>
+    <string name="see_other_topics">다른주제 보기</string>
+    <string name="news_from_neighbors">우리동네의 꿈 소식이 나타납니다</string>
+    <string name="setup_living_area">거주지역을 설정해보세요</string>
+    <string name="setting_up_living_area">거주지역 설정하기</string>
 </resources>
