@@ -6,7 +6,9 @@ import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.adapter.BaseAdapter
 import com.truevalue.dreamappeal.base_new.adapter.BaseHolder
 import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.ActionPostViewHolder
+import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.IdeaPostViewHolder
 import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.LifePostViewHolder
+import com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder.SharedPostViewHolder
 
 
 class TimeLineDataAdapter(
@@ -16,18 +18,15 @@ class TimeLineDataAdapter(
 ) :
     BaseAdapter<TimeLineData, BaseHolder<TimeLineData>>(inflater) {
     override fun getItemViewType(position: Int): Int {
-        return when (dataSource[position].type) {
-            0 -> R.layout.item_action_post
-            else -> R.layout.item_life_post
-        }
+        return dataSource[position].type
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder<TimeLineData> {
         return when (viewType) {
-            R.layout.item_action_post -> ActionPostViewHolder(
-                inflater.inflate(viewType, parent, false)
-            )
-            else -> LifePostViewHolder(inflater.inflate(viewType, parent, false))
+            0 -> ActionPostViewHolder(inflater, parent)
+            1 -> LifePostViewHolder(inflater, parent)
+            2 -> IdeaPostViewHolder(inflater, parent)
+            else -> SharedPostViewHolder(inflater, parent)
         }
     }
 

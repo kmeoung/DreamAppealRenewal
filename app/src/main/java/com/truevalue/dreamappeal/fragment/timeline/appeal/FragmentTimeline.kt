@@ -91,8 +91,10 @@ class FragmentTimeline : BaseTabFragment<EmptyViewModel>(), SwipeRefreshLayout.O
             listOf(
                 TimeLineData(),
                 TimeLineData(1),
-                TimeLineData(),
-                TimeLineData(1)
+                TimeLineData(2),
+                TimeLineData(3),
+                TimeLineData(1),
+                TimeLineData()
             )
         )
     }

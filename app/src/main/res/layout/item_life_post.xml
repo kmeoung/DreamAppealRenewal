@@ -100,13 +100,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rvImages" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.skyhope.showmoretextview.ShowMoreTextView
             android:id="@+id/tvContents"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
+            android:layout_marginEnd="5dp"
             android:fontFamily="@font/nanum_square_round_b"
             android:textColor="@color/black_1"
             android:textSize="14dp"

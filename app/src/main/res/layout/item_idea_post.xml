@@ -85,72 +85,21 @@
             tools:text="1/2" />
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvActionTarget"
+            android:id="@+id/tvInspiration"
             android:layout_width="55dp"
             android:layout_height="20dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/bg_dark_blue_2_radius_10"
+            android:background="@drawable/bg_yellow_radius_10"
             android:ellipsize="end"
             android:fontFamily="@font/nanum_square_round_eb"
             android:gravity="center"
             android:maxLines="1"
-            android:text="@string/action_target"
+            android:text="@string/inspirational_notes"
             android:textColor="@color/white"
             android:textSize="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rvImages" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvActionDes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_eb"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/grey4"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@id/tvActionTarget"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvActionTarget"
-            app:layout_constraintTop_toTopOf="@+id/tvActionTarget"
-            tools:text="코어 힘 키우기" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDetailStep"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/bg_dark_blue_2_radius_border_10"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_eb"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/action_target"
-            android:textColor="@color/dark_blue_2"
-            android:textSize="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvActionTarget" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDetailStepDes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/grey4"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toBottomOf="@id/tvDetailStep"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvDetailStep"
-            app:layout_constraintTop_toTopOf="@+id/tvDetailStep"
-            tools:text="윗몸일으키기, 플랭크" />
 
     <com.skyhope.showmoretextview.ShowMoreTextView
             android:id="@+id/tvContents"
@@ -164,7 +113,7 @@
             android:textSize="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDetailStep"
+            app:layout_constraintTop_toBottomOf="@id/tvInspiration"
             tools:text="윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" />
 
     <androidx.recyclerview.widget.RecyclerView

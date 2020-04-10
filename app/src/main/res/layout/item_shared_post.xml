@@ -55,16 +55,66 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/civAvatar" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_gray_stroke_radius_4_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/civAvatar">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civAuthorAvatar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_default_avatar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAuthorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="13dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:maxLines="1"
+                android:textColor="@color/grey2"
+                android:textSize="10dp"
+                app:layout_constraintStart_toEndOf="@id/civAuthorAvatar"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="모든 포지션을 잘 수비하는 올라운드" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAuthorDes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:maxLines="1"
+                android:textColor="@color/black_1"
+                android:textSize="12dp"
+                app:layout_constraintStart_toStartOf="@id/tvAuthorName"
+                app:layout_constraintTop_toBottomOf="@+id/tvAuthorName"
+                tools:text="야구선수 최두혁" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvImages"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/civAvatar" />
+            app:layout_constraintTop_toBottomOf="@+id/clAuthor" />
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvIndicator"
@@ -84,100 +134,62 @@
             app:layout_constraintEnd_toEndOf="@+id/rvImages"
             tools:text="1/2" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvActionTarget"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_dark_blue_2_radius_10"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_eb"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/action_target"
-            android:textColor="@color/white"
-            android:textSize="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvImages" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvActionDes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_eb"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/grey4"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@id/tvActionTarget"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvActionTarget"
-            app:layout_constraintTop_toTopOf="@+id/tvActionTarget"
-            tools:text="코어 힘 키우기" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDetailStep"
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/bg_dark_blue_2_radius_border_10"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_eb"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/action_target"
-            android:textColor="@color/dark_blue_2"
-            android:textSize="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvActionTarget" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDetailStepDes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/grey4"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toBottomOf="@id/tvDetailStep"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvDetailStep"
-            app:layout_constraintTop_toTopOf="@+id/tvDetailStep"
-            tools:text="윗몸일으키기, 플랭크" />
-
-    <com.skyhope.showmoretextview.ShowMoreTextView
-            android:id="@+id/tvContents"
-            android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="5dp"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:textColor="@color/black_1"
-            android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_gray_stroke_radius_4_bottom"
+            android:paddingBottom="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDetailStep"
-            tools:text="윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" />
+            app:layout_constraintTop_toBottomOf="@+id/rvImages">
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHashTags"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvContents" />
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvInspiration"
+                android:layout_width="55dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_yellow_radius_10"
+                android:ellipsize="end"
+                android:fontFamily="@font/nanum_square_round_eb"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/inspirational_notes"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <com.skyhope.showmoretextview.ShowMoreTextView
+                android:id="@+id/tvContents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:textColor="@color/black_1"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvInspiration"
+                tools:text="윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHashTags"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvContents" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCheer"
@@ -187,7 +199,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_cheer"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvHashTags" />
+            app:layout_constraintTop_toBottomOf="@id/clContent" />
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCheerCount"

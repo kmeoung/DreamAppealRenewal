@@ -2,19 +2,25 @@ package com.truevalue.dreamappeal.fragment.timeline.appeal.view_holder
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.base_new.adapter.BaseHolder
 import com.truevalue.dreamappeal.fragment.timeline.adapter.ImageAdapter
 import com.truevalue.dreamappeal.fragment.timeline.adapter.TagAdapter
 import com.truevalue.dreamappeal.fragment.timeline.adapter.TimeLineData
+import com.truevalue.dreamappeal.utils.gone
 import com.truevalue.dreamappeal.utils.load
 import com.truevalue.dreamappeal.utils.value
+import com.truevalue.dreamappeal.utils.visible
 import kotlinx.android.synthetic.main.item_life_post.*
 import kotlin.math.max
 
-class LifePostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
+class LifePostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
+    BaseHolder<TimeLineData>(inflater.inflate(R.layout.item_life_post, parent, false)) {
     private var imageAdapter: ImageAdapter? = null
 
     init {
@@ -42,6 +48,13 @@ class LifePostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
                 }
             })
         }
+        tvContents.apply {
+            setShowingLine(4)
+            setShowMoreColor(ContextCompat.getColor(itemView.context, R.color.black))
+            setShowLessTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+            addShowMoreText("Show more")
+            addShowLessText("Show less")
+        }
 
     }
 
@@ -58,8 +71,16 @@ class LifePostViewHolder(view: View) : BaseHolder<TimeLineData>(view) {
                 "https://upload.wikimedia.org/wikipedia/commons/5/5a/Books_HD_%288314929977%29.jpg"
             )
         )
-        val pos =
-            max((rvImages.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition(), 0)
-        tvIndicator.text = "${pos + 1}/${imageAdapter?.itemCount}"
+        if (imageAdapter?.itemCount.value() > 0) {
+            tvIndicator.visible()
+            val pos =
+                max(
+                    (rvImages.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition(),
+                    0
+                )
+            tvIndicator.text = "${pos + 1}/${imageAdapter?.itemCount}"
+        } else {
+            tvIndicator.gone()
+        }
     }
 }

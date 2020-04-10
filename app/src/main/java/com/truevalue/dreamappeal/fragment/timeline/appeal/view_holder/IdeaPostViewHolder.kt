@@ -16,11 +16,11 @@ import com.truevalue.dreamappeal.utils.gone
 import com.truevalue.dreamappeal.utils.load
 import com.truevalue.dreamappeal.utils.value
 import com.truevalue.dreamappeal.utils.visible
-import kotlinx.android.synthetic.main.item_action_post.*
+import kotlinx.android.synthetic.main.item_idea_post.*
 import kotlin.math.max
 
-class ActionPostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
-    BaseHolder<TimeLineData>(inflater.inflate(R.layout.item_action_post, parent, false)) {
+class IdeaPostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
+    BaseHolder<TimeLineData>(inflater.inflate(R.layout.item_idea_post, parent, false)) {
     private var imageAdapter: ImageAdapter? = null
     private var tagAdapter: TagAdapter? = null
 
@@ -76,8 +76,6 @@ class ActionPostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
                 "윗몸일으키기 훈련 꾸준하게 해서 코어의 근력을 키우자"
         tvCommentCount.text = "2"
         tvCheerCount.text = "2"
-        tvDetailStepDes.text = "윗몸일으키기, 플랭크"
-        tvActionDes.text = "코어 힘 키우기"
         imageAdapter?.setDataSource(
             listOf(
                 "https://upload.wikimedia.org/wikipedia/commons/5/5a/Books_HD_%288314929977%29.jpg",
@@ -95,6 +93,7 @@ class ActionPostViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         } else {
             tvIndicator.gone()
         }
+
         tagAdapter?.setDataSource(
             listOf(
                 "#아이스크림할인",
