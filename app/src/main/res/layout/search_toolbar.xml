@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_grey5_radius_8"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center_vertical"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/warm_grey"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/tvCancelSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCancelSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_eb"
+            android:maxLines="1"
+            android:text="@string/cancel"
+            android:textColor="@color/black_1"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@id/etSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/etSearch" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

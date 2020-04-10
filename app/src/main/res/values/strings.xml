@@ -421,4 +421,9 @@
     <string name="news_from_neighbors">우리동네의 꿈 소식이 나타납니다</string>
     <string name="setup_living_area">거주지역을 설정해보세요</string>
     <string name="setting_up_living_area">거주지역 설정하기</string>
+    <string name="search">검색</string>
+    <string name="cancel">취소</string>
+    <string name="search_for_address_you_want">내 지역으로 지정할 주소를 검색하세요.</string>
+    <string name="search_and_select_desired">원하는 주소를 검색하여 선택하면\n관심 지역이 자동으로 동 단위로 지정됩니다</string>
+    <string name="change_residence">거주지 변경</string>
 </resources>
