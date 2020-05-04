@@ -96,7 +96,12 @@ class FragmentWishBoard : BaseFragment() {
         }
 
         mPagerAdapter = BasePagerAdapter(context, object : BasePagerAdapter.IOBasePagerListener {
-            override fun onBindViewPager(any: Any, view: ImageView, position: Int, arrayList: ArrayList<Any>) {
+            override fun onBindViewPager(
+                any: Any,
+                view: ImageView,
+                position: Int,
+                arrayList: ArrayList<Any>
+            ) {
                 val bean = any as BeanPromotion
                 context?.let {
                     Glide.with(it)
@@ -106,16 +111,17 @@ class FragmentWishBoard : BaseFragment() {
                         .thumbnail(0.1f)
                         .into(view)
 
-
                     view.setOnClickListener {
-                        (activity as ActivityMain)
-                            .replaceFragment(
-                                FragmentEventDetail.newInstance(
-                                    bean.idx
-                                ),
-                                addToBack = true,
-                                isMainRefresh = false
-                            )
+                        if (!bean.url.isNullOrEmpty()) {
+                            (activity as ActivityMain)
+                                .replaceFragment(
+                                    FragmentEventDetail.newInstance(
+                                        bean.idx
+                                    ),
+                                    addToBack = true,
+                                    isMainRefresh = false
+                                )
+                        }
                     }
                 }
 
@@ -127,7 +133,7 @@ class FragmentWishBoard : BaseFragment() {
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if(mPagerAdapter!!.count > 1) {
+                    if (mPagerAdapter!!.count > 1) {
                         tv_indicator.text =
                             ((position + 1).toString() + " / " + mPagerAdapter!!.getCount())
                     }
@@ -188,10 +194,10 @@ class FragmentWishBoard : BaseFragment() {
                             it.add(bean)
                         }
                         it.notifyDataSetChanged()
-                        if(promotions.length() > 1) {
+                        if (promotions.length() > 1) {
                             tv_indicator.visibility = VISIBLE
                             tv_indicator.text = (1.toString() + " / " + promotions.length())
-                        }else{
+                        } else {
                             tv_indicator.visibility = GONE
                         }
                     }
@@ -199,7 +205,7 @@ class FragmentWishBoard : BaseFragment() {
                     val wishes = json.getJSONArray("wishes")
                     mAdapter?.let {
 
-                        if(MAX_GET_ONCE_ITEM > wishes.length()){
+                        if (MAX_GET_ONCE_ITEM > wishes.length()) {
                             isLast = true
                             it.notifyDataSetChanged()
                         }
@@ -247,7 +253,7 @@ class FragmentWishBoard : BaseFragment() {
                     try {
                         val wishes = json.getJSONArray("wishes")
                         mAdapter?.let {
-                            if(MAX_GET_ONCE_ITEM > wishes.length()){
+                            if (MAX_GET_ONCE_ITEM > wishes.length()) {
                                 isLast = true
                                 it.notifyDataSetChanged()
                             }

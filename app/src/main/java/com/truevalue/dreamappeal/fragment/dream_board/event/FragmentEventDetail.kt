@@ -93,7 +93,7 @@ class FragmentEventDetail : BaseFragment() {
                     val json = JSONObject(body)
                     val promotions = json.getJSONArray("promotion")
 
-                    if (promotions.length() < 0) tv_default.visibility = VISIBLE
+                    if (promotions.length() < 1) tv_default.visibility = VISIBLE
                     else {
                         val promotion = promotions.getJSONObject(0)
                         val bean = Gson().fromJson<BeanPromotion>(

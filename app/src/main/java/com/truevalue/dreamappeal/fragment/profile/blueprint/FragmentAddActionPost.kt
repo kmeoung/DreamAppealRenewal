@@ -360,6 +360,4 @@ class FragmentAddActionPost : BaseFragment() {
         }
         return tags
     }
-
-
 }
