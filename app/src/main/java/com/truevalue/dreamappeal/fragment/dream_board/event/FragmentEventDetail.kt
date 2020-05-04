@@ -26,11 +26,26 @@ class FragmentEventDetail : BaseFragment() {
 
     private var mPromotionIdx: Int = -1
 
+    private var mPromotionUrl: String?
+
+    init {
+        mPromotionUrl = null
+    }
+
     companion object {
+        // 나머지 프로모션
         fun newInstance(promotion_idx: Int): FragmentEventDetail {
             val fragment =
                 FragmentEventDetail()
             fragment.mPromotionIdx = promotion_idx
+            return fragment
+        }
+
+        // 소원 게시판 프로모션 전용
+        fun newInstance(promotion_url: String): FragmentEventDetail {
+            val fragment =
+                FragmentEventDetail()
+            fragment.mPromotionUrl = promotion_url
             return fragment
         }
     }
@@ -48,9 +63,42 @@ class FragmentEventDetail : BaseFragment() {
         initView()
         // View Click Listener
         onClickView()
-        // 프로모션 가져오기
-        getPromotions()
 
+        // 프로모션 가져오기
+        if (mPromotionUrl != null) {
+            showWishPromotion(mPromotionUrl)
+        } else {
+            getPromotions()
+        }
+
+    }
+
+    /**
+     * 소원 프로모션 상세 조회
+     */
+    private fun showWishPromotion(url: String?) {
+        context?.let {
+            if (url.isNullOrEmpty()) tv_default.visibility = VISIBLE
+            else {
+                tv_default.visibility = GONE
+                Glide.with(it)
+                    .load(url)
+                    .placeholder(R.drawable.ic_image_white)
+                    .centerCrop()
+                    .thumbnail(0.1f)
+                    .into(iv_event)
+
+                val list = ArrayList<String>()
+                list.add(url)
+
+                iv_event.setOnClickListener {
+                    val intent = Intent(context!!, ActivityImgScaling::class.java)
+                    intent.putExtra(ActivityImgScaling.EXTRA_IMAGES, list)
+                    intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION, 1)
+                    startActivity(intent)
+                }
+            }
+        }
     }
 
     /**
@@ -111,14 +159,15 @@ class FragmentEventDetail : BaseFragment() {
                                     .thumbnail(0.1f)
                                     .into(iv_event)
 
-                                bean.url?.let { url->
+                                bean.url?.let { url ->
                                     val list = ArrayList<String>()
                                     list.add(url)
 
                                     iv_event.setOnClickListener {
-                                        val intent = Intent(context!!, ActivityImgScaling::class.java)
-                                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGES,list)
-                                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION,1)
+                                        val intent =
+                                            Intent(context!!, ActivityImgScaling::class.java)
+                                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGES, list)
+                                        intent.putExtra(ActivityImgScaling.EXTRA_IMAGE_POSITION, 1)
                                         startActivity(intent)
                                     }
                                 }

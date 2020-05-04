@@ -115,9 +115,7 @@ class FragmentWishBoard : BaseFragment() {
                         if (!bean.url.isNullOrEmpty()) {
                             (activity as ActivityMain)
                                 .replaceFragment(
-                                    FragmentEventDetail.newInstance(
-                                        bean.idx
-                                    ),
+                                    FragmentEventDetail.newInstance(bean.url!!),
                                     addToBack = true,
                                     isMainRefresh = false
                                 )
