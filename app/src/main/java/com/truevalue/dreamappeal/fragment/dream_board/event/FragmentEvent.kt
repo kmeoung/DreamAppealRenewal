@@ -82,7 +82,7 @@ class FragmentEvent : BaseFragment() {
             super.handleMessage(msg)
             val position = pager_image.currentItem
 
-            mPagerAdapter?.let { adapter->
+            mPagerAdapter?.let { adapter ->
                 if (position >= adapter.count - 1) {
                     pager_image.currentItem = 0
                 } else {
@@ -152,11 +152,13 @@ class FragmentEvent : BaseFragment() {
                         bean.event_type?.let { type ->
                             when (type) {
                                 EVENT_TYPE_DEFAULT -> {
-                                    (activity as ActivityMain).replaceFragment(
-                                        FragmentEventDetail.newInstance(bean.idx),
-                                        addToBack = true,
-                                        isMainRefresh = false
-                                    )
+                                    if (!bean.url.isNullOrEmpty()) {
+                                        (activity as ActivityMain).replaceFragment(
+                                            FragmentEventDetail.newInstance(bean.idx),
+                                            addToBack = true,
+                                            isMainRefresh = false
+                                        )
+                                    }
                                 }
                                 EVENT_TYPE_WISH -> {
                                     (activity as ActivityMain)
@@ -275,7 +277,8 @@ class FragmentEvent : BaseFragment() {
                     } else {
                         tv_event_value_style.visibility = GONE
                     }
-                    val value = if (job.isNullOrEmpty()) getString(R.string.str_event_default_dream_name) else job
+                    val value =
+                        if (job.isNullOrEmpty()) getString(R.string.str_event_default_dream_name) else job
                     tv_event_job.text = "${value}에 도움될 소식"
                     tv_event_job.text = Utils.replaceTextColor(
                         context,
@@ -302,7 +305,6 @@ class FragmentEvent : BaseFragment() {
                         } else {
                             tv_indicator.visibility = GONE
                         }
-
                     }
 
                     val event_cards = json.getJSONArray("event_cards")

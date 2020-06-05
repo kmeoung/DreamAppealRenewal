@@ -156,11 +156,13 @@ class FragmentPromotionAll : BaseFragment() {
                 bean.event_type?.let { type ->
                     when (type) {
                         EVENT_TYPE_DEFAULT -> {
-                            (activity as ActivityMain).replaceFragment(
-                                FragmentEventDetail.newInstance(bean.idx),
-                                addToBack = true,
-                                isMainRefresh = false
-                            )
+                            if (!bean.url.isNullOrEmpty()) {
+                                (activity as ActivityMain).replaceFragment(
+                                    FragmentEventDetail.newInstance(bean.idx),
+                                    addToBack = true,
+                                    isMainRefresh = false
+                                )
+                            }
                         }
                         EVENT_TYPE_WISH -> {
                             (activity as ActivityMain)

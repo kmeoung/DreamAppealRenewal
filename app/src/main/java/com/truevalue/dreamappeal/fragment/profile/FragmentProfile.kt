@@ -1,30 +1,26 @@
 package com.truevalue.dreamappeal.fragment.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.Nullable
-import com.google.android.material.tabs.TabLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.Toast
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.truevalue.dreamappeal.R
 import com.truevalue.dreamappeal.activity.ActivityMain
-import com.truevalue.dreamappeal.activity.ActivityMyProfileContainer
 import com.truevalue.dreamappeal.base.BaseFragment
 import com.truevalue.dreamappeal.bean.BeanAnotherProfile
 import com.truevalue.dreamappeal.bean.BeanAnotherProfileGroup
 import com.truevalue.dreamappeal.bean.BeanProfileUserPrivates
 import com.truevalue.dreamappeal.dialog.DialogAnotherProfile
-import com.truevalue.dreamappeal.dialog.DialogYearMonthPicker
 import com.truevalue.dreamappeal.fragment.profile.blueprint.FragmentBlueprint
 import com.truevalue.dreamappeal.fragment.profile.dream_note.FragmentDreamNote
 import com.truevalue.dreamappeal.fragment.profile.dream_present.FragmentDreamPresent
@@ -144,6 +140,7 @@ class FragmentProfile : BaseFragment(), ActivityMain.IOMainViewRefresh, IOUserNa
                 if(context != null) {
                     if(code == DAClient.SUCCESS){
                         val json = JSONObject(body)
+
                         val user = json.getJSONObject("user")
                         val groups = json.getJSONArray("groups")
                         val privates = user.getJSONObject("privates")
